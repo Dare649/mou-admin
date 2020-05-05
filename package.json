@@ -1,8 +1,8 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "School portal frontend application",
-  "author": "ElixirPrimeHouse",
+  "description": "Michael Okpara University of Agriculture Umudike, formerly Federal University of Agriculture, Umudike, was established as a specialized University by the Federal Government of Nigeria via Decree No 48 of 2nd November 1992.",
+  "author": "Elixir Prime House",
   "private": true,
   "scripts": {
     "dev": "nuxt",

@@ -1,0 +1,48 @@
+/*
+
+* Override Pages default styles or create your own styles here
+
+*/
+
+.dropdown-menu>li, .dropdown-menu>.dropdown-item {
+    line-height: 20px;
+    color: #3f3f3f;
+    padding: 4px 8px 4px 16px;
+    border-radius: 3px;
+    display: block;
+    clear: both;
+    white-space: nowrap;
+    text-align: left;
+}
+.dropdown-menu>a {
+    line-height: 35px;
+    color: #3f3f3f;
+    padding: 0 20px;
+    border-radius: 3px;
+    display: block;
+    clear: both;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.page-item .page-link {
+    display: block;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: rgba(44, 45, 46, 0.5)!important;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.page-item .page-link:hover {
+    color: rgba(44, 45, 46, 0.5)!important;
+    background-color: #dee2e6;
+    border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff!important;
+    background-color: #1D9D21!important;
+    border-color: #1D9D21!important;
+}
