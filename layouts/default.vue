@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <nuxt />
-  </div>
+  
+    <div class="fixed-header">
+      <div class="login-wrapper">
+        <nuxt />
+      </div>
+    </div>
+   
 </template>
-
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
