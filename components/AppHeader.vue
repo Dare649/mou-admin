@@ -37,33 +37,35 @@
                     <a href="#" class="btn-link toggle-sidebar d-lg-none pg pg-close" data-toggle="horizontal-menu">
                     </a>
                     <ul>
-                        <li class="<?php echo $home; ?>"><a href="/dashboard">Dashboard</a></li>
-                        <li class="<?php echo $get_started; ?>">
+                        <li><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                        <li>
                             <a href="javascript:;"><span class="title">Get Started</span><span class=" arrow"></span></a>
-                            <ul class="">
-                                <li><a href="get_faculities_jamb.php">Faculties(JAMB)</a></li>
-                                <li><a href="get_subjects_jamb.php">Subjects(JAMB)</a></li>
-                                <li><a href="get_our_faculties.php">Our Faculties</a></li>
+                            <ul>
+                                <li>
+                                    <nuxt-link to="/get-started/faculties">Faculties(JAMB)</nuxt-link>
+                                </li>
+                                <li><nuxt-link to="/">Subjects(JAMB)</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><a href="#">Create Exams</a></li>
-                                <li><a href="/dashboard/get-started/countries">Countries</a></li>
-                                <li><a href="/dashboard/get-started/states">States</a></li>
-                                <li><a href="/dashboard/get-started/lgas">LGAs</a></li>
+                                <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li>
                                 <li><a href="get_religions.php">Religions</a></li>
                                 <li><a href="get_jamb_result.php">Upload Jamb Results</a></li>
                                 <li><a href="#">Custom Message</a></li>
                                 <li><a href="#">Nationalities</a></li>
                             </ul>
                         </li>
-                        <li class="<?php echo $personnel; ?>"><a href="#"><span class="title">Personnel</span></a></li>
-                        <li class="<?php echo $jamb; ?>"><a href="#"><span class="title">JAMB</span></a></li>
-                        <li class="<?php echo $exams; ?>"><a href="#"><span class="title">Exams</span></a></li>
-                        <li class="<?php echo $hostel_man; ?>"><a href="#"><span class="title">Hostel Management</span></a></li>
-                        <li class="<?php echo $cms; ?>"><a href="#"><span class="title">CMS</span></a></li>
-                        <li class="<?php echo $reports; ?>"><a href="#"><span class="title">Reports</span></a></li>
-                        <li class="<?php echo $misc; ?>"><a href="#"><span class="title">Misc</span></a></li>
-                        <li class="<?php echo $trans_log; ?>"><a href="#"><span class="title">Transaction Logs</span></a></li>
-                        <li class="<?php echo $scripts; ?>"><a href="#"><span class="title">Scripts</span></a></li>
-                        <li class="<?php echo $results; ?>">
+                        <li><a href="#"><span class="title">Personnel</span></a></li>
+                        <li><a href="#"><span class="title">JAMB</span></a></li>
+                        <li><a href="#"><span class="title">Exams</span></a></li>
+                        <li><a href="#"><span class="title">Hostel Management</span></a></li>
+                        <li><a href="#"><span class="title">CMS</span></a></li>
+                        <li><a href="#"><span class="title">Reports</span></a></li>
+                        <li><a href="#"><span class="title">Misc</span></a></li>
+                        <li><a href="#"><span class="title">Transaction Logs</span></a></li>
+                        <li><a href="#"><span class="title">Scripts</span></a></li>
+                        <li>
                             <a href="javascript:;"><span class="title">Results</span>
                                 <span class=" arrow"></span></a>
                             <ul class="">
@@ -75,10 +77,10 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="<?php echo $audit_trail; ?>"><a href="#"><span class="title">Audit Trail</span></a></li>
-                        <li class="<?php echo $putme_de; ?>"><a href="#"><span class="title">PUTME/DE Utilities</span></a></li>
-                        <li class="<?php echo $cec; ?>"><a href="#"><span class="title">CEC Utilities</span></a></li>
-                        <li class="<?php echo $pg_utilities; ?>"><a href="#"><span class="title">PG Utilities</span></a></li>
+                        <li><a href="#"><span class="title">Audit Trail</span></a></li>
+                        <li><a href="#"><span class="title">PUTME/DE Utilities</span></a></li>
+                        <li><a href="#"><span class="title">CEC Utilities</span></a></li>
+                        <li><a href="#"><span class="title">PG Utilities</span></a></li>
                     </ul>
                 </div>
             </div>
