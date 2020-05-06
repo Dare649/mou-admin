@@ -16,7 +16,6 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/assets/img/favicon.png' },
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: "stylesheet", href:"/assets/plugins/pace/pace-theme-flash.css"},
       { rel: "stylesheet", href:"/assets/plugins/bootstrap/css/bootstrap.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/font-awesome/css/font-awesome.css"},
@@ -68,6 +67,7 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/moment'
   ],
   /*
   ** Axios module configuration
