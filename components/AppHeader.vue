@@ -44,7 +44,7 @@
                                 <li>
                                     <nuxt-link to="/get-started/faculties">Faculties(JAMB)</nuxt-link>
                                 </li>
-                                <li><nuxt-link to="/">Subjects(JAMB)</nuxt-link></li>
+                                <li><nuxt-link to="#">Subjects(JAMB)</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><a href="#">Create Exams</a></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
@@ -57,7 +57,13 @@
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
-                        <li><a href="#"><span class="title">JAMB</span></a></li>
+                        <li class="<?php echo $jamb; ?>">
+                            <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
+                            <ul class="">
+                                <li><nuxt-link to="/dashboard/jamb-results">JAMB Result</nuxt-link></li>
+                                <li><nuxt-link to="/dashboard/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                            </ul>
+                        </li>
                         <li><a href="#"><span class="title">Exams</span></a></li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>
                         <li><a href="#"><span class="title">CMS</span></a></li>

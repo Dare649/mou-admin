@@ -13,18 +13,19 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="State Name" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="State Abbreviation" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
                               <select class="form-control input-lg">
                                 <option>--Select Country--</option>
                                 <option>Nigeria</option>
                                 <option>Ghana</option>
                               </select>
                           </div>
+                          <div class="col-lg-12 m-b-10">
+                              <input type="text" placeholder="State Name" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                          </div>
+                          <div class="col-lg-12 m-b-10">
+                              <input type="text" placeholder="State Abbreviation" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                          </div>
+                          
                           <div class="col-lg-12">
                               <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
                           </div>
@@ -79,10 +80,7 @@
           <!-- /.modal-dialog -->
       </div>
 
-      <!-- START PAGE-CONTAINER -->
-      <div class="page-container ">
-          <!-- START PAGE CONTENT WRAPPER -->
-          <div class="page-content-wrapper">
+      
               <!-- START PAGE CONTENT -->
               <div class="content sm-gutter">
                   <!-- START BREADCRUMBS -->
@@ -99,7 +97,7 @@
                   <!-- START CONTAINER FLUID -->
                   <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                       <div class="card card-default">
-                          <div class="card-header  separator">
+                          <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">State Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New State</strong></button>
@@ -111,16 +109,16 @@
                               <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead>
-                                        <th style="width:20%">State Abbreviation</th>
-                                        <th style="width:60%">State Name</th>
-                                        <th style="width:60%">Country Name</th>
+                                          <th style="width:30%">Country Name</th>
+                                          <th style="width:30%">State Name</th>
+                                        <th style="width:20%">State Abbreviation</th>                                        
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
                                       <tr>
-                                          <td>ABI</td>
+                                          <td>Nigeria</td>
                                           <td>Abia</td>
-                                          <td>Nigeria</td>
+                                          <td>ABI</td>                                     
                                           <td>
                                               <div class="btn-group">
                                                   <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
@@ -129,9 +127,9 @@
                                           </td>
                                       </tr>
                                       <tr>
-                                          <td>ADA</td>
+                                          <td>Nigeria</td>
                                           <td>Adamawa</td>
-                                          <td>Nigeria</td>
+                                          <td>ADA</td>                                       
                                           <td>
                                               <div class="btn-group">
                                                   <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
@@ -140,9 +138,9 @@
                                           </td>
                                       </tr>
                                       <tr>
-                                          <td>AKI</td>
+                                          <td>Nigeria</td>                                         
                                           <td>Akwa Ibom</td>
-                                          <td>Nigeria</td>
+                                          <td>AKI</td>
                                           <td>
                                               <div class="btn-group">
                                                   <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
@@ -175,10 +173,7 @@
               <!-- START COPYRIGHT -->
               <!-- END COPYRIGHT -->
           </div>
-          <!-- END PAGE CONTENT WRAPPER -->
-      </div>
-      <!-- END PAGE CONTAINER -->
-    </div>
+          
 </template>
 <script>
 export default {

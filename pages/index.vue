@@ -1,5 +1,6 @@
+
 <template>
-  <div class="login-wrapper">
+     <div class="login-wrapper ">
       <!-- START Login Background Pic Wrapper-->
       <div class="bg-pic">
         <!-- START Background Pic-->
@@ -46,18 +47,17 @@
           </form>
           <!--END Login Form-->
 
-            <p class="small p-t-35 text-center">&copy; {{ year }} Michael Okpara University of Agriculture, Umudike.</p>
+            <p class="small p-t-35 text-center">&copy; {{year}} Michael Okpara University of Agriculture, Umudike.</p>
 
         </div>
       </div>
       <!-- END Login Right Container-->
-    </div> 
-    
- 
+    </div>
 </template>
 
 <script>
   export default {
+    
     data() {
       return {
         year: this.$moment().format('YYYY')
