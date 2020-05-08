@@ -72,10 +72,7 @@
           <!-- /.modal-dialog -->
       </div>
 
-      <!-- START PAGE-CONTAINER -->
-      <div class="page-container ">
-          <!-- START PAGE CONTENT WRAPPER -->
-          <div class="page-content-wrapper">
+      
               <!-- START PAGE CONTENT -->
               <div class="content sm-gutter">
                   <!-- START BREADCRUMBS -->
@@ -92,7 +89,7 @@
                   <!-- START CONTAINER FLUID -->
                   <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                       <div class="card card-default">
-                          <div class="card-header  separator">
+                          <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">Country Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
@@ -104,8 +101,8 @@
                               <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead>
-                                        <th style="width:20%">Country Abbreviation</th>
-                                        <th style="width:60%">Country Name</th>
+                                        <th style="width:30%">Country Abbreviation</th>
+                                        <th style="width:50%">Country Name</th>
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
@@ -164,10 +161,7 @@
               <!-- START COPYRIGHT -->
               <!-- END COPYRIGHT -->
           </div>
-          <!-- END PAGE CONTENT WRAPPER -->
-      </div>
-      <!-- END PAGE CONTAINER -->
-    </div>
+         
 </template>
 <script>
 export default {

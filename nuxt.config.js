@@ -14,6 +14,7 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
+    
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/assets/img/favicon.png' },
       { rel: "stylesheet", href:"/assets/plugins/pace/pace-theme-flash.css"},
@@ -23,7 +24,8 @@ module.exports = {
       { rel: "stylesheet", href:"/assets/plugins/select2/css/select2.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/switchery/css/switchery.min.css"},
       { rel: "stylesheet", href:"/pages/css/pages-icons.css"},
-      { rel: "stylesheet", href:"/pages/css/themes/modern.css"}
+      { rel: "stylesheet", href: "/assets/css/style.css"},
+      { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"}, 
     ],
     script: [
       {type:"text/javascript", src: '/assets/plugins/pace/pace.min.js' },
@@ -53,6 +55,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    
   ],
 
   /*
