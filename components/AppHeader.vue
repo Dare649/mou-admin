@@ -41,12 +41,9 @@
                         <li>
                             <a href="javascript:;"><span class="title">Get Started</span><span class=" arrow"></span></a>
                             <ul>
-                                <li>
-                                    <nuxt-link to="/get-started/faculties">Faculties(JAMB)</nuxt-link>
-                                </li>
-                                <li><nuxt-link to="/get-started/subjects-jamb">Subject(JAMB)</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/faculties">Faculties</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
-                                <li><a href="#">Create Exams</a></li>
+                                <li><nuxt-link to="/get-started/subjects-jamb">Subject</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li>
@@ -58,11 +55,11 @@
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
-                        <li class="<?php echo $jamb; ?>">
+                        <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li><nuxt-link to="/dashboard/jamb-results">JAMB Result</nuxt-link></li>
-                                <li><nuxt-link to="/dashboard/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                                <li><nuxt-link to="/jamb/jamb-results">JAMB Result</nuxt-link></li>
+                                <li><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Exams</span></a></li>
