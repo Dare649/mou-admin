@@ -44,16 +44,17 @@
                                 <li>
                                     <nuxt-link to="/get-started/faculties">Faculties(JAMB)</nuxt-link>
                                 </li>
-                                <li><nuxt-link to="#">Subjects(JAMB)</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/subjects-jamb">Subject(JAMB)</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><a href="#">Create Exams</a></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li>
-                                <li><a href="get_religions.php">Religions</a></li>
+                                <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
                                 <li><a href="get_jamb_result.php">Upload Jamb Results</a></li>
                                 <li><a href="#">Custom Message</a></li>
-                                <li><a href="#">Nationalities</a></li>
+                                <li><nuxt-link to="/get-started/acadamic-session">Acadamic Session</nuxt-link></li>
+
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
