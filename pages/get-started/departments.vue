@@ -116,8 +116,8 @@
     </div>
 </template>
 <script>
-import FacultyForm from '../../components/Modals/FacultyForm';
-import UploadFaculty from '../../components/Modals/UploadFaculty';
+import FacultyForm from '../../components/Modals/FacultyFormModal';
+import UploadFaculty from '../../components/Modals/UploadFacultyModal';
 export default {
     name: "States",
     layout: "main",
