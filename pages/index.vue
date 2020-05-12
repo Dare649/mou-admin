@@ -1,12 +1,8 @@
 
 <template>
-     <div class="login-wrapper ">
+     
       <!-- START Login Background Pic Wrapper-->
-      <div class="bg-pic">
-        <!-- START Background Pic-->
-        <img src="assets/img/login_bkg1.jpg" data-src="assets/img/login_bkg1.jpg" data-src-retina="assets/img/login_bkg1.jpg" alt="" class="lazy">
-        <!-- END Background Pic-->
-      </div>
+      
       <!-- END Login Background Pic Wrapper-->
       <!-- START Login Right Container-->
       <div class="login-container bg-white">
@@ -52,12 +48,20 @@
         </div>
       </div>
       <!-- END Login Right Container-->
-    </div>
+ 
 </template>
 
 <script>
   export default {
-    
+     mounted: function() {
+      // if (!process.server) {
+      //   const script1 = document.createElement('script')       
+      //   script1.type = 'text/javascript'
+      //   script1.src = '/pages/js/pages.min.js'        
+
+      //   document.head.appendChild(script1)        
+      // }
+    },
     data() {
       return {
         year: this.$moment().format('YYYY')

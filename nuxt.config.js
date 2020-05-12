@@ -23,9 +23,9 @@ module.exports = {
       { rel: "stylesheet", href:"/assets/plugins/jquery-scrollbar/jquery.scrollbar.css"},
       { rel: "stylesheet", href:"/assets/plugins/select2/css/select2.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/switchery/css/switchery.min.css"},
-      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},
-      { rel: "stylesheet", href: "/assets/css/style.css"},
+      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},  
       { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"}, 
+      { rel: "stylesheet", href: "/assets/css/style.css"},
     ],
     script: [
       {type:"text/javascript", src: '/assets/plugins/pace/pace.min.js' },
@@ -76,8 +76,45 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+    // baseURL: process.env.BASE_URL || 'http://127.0.0.1',
+		proxy: true
   },
+  proxy: {
+		'/api/': 'http://127.0.0.1'
+  },
+  env: {
+		BASE_URL: 'http://127.0.0.1'
+  },
+  
+  /*
+   ** Authentication of the app
+   */
+	auth: {
+		strategies: {
+			local: {
+				endpoints: {
+					login: {
+						url: '/api/User/Authenticate',
+						method: 'post',
+						propertyName: false
+					},
+					logout: false,
+					user: {
+						url: '/api/User/Details',
+						method: 'get',
+						propertyName: false
+					}
+				}
+			}
+		},
+		redirect: {
+			login: '/?login=1',
+			logout: '/',
+			home: '/',
+			callback: '/'
+		},
+		plugins: [ '~/plugins/auth.js', '~/plugins/vue-moment.js' ]
+	},
 
   /*
   ** Build configuration

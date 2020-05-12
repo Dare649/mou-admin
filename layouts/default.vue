@@ -1,5 +1,10 @@
 <template>
-  <div class="">
+    <div class="login-wrapper">
+    <div class="bg-pic">
+        <!-- START Background Pic-->
+        <img src="/assets/img/login_bkg1.jpg" data-src="/assets/img/login_bkg1.jpg" data-src-retina="/assets/img/login_bkg1.jpg" alt="" class="lazy">
+        <!-- END Background Pic-->
+      </div>
     <nuxt/>
   </div> 
 </template>
@@ -8,9 +13,9 @@ export default {
   mounted: function() {
     
     if (!process.server) {
-      const script1 = document.createElement('script')       
-      script1.type = 'text/javascript'
-      script1.src = 'pages/js/pages.min.js'        
+      // const script1 = document.createElement('script')       
+      // script1.type = 'text/javascript'
+      // script1.src = 'pages/js/pages.min.js'        
       
       // const script2 = document.createElement('script')       
       // script2.type = 'text/javascript'
@@ -87,13 +92,14 @@ export default {
       // document.head.appendChild(script4)
       // document.head.appendChild(script3)
       // document.head.appendChild(script2)
-      document.head.appendChild(script1)        
+      //document.head.appendChild(script1)        
     }
   },
-  head: {
-    bodyAttrs: {
-      class: 'fixed-header'
-    }
-  }
+ 
+  // head: {
+  //   bodyAttrs: {
+  //     class: 'fixed-header'
+  //   }
+  // }
 }
 </script>
