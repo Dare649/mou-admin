@@ -74,7 +74,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                            <a href="get_academic_session_options.php" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></a>
+                                            <nuxt-link to="/get-started/acadamic-session/manage" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
                                         </div>
                                     </td>
                                 </tr>

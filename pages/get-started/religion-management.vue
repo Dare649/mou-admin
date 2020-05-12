@@ -95,8 +95,8 @@
     </div>
 </template>
 <script>
-import ReligionForm from '../../components/Modals/ReligionForm';
-import UploadReligion from '../../components/Modals/UploadReligion';
+import ReligionForm from '../../components/Modals/ReligionFormModal';
+import UploadReligion from '../../components/Modals/UploadReligionModal';
 export default {
     name: "religion",
     layout: "main",

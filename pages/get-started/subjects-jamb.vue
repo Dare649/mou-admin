@@ -90,8 +90,8 @@
     </div>
 </template>
 <script>
-import SubjectForm from '../../components/Modals/SubjectForm';
-import UploadSubjects from '../../components/Modals/UploadSubjects';
+import SubjectForm from '../../components/Modals/SubjectFormModal';
+import UploadSubjects from '../../components/Modals/UploadSubjectsModal';
 export default {
     name: "religion",
     layout: "main",

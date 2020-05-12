@@ -47,7 +47,7 @@
                                 <li><nuxt-link to="/get-started/subjects-jamb">Subject(JAMB)</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><a href="#">Create Exams</a></li>
-                                <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
+                                  <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
