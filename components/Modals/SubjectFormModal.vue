@@ -1,0 +1,31 @@
+<template>
+    <div class="modal fade SlideUp" id="add_subject" tabindex="-1" role="dialog" aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="pg-close"></i>
+        </button>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="text-left p-b-5"><span class="semi-bold">Add New Subject</span></h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Subject Name" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                        </div>
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Subject Abbreviation" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</template>

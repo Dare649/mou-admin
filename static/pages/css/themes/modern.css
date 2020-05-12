@@ -10980,6 +10980,7 @@ Responsive Util
   display: block;
   position: relative;
   float: right;
+  height: 100vh;
 }
 .login-wrapper .bg-caption {
   width: 500px;
