@@ -637,7 +637,7 @@
 export default {
   name: "Dashboard",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },

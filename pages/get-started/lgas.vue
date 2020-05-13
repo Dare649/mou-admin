@@ -193,7 +193,7 @@
 export default {
   name: "LGAs",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },

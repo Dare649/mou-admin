@@ -111,26 +111,7 @@
                                           <td>Nigeria</td>
                                           <td>
                                               <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>GH</td>
-                                          <td>Ghana</td>
-                                          <td>
-                                              <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>UK</td>
-                                          <td>United Kingdom</td>
-                                          <td>
-                                              <div class="btn-group">
+                                                  <nuxt-link to="/get-started/states"><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                                   <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
                                                   <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
                                               </div>
@@ -167,7 +148,7 @@
 export default {
   name: "Countries",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },

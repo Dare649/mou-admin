@@ -1,6 +1,6 @@
 
 <template>
- <div class="login-wrapper ">
+ <div class="login-wrapper">
   <!-- START Login Background Pic Wrapper-->
   <div class="bg-pic">
     <!-- START Background Pic-->
@@ -14,20 +14,49 @@
       <img src="/assets/img/mou_logo_c.png" alt="logo" data-src="/assets/img/mou_logo_c.png" data-src-retina="/assets/img/mou_logo_c.png"  height="70">
       <p class="p-t-35 text-center">Welcome to the myMOUAU student portal.</p>
       <!-- START Login Form -->
-      <form id="form-login" class="p-t-15" role="form" action="index.php">
+      <form id="form-login" class="p-t-15" @submit.prevent="login" v-if="!IsMessageSentSuccessfully">
         <!-- START Form Control-->
-        <div class="form-group form-group-default">
+        <div class="form-group form-group-default" v-if="!IsMessageSentSuccessfully">
           <label>Login</label>
           <div class="controls">
-            <input type="text" name="username" placeholder="User Name" class="form-control" required>
+            <input type="text" v-model="model.username" name="username" placeholder="User Name" class="form-control" required>
           </div>
         </div>
         <!-- END Form Control-->
         <!-- START Form Control-->
-        <div class="form-group form-group-default">
+        <div class="form-group form-group-default" v-if="!IsMessageSentSuccessfully">
           <label>Password</label>
           <div class="controls">
-            <input type="password" class="form-control" name="password" placeholder="Credentials" required>
+            <input type="password" v-model="model.password" class="form-control" name="password" placeholder="Credentials" required>
+          </div>
+        </div>
+        <!-- START Form Control-->
+        <div class="row" style="color: red;" v-if="ErrMsg != null">{{ErrMsg}}</div>
+        <div class="row">
+          <div class="col-md-6 no-padding sm-p-l-10">
+            <div class="checkbox ">
+              <input type="checkbox" value="1" id="checkbox1">
+              <label for="checkbox1">Keep Me Signed in</label>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center justify-content-end">
+            <a href="iforgot.php" class="text-success small">Forgot Password?</a>
+          </div>
+        </div>
+        <!-- END Form Control-->
+          <button v-if="!loading" class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-lock"></i> <span class="bold">SIGN IN</span></button>
+          <button v-if="loading" disabled class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-unlock"></i> <span class="bold">SIGNING IN</span></button>
+      </form>
+      <!--END Login Form-->
+
+      <!-- START Login Form -->
+      <form id="form-login" class="p-t-15" @submit.prevent="authenticate" v-if="IsMessageSentSuccessfully">
+        
+        <!-- START Form Control-->
+        <div class="form-group form-group-default" v-if="IsMessageSentSuccessfully">
+          <label>Token</label>
+          <div class="controls">
+            <input type="token" v-model="model.token" class="form-control" name="token" placeholder="Enter pin sent to your mail" required>
           </div>
         </div>
         <!-- START Form Control-->
@@ -42,8 +71,9 @@
             <a href="iforgot.php" class="text-success small">Forgot Password?</a>
           </div>
         </div>
-        <!-- END Form Control-->
-          <button class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-lock"></i> <span class="bold">SIGN IN</span></button>
+        <!-- END Form Control-->  
+          <button v-if="!authloading" class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-lock"></i> <span class="bold">Authenticate</span></button>
+          <button v-if="authloading" disabled class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-unlock"></i> <span class="bold">Authenticating</span></button>
       </form>
       <!--END Login Form-->
 
@@ -59,7 +89,71 @@
   export default {
     data() {
       return {
-        year: this.$moment().format('YYYY')
+        year: this.$moment().format('YYYY'),
+        IsMessageSentSuccessfully: false,
+        ErrMsg: null,
+        loading: false,
+        authloading: false,
+        model: {
+          username: "",
+          password: "",
+          token: ""
+        },
+      }
+    },
+    mounted() {
+      
+    },
+    methods: {
+      async login() { 
+        this.loading = true
+        let bodyFormData = new FormData();
+        bodyFormData.set('email', this.model.username)
+        bodyFormData.set('password', this.model.password)
+
+        this.$store
+        .dispatch('authentication/login', bodyFormData)
+        .then(res => {
+          if(res != undefined){
+            if(res.status == true){
+            this.IsMessageSentSuccessfully = true
+            this.loading = false
+            }else{
+              this.loading = false
+              this.ErrMsg = "Error Logging in!"
+            }
+          }else{
+            this.loading = false
+            this.ErrMsg = "Error Logging in!"
+          }      
+        }).catch(err => {
+          this.loading = false
+        })  
+      },
+      
+      async authenticate(){  
+          this.authloading = true;
+          let bodyFormData = new FormData();
+          bodyFormData.set('email', this.model.username)
+          bodyFormData.set('token', this.model.token)
+          try {
+            await this.$auth.loginWith("local", {
+              data: bodyFormData
+            });            
+            this.$router.push(
+                decodeURIComponent(
+                  this.$route.query.redirect || "/dashboard"
+                )
+            );
+          
+          } catch (e) {
+            this.authloading = false;
+            console.log(e)
+            //this.$toast.error("Server Error", { icon: "times" });
+            /* if(e.response.status === 401)
+                            this.error = true */
+          }
+      
       }
     }
   }

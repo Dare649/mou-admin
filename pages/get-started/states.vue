@@ -179,7 +179,7 @@
 export default {
   name: "States",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },

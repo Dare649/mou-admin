@@ -63,27 +63,38 @@ module.exports = {
   */
   plugins: [
   ],
-
+  /*
+   ** Toastr configuration
+   */
+	toast: {
+		position: 'top-center',
+		duration: 5000,
+		fullWidth: true,
+		fitToScreen: true,
+		iconPack: 'fontawesome'
+	},
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/toast',
     '@nuxtjs/moment'
   ],
   /*
   ** Axios module configuration
   */
   axios: {
-    // baseURL: process.env.BASE_URL || 'http://127.0.0.1',
-		proxy: true
+    baseURL: process.env.BASE_URL || 'http://portal.streeties.com.ng/',
+		proxy: false
   },
   proxy: {
-		'/api/': 'http://127.0.0.1'
+		'/api/': 'http://portal.streeties.com.ng/'
   },
   env: {
-		BASE_URL: 'http://127.0.0.1'
+		BASE_URL: 'http://portal.streeties.com.ng/'
   },
   
   /*
@@ -94,17 +105,21 @@ module.exports = {
 			local: {
 				endpoints: {
 					login: {
-						url: '/api/User/Authenticate',
+						url: 'api/auth/validate-token',
 						method: 'post',
-						propertyName: false
+						propertyName: 'token'
 					},
 					logout: false,
 					user: {
-						url: '/api/User/Details',
-						method: 'get',
-						propertyName: false
+						url: 'api/me',
+            method: 'get',
+            propertyName: 'data'
 					}
-				}
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+        globalToken: true,
+        autoFetchUser: true
 			}
 		},
 		redirect: {
@@ -113,7 +128,7 @@ module.exports = {
 			home: '/',
 			callback: '/'
 		},
-		plugins: [ '~/plugins/auth.js', '~/plugins/vue-moment.js' ]
+		plugins: [ '~/plugins/auth.js' ]
 	},
 
   /*
