@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- Add Faculty Modal -->
-      <div class="modal fade SlideUp" id="add_state" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade SlideUp" id="add_country" tabindex="-1" role="dialog" aria-hidden="true">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               <i class="pg-close"></i>
           </button>
@@ -13,13 +13,50 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="Country Name" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                              <input type="text" v-model="model.name" placeholder="Country Name" class="form-control input-lg" id="icon-filte7r" name="icon-filter">
                           </div>
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="Country Abbreviation" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                              <input type="text" v-model="model.abbreviation" placeholder="Country Abbreviation" class="form-control input-lg" id="icon-filter1" name="icon-filter">
+                          </div>
+                          <div class="col-lg-12 m-b-10">
+                              <input type="text" v-model="model.phone_code" placeholder="Country Phone Code" class="form-control input-lg" id="icon-filter2" name="icon-filter">
+                          </div>
+                          <div class="col-lg-12 m-b-10">
+                              <input type="text" v-model="model.capital" placeholder="Country Capital City" class="form-control input-lg" id="icon-filter3" name="icon-filter">
+                          </div>
+                          <div class="col-lg-12 m-b-10">
+                              <input type="text" v-model="model.currency" placeholder="Country Currency Code" class="form-control input-lg" id="icon-filter4" name="icon-filter">
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                              <button type="button" @click="createCountry()"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+      </div>
+
+      <!-- Export Countries Modal -->
+      <div class="modal fade SlideUp" id="export_countries" tabindex="-1" role="dialog" aria-hidden="true">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              <i class="pg-close"></i>
+          </button>
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="text-left p-b-5"><span class="semi-bold">Export Countries</span></h5>
+                  </div>
+                  <div class="modal-body">
+                      <div class="row">
+                          <div class="col-lg-12">
+                            <h6 class="text-left p-b-5"><span class="semi-bold">Click confirm to export all the countries to an excel file.</span></h6>
+                          </div>
+                          <div class="col-lg-12">
+                              <button type="button" @click="exportCountries()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
                           </div>
                       </div>
                   </div>
@@ -32,7 +69,7 @@
       </div>
 
       <!-- Upload Faculty Modal -->
-      <div class="modal fade SlideUp" id="upload_state" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade SlideUp" id="upload_country" tabindex="-1" role="dialog" aria-hidden="true">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               <i class="pg-close"></i>
           </button>
@@ -48,17 +85,17 @@
                           </div>
                           <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
-                                  <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                  <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                   <label class="custom-file-label" for="customFileLang">Select File</label>
                               </div>
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                              <button type="button" @click="uploadCountries()"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
                           </div>
                           <div class="col-lg-12 m-t-15">
                               <div class="dd-placeholder p-1">
                                   <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                                  <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                  <button @click="downloadCountrySampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
                                   <div class="clearfix"></div>
                               </div>
                           </div>
@@ -72,6 +109,69 @@
           <!-- /.modal-dialog -->
       </div>
 
+<!-- Edit Country Modal -->
+<div class="modal fade SlideUp" id="edit_country" tabindex="-1" role="dialog" aria-hidden="true">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+    </button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="text-left p-b-5"><span class="semi-bold">Edit Country Information</span></h5>
+            </div>
+            <div class="modal-body">
+                <form class="full-width" @submit.prevent="submitEditedCountry">
+                    <div class="row">
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" v-model="model.edit_name" placeholder="Country Name" class="form-control">
+                        </div>
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Abbreviation" v-model="model.edit_abbreviation" class="form-control">
+                        </div>
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Phone Code" v-model="model.edit_phone_code" class="form-control">
+                        </div>
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Capital" v-model="model.edit_capital" class="form-control">
+                        </div>
+                        <div class="col-lg-12 m-t-10">
+                            <button type="submit" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+                <!-- Edit Country Modal -->
+                <div class="modal fade SlideUp" id="delete_country" tabindex="-1" role="dialog" aria-hidden="true">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="pg-close"></i>
+                    </button>
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="text-left p-b-5"><span class="semi-bold">Delete Country Information</span></h5>
+                            </div>
+                            <div class="modal-body">
+                                <form class="full-width" @submit.prevent="deleteCountry">
+                                    <div class="row">
+                                        <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                                        <div class="col-lg-12 m-t-10">
+                                            <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                            <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
       
               <!-- START PAGE CONTENT -->
               <div class="content sm-gutter">
@@ -92,47 +192,41 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">Country Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <button type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
-                                  <button type="button" class="btn btn-warning btn-sm" data-target="#upload_state" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
+                                  <button type="button" class="btn btn-primary btn-sm" data-target="#add_country" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
+                                  <button type="button" class="btn btn-warning btn-sm" data-target="#upload_country" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
+                                  <button type="button" class="btn btn-success btn-sm" data-target="#export_countries" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
                           </div>
                           <div class="card-body">
                               <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
-                                      <thead>
-                                        <th style="width:30%">Country Abbreviation</th>
-                                        <th style="width:50%">Country Name</th>
+                                      <thead style="text-align:center;">
+                                        <th style="width:15%;">Abbreviation</th>
+                                        <th style="width:20%">Name</th>
+                                        <th style="width:20%">Capital</th>
+                                        <th style="width:15%">Tel Code</th>
+                                        <th style="width:10%">Currency</th>
                                         <th style="width:20%">Action</th>
                                       </thead>
-                                      <tbody>
-                                      <tr>
-                                          <td>NG</td>
-                                          <td>Nigeria</td>
+                                      <tbody style="text-align:center;">
+                                      <tr :key="country.id" :id="country.id" v-for="country in countries">
+                                          <td>{{country.iso2}}</td>
+                                          <td>{{country.name}}</td>
+                                          <td>{{country.capital}}</td>
+                                          <td>{{country.phone_code}}</td>
+                                          <td>{{country.currency}}</td>
                                           <td>
                                               <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>GH</td>
-                                          <td>Ghana</td>
-                                          <td>
-                                              <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>UK</td>
-                                          <td>United Kingdom</td>
-                                          <td>
-                                              <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
+                                                  <span data-placement="top" data-toggle="tooltip" title="Link to States">
+                                                    <nuxt-link :to="'/get-started/states/' + country.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                                  </span>
+                                                  <span data-placement="top" @click="populateFields(country)" data-toggle="tooltip" title="Edit Record">
+                                                        <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                  </span>
+                                                  <span data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
+                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                                  </span>
                                               </div>
                                           </td>
                                       </tr>
@@ -167,18 +261,229 @@
 export default {
   name: "Countries",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },
+  data() {
+      return { 
+        addloading: false,
+        deleteLoading: false,
+        countries: [],
+        file: "",
+        model: {
+          name: "",
+          id: 0,
+          abbreviation: "",
+          phone_code: "",
+          currency: "",
+          capital: "",
+          edit_abbreviation: "",
+          edit_capital: "",
+          edit_name: "",
+          edit_phone_code: "",
+          edit_country_id: 0,
+          edit_currency: ""
+        },
+      }
+    },
+  methods: {
+      setId(id){
+          this.model.id = id
+      },
+      exportCountries(){
+          this.$store
+            .dispatch('get-started/exportCountries')
+            .then(res => {
+            if(res != undefined){         
+                this.loading = false
+                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                var fileLink = document.createElement('a');
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'countries.xlsx');
+                document.body.appendChild(fileLink);
+
+                fileLink.click();    
+                $( '#export_countries' ).modal( 'hide' ).data( 'bs.modal', null );    
+                this.$toast.success('Exporting to Excel...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+            }else{
+                this.loading = false
+                alert("File Downloaded Unsuccessful")
+            }      
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      downloadCountrySampleFile(){
+          this.$store
+            .dispatch('get-started/downloadCountrySampleFile')
+            .then(res => {
+            if(res != undefined){         
+                this.loading = false
+                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                var fileLink = document.createElement('a');
+
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'country_sample_file.xlsx');
+                document.body.appendChild(fileLink);
+
+                fileLink.click();    
+                alert("File Downloaded Unsuccessful")          
+            }else{
+                this.loading = false
+                alert("File Downloaded Unsuccessful")
+            }      
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      uploadCountries(){
+        this.addloading = true
+        this.file = this.$refs.myFiles.files[0];
+        let formData = new FormData();
+        formData.append('file', this.file);
+          this.$store
+            .dispatch('get-started/uploadCountries', formData)
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                    alert("File Upload Successful")
+                    this.loading = false
+                }else{
+                    this.loading = false
+                    alert("File Upload Unsuccessful")
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }else{
+                this.loading = false
+                alert("File Upload Unsuccessful")
+                this.ErrMsg = "Error Logging in!"
+            }      
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      deleteCountry(){   
+          this.deleteLoading = true
+          this.$store
+            .dispatch('get-started/deleteCountry', this.model.id)
+            .then(res => {
+            if(res != undefined){
+                if(res.success == true){
+                this.deleteLoading = false
+                this.getCountries()
+                $( '#delete_country' ).modal( 'hide' ).data( 'bs.modal', null );  
+                this.loading = false
+                }else{
+                this.deleteLoading = false
+                this.loading = false
+                this.ErrMsg = "Error Logging in!"
+                }
+            }else{
+                this.loading = false
+                this.ErrMsg = "Error Logging in!"
+            }    
+            
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      populateFields(country){
+          this.model.edit_country_id = country.id
+          this.model.edit_abbreviation = country.iso2
+          this.model.edit_name = country.name
+      },
+      submitEditedCountry(){
+        this.editloading = true
+        let bodyFormData = new Object();
+        bodyFormData.name = this.model.edit_name
+        bodyFormData.code = this.model.edit_abbreviation
+        bodyFormData.id = this.model.edit_country_id
+        // bodyFormData.set('iso3', this.model.password)
+        // bodyFormData.set('phone_code', this.model.edit_phone_code)
+        // bodyFormData.set('capital', this.model.edit_capital)
+        // bodyFormData.set('currency', this.model.edit_currency)
+        this.$store
+        .dispatch('get-started/updateCountry', bodyFormData)
+        .then(res => {
+          if(res != undefined){
+            if(res.status == true){
+            this.IsMessageSentSuccessfully = true
+            this.loading = false
+            }else{
+              this.loading = false
+              this.ErrMsg = "Error Logging in!"
+            }
+          }else{
+            this.loading = false
+            this.ErrMsg = "Error Logging in!"
+          }      
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      getCountries(){
+        this.$store
+        .dispatch('get-started/getCountries')
+        .then(res => {
+          if(res != undefined){
+            if(res.status == true){
+            this.getloading = false
+            this.countries = res.data
+            //console.log(this.countries)
+            }else{
+              this.getloading = false
+              this.ErrMsg = "Error Fetching data!"
+            }
+          }else{
+            this.getloading = false
+            this.ErrMsg = "Error Fetching data!"
+          }      
+        }).catch(err => {
+          this.getloading = false
+        })
+      },
+      createCountry(){
+        this.addloading = true
+        let bodyFormData = new FormData();
+        bodyFormData.set('name', this.model.name)
+        bodyFormData.set('iso2', this.model.abbreviation)
+        // bodyFormData.set('iso3', this.model.password)
+        bodyFormData.set('phone_code', this.model.phone_code)
+        bodyFormData.set('capital', this.model.capital)
+        bodyFormData.set('currency', this.model.currency)
+        this.$store
+        .dispatch('get-started/createCountry', bodyFormData)
+        .then(res => {
+          if(res != undefined){
+              alert(res.success)
+            if(res.success == true){
+                this.getCountries()
+                this.loading = false
+            }else{
+              this.loading = false
+              this.ErrMsg = "Error Logging in!"
+            }
+          }else{
+            this.loading = false
+            this.ErrMsg = "Error Logging in!"
+          }      
+        }).catch(err => {
+          this.loading = false
+        })
+      }
+  },
   mounted: function() {
+      
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'
         script1.src = '/pages/js/pages.min.js'        
-
         document.head.appendChild(script1)        
       }
+
+      this.getCountries()
     }
 }
 </script>

@@ -23,9 +23,9 @@ module.exports = {
       { rel: "stylesheet", href:"/assets/plugins/jquery-scrollbar/jquery.scrollbar.css"},
       { rel: "stylesheet", href:"/assets/plugins/select2/css/select2.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/switchery/css/switchery.min.css"},
-      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},
-      { rel: "stylesheet", href: "/assets/css/style.css"},
+      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},  
       { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"}, 
+      { rel: "stylesheet", href: "/assets/css/style.css"},
     ],
     script: [
       {type:"text/javascript", src: '/assets/plugins/pace/pace.min.js' },
@@ -63,21 +63,73 @@ module.exports = {
   */
   plugins: [
   ],
-
+  /*
+   ** Toastr configuration
+   */
+	toast: {
+		position: 'top-center',
+		duration: 5000,
+		fullWidth: true,
+		fitToScreen: true,
+		iconPack: 'fontawesome'
+	},
   /*
   ** Nuxt.js modules
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/toast',
     '@nuxtjs/moment'
   ],
   /*
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.BASE_URL || 'http://portal.streeties.com.ng/',
+		proxy: false
   },
+  proxy: {
+		'/api/': 'http://portal.streeties.com.ng/'
+  },
+  env: {
+		BASE_URL: 'http://portal.streeties.com.ng/'
+  },
+  
+  /*
+   ** Authentication of the app
+   */
+	auth: {
+		strategies: {
+			local: {
+				endpoints: {
+					login: {
+						url: 'api/auth/validate-token',
+						method: 'post',
+						propertyName: 'token'
+					},
+					logout: false,
+					user: {
+						url: 'api/me',
+            method: 'get',
+            propertyName: 'data'
+					}
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+        globalToken: true,
+        autoFetchUser: true
+			}
+		},
+		redirect: {
+			login: '/?login=1',
+			logout: '/',
+			home: '/',
+			callback: '/'
+		},
+		plugins: [ '~/plugins/auth.js' ]
+	},
 
   /*
   ** Build configuration

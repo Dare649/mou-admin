@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center">
                 <!-- START User Info-->
                 <div class="pull-left p-r-10 fs-14 font-heading d-lg-inline-block d-none text-white">
-                    <span class="semi-bold">Caroline</span> <span class="">Uche</span>
+                    <span class="semi-bold">{{$auth.user.name}}</span>
                 </div>
                 <div class="dropdown pull-right">
                     <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,9 +22,9 @@
                         <a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
                         <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
                         <a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a>
-                        <a href="#" class="dropdown-item"><i class="pg-power"></i>Logout</a>
+                        <a href="#" @click="logout()" class="dropdown-item"><i class="pg-power"></i>Logout</a>
                         <div class="dropdown-divider"></div>
-                        <span class="dropdown-item fs-12 hint-text">Last visited<br />on Friday at 5:27PM</span>
+                        <span class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
                     </div>
                 </div>
                 <!-- END User Info-->
@@ -45,8 +45,8 @@
                                 <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/subjects-jamb">Subject</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li>
+                                <!-- <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li> -->
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
                                 <li><a href="get_jamb_result.php">Upload Jamb Results</a></li>
                                 <li><a href="#">Custom Message</a></li>
@@ -91,3 +91,16 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+    mounted(){
+        
+    },
+    methods: {
+        logout() {
+            this.$toast.success('Logging out...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            this.$auth.logout()
+        },
+    }
+}
+</script>

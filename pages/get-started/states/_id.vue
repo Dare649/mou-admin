@@ -115,10 +115,10 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
-                                      <tr>
-                                          <td>Nigeria</td>
-                                          <td>Abia</td>
-                                          <td>ABI</td>                                     
+                                      <tr v-for="state in states" :key="state.id">
+                                          <td>{{state.country_id}}</td>
+                                          <td>{{state.name}}</td>
+                                          <td>{{state.code}}</td>                                     
                                           <td>
                                               <div class="btn-group">
                                                   <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
@@ -126,28 +126,7 @@
                                               </div>
                                           </td>
                                       </tr>
-                                      <tr>
-                                          <td>Nigeria</td>
-                                          <td>Adamawa</td>
-                                          <td>ADA</td>                                       
-                                          <td>
-                                              <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
-                                      <tr>
-                                          <td>Nigeria</td>                                         
-                                          <td>Akwa Ibom</td>
-                                          <td>AKI</td>
-                                          <td>
-                                              <div class="btn-group">
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                  <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                              </div>
-                                          </td>
-                                      </tr>
+                                      
                                       </tbody>
                                   </table>
                                   <ul class="pagination m-t-20">
@@ -179,11 +158,57 @@
 export default {
   name: "States",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
     
   },
+  methods: {
+    getStatesByCountryId() {
+      let countryId = this.$route.params.id
+      
+      this.$store
+            .dispatch('get-started/getStatesByCountryId', countryId)
+            .then(res => {
+            if(res != undefined){
+                if(res.success == true){              
+                    this.states = res.data
+                    this.loading = false
+                }else{
+                    this.loading = false
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }else{
+                this.loading = false
+                this.ErrMsg = "Error Logging in!"
+            }      
+        }).catch(err => {
+          this.loading = false
+        })
+    }
+  },
+  data() {
+      return { 
+        addloading: false,
+        states: [],
+        file: "",
+        model: {
+          name: "",
+          id: 0,
+          abbreviation: "",
+          phone_code: "",
+          currency: "",
+          capital: "",
+          edit_abbreviation: "",
+          edit_capital: "",
+          edit_name: "",
+          edit_phone_code: "",
+          edit_country_id: 0,
+          edit_currency: ""
+        },
+      }
+    },
   mounted: function() {
+      this.getStatesByCountryId()
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'
