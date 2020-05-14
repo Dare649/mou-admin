@@ -28,7 +28,8 @@
                               <input type="text" v-model="model.currency" placeholder="Country Currency Code" class="form-control input-lg" id="icon-filter4" name="icon-filter">
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" @click="createCountry()"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                              <button type="button" @click="createCountry()" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                              <button type="button" disabled v-if="loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding Record</button>
                           </div>
                       </div>
                   </div>
@@ -56,7 +57,8 @@
                             <h6 class="text-left p-b-5"><span class="semi-bold">Click confirm to export all the countries to an excel file.</span></h6>
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" @click="exportCountries()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                              <button type="button" v-if="!exportLoading"  @click="exportCountries()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                              <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                           </div>
                       </div>
                   </div>
@@ -90,12 +92,14 @@
                               </div>
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" @click="uploadCountries()"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                              <button type="button" @click="uploadCountries()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                              <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                           </div>
                           <div class="col-lg-12 m-t-15">
                               <div class="dd-placeholder p-1">
                                   <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                                  <button @click="downloadCountrySampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                  <button v-if="!downloading" @click="downloadCountrySampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                  <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                   <div class="clearfix"></div>
                               </div>
                           </div>
@@ -134,8 +138,12 @@
                         <div class="col-lg-12 m-b-10">
                             <input type="text" placeholder="Capital" v-model="model.edit_capital" class="form-control">
                         </div>
+                        <div class="col-lg-12 m-b-10">
+                            <input type="text" placeholder="Currency Code" v-model="model.edit_currency" class="form-control">
+                        </div>
                         <div class="col-lg-12 m-t-10">
-                            <button type="submit" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                            <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                            <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
                         </div>
                     </div>
                 </form>
@@ -146,7 +154,7 @@
     <!-- /.modal-dialog -->
 </div>
 
-                <!-- Edit Country Modal -->
+                <!-- Delete Country Modal -->
                 <div class="modal fade SlideUp" id="delete_country" tabindex="-1" role="dialog" aria-hidden="true">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         <i class="pg-close"></i>
@@ -268,7 +276,11 @@ export default {
   data() {
       return { 
         addloading: false,
+        downloading: false,
+        loading: false,
         deleteLoading: false,
+        editLoading: false,
+        exportLoading: false,
         countries: [],
         file: "",
         model: {
@@ -292,6 +304,7 @@ export default {
           this.model.id = id
       },
       exportCountries(){
+          this.exportLoading = true
           this.$store
             .dispatch('get-started/exportCountries')
             .then(res => {
@@ -304,42 +317,41 @@ export default {
                 fileLink.setAttribute('download', 'countries.xlsx');
                 document.body.appendChild(fileLink);
 
-                fileLink.click();    
-                $( '#export_countries' ).modal( 'hide' ).data( 'bs.modal', null );    
-                this.$toast.success('Exporting to Excel...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                fileLink.click();   
+                this.exportLoading = false 
+                $( '#export_countries' ).modal( 'hide' ).data( 'bs.modal', null )
+                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
             }else{
-                this.loading = false
+                this.exportLoading = false 
                 alert("File Downloaded Unsuccessful")
             }      
         }).catch(err => {
-          this.loading = false
+          this.exportLoading = false 
         })
       },
       downloadCountrySampleFile(){
+          this.downloading = true
           this.$store
             .dispatch('get-started/downloadCountrySampleFile')
             .then(res => {
-            if(res != undefined){         
-                this.loading = false
-                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                var fileLink = document.createElement('a');
-
-                fileLink.href = fileURL;
-                fileLink.setAttribute('download', 'country_sample_file.xlsx');
-                document.body.appendChild(fileLink);
-
-                fileLink.click();    
-                alert("File Downloaded Unsuccessful")          
+            if(res != undefined){     
+                if(res.success == true)    {
+                    window.location = res.message
+                    this.downloading = false
+                    $('#upload_country').modal('hide').data( 'bs.modal', null )          
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                }
+                     
             }else{
-                this.loading = false
+                this.downloading = false
                 alert("File Downloaded Unsuccessful")
             }      
         }).catch(err => {
-          this.loading = false
+          this.downloading = false
         })
       },
       uploadCountries(){
-        this.addloading = true
+        this.loading = true
         this.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
         formData.append('file', this.file);
@@ -348,8 +360,10 @@ export default {
             .then(res => {
             if(res != undefined){
                 if(res.status == true){
-                    alert("File Upload Successful")
                     this.loading = false
+                    this.getCountries()
+                    $('#upload_country').modal('hide').data( 'bs.modal', null )          
+                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
@@ -393,26 +407,32 @@ export default {
           this.model.edit_country_id = country.id
           this.model.edit_abbreviation = country.iso2
           this.model.edit_name = country.name
+          this.model.edit_phone_code = country.phone_code
+          this.model.edit_capital = country.capital
+          this.model.edit_currency = country.currency
       },
       submitEditedCountry(){
-        this.editloading = true
+        this.editLoading = true
         let bodyFormData = new Object();
         bodyFormData.name = this.model.edit_name
         bodyFormData.code = this.model.edit_abbreviation
         bodyFormData.id = this.model.edit_country_id
         // bodyFormData.set('iso3', this.model.password)
-        // bodyFormData.set('phone_code', this.model.edit_phone_code)
-        // bodyFormData.set('capital', this.model.edit_capital)
-        // bodyFormData.set('currency', this.model.edit_currency)
+        bodyFormData.phone_code = this.model.edit_phone_code
+        bodyFormData.capital = this.model.edit_capital
+        bodyFormData.currency = this.model.edit_currency
         this.$store
         .dispatch('get-started/updateCountry', bodyFormData)
         .then(res => {
           if(res != undefined){
-            if(res.status == true){
-            this.IsMessageSentSuccessfully = true
-            this.loading = false
+            if(res.success == true){
+                this.editLoading = false
+                this.getCountries()
+                $('#edit_country').modal('hide').data( 'bs.modal', null )          
+                this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+
             }else{
-              this.loading = false
+              this.editLoading = false
               this.ErrMsg = "Error Logging in!"
             }
           }else{
@@ -445,7 +465,7 @@ export default {
         })
       },
       createCountry(){
-        this.addloading = true
+        this.loading = true
         let bodyFormData = new FormData();
         bodyFormData.set('name', this.model.name)
         bodyFormData.set('iso2', this.model.abbreviation)
@@ -457,10 +477,11 @@ export default {
         .dispatch('get-started/createCountry', bodyFormData)
         .then(res => {
           if(res != undefined){
-              alert(res.success)
             if(res.success == true){
                 this.getCountries()
                 this.loading = false
+                $('#add_country').modal('hide').data( 'bs.modal', null ) 
+                this.model = {}
             }else{
               this.loading = false
               this.ErrMsg = "Error Logging in!"
@@ -474,8 +495,7 @@ export default {
         })
       }
   },
-  mounted: function() {
-      
+  mounted: function() { 
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'
