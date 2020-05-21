@@ -221,11 +221,11 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:10%">Faculty</th>
+                                    <th style="width:8%">Code</th>
                                     <th style="width:28%">Department</th>
-                                    <th style="width:30%">Faculty</th>
+                                    <th style="width:28%">Faculty</th>
                                     <th style="width:10.0%">Duration</th>
-                                    <th style="width:8.0%">Status</th>
+                                    <th style="width:12.0%">Status</th>
                                     <th style="width:15%">Action</th>
                                 </thead>
                                 <tbody>
@@ -233,8 +233,11 @@
                                         <td>{{department.prefix}}</td>
                                         <td>{{department.name}}</td>
                                         <td>{{department.faculty.name}}</td>
-                                        <td>{{department.length_of_study}}</td>
-                                        <td>{{department.status}}</td>
+                                        <td>{{department.length_of_study}} years</td>
+                                        <td>
+                                            <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="department.status == 1">Active</span>
+                                            <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="department.status == 0">Inactive</span>    
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 <span data-placement="top"  data-toggle="tooltip" title="Edit Record">

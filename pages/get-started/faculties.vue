@@ -95,7 +95,10 @@
                                     <tr v-for="faculty in faculties" :key="faculty.id">
                                         <td>{{faculty.prefix}}</td>
                                         <td>{{faculty.name}}</td>
-                                        <td>{{faculty.status}}</td>
+                                        <td>
+                                            <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 1">Active</span>
+                                            <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 0">Inactive</span>
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 <span data-placement="top" data-toggle="tooltip" title="Link to Department">
