@@ -81,7 +81,8 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/toast',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/bootstrap-vue'
   ],
   /*
   ** Axios module configuration

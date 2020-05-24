@@ -105,3 +105,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.bg-primary {
+    background-color: #1D9D21 !important;
+}
+</style>

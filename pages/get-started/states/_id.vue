@@ -190,7 +190,98 @@
                               <div class="clearfix"></div>
                           </div>
                           <div class="card-body">
-                              <div class="table-responsive">
+                              <b-row>
+                                <b-col lg="6" class="my-1">
+                                        <b-form-group
+                                        label="Filter"
+                                        label-cols-sm="3"
+                                        label-align-sm="right"
+                                        label-size="sm"
+                                        label-for="filterInput"
+                                        class="mb-0"
+                                        >
+                                        <b-input-group size="lg">
+                                            <b-form-input
+                                            v-model="filter"
+                                            type="search"
+                                            id="filterInput"
+                                            placeholder="Type to Search"
+                                            >
+                                        </b-form-input>                                        
+                                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>                                          
+                                        </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
+
+                                <b-col sm="5" md="6" class="my-1">
+                                    <b-form-group
+                                    label="Per page"
+                                    label-cols-sm="6"
+                                    label-cols-md="4"
+                                    label-cols-lg="3"
+                                    label-align-sm="right"
+                                    label-size="sm"
+                                    label-for="perPageSelect"
+                                    class="mb-0"
+                                    >
+                                    <b-form-select
+                                        v-model="perPage"
+                                        id="perPageSelect"
+                                        size="lg"
+                                        :options="pageOptions"
+                                    ></b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-table
+                                id="states-table"
+                                :items="states"
+                                :per-page="perPage"
+                                :fields="fields"
+                                @filtered="onFiltered"
+                                :filter="filter"
+                                :current-page="currentPage"
+                                small
+                            >
+                            <template slot="country_id" slot-scope="data">
+                                {{ data.item.country_id }}
+                            </template>
+                            <template slot="name" slot-scope="data">
+                                {{ data.item.name }}
+                            </template>
+                            
+                            <template slot="code" slot-scope="data">
+                                {{ data.item.code }}
+                            </template>
+                            <template slot="flag" slot-scope="data">
+                                {{ data.item.flag }}
+                            </template>
+                            <template slot="created_at" slot-scope="data">
+                                {{ $moment(data.item.created_at).format('yyyy-MM-DD') }}
+                            </template>
+                            <template slot="actions" slot-scope="data">
+                                    <span data-placement="top" data-toggle="tooltip" title="Link to LGAs">
+                                            <nuxt-link :to="'/get-started/lgas/' + data.item.id +'_'+data.item.country_id"> <button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                            </span>
+                                            <span data-placement="top" @click="populateFields(data.item)" data-toggle="tooltip" title="Edit Record">
+                                                <a href="#edit_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                            </span>
+                                            <span data-placement="top" @click="setId(data.item.id)" data-toggle="tooltip" title="Delete Record">
+                                                <a href="#delete_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                            </span>
+                            </template>
+                            </b-table>
+                            <b-pagination
+                                v-model="currentPage"
+                                :total-rows="rows"
+                                :per-page="perPage"
+                                first-text="First"
+                                prev-text="Prev"
+                                next-text="Next"
+                                last-text="Last"
+                                aria-controls="states-table"
+                            ></b-pagination>
+                              <!-- <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead>
                                           <th style="width:30%">Country Name</th>
@@ -234,6 +325,8 @@
                                       </li>
                                   </ul>
                               </div>
+                          </div>
+                      </div> -->
                           </div>
                       </div>
                   </div>
@@ -387,6 +480,11 @@ export default {
     setId(id){
         this.model.id = id
     },
+    onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      },
     deleteState(){   
           this.deleteLoading = true
           this.$store
@@ -441,9 +539,40 @@ export default {
         })
     }
   },
-  
+   computed: {
+      rows() {
+        return this.states.length
+      }
+    },
   data() {
       return { 
+        perPage: 5,
+        pageOptions: [5, 10, 15],
+        currentPage: 1,
+        filterOn: [],
+        filter: null,
+        fields: [
+            {
+                key: 'country_id'          
+            },
+            {
+                key: 'name',
+                sortable: true
+            },
+            {
+                key: 'code'
+            },
+            {
+                key: 'flag'
+            },
+            {
+                key: 'created_at',
+                sortable: true
+            },
+            {
+                key: 'actions'
+            },
+        ],
         loading: false,
         downloading: false,
         exportLoading: false,
@@ -479,3 +608,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .breadcrumb {
+    background-color: #ffffff !important;;
+}
+</style>
