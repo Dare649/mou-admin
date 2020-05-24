@@ -90,7 +90,6 @@ export default {
             })
         },
         createFaculty(){
-            console.log("Get here")
             this.loading = true
             let bodyFormData = new FormData();
             bodyFormData.set('name', this.model.name)
