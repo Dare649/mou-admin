@@ -28,8 +28,8 @@
                               <input type="text" v-model="model.currency" placeholder="Country Currency Code" class="form-control input-lg" id="icon-filter4" name="icon-filter">
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" @click="createCountry()" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
-                              <button type="button" disabled v-if="loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding Record</button>
+                              <button type="button" @click="createCountry()" v-if="!loading" class="btn btn-success btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                              <button type="button" disabled v-if="loading"  class="btn btn-success btn-lg btn-large fs-16 semi-bold">Adding Record</button>
                           </div>
                       </div>
                   </div>
@@ -200,7 +200,7 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">Country Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <button type="button" @click="refresh()" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                                  <button type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_country" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
                                   <button type="button" class="btn btn-warning btn-sm" data-target="#upload_country" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
                                   <button type="button" class="btn btn-success btn-sm" data-target="#export_countries" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
