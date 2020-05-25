@@ -14,17 +14,16 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description }
     ],
-    
+
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/assets/img/favicon.png' },
       { rel: "stylesheet", href:"/assets/plugins/pace/pace-theme-flash.css"},
-      { rel: "stylesheet", href:"/assets/plugins/bootstrap/css/bootstrap.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/font-awesome/css/font-awesome.css"},
       { rel: "stylesheet", href:"/assets/plugins/jquery-scrollbar/jquery.scrollbar.css"},
       { rel: "stylesheet", href:"/assets/plugins/select2/css/select2.min.css"},
       { rel: "stylesheet", href:"/assets/plugins/switchery/css/switchery.min.css"},
-      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},  
-      { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"}, 
+      { rel: "stylesheet", href:"/pages/css/pages-icons.css"},
+      { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"},
       { rel: "stylesheet", href: "/assets/css/style.css"},
     ],
     script: [
@@ -33,7 +32,6 @@ module.exports = {
       {src: "/assets/plugins/modernizr.custom.js"},
       {src: "/assets/plugins/jquery-ui/jquery-ui.min.js"},
       {src: "/assets/plugins/popper/umd/popper.min.js"},
-      {src: "/assets/plugins/bootstrap/js/bootstrap.min.js"},
       {src: "/assets/plugins/jquery/jquery-easy.js"},
       {src: "/assets/plugins/jquery-unveil/jquery.unveil.min.js"},
       {src: "/assets/plugins/jquery-ios-list/jquery.ioslist.min.js"},
@@ -55,7 +53,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    
+
   ],
 
   /*
@@ -97,7 +95,7 @@ module.exports = {
   env: {
 		BASE_URL: 'http://portal.streeties.com.ng/'
   },
-  
+
   /*
    ** Authentication of the app
    */
@@ -140,7 +138,7 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-      
+
     }
   }
 }

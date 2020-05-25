@@ -1,5 +1,5 @@
 <template>
-    <!-- START PAGE CONTENT -->
+     <!-- START PAGE CONTENT -->
         <div class="content sm-gutter">
             <!-- START BREADCRUMBS -->
             <div class="bg-white">
@@ -9,46 +9,37 @@
                         <li class="breadcrumb-item"><a href="#">Get Started</a></li>
                         <li class="breadcrumb-item"><a href="get_academic_session.php">Academic Session</a></li>
                         <li class="breadcrumb-item"><a href="get_academic_session_options.php">Academic Session Options</a></li>
-                        <li class="breadcrumb-item active">Add Student Result</li>
+                        <li class="breadcrumb-item active">Slip for Acceptance Fees</li>
                     </ol>
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
 
-            <!-- START JUMBOTRON -->
-            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container">
-                <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
-                    <div class="inner">
-                        <!-- START BREADCRUMB -->
-                        <div class="row">
-                            <div class="col-md-10 offset-md-1">
-                                <!-- START card -->
-                                <div class="card card-transparent text-center">
-                                    <div class="card-header ">
-                                        <div class="card-title">Process</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="semi-bold">1. Admin will first Get CSV from "GET CSV" button in "Download Prefilled CSV File" section.</h5>
-                                        <h5 class="semi-bold">2. Import the Jamb Results from "IMPORT" button in "Upload Prefilled CSV File" section.</h5>
-                                        <h5 class="semi-bold">3. Admin can check Report to view scores uploaded from "CHECK REPORT" button in <br>"Download Prefilled CSV File" section.</h5>
-                                    </div>
-                                </div>
-                                <!-- END card -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- END JUMBOTRON -->
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
+                    <div class="card-header  ">
+                        <div class="card-title text-primary">Search Slip Number</div>
+                    </div>
+                    <div class="card-body">
+                        <form class="row" style="width: 100%">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" placeholder="Slip Number" required>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary btn-block">Search Record</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card card-default">
                     <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result Upload</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Bank Deposit Slip (For Acceptance)</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#download_csv" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Download CSV</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_csv" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload CSV</strong></button>
+                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_slip" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add Slip</strong></button>
+                            <button type="button" class="btn btn-warning btn-sm" data-target="#import_record" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Record</strong></button>
+                            <button type="button" class="btn btn-default btn-sm" data-target="#auto_slip" data-toggle="modal"><i class="fa fa-check"></i> &nbsp; <strong>Auto Generate Slip</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -93,19 +84,22 @@
                 </div>
             </div>
             <!-- END CONTAINER FLUID -->
-            <download-student-result-modal />
-            <import-student-result-modal />
+            <add-slip-modal />
+            <auto-generate-slip-modal />
+            <import-slip-modal />
         </div>
         <!-- END PAGE CONTENT -->
 </template>
 <script>
-import ImportStudentResultModal from '../../../../components/Modals/ImportStudentResultModal'
-import DownloadStudentResultModal from '../../../../components/Modals/DownloadStudentResultModal'
+import AddSlipModal from '~/components/Modals/AddAcceptanceSlipModal'
+import AutoGenerateSlipModal from '~/components/Modals/AutoGenerateAcceptanceFeeModal'
+import ImportSlipModal from '~/components/Modals/ImportAcceptanceFee'
 export default {
     layout: 'main',
     components: {
-        ImportStudentResultModal,
-        DownloadStudentResultModal,
+        AddSlipModal,
+        AutoGenerateSlipModal,
+        ImportSlipModal
     }
 }
 </script>

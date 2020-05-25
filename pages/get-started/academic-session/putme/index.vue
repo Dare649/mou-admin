@@ -49,7 +49,7 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UME Exams</h3>
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link to="/get-started/acadamic-session/add-new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
+                            <nuxt-link to="/get-started/academic-session/putme/add-new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -74,7 +74,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                            <nuxt-link to="/get-started/acadamic-session/manage" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
+                                            <nuxt-link to="/get-started/academic-session/putme/manage" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
                                         </div>
                                     </td>
                                 </tr>
@@ -87,7 +87,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                            <a href="get_academic_session_options.php" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></a>
+                                            <a href="" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,7 +100,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                            <a href="get_academic_session_options.php" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></a>
+                                            <a href="" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></a>
                                         </div>
                                     </td>
                                 </tr>

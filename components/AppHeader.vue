@@ -48,10 +48,14 @@
                                 <!-- <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li> -->
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
-                                <li><a href="get_jamb_result.php">Upload Jamb Results</a></li>
-                                <li><a href="#">Custom Message</a></li>
                                 <li><nuxt-link to="/get-started/acadamic-session">Acadamic Session</nuxt-link></li>
-
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:;"><span class="title">Academic Session</span><span class=" arrow"></span></a>
+                            <ul>
+                                <li><nuxt-link to="/get-started/academic-session/putme">PUTME</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/academic-session/de">DE</nuxt-link></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
@@ -95,7 +99,7 @@
 <script>
 export default {
     mounted(){
-        
+
     },
     methods: {
         logout() {

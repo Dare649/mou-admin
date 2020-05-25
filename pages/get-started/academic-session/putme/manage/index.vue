@@ -29,28 +29,28 @@
                 <div class="card-body">
                     <div class="row p-t-20">
                         <div class="col-lg-3">
-                            <nuxt-link to="/get-started/acadamic-session/manage/add-seat" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link to="/get-started/academic-session/putme/manage/add-seat" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-id-badge fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 1</h6>
                                 Add seats to program
                             </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link to="/get-started/acadamic-session/manage/bank-deposit-slip" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link to="/get-started/acadamic-session/putme/manage/bank-deposit-slip" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-id-card fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 2</h6>
                                 Slip for UTME Registration
                             </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link to="/get-started/acadamic-session/manage/add-student-result" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link to="/get-started/acadamic-session/putme/manage/add-student-result" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-file-text fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 3</h6>
                                 Add Student Result
                             </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link to="/get-started/acadamic-session/manage/acceptance-fee" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link to="/get-started/acadamic-session/putme/manage/acceptance-fee" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-ticket fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 4</h6>
                                 Slip for Acceptance Fees

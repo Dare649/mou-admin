@@ -91,9 +91,9 @@
     <!-- END PAGE CONTENT -->
 </template>
 <script>
-import AddSlipModal from '../../../../components/Modals/AddSlipModal'
-import AutoGenerateSlipModal from '../../../../components/Modals/AutoGenerateSlipModal'
-import ImportSlipModal from '../../../../components/Modals/ImportSlipModal'
+import AddSlipModal from '~/components/Modals/AddSlipModal'
+import AutoGenerateSlipModal from '~/components/Modals/AutoGenerateSlipModal'
+import ImportSlipModal from '~/components/Modals/ImportSlipModal'
 export default {
     layout: 'main',
     components: {
