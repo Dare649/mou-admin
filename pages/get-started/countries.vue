@@ -28,8 +28,8 @@
                               <input type="text" v-model="model.currency" placeholder="Country Currency Code" class="form-control input-lg" id="icon-filter4" name="icon-filter">
                           </div>
                           <div class="col-lg-12">
-                              <button type="button" @click="createCountry()" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
-                              <button type="button" disabled v-if="loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding Record</button>
+                              <button type="button" @click="createCountry()" v-if="!loading" class="btn btn-success btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                              <button type="button" disabled v-if="loading"  class="btn btn-success btn-lg btn-large fs-16 semi-bold">Adding Record</button>
                           </div>
                       </div>
                   </div>
@@ -200,15 +200,115 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">Country Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <button type="button" @click="refresh()" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                                  <button type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_country" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
                                   <button type="button" class="btn btn-warning btn-sm" data-target="#upload_country" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
                                   <button type="button" class="btn btn-success btn-sm" data-target="#export_countries" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
                           </div>
+                                              
                           <div class="card-body">
-                              <div class="table-responsive">
+
+                                <div class="overflow-auto">
+                                    <!-- User Interface controls -->
+                            <b-row>
+                                <b-col lg="6" class="my-1">
+                                        <b-form-group
+                                        label="Filter"
+                                        label-cols-sm="3"
+                                        label-align-sm="right"
+                                        label-size="sm"
+                                        label-for="filterInput"
+                                        class="mb-0"
+                                        >
+                                        <b-input-group size="lg">
+                                            <b-form-input
+                                            v-model="filter"
+                                            type="search"
+                                            id="filterInput"
+                                            placeholder="Type to Search"
+                                            >
+                                        </b-form-input>                                        
+                                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>                                          
+                                        </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
+
+                                <b-col sm="5" md="6" class="my-1">
+                                    <b-form-group
+                                    label="Per page"
+                                    label-cols-sm="6"
+                                    label-cols-md="4"
+                                    label-cols-lg="3"
+                                    label-align-sm="right"
+                                    label-size="sm"
+                                    label-for="perPageSelect"
+                                    class="mb-0"
+                                    >
+                                    <b-form-select
+                                        v-model="perPage"
+                                        id="perPageSelect"
+                                        size="lg"
+                                        :options="pageOptions"
+                                    ></b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                                    <b-table
+                                        id="counries-table"
+                                        :items="countries"
+                                        :per-page="perPage"
+                                        :fields="fields"
+                                        @filtered="onFiltered"
+                                        :filter="filter"
+                                        :current-page="currentPage"
+                                        small
+                                    >
+                                    <template slot="title" slot-scope="data">
+                                        {{ data.item.name }}
+                                    </template>
+                                    <template slot="description" slot-scope="data">
+                                        {{ data.item.iso2 }}
+                                    </template>
+                                    
+                                    <template slot="date" slot-scope="data">
+                                        {{ data.item.capital }}
+                                    </template>
+                                    <template slot="date" slot-scope="data">
+                                        {{ data.item.phone_code }}
+                                    </template>
+                                    <template slot="date" slot-scope="data">
+                                        {{ data.item.currency }}
+                                    </template>
+                                    <template slot="public" slot-scope="data">
+                                        <i v-if="data.item.flag === 0" title="Unpublished" class="fa fa-circle false" aria-hidden="true"></i>
+                                        <i v-else title="Published" class="fa fa-circle true" aria-hidden="true"></i>
+                                    </template>
+                                    <template slot="actions" slot-scope="data">
+                                         <span data-placement="top" data-toggle="tooltip" title="Link to States">
+                                                    <nuxt-link :to="'/get-started/states/' + data.item.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                                  </span>
+                                                  <span data-placement="top" @click="populateFields(data.item)" data-toggle="tooltip" title="Edit Record">
+                                                        <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                  </span>
+                                                  <span data-placement="top" @click="setId(data.item.id)" data-toggle="tooltip" title="Delete Record">
+                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                                  </span>
+                                    </template>
+                                    </b-table>
+                                    <b-pagination
+                                        v-model="currentPage"
+                                        :total-rows="rows"
+                                        :per-page="perPage"
+                                        first-text="First"
+                                        prev-text="Prev"
+                                        next-text="Next"
+                                        last-text="Last"
+                                        aria-controls="counries-table"
+                                    ></b-pagination>
+                                </div>
+                              <!-- <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead style="text-align:center;">
                                         <th style="width:15%;">Abbreviation</th>
@@ -254,7 +354,7 @@
                                           <a class="page-link" href="#">Next</a>
                                       </li>
                                   </ul>
-                              </div>
+                              </div> -->
                           </div>
                       </div>
                   </div>
@@ -276,6 +376,38 @@ export default {
   },
   data() {
       return { 
+        perPage: 5,
+        pageOptions: [5, 10, 15],
+        currentPage: 1,
+        filterOn: [],
+        filter: null,
+        fields: [
+            {
+                key: 'name',
+                sortable: true
+            },
+            {
+                key: 'iso2',
+            },
+            {
+                key: 'capital',
+
+            },
+            {
+                key: 'phone_code',
+            },
+            {
+                key: 'currency',
+            },
+            {
+                key: 'flag'
+            },
+            {
+                key: 'actions',
+            },
+           
+
+        ],
         addloading: false,
         downloading: false,
         loading: false,
@@ -300,9 +432,19 @@ export default {
         },
       }
     },
+    computed: {
+      rows() {
+        return this.countries.length
+      }
+    },
   methods: {
       setId(id){
           this.model.id = id
+      },
+      onFiltered(filteredItems) {
+        // Trigger pagination to update the number of buttons/pages due to filtering
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
       },
       refresh(){
           this.getCountries()
@@ -455,7 +597,15 @@ export default {
             if(res.status == true){
             this.getloading = false
             this.countries = res.data
-            //console.log(this.countries)
+            // for(var i=0; i< res.data.length; i++){
+            //     let country = {}
+            //     country.name = res.data[i].name
+            //     country.iso2 = res.data[i].iso2
+            //     country.phone_code = res.data[i].phone_code
+            //     country.capital = res.data[i].capital
+            //     country.currency = res.data[i].currency
+            //     this.countries.push(country)
+            // }       
             }else{
               this.getloading = false
               this.ErrMsg = "Error Fetching data!"
@@ -511,3 +661,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .breadcrumb {
+    background-color: #ffffff !important;;
+}
+</style>

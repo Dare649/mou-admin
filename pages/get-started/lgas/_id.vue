@@ -484,3 +484,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .breadcrumb {
+    background-color: #ffffff !important;;
+}
+</style>

@@ -40,10 +40,40 @@ export const actions = {
             return err
         });
     },
+    async uploadSubjects(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/subjects/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async uploadDepartments(context, requests) {
         return await this.$axios({
             method: 'post',
             url: 'api/departments/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async uploadPrograms(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/programs/import',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -115,10 +145,40 @@ export const actions = {
             return err
         });
     },
+    async exportSubjects(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/subjects/export',
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportDepartments(context) {
         return await this.$axios({
             method: 'get',
             url: 'api/departments/export',
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async exportPrograms(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/programs/export',
             headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
             responseType: "arraybuffer"
         })
@@ -188,6 +248,20 @@ export const actions = {
             return err
         });
     },
+    async downloadSubjectSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/subjects/download-template',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async downloadDepartmentSampleFile(context) {
         return await this.$axios({
             method: 'get',
@@ -196,6 +270,21 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadProgramSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/programs/sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -269,6 +358,19 @@ export const actions = {
             return err
         });
     },
+    async getProgramsByDepartmentId(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/programs/department/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async createCountry(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -299,6 +401,21 @@ export const actions = {
             return err
         });
     },
+    async createSubject(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/subjects',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async createState(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -318,6 +435,23 @@ export const actions = {
         return await this.$axios({
             method: 'post',
             url: 'api/departments',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response)
+            return response.data
+        })
+        .catch(err => {
+            console.log(response)
+            return err
+        });
+    },
+    async createProgram(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/programs',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -376,10 +510,42 @@ export const actions = {
             return err
         });
     },
+    async updateSubject(context, payload) {
+        return await this.$axios({
+            method: 'put',
+            url: 'api/subjects/'+ payload.id,
+            data: qs.stringify(payload.bodyFormData),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },
     async updateDepartment(context, payload) {
         return await this.$axios({
             method: 'put',
             url: 'api/departments/'+ payload.id,
+            data: qs.stringify(payload.bodyFormData),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },
+    async updateProgram(context, payload) {
+        return await this.$axios({
+            method: 'put',
+            url: 'api/programs/'+ payload.id,
             data: qs.stringify(payload.bodyFormData),
             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
         })
@@ -476,10 +642,38 @@ export const actions = {
             return err
         });
     },
+    async deleteSubject(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/subjects/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async deleteDepartment(context, id){
         return await this.$axios({
             method: 'delete',
             url: 'api/departments/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async deleteProgram(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/programs/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -508,6 +702,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/faculties',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getSubjects(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/subjects',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

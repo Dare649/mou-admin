@@ -42,9 +42,9 @@
                             <a href="javascript:;"><span class="title">Get Started</span><span class=" arrow"></span></a>
                             <ul>
                                 <li><nuxt-link to="/get-started/faculties">Faculties</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/departments">Departments</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/subjects-jamb">Subject</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
+                                <!-- <li><nuxt-link to="/get-started/program-management">Program</nuxt-link></li> -->
                                 <!-- <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li> -->
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
@@ -60,6 +60,7 @@
                             <ul class="">
                                 <li><nuxt-link to="/jamb/jamb-results">JAMB Result</nuxt-link></li>
                                 <li><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                                <li><nuxt-link to="/jamb/jamb-result-upload">PUTME Admission Result</nuxt-link></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Exams</span></a></li>
@@ -104,3 +105,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.bg-primary {
+    background-color: #1D9D21 !important;
+}
+</style>
