@@ -48,7 +48,6 @@
                                 <!-- <li><nuxt-link to="/get-started/states">States</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/lgas">LGAs</nuxt-link></li> -->
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/acadamic-session">Acadamic Session</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
