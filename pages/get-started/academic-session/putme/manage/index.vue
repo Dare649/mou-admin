@@ -118,3 +118,8 @@ export default {
     layout: 'main'
 }
 </script>
+<style scoped>
+.breadcrumb {
+    background-color: #ffffff !important;;
+}
+</style>

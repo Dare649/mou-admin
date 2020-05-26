@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
       <!-- Add Faculty Modal -->
       <div class="modal fade SlideUp" id="add_country" tabindex="-1" role="dialog" aria-hidden="true">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -212,7 +212,7 @@
 
                                 <div class="overflow-auto">
                                     <!-- User Interface controls -->
-                            <b-row>
+                            <!-- <b-row>
                                 <b-col lg="6" class="my-1">
                                         <b-form-group
                                         label="Filter"
@@ -306,9 +306,10 @@
                                         next-text="Next"
                                         last-text="Last"
                                         aria-controls="counries-table"
-                                    ></b-pagination>
+                                    ></b-pagination> -->
+                                    <b-table></b-table>
                                 </div>
-                              <!-- <div class="table-responsive">
+                              <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead style="text-align:center;">
                                         <th style="width:15%;">Abbreviation</th>
@@ -354,17 +355,19 @@
                                           <a class="page-link" href="#">Next</a>
                                       </li>
                                   </ul>
-                              </div> -->
+                              </div>
                           </div>
                       </div>
                   </div>
                   <!-- END CONTAINER FLUID -->
               </div>
+              <b-table></b-table>
               <!-- END PAGE CONTENT -->
               <!-- START COPYRIGHT -->
               <!-- END COPYRIGHT -->
           </div>
          
+
 </template>
 <script>
 export default {
@@ -596,16 +599,7 @@ export default {
           if(res != undefined){
             if(res.status == true){
             this.getloading = false
-            this.countries = res.data
-            // for(var i=0; i< res.data.length; i++){
-            //     let country = {}
-            //     country.name = res.data[i].name
-            //     country.iso2 = res.data[i].iso2
-            //     country.phone_code = res.data[i].phone_code
-            //     country.capital = res.data[i].capital
-            //     country.currency = res.data[i].currency
-            //     this.countries.push(country)
-            // }       
+            this.countries = res.data      
             }else{
               this.getloading = false
               this.ErrMsg = "Error Fetching data!"
@@ -664,5 +658,8 @@ export default {
 <style scoped>
     .breadcrumb {
     background-color: #ffffff !important;;
+}
+body {
+    font-size: 14px !important;
 }
 </style>

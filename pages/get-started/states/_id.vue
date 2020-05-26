@@ -190,7 +190,7 @@
                               <div class="clearfix"></div>
                           </div>
                           <div class="card-body">
-                              <b-row>
+                              <!-- <b-row>
                                 <b-col lg="6" class="my-1">
                                         <b-form-group
                                         label="Filter"
@@ -280,8 +280,8 @@
                                 next-text="Next"
                                 last-text="Last"
                                 aria-controls="states-table"
-                            ></b-pagination>
-                              <!-- <div class="table-responsive">
+                            ></b-pagination> -->
+                              <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead>
                                           <th style="width:30%">Country Name</th>
@@ -326,7 +326,7 @@
                                   </ul>
                               </div>
                           </div>
-                      </div> -->
+                      </div>
                           </div>
                       </div>
                   </div>
