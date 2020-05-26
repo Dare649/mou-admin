@@ -180,7 +180,7 @@
                     </div>
                     <!-- /.modal-dialog -->
                 </div>
-      
+
               <!-- START PAGE CONTENT -->
               <div class="content sm-gutter">
                   <!-- START BREADCRUMBS -->
@@ -207,7 +207,7 @@
                               </div>
                               <div class="clearfix"></div>
                           </div>
-                                              
+
                           <div class="card-body">
 
                                 <div class="overflow-auto">
@@ -229,8 +229,8 @@
                                             id="filterInput"
                                             placeholder="Type to Search"
                                             >
-                                        </b-form-input>                                        
-                                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>                                          
+                                        </b-form-input>
+                                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
                                         </b-input-group>
                                         </b-form-group>
                                     </b-col>
@@ -271,7 +271,7 @@
                                     <template slot="description" slot-scope="data">
                                         {{ data.item.iso2 }}
                                     </template>
-                                    
+
                                     <template slot="date" slot-scope="data">
                                         {{ data.item.capital }}
                                     </template>
@@ -293,7 +293,7 @@
                                                         <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                   </span>
                                                   <span data-placement="top" @click="setId(data.item.id)" data-toggle="tooltip" title="Delete Record">
-                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                   </span>
                                     </template>
                                     </b-table>
@@ -337,26 +337,18 @@
                                                         <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                   </span>
                                                   <span data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
-                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                   </span>
                                               </div>
                                           </td>
                                       </tr>
                                       </tbody>
                                   </table>
-                                  <ul class="pagination m-t-20">
-                                      <li class="page-item disabled">
-                                          <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item active">
-                                          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                          <a class="page-link" href="#">Next</a>
-                                      </li>
-                                  </ul>
+                                  <Pagination
+                                    v-bind:pagination="pagination"
+                                    v-on:click.native="getCountries(pagination.current_page)"
+                                    :offset="4">
+                                  </Pagination>
                               </div>
                           </div>
                       </div>
@@ -367,24 +359,33 @@
               <!-- START COPYRIGHT -->
               <!-- END COPYRIGHT -->
           </div>
-         
+
 
 </template>
 <script>
+import Pagination from '~/components/Pagination'
+
 export default {
   name: "Countries",
   layout: "main",
   middleware: "auth",
   components: {
-    
+    Pagination
   },
   data() {
-      return { 
+      return {
         perPage: 5,
         pageOptions: [5, 10, 15],
         currentPage: 1,
         filterOn: [],
         filter: null,
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         fields: [
             {
                 key: 'name',
@@ -409,7 +410,7 @@ export default {
             {
                 key: 'actions',
             },
-           
+
 
         ],
         addloading: false,
@@ -458,7 +459,7 @@ export default {
           this.$store
             .dispatch('get-started/exportCountries')
             .then(res => {
-            if(res != undefined){         
+            if(res != undefined){
                 this.loading = false
                 var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                 var fileLink = document.createElement('a');
@@ -467,16 +468,16 @@ export default {
                 fileLink.setAttribute('download', 'countries.xlsx');
                 document.body.appendChild(fileLink);
 
-                fileLink.click();   
-                this.exportLoading = false 
+                fileLink.click();
+                this.exportLoading = false
                 $( '#export_countries' ).modal( 'hide' ).data( 'bs.modal', null )
-                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
-                this.exportLoading = false 
+                this.exportLoading = false
                 alert("File Downloaded Unsuccessful")
-            }      
+            }
         }).catch(err => {
-          this.exportLoading = false 
+          this.exportLoading = false
         })
       },
       downloadCountrySampleFile(){
@@ -484,18 +485,18 @@ export default {
           this.$store
             .dispatch('get-started/downloadCountrySampleFile')
             .then(res => {
-            if(res != undefined){     
+            if(res != undefined){
                 if(res.success == true)    {
                     window.location = res.message
                     this.downloading = false
-                    $('#upload_country').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#upload_country').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
-                     
+
             }else{
                 this.downloading = false
                 alert("File Downloaded Unsuccessful")
-            }      
+            }
         }).catch(err => {
           this.downloading = false
         })
@@ -512,8 +513,8 @@ export default {
                 if(res.status == true){
                     this.loading = false
                     this.getCountries()
-                    $('#upload_country').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#upload_country').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
@@ -523,12 +524,12 @@ export default {
                 this.loading = false
                 alert("File Upload Unsuccessful")
                 this.ErrMsg = "Error Logging in!"
-            }      
+            }
         }).catch(err => {
           this.loading = false
         })
       },
-      deleteCountry(){   
+      deleteCountry(){
           this.deleteLoading = true
           this.$store
             .dispatch('get-started/deleteCountry', this.model.id)
@@ -537,7 +538,7 @@ export default {
                 if(res.success == true){
                 this.deleteLoading = false
                 this.getCountries()
-                $( '#delete_country' ).modal( 'hide' ).data( 'bs.modal', null );  
+                $( '#delete_country' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
                 this.deleteLoading = false
@@ -547,8 +548,8 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
-            }    
-            
+            }
+
         }).catch(err => {
           this.loading = false
         })
@@ -578,8 +579,8 @@ export default {
             if(res.success == true){
                 this.editLoading = false
                 this.getCountries()
-                $('#edit_country').modal('hide').data( 'bs.modal', null )          
-                this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                $('#edit_country').modal('hide').data( 'bs.modal', null )
+                this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
             }else{
               this.editLoading = false
@@ -588,19 +589,20 @@ export default {
           }else{
             this.loading = false
             this.ErrMsg = "Error Logging in!"
-          }      
+          }
         }).catch(err => {
           this.loading = false
         })
       },
-      getCountries(){
+      getCountries(page){
         this.$store
-        .dispatch('get-started/getCountries')
+        .dispatch('get-started/getCountries', page)
         .then(res => {
           if(res != undefined){
             if(res.status == true){
             this.getloading = false
-            this.countries = res.data      
+            this.countries = res.data.data
+            this.pagination = res.data
             }else{
               this.getloading = false
               this.ErrMsg = "Error Fetching data!"
@@ -608,7 +610,7 @@ export default {
           }else{
             this.getloading = false
             this.ErrMsg = "Error Fetching data!"
-          }      
+          }
         }).catch(err => {
           this.getloading = false
         })
@@ -629,7 +631,7 @@ export default {
             if(res.success == true){
                 this.getCountries()
                 this.loading = false
-                $('#add_country').modal('hide').data( 'bs.modal', null ) 
+                $('#add_country').modal('hide').data( 'bs.modal', null )
                 this.model = {}
             }else{
               this.loading = false
@@ -638,7 +640,7 @@ export default {
           }else{
             this.loading = false
             this.ErrMsg = "Error Logging in!"
-          }      
+          }
         }).catch(err => {
           this.loading = false
         })
@@ -656,10 +658,10 @@ export default {
   },
   mounted: function() {
       if (!process.server) {
-        const script1 = document.createElement('script')       
+        const script1 = document.createElement('script')
         script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'        
-        document.head.appendChild(script1)        
+        script1.src = '/pages/js/pages.min.js'
+        document.head.appendChild(script1)
       }
       this.searchTable()
       this.getCountries()

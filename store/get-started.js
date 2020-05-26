@@ -2,7 +2,7 @@ import axios from "axios";
 const qs = require('qs')
 
 export const state = () => ({
-  
+
 });
 
 export const mutations = {
@@ -119,7 +119,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/countries/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -134,7 +134,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/faculties/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -149,7 +149,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/subjects/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -164,7 +164,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/departments/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -179,7 +179,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/programs/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -194,7 +194,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/states/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -209,7 +209,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/lgas/export',
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }, 
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -684,14 +684,13 @@ export const actions = {
             return err
         });
     },
-    async getCountries(context) {
+    async getCountries(context, page) {
         return await this.$axios({
             method: 'get',
-            url: 'api/countries',
+            url: 'api/countries?page='+page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            //handle success
             return response.data
         })
         .catch(err => {
@@ -726,7 +725,7 @@ export const actions = {
             return err
         });
     },
-    
+
 }
 
 export const getters = {
