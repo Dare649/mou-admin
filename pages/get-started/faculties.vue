@@ -91,7 +91,7 @@
                                     <th style="width:20%">Status</th>
                                     <th style="width:20%">Action</th>
                                 </thead>
-                                <tbody>
+                                <tbody v-if="faculties.length > 0">
                                     <tr v-for="faculty in faculties" :key="faculty.id">
                                         <td>{{faculty.prefix}}</td>
                                         <td>{{faculty.name}}</td>

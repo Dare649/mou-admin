@@ -307,10 +307,12 @@
                                         last-text="Last"
                                         aria-controls="counries-table"
                                     ></b-pagination> -->
-                                    <b-table></b-table>
                                 </div>
                               <div class="table-responsive">
-                                  <table class="table table-striped table-condensed" id="basicTable">
+                                  <span style="float:left; margin-bottom:5px;">
+                                  <input class="form-control col-lg-24" id="inputSearch" type="text" placeholder="Search..">
+                                  </span>
+                                  <table class="table table-striped table-condensed" id="countryTable">
                                       <thead style="text-align:center;">
                                         <th style="width:15%;">Abbreviation</th>
                                         <th style="width:20%">Name</th>
@@ -361,7 +363,6 @@
                   </div>
                   <!-- END CONTAINER FLUID -->
               </div>
-              <b-table></b-table>
               <!-- END PAGE CONTENT -->
               <!-- START COPYRIGHT -->
               <!-- END COPYRIGHT -->
@@ -641,16 +642,26 @@ export default {
         }).catch(err => {
           this.loading = false
         })
+      },
+      searchTable(){
+           $(document).ready(function(){
+            $("#inputSearch").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#countryTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            });
       }
   },
-  mounted: function() { 
+  mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'
         script1.src = '/pages/js/pages.min.js'        
         document.head.appendChild(script1)        
       }
-
+      this.searchTable()
       this.getCountries()
     }
 }

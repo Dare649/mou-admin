@@ -209,7 +209,7 @@
                     <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Department Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link to="/get-started/faculties"> <i style='font-size:24px' class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;</nuxt-link>
+                            <nuxt-link to="/get-started/faculties"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                             <button type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Department</strong></button>
                             <button type="button" class="btn btn-warning btn-sm" data-target="#upload_departments" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Departments</strong></button>
                             <button type="button" class="btn btn-success btn-sm" data-target="#export_departments" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
