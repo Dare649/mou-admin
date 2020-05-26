@@ -6,8 +6,9 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                        <li class="breadcrumb-item">Get Started</li>
+                        <li class="breadcrumb-item active"><nuxt-link to="/get-started/faculties">Faculties (JAMB)</nuxt-link></li>
                         <li class="breadcrumb-item active">Departments</li>
                     </ol>
                 </div>
@@ -274,19 +275,11 @@
                                     </tr> -->
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <Pagination
+                                v-bind:pagination="pagination"
+                                v-on:click.native="getDepartmentsByFacultyId(pagination.current_page)"
+                                :offset="4">
+                            </Pagination>
                         </div>
                     </div>
                 </div>
@@ -372,15 +365,17 @@
     </div>
 </template>
 <script>
-import FacultyForm from '../../../components/Modals/FacultyFormModal';
-import UploadFaculty from '../../../components/Modals/UploadFacultyModal';
+import FacultyForm from '../../../components/Modals/FacultyFormModal'
+import UploadFaculty from '../../../components/Modals/UploadFacultyModal'
+import Pagination from '~/components/Pagination'
 export default {
     name: "States",
     layout: "main",
     middleware: "",
     components: {
         FacultyForm,
-        UploadFaculty
+        UploadFaculty,
+        Pagination
     },
     data() {
       return { 
@@ -390,6 +385,13 @@ export default {
         deleteLoading: false,
         editLoading: false,
         departments: [],
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         file: "",
         model: {
           name: "",
@@ -593,14 +595,18 @@ export default {
             this.exportLoading = false 
             })
         },
-        getDepartmentsByFacultyId() {
+        getDepartmentsByFacultyId(page) {
             let facultyId = this.$route.params.id
+            let payload = {}
+            payload.facultyId = facultyId
+            payload.page = page
             this.$store
-                .dispatch('get-started/getDepartmentsByFacultyId', facultyId)
+                .dispatch('get-started/getDepartmentsByFacultyId', payload)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){              
-                        this.departments = res.data
+                        this.departments = res.data.data
+                        this.pagination = res.data
                         this.loading = false
                     }else{
                         this.loading = false

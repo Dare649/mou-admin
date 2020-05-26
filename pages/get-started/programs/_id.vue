@@ -6,8 +6,9 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                        <li class="breadcrumb-item">Get Started</li>
+                        <li class="breadcrumb-item"><nuxt-link :to="'/get-started/departments/' + routeId" >Departments</nuxt-link></li>
                         <li class="breadcrumb-item active">Programs</li>
                     </ol>
                 </div>
@@ -209,7 +210,7 @@
                     <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Program Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link to="/get-started/faculties"> <i style='font-size:24px' class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;</nuxt-link>
+                            <nuxt-link :to="'/get-started/departments/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                             <button type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Program</strong></button>
                             <button type="button" class="btn btn-warning btn-sm" data-target="#upload_programs" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
                             <button type="button" class="btn btn-success btn-sm" data-target="#export_programs" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
@@ -273,19 +274,11 @@
                                     </tr> -->
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <Pagination
+                                v-bind:pagination="pagination"
+                                v-on:click.native="getProgramsByDepartmentId(pagination.current_page)"
+                                :offset="4">
+                            </Pagination>
                         </div>
                     </div>
                 </div>
@@ -373,13 +366,15 @@
 <script>
 import FacultyForm from '../../../components/Modals/FacultyFormModal';
 import UploadFaculty from '../../../components/Modals/UploadFacultyModal';
+import Pagination from '~/components/Pagination'
 export default {
     name: "Programs",
     layout: "main",
     middleware: "",
     components: {
         FacultyForm,
-        UploadFaculty
+        UploadFaculty,
+        Pagination
     },
     data() {
       return { 
@@ -389,7 +384,15 @@ export default {
         deleteLoading: false,
         editLoading: false,
         programs: [],
+        routeId: 0,
         file: "",
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         model: {
           name: "",
           id: 0,
@@ -415,6 +418,7 @@ export default {
             document.head.appendChild(script1)        
         }
         this.getProgramsByDepartmentId()
+        this.routeId = (this.$route.params.id).split("_")[0]
     },
     
     methods:{
@@ -595,14 +599,18 @@ export default {
             this.exportLoading = false 
             })
         },
-        getProgramsByDepartmentId() {
+        getProgramsByDepartmentId(page) {
             let departmentId = (this.$route.params.id).split("_")[1]
+            let payload = {}
+            payload.page = page
+            payload.departmentId = departmentId
             this.$store
-                .dispatch('get-started/getProgramsByDepartmentId', departmentId)
+                .dispatch('get-started/getProgramsByDepartmentId', payload)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){              
-                        this.programs = res.data
+                        this.programs = res.data.data
+                        this.pagination = res.data
                         this.loading = false  
                     }else{
                         this.loading = false

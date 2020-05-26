@@ -332,10 +332,10 @@ export const actions = {
             return err
         });
     },
-    async getDepartmentsByFacultyId(context, id){
+    async getDepartmentsByFacultyId(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/departments/faculty/'+ id,
+            url: 'api/departments/faculty/'+ payload.facultyId + '?page=' + payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -358,10 +358,10 @@ export const actions = {
             return err
         });
     },
-    async getProgramsByDepartmentId(context, id){
+    async getProgramsByDepartmentId(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/programs/department/'+ id,
+            url: 'api/programs/department/'+ payload.departmentId + '?page=' + payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -697,10 +697,10 @@ export const actions = {
             return err
         });
     },
-    async getFaculties(context) {
+    async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
-            url: 'api/faculties',
+            url: 'api/faculties?page='+page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

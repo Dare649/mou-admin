@@ -6,8 +6,8 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                        <li class="breadcrumb-item">Get Started</li>
                         <li class="breadcrumb-item active">Faculties (JAMB)</li>
                     </ol>
                 </div>
@@ -115,19 +115,11 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <Pagination
+                                v-bind:pagination="pagination"
+                                v-on:click.native="getFaculties(pagination.current_page)"
+                                :offset="4">
+                            </Pagination>
                         </div>
                     </div>
                 </div>
@@ -213,19 +205,28 @@
 <script>
 import FacultyForm from '../../components/Modals/FacultyFormModal';
 import UploadFaculty from '../../components/Modals/UploadFacultyModal';
+import Pagination from '~/components/Pagination'
 export default {
     name: "States",
     layout: "main",
     middleware: "",
     components: {
         FacultyForm,
-        UploadFaculty
+        UploadFaculty,
+        Pagination
     },
     data() {
       return { 
         addloading: false,
         downloading: false,
         loading: false,
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         deleteLoading: false,
         editLoading: false,
         exportLoading: false,
@@ -332,15 +333,15 @@ export default {
           this.model.edit_prefix = faculty.prefix
           this.model.edit_status = faculty.status
         },
-        getFaculties(){
+        getFaculties(page){
             this.$store
-                .dispatch('get-started/getFaculties')
+                .dispatch('get-started/getFaculties', page)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
                         this.getloading = false
-                        this.faculties = res.data
-                        //console.log(this.countries)
+                        this.faculties = res.data.data
+                        this.pagination = res.data
                     }else{
                         this.getloading = false
                         this.ErrMsg = "Error Fetching data!"
@@ -353,7 +354,6 @@ export default {
                 this.getloading = false
             })
         },
-
     },
     mounted: function() {
         if (!process.server) {
@@ -362,7 +362,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'        
             document.head.appendChild(script1)        
         }
-        this.getFaculties()
+        this.getFaculties(this.pagination.current_page)
     }
 }
 </script>

@@ -386,33 +386,6 @@ export default {
             to: 0,
             current_page: 1
         },
-        fields: [
-            {
-                key: 'name',
-                sortable: true
-            },
-            {
-                key: 'iso2',
-            },
-            {
-                key: 'capital',
-
-            },
-            {
-                key: 'phone_code',
-            },
-            {
-                key: 'currency',
-            },
-            {
-                key: 'flag'
-            },
-            {
-                key: 'actions',
-            },
-
-
-        ],
         addloading: false,
         downloading: false,
         loading: false,
