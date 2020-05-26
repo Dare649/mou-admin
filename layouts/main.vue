@@ -28,3 +28,17 @@ export default {
   created: function() {}
 };
 </script>
+<style scoped>
+body .page-container {
+    background: #f5f6f7 !important;
+    font-size: 14px !important;
+}
+
+body .menu-bar {
+    background: #f5f6f7 !important;
+    font-size: 14px !important;
+}
+.breadcrumb {
+    background-color: #ffffff !important;;
+}
+</style>
