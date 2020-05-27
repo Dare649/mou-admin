@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Direct Entry Result</span></h5>
+                <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Result - DE</span></h5>
             </div>
             <div class="modal-body">
                 <form class="full-width">
@@ -104,7 +104,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">JAMB</a></li>
-                        <li class="breadcrumb-item active">JAMB Import for DE Management</li>
+                        <li class="breadcrumb-item active">JAMD Result - DE</li>
                     </ol>
                 </div>
             </div>
@@ -213,7 +213,7 @@
         <!-- END PAGE CONTENT -->
         <!-- START COPYRIGHT -->
 
-    </div>        
+    </div>
 </template>
 <script>
 export default {
@@ -221,15 +221,15 @@ export default {
   layout: "main",
   middleware: "",
   components: {
-    
+
   },
   mounted: function() {
       if (!process.server) {
-        const script1 = document.createElement('script')       
+        const script1 = document.createElement('script')
         script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'        
+        script1.src = '/pages/js/pages.min.js'
 
-        document.head.appendChild(script1)        
+        document.head.appendChild(script1)
       }
     }
 }
