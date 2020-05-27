@@ -322,26 +322,26 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody style="text-align:center;">
-                                      <tr :key="country.id" :id="country.id" v-for="country in countries">
-                                          <td>{{country.iso2}}</td>
-                                          <td>{{country.name}}</td>
-                                          <td>{{country.capital}}</td>
-                                          <td>{{country.phone_code}}</td>
-                                          <td>{{country.currency}}</td>
-                                          <td>
-                                              <div class="btn-group">
-                                                  <span data-placement="top" data-toggle="tooltip" title="Link to States">
-                                                    <nuxt-link :to="'/get-started/states/' + country.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
-                                                  </span>
-                                                  <span data-placement="top" @click="populateFields(country)" data-toggle="tooltip" title="Edit Record">
-                                                        <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                                  </span>
-                                                  <span data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
-                                                      <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
-                                                  </span>
-                                              </div>
-                                          </td>
-                                      </tr>
+                                        <tr :key="country.id" :id="country.id" v-for="country in countries">
+                                            <td>{{country.iso2}}</td>
+                                            <td>{{country.name}}</td>
+                                            <td>{{country.capital}}</td>
+                                            <td>{{country.phone_code}}</td>
+                                            <td>{{country.currency}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <span data-placement="top" data-toggle="tooltip" title="Link to States">
+                                                      <nuxt-link :to="'/get-started/states/' + country.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                                    </span>
+                                                    <span data-placement="top" @click="populateFields(country)" data-toggle="tooltip" title="Edit Record">
+                                                          <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                    </span>
+                                                    <span data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
+                                                        <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                       </tbody>
                                   </table>
                                   <Pagination

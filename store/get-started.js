@@ -711,10 +711,10 @@ export const actions = {
             return err
         });
     },
-    async getSubjects(context) {
+    async getSubjects(context, page) {
         return await this.$axios({
             method: 'get',
-            url: 'api/subjects',
+            url: 'api/subjects?page=' + page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
