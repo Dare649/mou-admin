@@ -86,33 +86,39 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:20%">Faculty Abbreviation</th>
+                                    <th style="width:20%">Faculty Code</th>
                                     <th style="width:40%">Faculty Name</th>
                                     <th style="width:20%">Status</th>
                                     <th style="width:20%">Action</th>
                                 </thead>
-                                <tbody v-if="faculties.length > 0">
-                                    <tr v-for="faculty in faculties" :key="faculty.id">
-                                        <td>{{faculty.prefix}}</td>
-                                        <td>{{faculty.name}}</td>
-                                        <td>
-                                            <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 1">Active</span>
-                                            <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 0">Inactive</span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <span data-placement="top" data-toggle="tooltip" title="Link to Department">
-                                                    <nuxt-link :to="'/get-started/departments/' + faculty.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
-                                                </span>
-                                                <span data-placement="top" @click="populateFields(faculty)" data-toggle="tooltip" title="Edit Record">
-                                                    <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                                </span>
-                                                <span data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
-                                                    <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tbody>
+                                  <tr v-if="getloading">
+                                    <td colspan="4">Loading....Please wait.</td>
+                                  </tr>
+                                  <tr v-if="!getloading && faculties.length < 1">
+                                    <td colspan="4">No record at the moment</td>
+                                  </tr>
+                                  <tr v-else v-for="faculty in faculties" :key="faculty.id">
+                                      <td>{{faculty.prefix}}</td>
+                                      <td>{{faculty.name}}</td>
+                                      <td>
+                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 1">Active</span>
+                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="faculty.status == 0">Inactive</span>
+                                      </td>
+                                      <td>
+                                          <div class="btn-group">
+                                              <span data-placement="top" data-toggle="tooltip" title="Link to Department">
+                                                  <nuxt-link :to="'/get-started/departments/' + faculty.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                              </span>
+                                              <span data-placement="top" @click="populateFields(faculty)" data-toggle="tooltip" title="Edit Record">
+                                                  <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                              </span>
+                                              <span data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
+                                                  <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                              </span>
+                                          </div>
+                                      </td>
+                                  </tr>
                                 </tbody>
                             </table>
                             <Pagination
@@ -203,8 +209,8 @@
     </div>
 </template>
 <script>
-import FacultyForm from '../../components/Modals/FacultyFormModal';
-import UploadFaculty from '../../components/Modals/UploadFacultyModal';
+import FacultyForm from '~/components/Modals/FacultyFormModal';
+import UploadFaculty from '~/components/Modals/UploadFacultyModal';
 import Pagination from '~/components/Pagination'
 export default {
     name: "States",
@@ -216,7 +222,8 @@ export default {
         Pagination
     },
     data() {
-      return { 
+      return {
+        getloading: true,
         addloading: false,
         downloading: false,
         loading: false,
@@ -247,7 +254,7 @@ export default {
             this.$store
                 .dispatch('get-started/exportFaculties')
                 .then(res => {
-                if(res != undefined){         
+                if(res != undefined){
                     this.loading = false
                     var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                     var fileLink = document.createElement('a');
@@ -256,16 +263,16 @@ export default {
                     fileLink.setAttribute('download', 'faculties.xlsx');
                     document.body.appendChild(fileLink);
 
-                    fileLink.click();   
-                    this.exportLoading = false 
+                    fileLink.click();
+                    this.exportLoading = false
                     $( '#export_faculties' ).modal( 'hide' ).data( 'bs.modal', null )
-                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
-                    this.exportLoading = false 
+                    this.exportLoading = false
                     alert("File Downloaded Unsuccessful")
-                }      
+                }
             }).catch(err => {
-            this.exportLoading = false 
+            this.exportLoading = false
             })
         },
         setId(id){
@@ -280,7 +287,7 @@ export default {
                     if(res.status == true){
                     this.deleteLoading = false
                     this.getFaculties()
-                    $( '#delete_faculty' ).modal( 'hide' ).data( 'bs.modal', null );  
+                    $( '#delete_faculty' ).modal( 'hide' ).data( 'bs.modal', null );
                     this.loading = false
                     }else{
                     this.deleteLoading = false
@@ -290,8 +297,8 @@ export default {
                 }else{
                     this.loading = false
                     this.ErrMsg = "Error Logging in!"
-                }    
-                
+                }
+
             }).catch(err => {
             this.loading = false
             })
@@ -300,7 +307,7 @@ export default {
             this.editLoading = true
             let bodyFormData = new Object();
             let payload = {}
-                bodyFormData.name = this.model.edit_name    
+                bodyFormData.name = this.model.edit_name
                 bodyFormData.prefix = this.model.edit_prefix
                 bodyFormData.status = this.model.edit_status
                 payload.id = this.model.edit_faculty_id
@@ -312,8 +319,8 @@ export default {
                 if(res.status == true){
                     this.editLoading = false
                     this.getFaculties()
-                    $('#edit_faculty').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#edit_faculty').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
                 }else{
                 this.editLoading = false
@@ -322,7 +329,7 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
-            }      
+            }
             }).catch(err => {
                 this.loading = false
             })
@@ -349,7 +356,7 @@ export default {
                 }else{
                     this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
-                }      
+                }
             }).catch(err => {
                 this.getloading = false
             })
@@ -357,10 +364,10 @@ export default {
     },
     mounted: function() {
         if (!process.server) {
-            const script1 = document.createElement('script')       
+            const script1 = document.createElement('script')
             script1.type = 'text/javascript'
-            script1.src = '/pages/js/pages.min.js'        
-            document.head.appendChild(script1)        
+            script1.src = '/pages/js/pages.min.js'
+            document.head.appendChild(script1)
         }
         this.getFaculties(this.pagination.current_page)
     }

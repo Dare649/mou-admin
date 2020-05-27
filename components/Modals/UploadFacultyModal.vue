@@ -12,9 +12,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
                             <div class="custom-file">
                                 <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                 <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -45,7 +42,7 @@
 <script>
 export default {
     data() {
-      return { 
+      return {
         addloading: false,
         downloading: false,
         loading: false,
@@ -69,8 +66,8 @@ export default {
                     if(res.status == true){
                         this.loading = false
                         //this.getFaculties()
-                        $('#upload_o_faculty').modal('hide').data( 'bs.modal', null )          
-                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                        $('#upload_o_faculty').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
                         alert("File Upload Unsuccessful")
@@ -81,7 +78,7 @@ export default {
                     console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Logging in!"
-                }      
+                }
             }).catch(err => {
             this.loading = false
             })
@@ -91,18 +88,18 @@ export default {
           this.$store
             .dispatch('get-started/downloadFacultySampleFile')
             .then(res => {
-            if(res != undefined){     
+            if(res != undefined){
                 if(res.success == true)    {
                     window.location = res.message
                     this.downloading = false
-                    $('#upload_o_faculty').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#upload_o_faculty').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
-                     
+
             }else{
                 this.downloading = false
                 alert("File Download Unsuccessful")
-            }      
+            }
         }).catch(err => {
           this.downloading = false
         })

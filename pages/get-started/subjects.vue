@@ -13,9 +13,6 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12 m-b-10">
-                                <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                            </div>
-                            <div class="col-lg-12 m-b-10">
                                 <div class="custom-file">
                                     <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                     <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -27,7 +24,7 @@
                             </div>
                             <div class="col-lg-12 m-t-15">
                                 <div class="dd-placeholder p-1">
-                                    <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5> 
+                                    <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
                                     <button v-if="!downloading" @click="downloadSubjectSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
                                     <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                     <div class="clearfix"></div>
@@ -204,7 +201,7 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Subject Management</h3>
                         <div class="pull-right sm-pull-reset">
                             <button type="button" class="btn btn-primary btn-sm" data-target="#add_o_subject" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Subject</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_subjects" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Faculty</strong></button>
+                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_subjects" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Subjects</strong></button>
                             <button type="button" class="btn btn-success btn-sm" data-target="#export_subjects" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
@@ -219,39 +216,37 @@
                                 <th style="width:20%">Action</th>
                                 </thead>
                                 <tbody>
-                                <tr v-for="subject in subjects" :key="subject.id">
-                                    <td>{{subject.name}}</td>
-                                    <td>{{subject.prefix}}</td>
-                                    <td>
-                                        <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="subject.status == 1">Active</span>
-                                        <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="subject.status == 0">Inactive</span>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <span data-placement="top" @click="populateFields(subject)" data-toggle="tooltip" title="Edit Record">
-                                                <a href="#edit_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                            </span>
-                                            <span data-placement="top" @click="setId(subject.id)" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
+                                  <tr v-if="getLoading">
+                                    <td colspan="4">Loading....Please wait.</td>
+                                  </tr>
+                                  <tr v-if="!getLoading && subjects.length < 1">
+                                    <td colspan="4">No record at the moment</td>
+                                  </tr>
+                                  <tr v-else v-for="subject in subjects" :key="subject.id">
+                                      <td>{{subject.name}}</td>
+                                      <td>{{subject.prefix}}</td>
+                                      <td>
+                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="subject.status == 1">Active</span>
+                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="subject.status == 0">Inactive</span>
+                                      </td>
+                                      <td>
+                                          <div class="btn-group">
+                                              <span data-placement="top" @click="populateFields(subject)" data-toggle="tooltip" title="Edit Record">
+                                                  <a href="#edit_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                              </span>
+                                              <span data-placement="top" @click="setId(subject.id)" data-toggle="tooltip" title="Delete Record">
+                                                  <a href="#delete_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                              </span>
+                                          </div>
+                                      </td>
+                                  </tr>
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <Pagination
+                              v-bind:pagination="pagination"
+                              v-on:click.native="getSubjects(pagination.current_page)"
+                              :offset="4">
+                            </Pagination>
                         </div>
                     </div>
                 </div>
@@ -264,6 +259,7 @@
     </div>
 </template>
 <script>
+import Pagination from '~/components/Pagination'
 // import SubjectForm from '../../components/Modals/SubjectFormModal';
 // import UploadSubjects from '../../components/Modals/UploadSubjectsModal';
 export default {
@@ -273,6 +269,7 @@ export default {
     components: {
         // SubjectForm,
         // UploadSubjects
+        Pagination
     },
     data(){
         return {
@@ -282,20 +279,28 @@ export default {
             loading: false,
             deleteLoading: false,
             editLoading: false,
+            getLoading: true,
             exportLoading: false,
             file: "",
+            pagination: {
+                total: 0,
+                per_page: 2,
+                from: 1,
+                to: 0,
+                current_page: 1
+            },
             model: {
-            name: "",
-            id: 0,
-            prefix: "",
-            status: 1,
-            edit_prefix: "",
-            edit_status: "",
-            edit_name: ""
+              name: "",
+              id: 0,
+              prefix: "",
+              status: 1,
+              edit_prefix: "",
+              edit_status: "",
+              edit_name: ""
             },
         }
     },
-    methods: {   
+    methods: {
         deleteSubject(){
             this.deleteLoading = true
             this.$store
@@ -305,7 +310,7 @@ export default {
                     if(res.status == true){
                     this.deleteLoading = false
                     this.getSubjects()
-                    $( '#delete_subject' ).modal( 'hide' ).data( 'bs.modal', null );  
+                    $( '#delete_subject' ).modal( 'hide' ).data( 'bs.modal', null );
                     this.loading = false
                     }else{
                     this.deleteLoading = false
@@ -315,8 +320,8 @@ export default {
                 }else{
                     this.loading = false
                     this.ErrMsg = "Error Logging in!"
-                }    
-                
+                }
+
             }).catch(err => {
             this.loading = false
             })
@@ -325,7 +330,7 @@ export default {
             this.editLoading = true
             let bodyFormData = new Object();
             let payload = {}
-            bodyFormData.name = this.model.edit_name    
+            bodyFormData.name = this.model.edit_name
             bodyFormData.prefix = this.model.edit_prefix
             bodyFormData.status = this.model.edit_status
             payload.id = this.model.edit_id
@@ -337,8 +342,8 @@ export default {
                 if(res.status == true){
                     this.editLoading = false
                     this.getSubjects()
-                    $('#edit_subject').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#edit_subject').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
                 }else{
                     this.editLoading = false
@@ -347,7 +352,7 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
-            }      
+            }
             }).catch(err => {
                 this.loading = false
             })
@@ -365,7 +370,7 @@ export default {
                 if(res.status == true){
                     this.getSubjects()
                     this.loading = false
-                    $('#add_o_subject').modal('hide').data( 'bs.modal', null ) 
+                    $('#add_o_subject').modal('hide').data( 'bs.modal', null )
                     this.model = {}
                 }else{
                     this.loading = false
@@ -374,7 +379,7 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Processing Request!"
-            }      
+            }
             }).catch(err => {
             this.loading = false
             })
@@ -400,8 +405,8 @@ export default {
                     if(res.status == true){
                         this.loading = false
                         this.getSubjects()
-                        $('#upload_subjects').modal('hide').data( 'bs.modal', null )          
-                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                        $('#upload_subjects').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
                         alert("File Upload Unsuccessful")
@@ -412,7 +417,7 @@ export default {
                     console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Logging in!"
-                }      
+                }
             }).catch(err => {
             this.loading = false
             })
@@ -422,7 +427,7 @@ export default {
             this.$store
                 .dispatch('get-started/exportSubjects')
                 .then(res => {
-                if(res != undefined){         
+                if(res != undefined){
                     this.loading = false
                     var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                     var fileLink = document.createElement('a');
@@ -431,17 +436,17 @@ export default {
                     fileLink.setAttribute('download', 'subjects.xlsx');
                     document.body.appendChild(fileLink);
 
-                    fileLink.click();   
-                     
+                    fileLink.click();
+
                     $( '#export_subjects' ).modal( 'hide' ).data( 'bs.modal', null )
                     this.exportLoading = false
-                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
-                    this.exportLoading = false 
+                    this.exportLoading = false
                     alert("File Downloaded Unsuccessful")
-                }      
+                }
             }).catch(err => {
-            this.exportLoading = false 
+            this.exportLoading = false
             })
         },
         downloadSubjectSampleFile(){
@@ -449,50 +454,51 @@ export default {
             this.$store
                 .dispatch('get-started/downloadSubjectSampleFile')
                 .then(res => {
-                if(res != undefined){     
+                if(res != undefined){
                     if(res.success == true)    {
                         window.location = res.message
                         this.downloading = false
-                        $('#upload_subject').modal('hide').data( 'bs.modal', null )          
-                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                        $('#upload_subject').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }
-                        
+
                 }else{
                     this.downloading = false
                     alert("File Download Unsuccessful")
-                }      
+                }
             }).catch(err => {
             this.downloading = false
             })
         },
-        getSubjects(){
+        getSubjects(page){
             this.$store
-                .dispatch('get-started/getSubjects')
+                .dispatch('get-started/getSubjects', page)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
-                        this.getloading = false
-                        this.subjects = res.data
+                        this.getLoading = false
+                        this.subjects = res.data.data
+                        this.pagination = res.data
                         //console.log(this.countries)
                     }else{
-                        this.getloading = false
+                        this.getLoading = false
                         this.ErrMsg = "Error Fetching data!"
                     }
                 }else{
-                    this.getloading = false
+                    this.getLoading = false
                     this.ErrMsg = "Error Fetching data!"
-                }      
+                }
             }).catch(err => {
-                this.getloading = false
+                this.getLoading = false
             })
         }
     },
     mounted: function() {
         if (!process.server) {
-            const script1 = document.createElement('script')       
+            const script1 = document.createElement('script')
             script1.type = 'text/javascript'
-            script1.src = '/pages/js/pages.min.js'        
-            document.head.appendChild(script1)        
+            script1.src = '/pages/js/pages.min.js'
+            document.head.appendChild(script1)
         }
         this.getSubjects()
     }

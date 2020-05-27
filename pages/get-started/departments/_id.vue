@@ -8,7 +8,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item">Get Started</li>
-                        <li class="breadcrumb-item active"><nuxt-link to="/get-started/faculties">Faculties (JAMB)</nuxt-link></li>
+                        <li class="breadcrumb-item active"><nuxt-link to="/get-started/faculties">Faculties</nuxt-link></li>
                         <li class="breadcrumb-item active">Departments</li>
                     </ol>
                 </div>
@@ -76,9 +76,6 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                   <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -132,49 +129,6 @@
             </div>
             <!-- END JUMBOTRON -->
 
-             <!-- Upload Department Modal -->
-    <div class="modal fade SlideUp" id="upload_o_departments" tabindex="-1" role="dialog" aria-hidden="true">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-            <i class="pg-close"></i>
-        </button>
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="text-left p-b-5"><span class="semi-bold">Upload Our New Departments</span></h5>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <div class="custom-file">
-                                <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
-                                <label class="custom-file-label" for="customFileLang">Select File</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <button type="button" @click="uploadDepartments()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                            <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
-                        </div>
-                        <div class="col-lg-12 m-t-15">
-                            <div class="dd-placeholder p-1">
-                                <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                                <button v-if="!downloading" @click="downloadDepartmentSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
-                                  <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-
             <!-- Export Countries Modal -->
             <div class="modal fade SlideUp" id="export_departments" tabindex="-1" role="dialog" aria-hidden="true">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -222,57 +176,43 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:8%">Code</th>
-                                    <th style="width:28%">Department</th>
-                                    <th style="width:28%">Faculty</th>
-                                    <th style="width:10.0%">Duration</th>
-                                    <th style="width:12.0%">Status</th>
-                                    <th style="width:15%">Action</th>
+                                  <th style="width:8%">Code</th>
+                                  <th style="width:28%">Department</th>
+                                  <th style="width:28%">Faculty</th>
+                                  <th style="width:10.0%">Duration</th>
+                                  <th style="width:12.0%">Status</th>
+                                  <th style="width:15%">Action</th>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="department in departments" :key="department.id">
-                                        <td>{{department.prefix}}</td>
-                                        <td>{{department.name}}</td>
-                                        <td>{{department.faculty.name}}</td>
-                                        <td>{{department.length_of_study}} years</td>
-                                        <td>
-                                            <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="department.status == 1">Active</span>
-                                            <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="department.status == 0">Inactive</span>    
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <span data-placement="top" data-toggle="tooltip" title="Link to Programs">
-                                                    <nuxt-link :to="'/get-started/programs/' + department.faculty_id +'_'+ department.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
-                                                </span>
-                                                <span data-placement="top"  data-toggle="tooltip" title="Edit Record">
-                                                    <a href="#edit_department" @click="populateFields(department)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                                </span>
-                                                <span data-placement="top" data-toggle="tooltip" title="Delete Record">
-                                                    <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td>AGRIC</td>
-                                        <td>College of Animal Science and Animal Production (CASAP)</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>AGRIC</td>
-                                        <td>College of Crop and Soil Sciences (CCSS)</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></button>
-                                                <button type="button" class="btn btn-default btn-sm"><i class="pg-trash"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr> -->
+                                  <tr v-if="getLoading">
+                                    <td colspan="6">Loading....Please wait.</td>
+                                  </tr>
+                                  <tr v-if="!getLoading && departments.length < 1">
+                                    <td colspan="6">No record at the moment</td>
+                                  </tr>
+                                  <tr v-for="department in departments" :key="department.id">
+                                    <td>{{department.prefix}}</td>
+                                    <td>{{department.name}}</td>
+                                    <td>{{department.faculty.name}}</td>
+                                    <td>{{department.length_of_study}} years</td>
+                                    <td>
+                                        <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="department.status == 1">Active</span>
+                                        <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="department.status == 0">Inactive</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <span data-placement="top" data-toggle="tooltip" title="Link to Programs">
+                                                <nuxt-link :to="'/get-started/programs/' + department.faculty_id +'_'+ department.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                            </span>
+                                            <span data-placement="top"  data-toggle="tooltip" title="Edit Record">
+                                                <a href="#edit_department" @click="populateFields(department)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                            </span>
+                                            <span data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                                <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                            </span>
+                                        </div>
+                                    </td>
+                                  </tr>
                                 </tbody>
                             </table>
                             <Pagination
@@ -365,8 +305,8 @@
     </div>
 </template>
 <script>
-import FacultyForm from '../../../components/Modals/FacultyFormModal'
-import UploadFaculty from '../../../components/Modals/UploadFacultyModal'
+import FacultyForm from '~/components/Modals/FacultyFormModal'
+import UploadFaculty from '~/components/Modals/UploadFacultyModal'
 import Pagination from '~/components/Pagination'
 export default {
     name: "States",
@@ -378,7 +318,8 @@ export default {
         Pagination
     },
     data() {
-      return { 
+      return {
+        getLoading: true,
         loading: false,
         downloading: false,
         exportLoading: false,
@@ -410,14 +351,14 @@ export default {
     },
     mounted: function() {
         if (!process.server) {
-            const script1 = document.createElement('script')       
+            const script1 = document.createElement('script')
             script1.type = 'text/javascript'
-            script1.src = '/pages/js/pages.min.js'        
-            document.head.appendChild(script1)        
+            script1.src = '/pages/js/pages.min.js'
+            document.head.appendChild(script1)
         }
         this.getDepartmentsByFacultyId()
     },
-    
+
     methods:{
         setId(id){
             this.model.id = id
@@ -427,18 +368,18 @@ export default {
             this.$store
                 .dispatch('get-started/downloadDepartmentSampleFile')
                 .then(res => {
-                if(res != undefined){     
+                if(res != undefined){
                     if(res.success == true)    {
                         window.location = res.message
                         this.downloading = false
-                        $('#upload_o_department').modal('hide').data( 'bs.modal', null )          
-                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                        $('#upload_o_department').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }
-                        
+
                 }else{
                     this.downloading = false
                     alert("File Download Unsuccessful")
-                }      
+                }
             }).catch(err => {
             this.downloading = false
             })
@@ -455,8 +396,8 @@ export default {
                     if(res.status == true){
                         this.loading = false
                         this.getDepartmentsByFacultyId()
-                        $('#upload_o_department').modal('hide').data( 'bs.modal', null )          
-                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                        $('#upload_o_department').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
                         alert("File Upload Unsuccessful")
@@ -467,7 +408,7 @@ export default {
                     console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Processing Request!"
-                }      
+                }
             }).catch(err => {
             this.loading = false
             })
@@ -488,7 +429,7 @@ export default {
                 if(res.status == true){
                     this.getDepartmentsByFacultyId()
                     this.loading = false
-                    $('#add_department').modal('hide').data( 'bs.modal', null ) 
+                    $('#add_department').modal('hide').data( 'bs.modal', null )
                     this.model = {}
                 }else{
                     this.loading = false
@@ -497,7 +438,7 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Processing Request!"
-            }      
+            }
             }).catch(err => {
             this.loading = false
             })
@@ -511,7 +452,7 @@ export default {
                     if(res.status == true){
                     this.deleteLoading = false
                     this.getDepartmentsByFacultyId()
-                    $( '#delete_department' ).modal( 'hide' ).data( 'bs.modal', null );  
+                    $( '#delete_department' ).modal( 'hide' ).data( 'bs.modal', null );
                     this.loading = false
                     }else{
                     this.deleteLoading = false
@@ -521,8 +462,8 @@ export default {
                 }else{
                     this.loading = false
                     this.ErrMsg = "Error Processing Request!"
-                }    
-                
+                }
+
             }).catch(err => {
             this.loading = false
             })
@@ -531,7 +472,7 @@ export default {
             this.editLoading = true
             let bodyFormData = new Object();
             let payload = {}
-            bodyFormData.name = this.model.edit_name    
+            bodyFormData.name = this.model.edit_name
             bodyFormData.prefix = this.model.edit_prefix
             bodyFormData.status = this.model.edit_status
             bodyFormData.faculty_id = this.model.edit_faculty_id
@@ -545,8 +486,8 @@ export default {
                 if(res.status == true){
                     this.editLoading = false
                     this.getDepartmentsByFacultyId()
-                    $('#edit_department').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#edit_department').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
                 }else{
                 this.editLoading = false
@@ -555,7 +496,7 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Processing Request!"
-            }      
+            }
             }).catch(err => {
                 this.loading = false
             })
@@ -574,7 +515,7 @@ export default {
             this.$store
                 .dispatch('get-started/exportDepartments')
                 .then(res => {
-                if(res != undefined){         
+                if(res != undefined){
                     this.loading = false
                     var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                     var fileLink = document.createElement('a');
@@ -583,16 +524,16 @@ export default {
                     fileLink.setAttribute('download', 'departments.xlsx');
                     document.body.appendChild(fileLink);
 
-                    fileLink.click();   
-                    this.exportLoading = false 
+                    fileLink.click();
+                    this.exportLoading = false
                     $( '#export_departments' ).modal( 'hide' ).data( 'bs.modal', null )
-                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
-                    this.exportLoading = false 
+                    this.exportLoading = false
                     alert("File Downloaded Unsuccessful")
-                }      
+                }
             }).catch(err => {
-            this.exportLoading = false 
+            this.exportLoading = false
             })
         },
         getDepartmentsByFacultyId(page) {
@@ -604,20 +545,20 @@ export default {
                 .dispatch('get-started/getDepartmentsByFacultyId', payload)
                 .then(res => {
                 if(res != undefined){
-                    if(res.status == true){              
+                    if(res.status == true){
                         this.departments = res.data.data
                         this.pagination = res.data
-                        this.loading = false
+                        this.getLoading = false
                     }else{
-                        this.loading = false
+                        this.getLoading = false
                         this.ErrMsg = "Error Logging in!"
                     }
                 }else{
-                    this.loading = false
+                    this.getLoading = false
                     this.ErrMsg = "Error Logging in!"
-                }      
+                }
                 }).catch(err => {
-                    this.loading = false
+                    this.getLoading = false
                 })
             },
     }

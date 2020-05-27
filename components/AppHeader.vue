@@ -42,7 +42,7 @@
                             <a href="javascript:;"><span class="title">Get Started</span><span class=" arrow"></span></a>
                             <ul>
                                 <li><nuxt-link to="/get-started/faculties">Faculties</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/subjects-jamb">Subject</nuxt-link></li>
+                                <li><nuxt-link to="/get-started/subjects">Subject</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
                             </ul>
@@ -50,8 +50,8 @@
                         <li>
                             <a href="javascript:;"><span class="title">Academic Session</span><span class=" arrow"></span></a>
                             <ul>
-                                <li><nuxt-link to="/get-started/academic-session/putme">PUTME</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/academic-session/de">DE</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/putme">PUTME</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/de">DE</nuxt-link></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
