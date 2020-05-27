@@ -1,5 +1,5 @@
 <template>
-    
+
         <div class="content sm-gutter">
         <!-- START BREADCRUMBS -->
             <div class="bg-white">
@@ -7,7 +7,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">JAMB</a></li>
-                        <li class="breadcrumb-item active">JAMB Result Upload</li>
+                        <li class="breadcrumb-item active">PUTME Result Upload</li>
                     </ol>
                 </div>
             </div>
@@ -125,7 +125,7 @@
             </div>
             <!-- END CONTAINER FLUID -->
         </div>
-  
+
 </template>
 <script>
 export default {
@@ -133,15 +133,15 @@ export default {
   layout: "main",
   middleware: "",
   components: {
-    
+
   },
   mounted: function() {
       if (!process.server) {
-        const script1 = document.createElement('script')       
+        const script1 = document.createElement('script')
         script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'        
+        script1.src = '/pages/js/pages.min.js'
 
-        document.head.appendChild(script1)        
+        document.head.appendChild(script1)
       }
     }
 }
