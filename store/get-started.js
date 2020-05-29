@@ -10,6 +10,21 @@ export const mutations = {
 }
 
 export const actions = {
+    async uploadJambResults(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/jamb-results/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async uploadCountries(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -130,6 +145,22 @@ export const actions = {
             return err
         });
     },
+    async exportJambResults(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            data: requests,
+            url: 'api/jamb-results/export',
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportFaculties(context) {
         return await this.$axios({
             method: 'get',
@@ -211,6 +242,20 @@ export const actions = {
             url: 'api/lgas/export',
             headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadJambResultSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/download-sample',
+            headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
             //handle success
@@ -494,6 +539,21 @@ export const actions = {
             return err
         });
     },
+    async updateJambResult(context, requests) {
+        return await this.$axios({
+            method: 'put',
+            data: requests,
+            url: 'api/jamb-results',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async updateFaculty(context, payload) {
         return await this.$axios({
             method: 'put',
@@ -576,6 +636,20 @@ export const actions = {
         return await this.$axios({
             method: 'put',
             url: 'api/lgas/'+ requests.id + '?name=' + requests.name + '&country_id='+ requests.country_id + '&state_id='+ requests.state_id + '&code=' + requests.code,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async deleteJambResult(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/jamb-results/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -697,6 +771,33 @@ export const actions = {
             return err
         });
     },
+    async getJambResults(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/'+ payload.year +'?page='+ payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchJambResults(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/search/'+ payload.registration_number,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    
     async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
@@ -715,6 +816,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/subjects?page=' + page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getAcademicTypes(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/academic-type',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
