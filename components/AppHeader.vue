@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center">
                 <!-- START User Info-->
                 <div class="pull-left p-r-10 fs-14 font-heading d-lg-inline-block d-none text-white">
-                    <span class="semi-bold">{{$auth.user.name}}</span>
+                    <span v-if="$auth.user" class="semi-bold">{{$auth.user.name}}</span>
                 </div>
                 <div class="dropdown pull-right">
                     <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,7 +24,7 @@
                         <a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a>
                         <a href="#" @click="logout()" class="dropdown-item"><i class="pg-power"></i>Logout</a>
                         <div class="dropdown-divider"></div>
-                        <span class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
+                        <span v-if="$auth.user" class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
                     </div>
                 </div>
                 <!-- END User Info-->
@@ -51,7 +51,7 @@
                             <a href="javascript:;"><span class="title">Academic Session</span><span class=" arrow"></span></a>
                             <ul>
                                 <li><nuxt-link to="/academic-session/putme">PUTME</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/de">DE</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
                         <li><a href="#"><span class="title">Personnel</span></a></li>
