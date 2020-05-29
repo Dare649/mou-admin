@@ -465,7 +465,6 @@ export default {
                     $('#upload_country').modal('hide').data( 'bs.modal', null )
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
-
             }else{
                 this.downloading = false
                 alert("File Downloaded Unsuccessful")
