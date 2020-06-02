@@ -467,11 +467,18 @@ export default {
             .then(res => {
             if(res != undefined){
                 this.loading = false
-                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                var fileLink = document.createElement('a');
+                // var encodedUri = encodeURI(res);
+                // var link = document.createElement("a");
+                // link.setAttribute("href", encodedUri);
+                // link.setAttribute('download', 'jamb-results-'+ this.model.export_year +'.csv');
+                // document.body.appendChild(link); // Required for FF
 
-                fileLink.href = fileURL;
-                fileLink.setAttribute('download', 'jamb-results.csv');
+                //link.click();
+                var fileURL = window.URL.createObjectURL(new Blob([res], {type: 'application/json'}));
+                var fileLink = document.createElement('a');
+                fileLink.setAttribute("href", fileURL);
+                //fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'jamb-results-'+ this.model.export_year +'.csv');
                 document.body.appendChild(fileLink);
 
                 fileLink.click();

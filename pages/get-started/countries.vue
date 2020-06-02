@@ -113,46 +113,46 @@
           <!-- /.modal-dialog -->
       </div>
 
-<!-- Edit Country Modal -->
-<div class="modal fade SlideUp" id="edit_country" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Edit Country Information</span></h5>
-            </div>
-            <div class="modal-body">
-                <form class="full-width" @submit.prevent="submitEditedCountry">
-                    <div class="row">
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" v-model="model.edit_name" placeholder="Country Name" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Abbreviation" v-model="model.edit_abbreviation" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Phone Code" v-model="model.edit_phone_code" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Capital" v-model="model.edit_capital" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Currency Code" v-model="model.edit_currency" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-t-10">
-                            <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                            <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
-                        </div>
+        <!-- Edit Country Modal -->
+        <div class="modal fade SlideUp" id="edit_country" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit Country Information</span></h5>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="submitEditedCountry">
+                            <div class="row">
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" v-model="model.edit_name" placeholder="Country Name" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Abbreviation" v-model="model.edit_abbreviation" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Phone Code" v-model="model.edit_phone_code" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Capital" v-model="model.edit_capital" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Currency Code" v-model="model.edit_currency" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
                 <!-- Delete Country Modal -->
                 <div class="modal fade SlideUp" id="delete_country" tabindex="-1" role="dialog" aria-hidden="true">
@@ -374,11 +374,6 @@ export default {
   },
   data() {
       return {
-        perPage: 5,
-        pageOptions: [5, 10, 15],
-        currentPage: 1,
-        filterOn: [],
-        filter: null,
         pagination: {
             total: 0,
             per_page: 2,
