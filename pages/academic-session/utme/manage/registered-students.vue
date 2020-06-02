@@ -5,11 +5,10 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                        <li class="breadcrumb-item"><a href="get_academic_session.php">Academic Session</a></li>
-                        <li class="breadcrumb-item"><a href="get_academic_session_options.php">Academic Session Options</a></li>
-                        <li class="breadcrumb-item active">Add Seats to Program</li>
+                        <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                        <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/putme/manage">PUTME</nuxt-link></li>
+                        <li class="breadcrumb-item active">Registered Students</li>
                     </ol>
                 </div>
             </div>
@@ -20,9 +19,9 @@
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
                     <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Total Seats to Program Management</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME 2019/2020 REGISTERED STUDENTS</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_seat" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add Seat</strong></button>
+                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_seat" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Download to excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -30,24 +29,27 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                <th style="width:43%">Program Name</th>
-                                <th style="width:30%">Department Name</th>
-                                <th style="width:15%">Total Seats</th>
-                                <th style="width:12%">Action</th>
+                                  <th>JAMB REG NO</th>
+                                  <th>NAME</th>
+                                  <th>MODE OF PAYMENT</th>
+                                  <th>TRANSACTION ID</th>
+                                  <th>PAYMENT STATUS</th>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>Post Graduate Diploma in Education</td>
-                                    <td>Education</td>
-                                    <td>130</td>
-                                    <td>
+                                    <td>RTY789212</td>
+                                    <td>Isoboye Ibanibo</td>
+                                    <td>PIN Number</td>
+                                    <td>12681788123</td>
+                                    <td>Successful</td>
+                                    <!-- <td>
                                         <div class="btn-group">
                                             <span data-placement="top" data-toggle="tooltip" title="Edit Record">
                                                 <a href="#edit_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             </span>
                                             <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 </tbody>
                             </table>

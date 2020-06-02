@@ -7,7 +7,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
-                        <li class="breadcrumb-item active">PUTME</li>
+                        <li class="breadcrumb-item active">UTME</li>
                     </ol>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                                    <nuxt-link to="/academic-session/putme/manage" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
+                                                    <nuxt-link to="/academic-session/utme/manage" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
                                                 </div>
                                             </td>
                                         </tr>
