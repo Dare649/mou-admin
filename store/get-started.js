@@ -204,7 +204,6 @@ export const actions = {
         // })
         // .then(function (response) {
         //     //handle success
-        //     console.log(response)
         //     return response.data
         // })
         // .catch(err => {
@@ -236,7 +235,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -439,7 +437,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -610,11 +607,9 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
-            console.log(response)
             return err
         });
     },
@@ -627,11 +622,9 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
-            console.log(response)
             return err
         });
     },
