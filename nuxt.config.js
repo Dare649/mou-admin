@@ -94,16 +94,16 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseURL: process.env.BASE_URL || 'http://127.0.0.1:8000/',
+    baseURL: process.env.BASE_URL || 'http://portal.streeties.com.ng/',
 		proxy: false
   },
   proxy: {
-		//'/api/': 'http://portal.streeties.com.ng/'
-    '/api/': 'http://127.0.0.1:8000/'
+		'/api/': 'http://portal.streeties.com.ng/'
+    //'/api/': 'http://127.0.0.1:8000/'
   },
   env: {
-		//BASE_URL: 'http://portal.streeties.com.ng/',
-    BASE_URL: 'http://127.0.0.1:8000/'
+		BASE_URL: 'http://portal.streeties.com.ng/',
+    //BASE_URL: 'http://127.0.0.1:8000/'
   },
 
   /*
