@@ -454,10 +454,11 @@ export const actions = {
             return err
         });
     },
-    async getStatesByCountryId(context, id){
+    async getStatesByCountryId(context, countryId){
+      console.log(data)
         return await this.$axios({
             method: 'get',
-            url: 'api/states/country/'+ id,
+            url: 'api/states/country/'+ countryId,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -958,7 +959,7 @@ export const actions = {
             return err
         });
     },
-    
+
     async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
