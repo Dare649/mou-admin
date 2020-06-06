@@ -6,10 +6,9 @@
             <div class="container p-l-5">
                 <ol class="breadcrumb breadcrumb-alt">
                     <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                    <li class="breadcrumb-item"><a href="get_academic_session.php">Academic Session</a></li>
-                    <li class="breadcrumb-item"><a href="get_academic_session_options.php">Academic Session Options</a></li>
-                    <li class="breadcrumb-item active">Slip for UTME Registration</li>
+                    <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">Academic Session</nuxt-link></li>
+                    <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/putme/${id}`">PUTME Options</nuxt-link></li>
+                    <li class="breadcrumb-item active">Late Fee Slip for UTME Registration</li>
                 </ol>
             </div>
         </div>
@@ -34,7 +33,7 @@
                 </div>
             </div>
             <div class="card card-default">
-                <div class="card-header  separator">
+                <div class="card-header ">
                     <h3 class="text-primary no-margin pull-left sm-pull-reset">Bank Deposit Slip</h3>
                     <div class="pull-right sm-pull-reset">
                         <button type="button" class="btn btn-primary btn-sm" data-target="#add_slip" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add Slip</strong></button>

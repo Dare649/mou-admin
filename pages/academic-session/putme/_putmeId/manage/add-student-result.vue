@@ -6,9 +6,8 @@
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                        <li class="breadcrumb-item"><a href="get_academic_session.php">Academic Session</a></li>
-                        <li class="breadcrumb-item"><a href="get_academic_session_options.php">Academic Session Options</a></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">Academic Session</nuxt-link></li>
+                        <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/putme/${id}`">PUTME Options</nuxt-link></li>
                         <li class="breadcrumb-item active">Add Student Result</li>
                     </ol>
                 </div>
@@ -44,9 +43,10 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result Upload</h3>
+                    <div class="card-header">
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UTME Result Upload</h3>
                         <div class="pull-right sm-pull-reset">
+                            <a href="/api/putme-sessions/post-utme-result/download-sample" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong></strong></a>
                             <button type="button" class="btn btn-primary btn-sm" data-target="#download_csv" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Download CSV</strong></button>
                             <button type="button" class="btn btn-warning btn-sm" data-target="#upload_csv" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload CSV</strong></button>
                         </div>
@@ -75,19 +75,11 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <pagination
+                                v-bind:pagination="pagination"
+                                v-on:click.native="getResults(pagination.current_page)"
+                                :offset="4">
+                            </pagination>
                         </div>
                     </div>
                 </div>
@@ -106,6 +98,31 @@ export default {
     components: {
         ImportStudentResultModal,
         DownloadStudentResultModal,
-    }
+    },
+    data(){
+        return {
+            id: null,
+            loading: true,
+            pagination: {
+                total: 0,
+                per_page: 2,
+                from: 1,
+                to: 0,
+                current_page: 1
+            },
+        }
+    },
+    methods: {
+        getResults(page) {
+            this.$axios.get('api/putme-sessions').then(res => {
+                this.sessions = res.data.data;
+                this.pagination = res.data;
+                this.loading = false;
+            })
+        },
+    },
+    mounted() {
+        this.id = this.$route.params.id;
+    },
 }
 </script>
