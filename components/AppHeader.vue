@@ -50,7 +50,7 @@
                         <li>
                             <a href="javascript:;"><span class="title">Academic Session</span><span class=" arrow"></span></a>
                             <ul>
-                                <li><nuxt-link to="/academic-session/putme">PUTME</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
                             </ul>
                         </li>

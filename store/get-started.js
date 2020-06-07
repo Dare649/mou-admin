@@ -10,10 +10,55 @@ export const mutations = {
 }
 
 export const actions = {
+    async uploadJambResults(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/jamb-results/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async uploadCountries(context, requests) {
         return await this.$axios({
             method: 'post',
             url: 'api/countries/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async uploadPUTMEResults(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/putme-sessions/post-utme-result/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async uploadReligions(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/religions/import',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -130,6 +175,74 @@ export const actions = {
             return err
         });
     },
+    async exportPUTMEs(context, payload) {
+       
+        return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
+            
+        }, {
+            responseType: 'blob',
+            data: payload
+        }).then((response) => {
+            const url = URL.createObjectURL(new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', "putmes")
+            document.body.appendChild(link)
+            link.click()
+            return true
+        });
+
+        // return await this.$axios({
+        //     method: 'post',
+        //     url: 'api/putme-sessions/post-utme-result/export',
+        //     data: payload,
+        //     headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
+        //     responseType: "arraybuffer",
+            
+        // })
+        // .then(function (response) {
+        //     //handle success
+        //     console.log(response)
+        //     return response.data
+        // })
+        // .catch(err => {
+        //     return err
+        // });
+    },
+    async exportReligions(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/religions/export',
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async exportJambResults(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            data: requests,
+            url: 'api/jamb-results/export',
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response)
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportFaculties(context) {
         return await this.$axios({
             method: 'get',
@@ -220,10 +333,52 @@ export const actions = {
             return err
         });
     },
+    async downloadJambResultSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async downloadCountrySampleFile(context) {
         return await this.$axios({
             method: 'get',
             url: 'api/countries/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadPUTMESampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme-sessions/post-utme-result/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadReligionSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/religions/download-template',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -319,10 +474,11 @@ export const actions = {
             return err
         });
     },
-    async getStatesByCountryId(context, id){
+    async getStatesByCountryId(context, countryId){
+      console.log(data)
         return await this.$axios({
             method: 'get',
-            url: 'api/states/country/'+ id,
+            url: 'api/states/country/'+ countryId,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -375,6 +531,21 @@ export const actions = {
         return await this.$axios({
             method: 'post',
             url: 'api/countries',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async createReligion(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/religions',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -494,6 +665,37 @@ export const actions = {
             return err
         });
     },
+    async updateReligion(context, payload) {
+        return await this.$axios({
+            method: 'put',
+            url: 'api/religions/'+ payload.id,
+            data: qs.stringify(payload.bodyFormData),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },
+    async updateJambResult(context, requests) {
+        return await this.$axios({
+            method: 'put',
+            data: requests,
+            url: 'api/jamb-results',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async updateFaculty(context, payload) {
         return await this.$axios({
             method: 'put',
@@ -586,10 +788,38 @@ export const actions = {
             return err
         });
     },
+    async deleteJambResult(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/jamb-results/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async deleteCountry(context, id){
         return await this.$axios({
             method: 'delete',
             url: 'api/countries/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async deleteReligion(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/religions/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -697,6 +927,59 @@ export const actions = {
             return err
         });
     },
+    async getAcademicSessions(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme-sessions',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getReligions(context, page) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/religions?page='+page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getJambResults(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/'+ payload.year +'?page='+ payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchJambResults(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/search/'+ payload.registration_number,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+
     async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
@@ -715,6 +998,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/subjects?page=' + page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getAcademicTypes(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/academic-type',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

@@ -51,7 +51,7 @@
 
       <!-- START Login Form -->
       <form id="form-login" class="p-t-15" @submit.prevent="authenticate" v-if="IsMessageSentSuccessfully">
-        
+
         <!-- START Form Control-->
         <div class="form-group form-group-default" v-if="IsMessageSentSuccessfully">
           <label>Token</label>
@@ -71,7 +71,7 @@
             <a href="iforgot.php" class="text-success small">Forgot Password?</a>
           </div>
         </div>
-        <!-- END Form Control-->  
+        <!-- END Form Control-->
           <button v-if="!authloading" class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-lock"></i> <span class="bold">Authenticate</span></button>
           <button v-if="authloading" disabled class="btn btn-primary btn-cons m-t-10 btn-lg btn-block" type="submit"><i class="fa fa-unlock"></i> <span class="bold">Authenticating</span></button>
       </form>
@@ -102,10 +102,10 @@
       }
     },
     mounted() {
-      
+
     },
     methods: {
-      async login() { 
+      async login() {
         this.loading = true
         let bodyFormData = new FormData();
         bodyFormData.set('email', this.model.username)
@@ -115,23 +115,24 @@
         .dispatch('authentication/login', bodyFormData)
         .then(res => {
           if(res != undefined){
+            console.log(res)
             if(res.status == true){
             this.IsMessageSentSuccessfully = true
             this.loading = false
             }else{
               this.loading = false
-              this.ErrMsg = "Error Logging in!"
+              this.ErrMsg = 'Invalid login credentials'
             }
           }else{
             this.loading = false
             this.ErrMsg = "Error Logging in!"
-          }      
+          }
         }).catch(err => {
           this.loading = false
-        })  
+        })
       },
-      
-      async authenticate(){  
+
+      async authenticate(){
           this.authloading = true;
           let bodyFormData = new FormData();
           bodyFormData.set('email', this.model.username)
@@ -139,13 +140,13 @@
           try {
             await this.$auth.loginWith("local", {
               data: bodyFormData
-            });            
+            });
             this.$router.push(
                 decodeURIComponent(
                   this.$route.query.redirect || "/dashboard"
                 )
             );
-          
+
           } catch (e) {
             this.authloading = false;
             console.log(e)
@@ -153,7 +154,7 @@
             /* if(e.response.status === 401)
                             this.error = true */
           }
-      
+
       }
     }
   }

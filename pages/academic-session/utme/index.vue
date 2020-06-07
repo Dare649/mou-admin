@@ -7,7 +7,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
-                        <li class="breadcrumb-item active">PUTME</li>
+                        <li class="breadcrumb-item active">UTME</li>
                     </ol>
                 </div>
             </div>
