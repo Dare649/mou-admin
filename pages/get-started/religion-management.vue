@@ -295,7 +295,6 @@ export default {
         this.getReligions()
     },
     methods: {
-
         uploadReligions(){
             this.loading = true
             this.file = this.$refs.myFiles.files[0];
