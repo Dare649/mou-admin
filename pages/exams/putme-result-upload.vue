@@ -253,26 +253,16 @@ export default {
           var payload = new FormData()
           payload.session_id = this.model.export_session_id
           payload.department_id = this.model.export_department_id
-          console.log(this.model.export_department_id)
           this.$store
             .dispatch('get-started/exportPUTMEs', payload)
             .then(res => {
-            if(res != undefined){
-                this.loading = false
-                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                var fileLink = document.createElement('a');
-
-                fileLink.href = fileURL;
-                fileLink.setAttribute('download', 'putmes.xlsx');
-                document.body.appendChild(fileLink);
-
-                fileLink.click();
-                this.exportLoading = false
-                this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-            }else{
-                this.exportLoading = false
-                alert("File Downloaded Unsuccessful")
-            }
+                if(res){
+                    this.exportLoading = false
+                    this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }else{
+                    this.exportLoading = false
+                    alert("File Downloaded Unsuccessful")
+                }
         }).catch(err => {
           this.exportLoading = false
         })
@@ -288,8 +278,8 @@ export default {
             .dispatch('get-started/uploadPUTMEResults', formData)
             .then(res => {
             if(res != undefined){
-                if(res.status == true){
-                    this.loading 
+                if(res.success == true){
+                    this.loading = false
                     this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
