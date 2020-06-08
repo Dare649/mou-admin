@@ -52,33 +52,31 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
-                                                <label>First Choice Department</label>
-                                                <select class="full-width" data-init-plugin="select2">
+                                                <label>Select academic session</label>
+                                                <select class="form-control" v-model="model.export_session_id">
                                                     <option value="" disabled selected>Select your option</option>
-                                                    <option value="M">M</option>
-                                                    <option value="F">F</option>
+                                                    <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
-                                                <label>Select Result Year</label>
-                                                <select class="full-width" data-init-plugin="select2">
-                                                    <option value="" disabled selected>Select your option</option>
-                                                    <option value="M">M</option>
-                                                    <option value="F">F</option>
+                                                <label>Select Faculty</label>
+                                                <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
+                                                    <option value="" selected>Select your option</option>
+                                                    <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
-                                                <label>Select Exam</label>
-                                                <select class="full-width" data-init-plugin="select2">
-                                                    <option value="" disabled selected>Select your option</option>
-                                                    <option value="M">M</option>
-                                                    <option value="F">F</option>
+                                                <label>Select Department</label>
+                                                <select class="form-control" v-model="model.export_department_id">
+                                                    <option value="" selected>Select your option</option>
+                                                    <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
-                                                <button type="button" class="btn btn-default btn-lg btn-large fs-16 semi-bold">Check Report</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                                <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
+                                                <!-- <button type="button" class="btn btn-default btn-lg btn-large fs-16 semi-bold">Check Report</button> -->
                                             </div>
                                         </div>
 
@@ -99,21 +97,32 @@
                                             <div class="form-group m-b-10">
                                                 <label>Select CSV file to upload</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                                    <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es" required>
                                                     <label class="custom-file-label" for="customFileLang">Select File</label>
                                                 </div>
                                             </div>
                                             <div class="form-group m-b-10">
-                                                <label>Overwrite existing marks</label>
-                                                <select class="full-width" data-init-plugin="select2">
+                                                <label>Select academic session</label>
+                                                <select class="form-control" v-model="model.session_id" required>
                                                     <option value="" disabled selected>Select your option</option>
-                                                    <option value="M">YES</option>
-                                                    <option value="F">No</option>
+                                                    <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group m-b-10">
+                                                <label>Overwrite existing marks</label>
+                                                <select class="form-control" v-model="model.overwrite" required>
+                                                    <option value="" disabled selected>Select your option</option>
+                                                    <option value="1">YES</option>
+                                                    <option value="0">NO</option>
                                                 </select>
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
+                                                <button v-if="!downloading" @click="downloadDEResultsSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
+                                                <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+
+                                                <button type="button" @click="uploadDEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>                                               
+                                                <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                             </div>
                                         </div>
                                     </div>
@@ -135,6 +144,175 @@ export default {
   components: {
 
   },
+  methods: {
+      getFaculties(page){
+            this.$store
+                .dispatch('get-started/getFaculties', page)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.getloading = false
+                        this.faculties = res.data.data
+                        this.pagination = res.data
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }).catch(err => {
+                this.getloading = false
+            })
+        },
+        getDepartmentsByFacultyId(page, Id) {
+            let facultyId = Id
+            let payload = {}
+            payload.facultyId = facultyId
+            payload.page = page
+            this.$store
+                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.departments = res.data.data
+                    }else{
+                        this.ErrMsg = "Error Logging in!"
+                    }
+                }else{
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }).catch(err => {
+            })
+        },
+      downloadDEResultsSampleFile(){
+          this.downloading = true
+          this.$store
+            .dispatch('de-result-upload/downloadDEResultsSampleFile')
+            .then(res => {
+            if(res != undefined){
+                if(res.success == true)    {
+                    window.location = res.message
+                    this.downloading = false
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }
+            }else{
+                this.downloading = false
+                alert("File Downloaded Unsuccessful")
+            }
+        }).catch(err => {
+          this.downloading = false
+        })
+      },
+      exportPUTMEs(){
+          this.exportLoading = true
+          var payload = new FormData()
+          payload.session_id = this.model.export_session_id
+          payload.department_id = this.model.export_department_id
+          this.$store
+            .dispatch('de-result-upload/exportDEs', payload)
+            .then(res => {
+                if(res){
+                    this.exportLoading = false
+                    this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }else{
+                    this.exportLoading = false
+                    alert("File Downloaded Unsuccessful")
+                }
+        }).catch(err => {
+          this.exportLoading = false
+        })
+      },
+      uploadDEResults(){
+        this.loading = true
+        this.file = this.$refs.myFiles.files[0];
+        let formData = new FormData();
+        formData.append('file', this.file);
+        console.log(this.model.session_id)
+        formData.append('session_id', this.model.session_id)
+        formData.append('overwrite', this.model.overwrite)
+          this.$store
+            .dispatch('de-result-upload/uploadDEResults', formData)
+            .then(res => {
+            if(res != undefined){
+                console.log(res)
+                if(res.success == true){
+                    
+                    this.loading = false
+                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }else{
+                    this.loading = false
+                    alert("File Upload Unsuccessful")
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }else{
+                this.loading = false
+                alert("File Upload Unsuccessful")
+                this.ErrMsg = "Error Logging in!"
+            }
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      populateDepartments(event){
+            if(event.target.value !== ""){
+                this.getDepartmentsByFacultyId(1, event.target.value)
+            }else{
+                this.model.export_department_id = ''
+                this.departments = []
+            }
+        },
+      getAcademicSessions(){
+          this.$store
+            .dispatch('de-result-upload/getAcademicSessions')
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                    this.academic_sessions = res.data.data
+                    this.getloading = false
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }else{
+                this.getloading = false
+                this.ErrMsg = "Error Fetching data!"
+            }
+            }).catch(err => {
+                this.getloading = false
+         })
+      }
+  },
+  data() {
+      return {
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
+        addloading: false,
+        downloading: false,
+        loading: false,
+        deleteLoading: false,
+        editLoading: false,
+        exportLoading: false,
+        academic_sessions: [],
+        faculties: [],
+        departments: [],
+        file: "",
+        model: {
+          name: "",
+          session_id: "",
+          overwrite: "",
+          export_department_id: "",
+          export_faculty_id: "",
+          export_session_id: ""
+        },
+      }
+    },
   mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')
@@ -143,6 +321,9 @@ export default {
 
         document.head.appendChild(script1)
       }
+
+      this.getFaculties()
+      this.getAcademicSessions()
     }
 }
 </script>

@@ -971,7 +971,6 @@ export const actions = {
             return err
         });
     },
-    
     async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
@@ -1013,8 +1012,7 @@ export const actions = {
         .catch(err => {
             return err
         });
-    },
-
+    }
 }
 
 export const getters = {

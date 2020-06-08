@@ -263,9 +263,9 @@ import Pagination from '~/components/Pagination'
 // import SubjectForm from '../../components/Modals/SubjectFormModal';
 // import UploadSubjects from '../../components/Modals/UploadSubjectsModal';
 export default {
-    name: "religion",
+    name: "subjects",
     layout: "main",
-    middleware: "",
+    middleware: "auth",
     components: {
         // SubjectForm,
         // UploadSubjects

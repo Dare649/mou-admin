@@ -83,9 +83,6 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                   <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -322,6 +319,12 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody style="text-align:center;">
+                                        <tr v-if="getloading">
+                                            <td colspan="4">Loading....Please wait.</td>
+                                        </tr>
+                                        <tr v-if="!getloading && countries.length < 1">
+                                            <td colspan="4">No record at the moment</td>
+                                        </tr>
                                         <tr :key="country.id" :id="country.id" v-for="country in countries">
                                             <td>{{country.iso2}}</td>
                                             <td>{{country.name}}</td>
@@ -383,6 +386,7 @@ export default {
         },
         addloading: false,
         downloading: false,
+        getloading: false,
         loading: false,
         deleteLoading: false,
         editLoading: false,
@@ -420,6 +424,7 @@ export default {
         this.currentPage = 1
       },
       refresh(){
+          this.countries = []
           this.getCountries()
       },
       exportCountries(){
@@ -562,6 +567,7 @@ export default {
         })
       },
       getCountries(page){
+        this.getloading = true
         this.$store
         .dispatch('get-started/getCountries', page)
         .then(res => {
@@ -620,7 +626,7 @@ export default {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-            });
+        });
       }
   },
   mounted: function() {
@@ -636,7 +642,7 @@ export default {
 }
 </script>
 <style scoped>
-    .breadcrumb {
+.breadcrumb {
     background-color: #ffffff !important;;
 }
 body {

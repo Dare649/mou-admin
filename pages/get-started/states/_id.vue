@@ -71,9 +71,9 @@
                   </div>
                   <div class="modal-body">
                       <div class="row">
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
+                          </div> -->
                           <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -290,6 +290,12 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
+                                      <tr v-if="getloading">
+                                        <td colspan="4">Loading....Please wait.</td>
+                                    </tr>
+                                    <tr v-if="!getloading && states.length < 1">
+                                        <td colspan="4">No record at the moment</td>
+                                    </tr>
                                       <tr v-for="state in states" :key="state.id">
                                           <td>{{state.country_id}}</td>
                                           <td>{{state.name}}</td>
@@ -311,19 +317,11 @@
                                       
                                       </tbody>
                                   </table>
-                                  <ul class="pagination m-t-20">
-                                      <li class="page-item disabled">
-                                          <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item active">
-                                          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                          <a class="page-link" href="#">Next</a>
-                                      </li>
-                                  </ul>
+                                  <Pagination
+                                    v-bind:pagination="pagination"
+                                    v-on:click.native="getStatesByCountryId(pagination.current_page)"
+                                    :offset="4">
+                                  </Pagination>
                               </div>
                           </div>
                       </div>
@@ -431,24 +429,26 @@ export default {
         })
     },
     getStatesByCountryId() {
+      this.getloading = true
       let countryId = this.$route.params.id
       this.$store
             .dispatch('get-started/getStatesByCountryId', countryId)
             .then(res => {
             if(res != undefined){
                 if(res.success == true){              
-                    this.states = res.data
-                    this.loading = false
+                    this.states = res.data.data
+                    this.getloading = false
+                    this.pagination = res.data
                 }else{
-                    this.loading = false
+                    this.getloading = false
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{
-                this.loading = false
+                this.getloading = false
                 this.ErrMsg = "Error Logging in!"
             }      
         }).catch(err => {
-          this.loading = false
+          this.getloading = false
         })
     },
     exportStates(){
@@ -546,33 +546,14 @@ export default {
     },
   data() {
       return { 
-        perPage: 5,
-        pageOptions: [5, 10, 15],
-        currentPage: 1,
-        filterOn: [],
-        filter: null,
-        fields: [
-            {
-                key: 'country_id'          
-            },
-            {
-                key: 'name',
-                sortable: true
-            },
-            {
-                key: 'code'
-            },
-            {
-                key: 'flag'
-            },
-            {
-                key: 'created_at',
-                sortable: true
-            },
-            {
-                key: 'actions'
-            },
-        ],
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
+        getloading: false,
         loading: false,
         downloading: false,
         exportLoading: false,

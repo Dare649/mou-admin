@@ -103,9 +103,9 @@
                   </div>
                   <div class="modal-body">
                       <div class="row">
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
+                          </div> -->
                           <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -201,7 +201,13 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody style="text-align:center">
-                                      <tr v-for="lga in lgas" :key="lga.id">                               
+                                          <tr v-if="getloading">
+                                            <td colspan="4">Loading....Please wait.</td>
+                                        </tr>
+                                        <tr v-if="!getloading && lgas.length < 1">
+                                            <td colspan="4">No record at the moment</td>
+                                        </tr>
+                                        <tr v-for="lga in lgas" :key="lga.id">                               
                                           <td>{{lga.country_id}}</td>       
                                           <td>{{lga.state_id}}</td>
                                           <td>{{lga.name}}</td>
@@ -219,19 +225,11 @@
                                       </tr>
                                       </tbody>
                                   </table>
-                                  <ul class="pagination m-t-20">
-                                      <li class="page-item disabled">
-                                          <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item active">
-                                          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                          <a class="page-link" href="#">Next</a>
-                                      </li>
-                                  </ul>
+                                  <Pagination
+                                    v-bind:pagination="pagination"
+                                    v-on:click.native="getLGAsByStateId(pagination.current_page)"
+                                    :offset="4">
+                                  </Pagination>
                               </div>
                           </div>
                       </div>
@@ -255,8 +253,16 @@ export default {
   },
   data(){
       return {
+          pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         lgas: [],
         loading: false,
+        getloading: false,
         exportLoading: false,
         deleteLoading: false,
         editLoading: false,
@@ -450,24 +456,26 @@ export default {
         })
     },
     getLGAsByStateId(){
+        this.getloading = true
         let stateId = (this.$route.params.id).split('_')[0]
             this.$store
                 .dispatch('get-started/getLGAsByStateId', stateId)
                 .then(res => {
                 if(res != undefined){
                     if(res.success == true){              
-                        this.lgas = res.data
-                        this.loading = false
+                        this.lgas = res.data.data
+                        this.getloading = false
+                        this.pagination = res.data
                     }else{
-                        this.loading = false
+                        this.getloading = false
                         this.ErrMsg = "Error Logging in!"
                     }
                 }else{
-                    this.loading = false
+                    this.getloading = false
                     this.ErrMsg = "Error Logging in!"
                 }      
         }).catch(err => {
-            this.loading = false
+            this.getloading = false
         })
     }
     },
