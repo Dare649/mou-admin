@@ -221,9 +221,6 @@
                   <div class="modal-body">
                       <div class="row">
                           <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                   <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -302,7 +299,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getReligions()     
+        this.getReligions()
     },
     methods: {
         uploadReligions(){
@@ -446,7 +443,7 @@ export default {
             this.loading = true
             let bodyFormData = new FormData();
             bodyFormData.set('name', this.model.name)
-            bodyFormData.set('status', this.model.status)           
+            bodyFormData.set('status', this.model.status)
             this.$store
             .dispatch('get-started/createReligion', bodyFormData)
             .then(res => {

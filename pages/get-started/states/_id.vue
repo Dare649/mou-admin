@@ -133,7 +133,7 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-      
+
               <!-- START PAGE CONTENT -->
               <div class="content sm-gutter">
                   <!-- START BREADCRUMBS -->
@@ -190,103 +190,12 @@
                               <div class="clearfix"></div>
                           </div>
                           <div class="card-body">
-                              <!-- <b-row>
-                                <b-col lg="6" class="my-1">
-                                        <b-form-group
-                                        label="Filter"
-                                        label-cols-sm="3"
-                                        label-align-sm="right"
-                                        label-size="sm"
-                                        label-for="filterInput"
-                                        class="mb-0"
-                                        >
-                                        <b-input-group size="lg">
-                                            <b-form-input
-                                            v-model="filter"
-                                            type="search"
-                                            id="filterInput"
-                                            placeholder="Type to Search"
-                                            >
-                                        </b-form-input>                                        
-                                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>                                          
-                                        </b-input-group>
-                                        </b-form-group>
-                                    </b-col>
-
-                                <b-col sm="5" md="6" class="my-1">
-                                    <b-form-group
-                                    label="Per page"
-                                    label-cols-sm="6"
-                                    label-cols-md="4"
-                                    label-cols-lg="3"
-                                    label-align-sm="right"
-                                    label-size="sm"
-                                    label-for="perPageSelect"
-                                    class="mb-0"
-                                    >
-                                    <b-form-select
-                                        v-model="perPage"
-                                        id="perPageSelect"
-                                        size="lg"
-                                        :options="pageOptions"
-                                    ></b-form-select>
-                                    </b-form-group>
-                                </b-col>
-                            </b-row>
-                            <b-table
-                                id="states-table"
-                                :items="states"
-                                :per-page="perPage"
-                                :fields="fields"
-                                @filtered="onFiltered"
-                                :filter="filter"
-                                :current-page="currentPage"
-                                small
-                            >
-                            <template slot="country_id" slot-scope="data">
-                                {{ data.item.country_id }}
-                            </template>
-                            <template slot="name" slot-scope="data">
-                                {{ data.item.name }}
-                            </template>
-                            
-                            <template slot="code" slot-scope="data">
-                                {{ data.item.code }}
-                            </template>
-                            <template slot="flag" slot-scope="data">
-                                {{ data.item.flag }}
-                            </template>
-                            <template slot="created_at" slot-scope="data">
-                                {{ $moment(data.item.created_at).format('yyyy-MM-DD') }}
-                            </template>
-                            <template slot="actions" slot-scope="data">
-                                    <span data-placement="top" data-toggle="tooltip" title="Link to LGAs">
-                                            <nuxt-link :to="'/get-started/lgas/' + data.item.id +'_'+data.item.country_id"> <button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
-                                            </span>
-                                            <span data-placement="top" @click="populateFields(data.item)" data-toggle="tooltip" title="Edit Record">
-                                                <a href="#edit_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                            </span>
-                                            <span data-placement="top" @click="setId(data.item.id)" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
-                                            </span>
-                            </template>
-                            </b-table>
-                            <b-pagination
-                                v-model="currentPage"
-                                :total-rows="rows"
-                                :per-page="perPage"
-                                first-text="First"
-                                prev-text="Prev"
-                                next-text="Next"
-                                last-text="Last"
-                                aria-controls="states-table"
-                            ></b-pagination> -->
                               <div class="table-responsive">
                                   <table class="table table-striped table-condensed" id="basicTable">
                                       <thead>
                                           <th style="width:30%">Country Name</th>
                                           <th style="width:30%">State Name</th>
-                                        <th style="width:20%">State Abbreviation</th>                                        
+                                        <th style="width:20%">State Abbreviation</th>
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
@@ -299,7 +208,7 @@
                                       <tr v-for="state in states" :key="state.id">
                                           <td>{{state.country_id}}</td>
                                           <td>{{state.name}}</td>
-                                          <td>{{state.code}}</td>                                     
+                                          <td>{{state.code}}</td>
                                           <td>
                                               <div class="btn-group">
                                                   <span data-placement="top" data-toggle="tooltip" title="Link to LGAs">
@@ -309,12 +218,12 @@
                                                     <a href="#edit_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                   </span>
                                                   <span data-placement="top" @click="setId(state.id)" data-toggle="tooltip" title="Delete Record">
-                                                    <a href="#delete_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
+                                                    <a href="#delete_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                   </span>
                                               </div>
                                           </td>
                                       </tr>
-                                      
+
                                       </tbody>
                                   </table>
                                   <Pagination
@@ -329,20 +238,29 @@
                       </div>
                   </div>
                   <!-- END CONTAINER FLUID -->
-              </div>
-              <!-- END PAGE CONTENT -->
-              <!-- START COPYRIGHT -->
-              <!-- END COPYRIGHT -->
-          </div>
-          
+              
 </template>
 <script>
+import Pagination from '~/components/Pagination'
+
 export default {
   name: "States",
   layout: "main",
   middleware: "auth",
   components: {
-    
+    Pagination,
+  },
+  data() {
+    return {
+      pagination: {
+        total: 0,
+        per_page: 2,
+        from: 1,
+        to: 0,
+        current_page: 1
+      },
+      states: []
+    }
   },
   methods: {
     submitEditedState(){
@@ -359,8 +277,8 @@ export default {
             if(res.success == true){
                 this.editLoading = false
                 this.getStatesByCountryId()
-                $('#edit_state').modal('hide').data( 'bs.modal', null )          
-                this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                $('#edit_state').modal('hide').data( 'bs.modal', null )
+                this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
             }else{
               this.editLoading = false
@@ -369,7 +287,7 @@ export default {
           }else{
             this.loading = false
             this.ErrMsg = "Error Logging in!"
-          }      
+          }
         }).catch(err => {
           this.loading = false
         })
@@ -384,17 +302,17 @@ export default {
           this.$store
             .dispatch('get-started/downloadStateSampleFile')
             .then(res => {
-            if(res != undefined){     
+            if(res != undefined){
                 if(res.success == true)    {
                     window.location = res.message
                     this.downloading = false
-                    $('#upload_state').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
-                }         
+                    $('#upload_state').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }
             }else{
                 this.downloading = false
                 alert("File Downloaded Unsuccessful")
-            }      
+            }
         }).catch(err => {
           this.downloading = false
         })
@@ -411,19 +329,19 @@ export default {
                 if(res.status == true){
                     this.loading = false
                     this.getCountries()
-                    $('#upload_state').modal('hide').data( 'bs.modal', null )          
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
+                    $('#upload_state').modal('hide').data( 'bs.modal', null )
+                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    $('#upload_state').modal('hide').data( 'bs.modal', null )  
-                    this.$toast.error('Error uploading, Contact Admin', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
-                    
+                    $('#upload_state').modal('hide').data( 'bs.modal', null )
+                    this.$toast.error('Error uploading, Contact Admin', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+
                 }
             }else{
                 this.loading = false
-                $('#upload_state').modal('hide').data( 'bs.modal', null )  
-                this.$toast.error('Error uploading, Contact Admin', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});  
-            }      
+                $('#upload_state').modal('hide').data( 'bs.modal', null )
+                this.$toast.error('Error uploading, Contact Admin', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            }
         }).catch(err => {
           this.loading = false
         })
@@ -446,7 +364,7 @@ export default {
             }else{
                 this.getloading = false
                 this.ErrMsg = "Error Logging in!"
-            }      
+            }
         }).catch(err => {
           this.getloading = false
         })
@@ -456,7 +374,7 @@ export default {
           this.$store
             .dispatch('get-started/exportStates')
             .then(res => {
-            if(res != undefined){         
+            if(res != undefined){
                 this.loading = false
                 var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                 var fileLink = document.createElement('a');
@@ -465,16 +383,16 @@ export default {
                 fileLink.setAttribute('download', 'states.xlsx');
                 document.body.appendChild(fileLink);
 
-                fileLink.click();   
-                this.exportLoading = false 
+                fileLink.click();
+                this.exportLoading = false
                 $( '#export_states' ).modal( 'hide' ).data( 'bs.modal', null )
-                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});      
+                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
-                this.exportLoading = false 
+                this.exportLoading = false
                 alert("File Downloaded Unsuccessful")
-            }      
+            }
         }).catch(err => {
-          this.exportLoading = false 
+          this.exportLoading = false
         })
     },
     setId(id){
@@ -485,7 +403,7 @@ export default {
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
-    deleteState(){   
+    deleteState(){
           this.deleteLoading = true
           this.$store
             .dispatch('get-started/deleteState', this.model.id)
@@ -494,7 +412,7 @@ export default {
                 if(res.success == true){
                 this.deleteLoading = false
                 this.getStatesByCountryId()
-                $( '#delete_state' ).modal( 'hide' ).data( 'bs.modal', null );  
+                $( '#delete_state' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
                 this.deleteLoading = false
@@ -504,8 +422,8 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
-            }    
-            
+            }
+
         }).catch(err => {
           this.loading = false
         })
@@ -524,7 +442,7 @@ export default {
             if(res.success == true){
                 this.getStatesByCountryId()
                 this.loading = false
-                $('#add_state').modal('hide').data( 'bs.modal', null ) 
+                $('#add_state').modal('hide').data( 'bs.modal', null )
                 this.model = {}
             }else{
               this.loading = false
@@ -533,7 +451,7 @@ export default {
           }else{
             this.loading = false
             this.ErrMsg = "Error Logging in!"
-          }      
+          }
         }).catch(err => {
           this.loading = false
         })
@@ -580,11 +498,11 @@ export default {
   mounted: function() {
       this.getStatesByCountryId()
       if (!process.server) {
-        const script1 = document.createElement('script')       
+        const script1 = document.createElement('script')
         script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'        
+        script1.src = '/pages/js/pages.min.js'
 
-        document.head.appendChild(script1)        
+        document.head.appendChild(script1)
       }
     }
 }

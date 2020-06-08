@@ -21,7 +21,7 @@
                 <div class="card-header  separator">
                     <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UME Options</h3>
                     <div class="pull-right sm-pull-reset">
-                        <nuxt-link to="/academic-session/putme/add-new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
+                        <nuxt-link to="/academic-session/utme/add-new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
                         <a href="get_view_ume.php" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> &nbsp; <strong>Edit Exam</strong></a>
                     </div>
                     <div class="clearfix"></div>
@@ -29,21 +29,21 @@
                 <div class="card-body">
                     <div class="row p-t-20">
                       <div class="col-lg-3">
-                          <nuxt-link to="/academic-session/putme/manage/add-student-result" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                          <nuxt-link to="/academic-session/utme/manage/add-student-result" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                               <i class="fa fa-file-text fa-3x m-b-0"></i>
                               <h6 class="text-uppercase semi-bold m-b-0">Step 1</h6>
                               Add Student Result
                           </nuxt-link>
                       </div>
                       <div class="col-lg-3">
-                          <nuxt-link to="/academic-session/putme/manage/add-seat" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                          <nuxt-link to="/academic-session/utme/manage/registered-students" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                               <i class="fa fa-id-badge fa-3x m-b-0"></i>
                               <h6 class="text-uppercase semi-bold m-b-0">Step 2</h6>
                               View registered students
                           </nuxt-link>
                       </div>
                       <div class="col-lg-3">
-                          <nuxt-link to="/academic-session/putme/manage/late-fee-slip" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                          <nuxt-link to="/academic-session/utme/manage/late-fee-slip" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                               <i class="fa fa-ticket fa-3x m-b-0"></i>
                               <h6 class="text-uppercase semi-bold m-b-0">Step 3</h6>
                               Late fee slip
@@ -64,7 +64,7 @@
                           </a>
                       </div>
                       <div class="col-lg-3">
-                        <nuxt-link to="/acadamic-session/putme/manage/student-union-dues" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                        <nuxt-link to="/acadamic-session/utme/manage/student-union-dues" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                             <i class="fa fa-university fa-3x m-b-0"></i>
                             <h6 class="text-uppercase semi-bold m-b-0">Step 4</h6>
                             Student union dues (returning)

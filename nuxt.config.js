@@ -42,7 +42,8 @@ module.exports = {
       {src: "/assets/plugins/select2/js/select2.full.min.js"},
       {src: "/assets/plugins/classie/classie.js"},
       {src: "/assets/plugins/switchery/js/switchery.min.js"},
-      {src: "/assets/plugins/jquery-validation/js/jquery.validate.min.js"}
+      {src: "/assets/plugins/jquery-validation/js/jquery.validate.min.js"},
+      {src: '/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js'}
     ]
   },
 
@@ -98,9 +99,11 @@ module.exports = {
   },
   proxy: {
 		'/api/': 'http://portal.streeties.com.ng/'
+    //'/api/': 'http://127.0.0.1:8000/'
   },
   env: {
-		BASE_URL: 'http://portal.streeties.com.ng/'
+		BASE_URL: 'http://portal.streeties.com.ng/',
+    //BASE_URL: 'http://127.0.0.1:8000/'
   },
 
   /*
@@ -134,7 +137,11 @@ module.exports = {
 			home: '/',
 			callback: '/'
 		},
-		plugins: [ '~/plugins/auth.js' ]
+		plugins: [
+      '~/plugins/auth.js',
+      {src: '~/plugins/libs.js', ssr: false},
+      {src: '~/plugins/utils.js', ssr: false}
+    ]
 	},
 
   /*

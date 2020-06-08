@@ -4,8 +4,8 @@
     <!-- START PAGE-CONTAINER -->
     <div class="page-container ">
         <div class="page-content-wrapper ">
-            <nuxt/> 
-            <AppFooter></AppFooter> 
+          <nuxt/> 
+          <AppFooter></AppFooter> 
         </div>
     </div>             
   </div>
