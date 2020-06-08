@@ -103,9 +103,9 @@
                   </div>
                   <div class="modal-body">
                       <div class="row">
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
+                          </div> -->
                           <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -139,9 +139,10 @@
                   <div class="bg-white">
                       <div class="container p-l-5">
                           <ol class="breadcrumb breadcrumb-alt">
-                              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                              <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                              <li class="breadcrumb-item active">LGAs</li>
+                            <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                            <li class="breadcrumb-item">Get Started</li>
+                            <li class="breadcrumb-item"><nuxt-link :to="'/get-started/states/' + routeId" >States</nuxt-link></li>
+                            <li class="breadcrumb-item active">LGAs</li>
                           </ol>
                       </div>
                   </div>
@@ -182,7 +183,7 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">LGA Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <!-- <nuxt-link :to="'/get-started/states/' + $route.params.id"> <i style='font-size:24px' class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;</nuxt-link> -->
+                                  <nuxt-link :to="'/get-started/states/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_lga" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New LGA</strong></button>
                                   <button type="button" class="btn btn-warning btn-sm" data-target="#upload_lga" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload LGAs</strong></button>
                                   <button type="button" class="btn btn-success btn-sm" data-target="#export_lgas" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
@@ -201,7 +202,13 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody style="text-align:center">
-                                      <tr v-for="lga in lgas" :key="lga.id">                               
+                                          <tr v-if="getloading">
+                                            <td colspan="4">Loading....Please wait.</td>
+                                        </tr>
+                                        <tr v-if="!getloading && lgas.length < 1">
+                                            <td colspan="4">No record at the moment</td>
+                                        </tr>
+                                        <tr v-for="lga in lgas" :key="lga.id">                               
                                           <td>{{lga.country_id}}</td>       
                                           <td>{{lga.state_id}}</td>
                                           <td>{{lga.name}}</td>
@@ -219,19 +226,11 @@
                                       </tr>
                                       </tbody>
                                   </table>
-                                  <ul class="pagination m-t-20">
-                                      <li class="page-item disabled">
-                                          <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item active">
-                                          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                          <a class="page-link" href="#">Next</a>
-                                      </li>
-                                  </ul>
+                                  <Pagination
+                                    v-bind:pagination="pagination"
+                                    v-on:click.native="getLGAsByStateId(pagination.current_page)"
+                                    :offset="4">
+                                  </Pagination>
                               </div>
                           </div>
                       </div>
@@ -246,17 +245,27 @@
     </div>
 </template>
 <script>
+import Pagination from '~/components/Pagination'
 export default {
   name: "LGAs",
   layout: "main",
   middleware: "auth",
   components: {
-    
+    Pagination
   },
   data(){
       return {
+          pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         lgas: [],
+        routeId: 0,
         loading: false,
+        getloading: false,
         exportLoading: false,
         deleteLoading: false,
         editLoading: false,
@@ -450,30 +459,36 @@ export default {
         })
     },
     getLGAsByStateId(){
+        this.getloading = true
         let stateId = (this.$route.params.id).split('_')[0]
+        let payload = {}
+        payload.current_page = this.pagination.current_page
+        payload.stateId = stateId
             this.$store
-                .dispatch('get-started/getLGAsByStateId', stateId)
+                .dispatch('lgas/getLGAsByStateId', payload)
                 .then(res => {
                 if(res != undefined){
                     if(res.success == true){              
-                        this.lgas = res.data
-                        this.loading = false
+                        this.lgas = res.data.data
+                        this.getloading = false
+                        this.pagination = res.data
                     }else{
-                        this.loading = false
+                        this.getloading = false
                         this.ErrMsg = "Error Logging in!"
                     }
                 }else{
-                    this.loading = false
+                    this.getloading = false
                     this.ErrMsg = "Error Logging in!"
                 }      
         }).catch(err => {
-            this.loading = false
+            this.getloading = false
         })
     }
     },
     
     mounted: function() {
       this.getLGAsByStateId()
+      this.routeId = (this.$route.params.id).split("_")[1]
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'

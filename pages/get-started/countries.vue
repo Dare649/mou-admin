@@ -184,8 +184,8 @@
                   <div class="bg-white">
                       <div class="container p-l-5">
                           <ol class="breadcrumb breadcrumb-alt">
-                              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                              <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                              <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                              <li class="breadcrumb-item">Get Started</li>
                               <li class="breadcrumb-item active">Countries</li>
                           </ol>
                       </div>
@@ -290,6 +290,7 @@ export default {
         getLoading: true,
         addloading: false,
         downloading: false,
+        getloading: false,
         loading: false,
         deleteLoading: false,
         editLoading: false,
@@ -327,6 +328,7 @@ export default {
         this.currentPage = 1
       },
       refresh(){
+          this.countries = []
           this.getCountries()
       },
       exportCountries(){
@@ -469,6 +471,7 @@ export default {
         })
       },
       getCountries(page){
+        this.getloading = true
         this.$store
         .dispatch('get-started/getCountries', page)
         .then(res => {
@@ -527,7 +530,7 @@ export default {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
-            });
+        });
       }
   },
   mounted: function() {
@@ -543,7 +546,7 @@ export default {
 }
 </script>
 <style scoped>
-    .breadcrumb {
+.breadcrumb {
     background-color: #ffffff !important;;
 }
 body {

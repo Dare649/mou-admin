@@ -12,9 +12,9 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-lg-12 m-b-10">
+                    <!-- <div class="col-lg-12 m-b-10">
                         <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                    </div>
+                    </div> -->
                     <div class="col-lg-12 m-b-10">
                         <div class="custom-file">
                             <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -222,20 +222,26 @@
                                 <th style="width:12%">Action</th>
                                 </thead>
                                 <tbody>
-                                <tr v-for="jamb_result in jamb_results" :key="jamb_result.id">
-                                    <td>{{jamb_result.registration_number}}</td>
-                                    <td>{{jamb_result.name}}</td>
-                                    <td>{{jamb_result.sex}}</td>
-                                    <td>{{jamb_result.year}}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <span data-placement="top" @click="populateFields(jamb_result)" data-toggle="tooltip" title="Edit Record">
-                                                <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                            </span>
-                                            <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr v-if="getloading">
+                                        <td colspan="4">Loading....Please wait.</td>
+                                    </tr>
+                                    <tr v-if="!getloading && jamb_results.length < 1">
+                                        <td colspan="4">No record at the moment</td>
+                                    </tr>
+                                    <tr v-for="jamb_result in jamb_results" :key="jamb_result.id">
+                                        <td>{{jamb_result.registration_number}}</td>
+                                        <td>{{jamb_result.name}}</td>
+                                        <td>{{jamb_result.sex}}</td>
+                                        <td>{{jamb_result.year}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <span data-placement="top" @click="populateFields(jamb_result)" data-toggle="tooltip" title="Edit Record">
+                                                    <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                </span>
+                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <Pagination
@@ -277,6 +283,7 @@ export default {
         loading: false,
         deleteLoading: false,
         editLoading: false,
+        getloading: false,
         exportLoading: false,
         jamb_results: [],
         academicTypes: [],
@@ -416,6 +423,7 @@ export default {
         payload.page = page
         payload.year = this.model.search_year
         payload.registration_number = this.model.search_registration_number
+        this.getloading = true
         this.$store
         .dispatch('get-started/getJambResults', payload)
         .then(res => {

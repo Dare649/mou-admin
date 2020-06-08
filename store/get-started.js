@@ -204,7 +204,6 @@ export const actions = {
         // })
         // .then(function (response) {
         //     //handle success
-        //     console.log(response)
         //     return response.data
         // })
         // .catch(err => {
@@ -236,7 +235,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -439,7 +437,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -475,7 +472,6 @@ export const actions = {
         });
     },
     async getStatesByCountryId(context, countryId){
-      console.log(data)
         return await this.$axios({
             method: 'get',
             url: 'api/states/country/'+ countryId,
@@ -611,11 +607,9 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
-            console.log(response)
             return err
         });
     },
@@ -628,11 +622,9 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
-            console.log(response)
             return err
         });
     },
@@ -979,7 +971,6 @@ export const actions = {
             return err
         });
     },
-
     async getFaculties(context, page) {
         return await this.$axios({
             method: 'get',
@@ -1021,8 +1012,7 @@ export const actions = {
         .catch(err => {
             return err
         });
-    },
-
+    }
 }
 
 export const getters = {

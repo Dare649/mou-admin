@@ -61,23 +61,29 @@
                                 <th style="width:20%">Action</th>
                                 </thead>
                                 <tbody>
-                                <tr v-for="religion in religions" :key="religion.id">
-                                    <td>{{religion.name}}</td>
-                                    <td>
-                                        <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="religion.status == 1">Active</span>
-                                        <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="religion.status == 0">Inactive</span>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <span data-placement="top" @click="populateFields(religion)" data-toggle="tooltip" title="Edit Record">
-                                                <a href="#edit_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                            </span>
-                                            <span data-placement="top" @click="setId(religion.id)" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr v-if="getloading">
+                                        <td colspan="4">Loading....Please wait.</td>
+                                    </tr>
+                                    <tr v-if="!getloading && religions.length < 1">
+                                        <td colspan="4">No record at the moment</td>
+                                    </tr>
+                                    <tr v-for="religion in religions" :key="religion.id">
+                                        <td>{{religion.name}}</td>
+                                        <td>
+                                            <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="religion.status == 1">Active</span>
+                                            <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="religion.status == 0">Inactive</span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <span data-placement="top" @click="populateFields(religion)" data-toggle="tooltip" title="Edit Record">
+                                                    <a href="#edit_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                </span>
+                                                <span data-placement="top" @click="setId(religion.id)" data-toggle="tooltip" title="Delete Record">
+                                                    <a href="#delete_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <Pagination
@@ -136,31 +142,31 @@
         </div>
 
          <!-- Delete Country Modal -->
-                <div class="modal fade SlideUp" id="delete_religion" tabindex="-1" role="dialog" aria-hidden="true">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="pg-close"></i>
-                    </button>
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="text-left p-b-5"><span class="semi-bold">Delete Religion Information</span></h5>
-                            </div>
-                            <div class="modal-body">
-                                <form class="full-width" @submit.prevent="deleteReligion">
-                                    <div class="row">
-                                        <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
-                                        <div class="col-lg-12 m-t-10">
-                                            <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
-                                            <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
+        <div class="modal fade SlideUp" id="delete_religion" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Delete Religion Information</span></h5>
                     </div>
-                    <!-- /.modal-dialog -->
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="deleteReligion">
+                            <div class="row">
+                                <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                    <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
 
         <div class="modal fade SlideUp" id="add_religion" tabindex="-1" role="dialog" aria-hidden="true">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -271,6 +277,7 @@ export default {
         downloading: false,
         loading: false,
         deleteLoading: false,
+        getloading: false,
         editLoading: false,
         exportLoading: false,
         religions: [],
@@ -303,7 +310,6 @@ export default {
             this.$store
                 .dispatch('get-started/uploadReligions', formData)
                 .then(res => {
-                    console.log(res)
                 if(res != undefined){
                     if(res.status == true){
                         this.loading = false
@@ -344,7 +350,6 @@ export default {
             this.downloading = false
             })
         },
-
         exportReligions(){
             this.exportLoading = true
             this.$store
@@ -461,6 +466,7 @@ export default {
             })
         },
         getReligions(page){
+            this.getloading = true
             this.$store
             .dispatch('get-started/getReligions', page)
             .then(res => {

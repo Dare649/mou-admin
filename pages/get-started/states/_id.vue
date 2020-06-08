@@ -71,9 +71,9 @@
                   </div>
                   <div class="modal-body">
                       <div class="row">
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
+                          </div> -->
                           <div class="col-lg-12 m-b-10">
                               <div class="custom-file">
                                   <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -140,8 +140,9 @@
                   <div class="bg-white">
                       <div class="container p-l-5">
                           <ol class="breadcrumb breadcrumb-alt">
-                              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                              <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                              <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                              <li class="breadcrumb-item">Get Started</li>
+                              <li class="breadcrumb-item active"><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                               <li class="breadcrumb-item active">States</li>
                           </ol>
                       </div>
@@ -182,7 +183,7 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">State Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <nuxt-link to="/get-started/countries"> <i style='font-size:24px' class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;</nuxt-link>
+                                  <nuxt-link to="/get-started/countries"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New State</strong></button>
                                   <button type="button" class="btn btn-warning btn-sm" data-target="#upload_state" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload States</strong></button>
                                   <button type="button" class="btn btn-success btn-sm" data-target="#export_states" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
@@ -199,6 +200,12 @@
                                         <th style="width:20%">Action</th>
                                       </thead>
                                       <tbody>
+                                      <tr v-if="getloading">
+                                        <td colspan="4">Loading....Please wait.</td>
+                                    </tr>
+                                    <tr v-if="!getloading && states.length < 1">
+                                        <td colspan="4">No records. Please insert a record</td>
+                                    </tr>
                                       <tr v-for="state in states" :key="state.id">
                                           <td>{{state.country_id}}</td>
                                           <td>{{state.name}}</td>
@@ -220,6 +227,11 @@
 
                                       </tbody>
                                   </table>
+                                  <Pagination
+                                    v-bind:pagination="pagination"
+                                    v-on:click.native="getStatesByCountryId(pagination.current_page)"
+                                    :offset="4">
+                                  </Pagination>
                               </div>
                           </div>
                       </div>
@@ -227,12 +239,7 @@
                       </div>
                   </div>
                   <!-- END CONTAINER FLUID -->
-              </div>
-              <!-- END PAGE CONTENT -->
-              <!-- START COPYRIGHT -->
-              <!-- END COPYRIGHT -->
-          </div>
-
+              
 </template>
 <script>
 import Pagination from '~/components/Pagination'
@@ -244,18 +251,39 @@ export default {
   components: {
     Pagination,
   },
-  data() {
-    return {
-      pagination: {
-        total: 0,
-        per_page: 2,
-        from: 1,
-        to: 0,
-        current_page: 1
-      },
-      states: []
-    }
-  },
+   data() {
+      return { 
+         pagination: {
+          total: 0,
+          per_page: 2,
+          from: 1,
+          to: 0,
+          current_page: 1
+        },
+        getloading: false,
+        loading: false,
+        downloading: false,
+        exportLoading: false,
+        deleteLoading: false,
+        editLoading: false,
+        states: [],
+        file: "",
+        model: {
+          name: "",
+          id: 0,
+          abbreviation: "",
+          phone_code: "",
+          currency: "",
+          capital: "",
+          edit_abbreviation: "",
+          edit_capital: "",
+          edit_name: "",
+          edit_phone_code: "",
+          edit_country_id: 0,
+          edit_currency: ""
+        },
+      }
+    },
   methods: {
     submitEditedState(){
         this.editLoading = true
@@ -341,26 +369,29 @@ export default {
         })
     },
     getStatesByCountryId() {
+      this.getloading = true
+      let payload = {}
       let countryId = this.$route.params.id
+      payload.countryId = countryId
+      payload.current_page = this.pagination.current_page
       this.$store
-            .dispatch('get-started/getStatesByCountryId', countryId)
+            .dispatch('states/getStatesByCountryId', payload)
             .then(res => {
-            if(res != undefined){
-                if(res.success == true){
-                  console.log(res)
-                    this.states = res.data.data
-                    this.pagination = res.data
-                    this.loading = false
+                if(res != undefined){
+                    if(res.success == true){              
+                        this.states = res.data.data
+                        this.getloading = false
+                        this.pagination = res.data
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Logging in!"
+                    }
                 }else{
-                    this.loading = false
+                    this.getloading = false
                     this.ErrMsg = "Error Logging in!"
                 }
-            }else{
-                this.loading = false
-                this.ErrMsg = "Error Logging in!"
-            }
         }).catch(err => {
-          this.loading = false
+          this.getloading = false
         })
     },
     exportStates(){
@@ -392,11 +423,6 @@ export default {
     setId(id){
         this.model.id = id
     },
-    onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      },
     deleteState(){
           this.deleteLoading = true
           this.$store
@@ -450,66 +476,11 @@ export default {
           this.loading = false
         })
     }
-  },
+    },
    computed: {
-      rows() {
-        return this.states.length
-      }
+
     },
-  data() {
-      return {
-        perPage: 5,
-        pageOptions: [5, 10, 15],
-        currentPage: 1,
-        filterOn: [],
-        filter: null,
-        fields: [
-            {
-                key: 'country_id'
-            },
-            {
-                key: 'name',
-                sortable: true
-            },
-            {
-                key: 'code'
-            },
-            {
-                key: 'flag'
-            },
-            {
-                key: 'created_at',
-                sortable: true
-            },
-            {
-                key: 'actions'
-            },
-        ],
-        loading: false,
-        downloading: false,
-        exportLoading: false,
-        deleteLoading: false,
-        editLoading: false,
-        states: [],
-        file: "",
-        model: {
-          name: "",
-          id: 0,
-          abbreviation: "",
-          phone_code: "",
-          currency: "",
-          capital: "",
-          edit_abbreviation: "",
-          edit_capital: "",
-          edit_name: "",
-          edit_phone_code: "",
-          edit_country_id: 0,
-          edit_currency: ""
-        },
-      }
-    },
-  mounted: function() {
-      this.getStatesByCountryId()
+    mounted: function() {  
       if (!process.server) {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
@@ -517,6 +488,7 @@ export default {
 
         document.head.appendChild(script1)
       }
+      this.getStatesByCountryId()
     }
 }
 </script>

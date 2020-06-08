@@ -181,7 +181,7 @@ export default {
       }
     },
   methods: {
-      getFaculties(page){
+        getFaculties(page){
             this.$store
                 .dispatch('get-started/getFaculties', page)
                 .then(res => {
@@ -227,6 +227,7 @@ export default {
                 this.getDepartmentsByFacultyId(1, event.target.value)
             }else{
                 this.model.export_department_id = ""
+                this.departments = []
             }
         },
         downloadPUTMESampleFile(){

@@ -6798,7 +6798,6 @@ form legend {
   background-image: none;
   border: 1px solid rgba(0, 0, 0, 0.07);
   font-family: Arial, sans-serif;
-  -webkit-appearance: none;
   color: #2c2d2f;
   outline: 0;
   padding: 8px 12px;

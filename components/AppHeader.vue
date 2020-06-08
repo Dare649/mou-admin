@@ -114,4 +114,9 @@ export default {
 .bg-primary {
     background-color: #1D9D21 !important;
 }
+/* .header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+} */
 </style>
