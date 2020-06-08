@@ -54,10 +54,10 @@ export const actions = {
             return err
         });
     },
-    async getStatesByCountryId(context, id){
+    async getStatesByCountryId(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/states/country/'+ id,
+            url: 'api/states/country/'+ payload.countryId + '?page=' + payload.current_page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

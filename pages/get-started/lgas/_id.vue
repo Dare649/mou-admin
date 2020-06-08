@@ -139,9 +139,10 @@
                   <div class="bg-white">
                       <div class="container p-l-5">
                           <ol class="breadcrumb breadcrumb-alt">
-                              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                              <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                              <li class="breadcrumb-item active">LGAs</li>
+                            <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                            <li class="breadcrumb-item">Get Started</li>
+                            <li class="breadcrumb-item"><nuxt-link :to="'/get-started/states/' + routeId" >States</nuxt-link></li>
+                            <li class="breadcrumb-item active">LGAs</li>
                           </ol>
                       </div>
                   </div>
@@ -182,7 +183,7 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">LGA Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <!-- <nuxt-link :to="'/get-started/states/' + $route.params.id"> <i style='font-size:24px' class="fa fa-undo"></i>&nbsp;&nbsp;&nbsp;</nuxt-link> -->
+                                  <nuxt-link :to="'/get-started/states/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                                   <button type="button" class="btn btn-primary btn-sm" data-target="#add_lga" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New LGA</strong></button>
                                   <button type="button" class="btn btn-warning btn-sm" data-target="#upload_lga" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload LGAs</strong></button>
                                   <button type="button" class="btn btn-success btn-sm" data-target="#export_lgas" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
@@ -244,12 +245,13 @@
     </div>
 </template>
 <script>
+import Pagination from '~/components/Pagination'
 export default {
   name: "LGAs",
   layout: "main",
   middleware: "auth",
   components: {
-    
+    Pagination
   },
   data(){
       return {
@@ -261,6 +263,7 @@ export default {
             current_page: 1
         },
         lgas: [],
+        routeId: 0,
         loading: false,
         getloading: false,
         exportLoading: false,
@@ -458,8 +461,11 @@ export default {
     getLGAsByStateId(){
         this.getloading = true
         let stateId = (this.$route.params.id).split('_')[0]
+        let payload = {}
+        payload.current_page = this.pagination.current_page
+        payload.stateId = stateId
             this.$store
-                .dispatch('get-started/getLGAsByStateId', stateId)
+                .dispatch('lgas/getLGAsByStateId', payload)
                 .then(res => {
                 if(res != undefined){
                     if(res.success == true){              
@@ -482,6 +488,7 @@ export default {
     
     mounted: function() {
       this.getLGAsByStateId()
+      this.routeId = (this.$route.params.id).split("_")[1]
       if (!process.server) {
         const script1 = document.createElement('script')       
         script1.type = 'text/javascript'

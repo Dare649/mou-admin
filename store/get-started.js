@@ -472,7 +472,6 @@ export const actions = {
         });
     },
     async getStatesByCountryId(context, countryId){
-      console.log(data)
         return await this.$axios({
             method: 'get',
             url: 'api/states/country/'+ countryId,

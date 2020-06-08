@@ -54,10 +54,10 @@ export const actions = {
             return err
         });
     },
-    async getLGAsByStateId(context, id){
+    async getLGAsByStateId(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/lgas/state/'+ id,
+            url: 'api/lgas/state/'+ payload.stateId + '?page=' + payload.current_page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

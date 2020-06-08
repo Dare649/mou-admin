@@ -184,8 +184,8 @@
                   <div class="bg-white">
                       <div class="container p-l-5">
                           <ol class="breadcrumb breadcrumb-alt">
-                              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                              <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                              <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                              <li class="breadcrumb-item">Get Started</li>
                               <li class="breadcrumb-item active">Countries</li>
                           </ol>
                       </div>
