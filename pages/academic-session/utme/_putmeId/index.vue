@@ -28,45 +28,31 @@
                 <div class="card-body">
                     <div class="row p-t-20">
                         <div class="col-lg-3">
-                          <nuxt-link :to="`/academic-session/putme/${id}/manage/add-student-result`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                          <nuxt-link :to="`/academic-session/utme/${id}/manage/add-student-result`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                               <i class="fa fa-file-text fa-3x m-b-0"></i>
                               <h6 class="text-uppercase semi-bold m-b-0">Step 1</h6>
                               Add Student Result
                           </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/putme/${id}/manage/view-registerd-students`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link :to="`/academic-session/utme/${id}/manage/view-registerd-students`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-id-card fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 2</h6>
                                 View registered students
                             </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/putme/${id}/manage/late-fee-slip`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link :to="`/academic-session/utme/${id}/manage/late-fee-slip`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-ticket fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 3</h6>
                                 Late fee slip
                             </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/putme/${id}/manage/late-fee-slip-returning`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
-                                <i class="fa fa-refresh fa-3x m-b-0"></i>
-                                <h6 class="text-uppercase semi-bold m-b-0">Step 4</h6>
-                                Late Fees Slip (returning)
-                            </nuxt-link>
-                        </div>
-                        <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/putme/${id}/manage/student-union-dues`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
-                                <i class="fa fa-mail-forward fa-3x m-b-0"></i>
-                                <h6 class="text-uppercase semi-bold m-b-0">Step 5</h6>
-                                Student union dues
-                            </nuxt-link>
-                        </div>
-                        <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/putme/${id}/manage/student-union-dues-returning`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link :to="`/academic-session/utme/${id}/manage/student-union-dues`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-university fa-3x m-b-0"></i>
-                                <h6 class="text-uppercase semi-bold m-b-0">Step 6</h6>
-                                Student union dues (returning)
+                                <h6 class="text-uppercase semi-bold m-b-0">Step 4</h6>
+                                Student union dues
                             </nuxt-link>
                         </div>
                     </div>
