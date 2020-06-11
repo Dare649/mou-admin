@@ -91,9 +91,9 @@
             </div>
         </div>
         <!-- END CONTAINER FLUID -->
-        <add-slip-modal :feeTypes="feeTypes" />
-        <auto-generate-slip-modal :feeTypes="feeTypes" />
-        <import-slip-modal />
+      <add-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
+      <auto-generate-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
+      <import-slip-modal queryType="putme-session" />
     </div>
     <!-- END PAGE CONTENT -->
 </template>

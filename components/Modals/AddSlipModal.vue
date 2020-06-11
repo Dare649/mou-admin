@@ -48,7 +48,7 @@
 </template>
 <script>
   export default {
-    props: ['feeTypes'],
+    props: ['feeTypes', 'queryType'],
     data: () => ({
       formData: {
         slip_amount: '',
@@ -65,15 +65,15 @@
         $('#addSlipBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Saving...');
         let res;
         if(this.id) {
-          let $url = 'api/putme-sessions/late-fees-slip/' + this.id;
+          let $url = `api/${this.queryType}/late-fees-slip/${this.id}`;
           if(this.serviceType === 'dues') {
-            $url = 'api/putme-sessions/student-union-dues/' + this.id;
+            $url = `api/${this.queryType}/student-union-dues/${this.id}`;
           }
           res = await this.$axios.put($url, this.formData);
         } else {
-          let $url = 'api/putme-sessions/late-fees-slip';
+          let $url = `api/${this.queryType}/late-fees-slip`;
           if(this.serviceType === 'dues') {
-            $url = 'api/putme-sessions/student-union-dues'
+            $url = `api/${this.queryType}/student-union-dues`;
           }
           res = await this.$axios.post($url, this.formData);
         }
