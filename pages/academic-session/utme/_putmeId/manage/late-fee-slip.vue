@@ -5,9 +5,9 @@
         <div class="bg-white">
             <div class="container p-l-5">
                 <ol class="breadcrumb breadcrumb-alt">
-                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                    <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">Academic Session</nuxt-link></li>
-                    <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/putme/${id}`">PUTME Options</nuxt-link></li>
+                    <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
+                    <li class="breadcrumb-item"><nuxt-link to="/academic-session/utme">Academic Session</nuxt-link></li>
+                    <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/utme/${id}`">PUTME Options</nuxt-link></li>
                     <li class="breadcrumb-item active">Late Fee Slip for UTME Registration</li>
                 </ol>
             </div>
@@ -34,11 +34,12 @@
             </div>
             <div class="card card-default">
                 <div class="card-header ">
-                    <h3 class="text-primary no-margin pull-left sm-pull-reset">Bank Deposit Slip</h3>
+                    <h3 class="text-primary no-margin pull-left sm-pull-reset">Late Fee Slips</h3>
                     <div class="pull-right sm-pull-reset">
-                        <button type="button" class="btn btn-primary btn-sm" data-target="#add_slip" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add Slip</strong></button>
+                        <button type="button" class="btn btn-primary btn-sm"  @click="openModal('add_slip')"><i class="fa fa-plus"></i> &nbsp; <strong>Add Slip</strong></button>
+                        <button type="button" class="btn btn-info btn-sm" @click="downloadSampleCSV"><i class="fa fa-cloud-download"></i> &nbsp; <strong>Download Sample CSV</strong></button>
                         <button type="button" class="btn btn-warning btn-sm" data-target="#import_record" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Record</strong></button>
-                        <button type="button" class="btn btn-default btn-sm" data-target="#auto_slip" data-toggle="modal"><i class="fa fa-check"></i> &nbsp; <strong>Auto Generate Slip</strong></button>
+                        <button type="button" class="btn btn-default btn-sm" @click="openModal('auto_slip')"><i class="fa fa-check"></i> &nbsp; <strong>Auto Generate Slip</strong></button>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -51,40 +52,47 @@
                             <th style="width:20%">Action</th>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>123345676878909</td>
-                                <td>Yes</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <span data-placement="top" data-toggle="tooltip" title="Edit Record">
-                                            <a href="#edit_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                        </span>
-                                        <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <template v-if="slips.length && !loading">
+
+                              <tr v-for="slip in slips">
+                                  <td>{{ slip.slip_number}}</td>
+                                  <td>{{ (slip.status === 0) ? 'No' : 'Yes'}}</td>
+                                  <td>
+                                      <div class="btn-group">
+                                          <span data-placement="top" data-toggle="tooltip" title="Edit Record">
+                                              <button type="button" class="btn btn-default btn-sm" role="button" @click="openModal('add_slip', slip)"><i class="fa fa-pencil"></i></button>
+                                          </span>
+                                          <button
+                                            type="button"
+                                            @click="deleteRecord($event, slip.id)"
+                                            class="btn btn-default btn-sm"
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Delete Record"><i class="pg-trash"></i></button>
+                                      </div>
+                                  </td>
+                              </tr>
+                            </template>
+                            <template v-if="!slips.length && !loading">
+                              <tr class="text-center">
+                                <td colspan="3">No result found</td>
+                              </tr>
+                            </template>
                             </tbody>
                         </table>
-                        <ul class="pagination m-t-20">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
+                      <pagination
+                        v-bind:pagination="pagination"
+                        v-on:click.native="getSlips(pagination.current_page)"
+                        :offset="4">
+                      </pagination>
                     </div>
+                    <vcl-table :columns="3" v-if="loading" />
                 </div>
             </div>
         </div>
         <!-- END CONTAINER FLUID -->
-        <add-slip-modal />
-        <auto-generate-slip-modal />
+        <add-slip-modal :feeTypes="feeTypes" />
+        <auto-generate-slip-modal :feeTypes="feeTypes" />
         <import-slip-modal />
     </div>
     <!-- END PAGE CONTENT -->
@@ -99,6 +107,90 @@ export default {
         AddSlipModal,
         AutoGenerateSlipModal,
         ImportSlipModal
+    },
+    data: () => ({
+        slips: [],
+        id: null,
+        loading: true,
+        pagination: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
+        feeType: 'new',
+        feeTypes: []
+    }),
+    methods: {
+      downloadSampleCSV() {
+        this.$axios.get('api/putme-sessions/late-fees-slip/sample').then(res => {
+          if (res.data.success) {
+            window.location.href = res.data.message;
+          }
+        })
+      },
+      getSlips(page) {
+        this.$axios.get(`api/putme-sessions/late-fees-slip?session_id=${this.id}&slug=${this.feeType}`).then(res => {
+          this.loading = false
+          this.slips = res.data.data.data;
+          this.pagination = res.data.data;
+        })
+      },
+      getFeeTypes() {
+        this.$axios.get('api/utilities/fees-type').then(res => {
+          if (res.data.status) {
+            res.data.data.map(type => {
+              this.feeTypes.push({
+                id: type.id,
+                text: type.slug
+              })
+            });
+          }
+        })
+      },
+      deleteRecord(e, id) {
+        const vm = this;
+        this.$swal({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.value) {
+            this.$axios.delete(`api/putme-sessions/late-fees-slip/${id}`).then(res => {
+              if (res.data.status) {
+                $(e.target).closest('tr').remove();
+                this.$swal({
+                  position: 'bottom-end',
+                  icon: 'success',
+                  title: 'Slip has been deleted!',
+                  showConfirmButton: false,
+                  timer: 1500
+                })
+              }
+            })
+
+          }
+        })
+      },
+      openModal(modal, slip = '') {
+        $('#' + modal).modal('show');
+        setTimeout(() => {
+          this.$nuxt.$emit('open:modal', 'late_fee', slip);
+        }, 200)
+
+      }
+    },
+    mounted() {
+      this.id = this.$route.params.putmeId;
+      this.getSlips(1);
+
+      this.getFeeTypes()
     }
 }
 </script>
+
