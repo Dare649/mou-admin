@@ -59,7 +59,7 @@
 </template>
 <script>
   export default {
-    props: ['feeTypes'],
+    props: ['feeTypes', 'queryType'],
     data: () => ({
       formData: {
         slip_amount: '',
@@ -79,9 +79,9 @@
     methods: {
       submitForm() {
         $('#generateBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Generating...');
-        let $url = 'api/putme-sessions/late-fees-slip/auto-generate';
+        let $url = `api/${this.queryType}/late-fees-slip/auto-generate`;
         if(this.serviceType === 'dues') {
-          $url = 'api/putme-sessions/student-union-dues/auto-generate'
+          $url = `api/${this.queryType}/student-union-dues/auto-generate`;
         }
         this.$axios.post($url, this.formData).then(res => {
           $('#generateBtn').attr('disabled', false).html('Generate Slip');

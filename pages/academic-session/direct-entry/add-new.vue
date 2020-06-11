@@ -8,7 +8,7 @@
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
                         <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">PUTME</nuxt-link></li>
-                        <li class="breadcrumb-item active">{{ (id === 'new') ? 'Add New' : 'Edit Details'}}</li>
+                        <li class="breadcrumb-item active">Add New</li>
                     </ol>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         <div class="tab-pane padding-20 sm-no-padding active slide-left" id="step1">
                             <div class="row row-same-height">
                                 <ValidationObserver ref="step1" class=" full-width">
-                                    <form style="width: 100%" class="" role="form" v-if="formData">
+                                    <form style="width: 100%" class="" role="form">
                                         <div class="row p-2">
                                             <div class="col-md-6">
                                                 <ValidationProvider rules="required" v-slot="{ errors }">
@@ -183,7 +183,7 @@
                         <div class="tab-pane slide-left padding-20 sm-no-padding" id="step2">
                             <div class="row row-same-height p-2">
                                 <ValidationObserver ref="step2" class=" full-width">
-                                    <form style="width: 100%" role="form" v-if="formData">
+                                    <form style="width: 100%" role="form">
                                         <div class="row ">
                                             <div class="col-md-6">
                                                 <ValidationProvider rules="required" v-slot="{ errors }">
@@ -342,7 +342,7 @@
                         <div class="tab-pane slide-left padding-20 sm-no-padding" id="step3">
                             <div class="row row-same-height">
                                 <ValidationObserver ref="step3" class=" full-width">
-                                    <form class="full-width" role="form" v-if="formData">
+                                    <form class="full-width" role="form">
                                         <div class="col-md-12">
                                             <h6 class="semi-bold">UME Instructions</h6>
                                             <div class="summernote-wrapper">
@@ -422,8 +422,8 @@ export default {
                     'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
                 ],
                 fontName: [
-                    {val: 'arial black'},
-                    {val: 'times new roman'},
+                    {val: 'arial black'}, 
+                    {val: 'times new roman'}, 
                     {val: 'Courier New'}
                 ],
                 fontSize: [
@@ -463,8 +463,7 @@ export default {
             examVenue: null,
             acceptanceFeeInstruction: null,
             uploadInstruction: null,
-            schoolFeesInstruction: null,
-            id: 'new',
+            schoolFeesInstruction: null
         }
     },
     methods: {
@@ -480,98 +479,37 @@ export default {
             this.formData.acceptance_fee_instructions = this.acceptanceFeeInstruction.getContent();
             this.formData.document_upload_instructions = this.uploadInstruction.getContent();
             this.formData.school_fees_instruction = this.schoolFeesInstruction.getContent();
-
-
+            
+            
             if(!form1Status || !form2Status || !form3Status) {
-                $('#submitForm').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Processing...');
                 this.$toast.error('Incomplete form. Please make sure all required fields have been filled.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 return;
             }
-            if(this.id === 'new') {
 
-                this.$axios.post('api/putme-sessions', this.formData).then(res => {
-                    $('#submitForm').attr('disabled', false).html('Finish');
-                    if(res.data.status) {
-                        // reset forms
-                        this.$refs.step1.reset();
-                        this.$refs.step2.reset();
-                        this.$refs.step3.reset();
-                        // show notification
-                        this.$toast.success('Form submitted successfully.')
-                    } else {
-                        this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
-                    }
-                }).catch(err => {
-                    $('#submitForm').attr('disabled', false).html('Finish');
-                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
-                });
-            } else {
-                this.$axios.put('api/putme-sessions/' + this.id, this.formData).then(res => {
-                    $('#submitForm').attr('disabled', false).html('Finish');
-                    if(res.data.status) {
-                        // reset forms
-                        this.$refs.step1.reset();
-                        this.$refs.step2.reset();
-                        this.$refs.step3.reset();
-                        // show notification
-                        this.$toast.success('PUTME updates successfully.')
-                    } else {
-                        this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
-                    }
-                }).catch(err => {
-                    $('#submitForm').attr('disabled', false).html('Finish');
-                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
-                });
-            }
-        },
-        getPutmeSession(id) {
-            this.$axios.get(`api/putme-sessions/${id}`).then(res => {
-                const session = res.data.data;
-                this.formData = {
-                    session_name: session.session_name,
-                    exam_date: session.exam_date,
-                    ume_reg_start_date: session.ume_registration_start,
-                    ume_reg_end_date: session.ume_registration_end,
-                    result_date: session.result_date,
-                    acceptance_fee: session.acceptance_fee,
-                    last_acceptance_date: session.last_date_for_acceptance,
-                    last_date_doc_upload: session.last_date_for_document_upload,
-                    last_date_fee_deposit: session.last_date_for_fees_deposit,
-                    supplementary_fees: session.supplementary_fees,
-                    supp_list_publish_date: session.supplementary_list_publish_date,
-                    supp_fee_late_date: session.supplementary_fee_late_date,
-                    acceptance_processing_fee: session.acceptance_fee,
-                    date_validating_old_students: session.date_validating_old_students,
-                    late_fee_returning_stud: session.late_fee_for_returning_students,
-                    putme_late_fees: session.putme_late_fees_returning_students,
-                    late_fee_start_date: session.late_fee_start_date_old_student,
-                    late_fee_end_date: session.late_fee_end_date_old_student,
-                    late_fees_amount: session.late_fees_amount_old_student,
-                    course_registration_fee: session.course_registration_fee,
-                    putme_registration_fee: session.putme_registration_fee,
-                    matriculation_year: session.matriculation_year
+            this.$axios.post('api/putme-sessions', this.formData).then(res => {
+                $('#submitForm').attr('disabled', false).html('Finish'); 
+                if(res.data.status) {
+                    // reset forms
+                    this.$refs.step1.reset();               
+                    this.$refs.step2.reset();               
+                    this.$refs.step3.reset();   
+                    // show notification
+                    this.$toast.success('Form submitted successfully.')
+                } else {
+                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});                    
                 }
-                this.umeInstructions.setContent(session.ume_instruction);
-                this.examVenue.setContent(session.exam_venue);
-                this.acceptanceFeeInstruction.setContent(session.acceptance_fee_instructions);
-                this.uploadInstruction.setContent(session.document_upload_instructions);
-                this.schoolFeesInstruction.setContent(session.school_fees_instruction)
-            })
+            }).catch(err => {
+                $('#submitForm').attr('disabled', false).html('Finish'); 
+                this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
+            });
         }
     },
     mounted() {
-        this.id = this.$route.params.id;
-
-        if (this.id !== 'new') {
-            this.getPutmeSession(this.id);
-        }
-        if(this.formData) {
-            this.umeInstructions        = createEditor('#ume_instructions', this.config)
-            this.examVenue              = createEditor('#exam-venue', this.config)
-            this.acceptanceFeeInstruction = createEditor('#acceptance-fee', this.config)
-            this.uploadInstruction      = createEditor('#upload-instructions', this.config)
-            this.schoolFeesInstruction  = createEditor('#fees-instructions', this.config)
-        }
+        this.umeInstructions = createEditor('#ume_instructions', this.config)
+        this.examVenue = createEditor('#exam-venue', this.config)
+        this.acceptanceFeeInstruction = createEditor('#acceptance-fee', this.config)
+        this.uploadInstruction = createEditor('#upload-instructions', this.config)
+        this.schoolFeesInstruction = createEditor('#fees-instructions', this.config)
 
         const vm = this;
         $(document).ready(function() {
