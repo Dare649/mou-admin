@@ -207,7 +207,7 @@
                                         <td colspan="4">No records. Please insert a record</td>
                                     </tr>
                                       <tr v-for="state in states" :key="state.id">
-                                          <td>{{state.country_id}}</td>
+                                          <td>{{state.country.name}}</td>
                                           <td>{{state.name}}</td>
                                           <td>{{state.code}}</td>
                                           <td>
@@ -378,7 +378,8 @@ export default {
             .dispatch('states/getStatesByCountryId', payload)
             .then(res => {
                 if(res != undefined){
-                    if(res.success == true){              
+                    if(res.success == true){  
+                        console.log(res.data.data)            
                         this.states = res.data.data
                         this.getloading = false
                         this.pagination = res.data

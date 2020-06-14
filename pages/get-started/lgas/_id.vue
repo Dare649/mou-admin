@@ -209,8 +209,8 @@
                                             <td colspan="4">No record at the moment</td>
                                         </tr>
                                         <tr v-for="lga in lgas" :key="lga.id">                               
-                                          <td>{{lga.country_id}}</td>       
-                                          <td>{{lga.state_id}}</td>
+                                          <td>{{lga.state.country.name}}</td>       
+                                          <td>{{lga.state.name}}</td>
                                           <td>{{lga.name}}</td>
                                           <td>{{lga.code}}</td>
                                           <td>
@@ -468,7 +468,8 @@ export default {
                 .dispatch('lgas/getLGAsByStateId', payload)
                 .then(res => {
                 if(res != undefined){
-                    if(res.success == true){              
+                    if(res.success == true){    
+                        console.log(res.data.data)          
                         this.lgas = res.data.data
                         this.getloading = false
                         this.pagination = res.data
