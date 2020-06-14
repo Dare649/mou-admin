@@ -55,8 +55,8 @@
                 <div class="row">
                     <form class="full-width">
                         <div class="col-lg-12 m-b-10">
-                            <select class="full-width" v-model="model.export_year" >
-                                <option value="" disabled selected>Jamb Result Year</option>
+                            <select class="form-control" v-model="model.export_year" >
+                                <option value="" selected>Jamb Result Year</option>
                                 <option value="2010">2010</option>
                                 <option value="2011">2011</option>
                                 <option value="2012">2012</option>
@@ -65,12 +65,12 @@
                                 <option value="2020">2020</option>
                             </select>
                         </div>
-                        <div class="col-lg-12 m-b-10">
+                        <!-- <div class="col-lg-12 m-b-10">
                             <select class="full-width" data-init-plugin="select2" >
                                 <option value="" disabled selected>Jamb Entry Mode</option>
                                 <option v-for="academicType in academicTypes" :key="academicType.id" value="academicTypes.id" >{{academicType.name}}</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="col-lg-12">
                              <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
                               <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
@@ -131,7 +131,7 @@
                             <input type="text" placeholder="Name" v-model="model.edit_name" class="form-control">
                         </div>
                         <div class="col-lg-6 m-b-10">
-                            <select class="full-width" v-model="model.edit_sex" data-init-plugin="select2">
+                            <select class="form-control" v-model="model.edit_sex">
                                 <option value="" disabled>Select your option</option>
                                 <option value="M">M</option>
                                 <option value="F">F</option>
@@ -170,18 +170,22 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header  ">
+                    <div class="card-header" style="margin-left:110px;">
                         <div class="card-title text-primary">Search JAMB Result</div>
                     </div>
-                    <div class="card-body">
-                        <form class="row" style="width: 100%">
-                            <!-- <div class="row"> -->
+                    <div class="card-body" style="margin-left:110px;">
+                        <form style="width: 100%">
+                            <div class="row">
                                 <div class="col-md-10">
-                                    <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Registration Number" required>
+                                    <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Enter Registration Number" required>
                                 </div>
-                                <!-- <div class="col-lg-6 m-b-10">
-                                    <select class="full-width" v-model="model.search_year" >
-                                        <option value="">Jamb Result Year</option>
+                                
+                            </div>
+                            &nbsp;
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <select class="form-control" v-model="model.search_year" >
+                                        <option value="" selected>Select Jamb Result Year</option>
                                         <option value="2010">2010</option>
                                         <option value="2011">2011</option>
                                         <option value="2012">2012</option>
@@ -190,14 +194,12 @@
                                         <option value="2020">2020</option>
                                         <option value="2021">2021</option>
                                     </select>
-                                </div> -->
-                            <!-- </div> -->
-                            <!-- <div class="row"> -->
+                                </div>
                                 <div class="col-md-2">
                                     <button v-if="!loading" type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
                                     <button v-if="loading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
                                 </div>
-                            <!-- </div> -->
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -292,13 +294,30 @@ export default {
           edit_year: "",
           jamb_entry_mode: "",
           search_registration_number: "",
-          search_year: 0,
-          export_year: 0,
+          search_year: "",
+          export_year: "",
           name: "",
           edit_registration_number: "",
           id: 0,
           edit_sex: "",
           edit_name: "",
+          edit_state_id: "",
+          edit_lga_id: "",
+          edit_university1:"",
+          edit_faculty_id1:"",
+          edit_faculty_id2:"",
+          edit_department_id1:"",
+          edit_university1:"",
+          edit_university2:"",
+          edit_department_id2:"",
+          edit_subject_id1:"",
+          edit_subject_id2:"",
+          edit_subject_id3:"",
+          edit_subject_id4:"",
+          edit_mark1:"",
+          edit_mark2:"",
+          edit_mark3:"",
+          edit_mark4:"",
           edit_phone_code: "",
           edit_country_id: 0
         },
@@ -309,6 +328,23 @@ export default {
           this.model.id = id
       },
       populateFields(jamb){
+          this.model.id = jamb.id
+          this.model.edit_state_id = jamb.state_id
+          this.model.edit_lga_id = jamb.lga_id
+          this.model.edit_university1 = jamb.university1
+          this.model.edit_university2 = jamb.university2
+          this.model.edit_faculty_id1 = jamb.faculty_id1
+          this.model.edit_faculty_id2 = jamb.faculty_id2
+          this.model.edit_department_id1 = jamb.department_id1
+          this.model.edit_department_id2 = jamb.department_id2
+          this.model.edit_subject_id1 = jamb.subject_id1
+          this.model.edit_subject_id2 = jamb.subject_id2
+          this.model.edit_subject_id3 = jamb.subject_id3
+          this.model.edit_subject_id4 = jamb.subject_id4
+          this.model.edit_mark1 = jamb.mark1
+          this.model.edit_mark2 = jamb.mark2
+          this.model.edit_mark3 = jamb.mark3
+          this.model.edit_mark4 = jamb.mark4
           this.model.edit_sex = jamb.sex
           this.model.edit_year = jamb.year
           this.model.edit_name = jamb.name
@@ -341,9 +377,26 @@ export default {
       },
       submitEditedJambResut(){
             this.editLoading = true
-            let bodyFormData = new FormData();
-            bodyFormData.name = this.model.edit_name
+            let bodyFormData = new Object();
+            bodyFormData.id = this.model.id
             bodyFormData.registration_number = this.model.edit_registration_number
+            bodyFormData.name = this.model.edit_name
+            bodyFormData.state_id = this.model.edit_state_id
+            bodyFormData.lga_id = this.model.edit_lga_id
+            bodyFormData.university1 = this.model.edit_university1
+            bodyFormData.faculty_id1 = this.model.edit_faculty_id1
+            bodyFormData.department_id1 = this.model.edit_department_id1
+            bodyFormData.university2 = this.model.edit_university2
+            bodyFormData.faculty_id2 = this.model.edit_faculty_id2
+            bodyFormData.department_id2 = this.model.edit_department_id2
+            bodyFormData.subject_id1 = this.model.edit_subject_id1
+            bodyFormData.mark1 = this.model.edit_mark1
+            bodyFormData.subject_id2 = this.model.edit_subject_id2
+            bodyFormData.mark2 = this.model.edit_mark2
+            bodyFormData.subject_id3 = this.model.edit_subject_id3
+            bodyFormData.mark3 = this.model.edit_mark3
+            bodyFormData.subject_id4 = this.model.edit_subject_id4
+            bodyFormData.mark4 = this.model.edit_mark4
             bodyFormData.sex = this.model.edit_sex
             bodyFormData.year = this.model.edit_year
             this.$store
@@ -370,27 +423,32 @@ export default {
       }, 
       search(){
         this.loading = true
+        this.getloading = true
         let payload = {}
         payload.year = this.model.search_year
         payload.registration_number = this.model.search_registration_number
           this.$store
-            .dispatch('get-started/searchJambResults', payload)
+            .dispatch('get-started/getJambResults', payload)
             .then(res => {
             if(res != undefined){
                 if(res.status == true){
                     this.loading = false
+                    this.getloading = false
                     this.jamb_results = res.data.data
                     this.pagination = res.data
                 }else{
                     this.loading = false
+                    this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
                 }
             }else{
                 this.loading = false
+                this.getloading = false
                 this.ErrMsg = "Error Fetching data!"
             }
         }).catch(err => {
-          this.loading = false
+            this.getloading = false
+            this.loading = false
         })
       },
       getAcademicTypes(){
@@ -415,7 +473,7 @@ export default {
       },
       refresh(){
           this.model.search_registration_number = ""
-          this.model.search_year = 0
+          this.model.search_year = ""
           this.getJambResults()
       },
       getJambResults(page){
@@ -469,27 +527,10 @@ export default {
           this.exportLoading = true
           let formData = new FormData();
           formData.year = this.model.export_year
-          //formData.year = this.model.year
           this.$store
             .dispatch('get-started/exportJambResults', formData)
             .then(res => {
             if(res != undefined){
-                this.loading = false
-                // var encodedUri = encodeURI(res);
-                // var link = document.createElement("a");
-                // link.setAttribute("href", encodedUri);
-                // link.setAttribute('download', 'jamb-results-'+ this.model.export_year +'.csv');
-                // document.body.appendChild(link); // Required for FF
-
-                //link.click();
-                var fileURL = window.URL.createObjectURL(new Blob([res], {type: 'application/json'}));
-                var fileLink = document.createElement('a');
-                fileLink.setAttribute("href", fileURL);
-                //fileLink.href = fileURL;
-                fileLink.setAttribute('download', 'jamb-results-'+ this.model.export_year +'.csv');
-                document.body.appendChild(fileLink);
-
-                fileLink.click();
                 this.exportLoading = false
                 $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
                 this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
@@ -512,18 +553,16 @@ export default {
             if(res != undefined){
                 if(res.success == true){
                     this.loading = false
-                    this.getJambResults()
+                    this.getJambResults(this.pagination.current_page)
                     $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    this.$toast.success("Records Updated Successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{
                 this.loading = false
-                console.log(res)
                 alert("File Upload Unsuccessful")
                 this.ErrMsg = "Error Logging in!"
             }
@@ -540,7 +579,7 @@ export default {
 
         document.head.appendChild(script1)
       }
-    this.getJambResults()
+    this.getJambResults(this.pagination.current_page)
     this.getAcademicTypes()
     }
 }

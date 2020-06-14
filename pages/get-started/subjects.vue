@@ -220,7 +220,7 @@
                                     <td colspan="4">Loading....Please wait.</td>
                                   </tr>
                                   <tr v-if="!getLoading && subjects.length < 1">
-                                    <td colspan="4">No record at the moment</td>
+                                    <td colspan="4">No record at the moment... Please insert new record</td>
                                   </tr>
                                   <tr v-else v-for="subject in subjects" :key="subject.id">
                                       <td>{{subject.name}}</td>
