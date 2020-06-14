@@ -395,7 +395,6 @@ export default {
             .dispatch('jamb-de/getJambResults', payload)
             .then(res => {
             if(res != undefined){
-                console.log(res)
                 if(res.status == true){
                     this.loading = false
                     this.de_results = res.data.data
@@ -527,13 +526,11 @@ export default {
                     this.$toast.success("Data uploaded successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{
                 this.loading = false
-                console.log(res)
                 alert("File Upload Unsuccessful")
                 this.ErrMsg = "Error Logging in!"
             }

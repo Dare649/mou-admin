@@ -563,7 +563,6 @@ export default {
                 }
             }else{
                 this.loading = false
-                console.log(res)
                 alert("File Upload Unsuccessful")
                 this.ErrMsg = "Error Logging in!"
             }

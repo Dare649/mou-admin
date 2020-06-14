@@ -704,7 +704,6 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            console.log(response)
             //handle success
             return response.data
         })
