@@ -7,7 +7,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
-                        <li class="breadcrumb-item active">UTME</li>
+                        <li class="breadcrumb-item active">Direct Entry</li>
                     </ol>
                 </div>
             </div>
@@ -46,9 +46,9 @@
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UME Exams</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Direct Entry Exams</h3>
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link to="/academic-session/utme/form/new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
+                            <nuxt-link to="/academic-session/direct-entry/form/new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New DE Exams</strong></nuxt-link>
                         </div>
                     </div>
                     <div class="card-body">
@@ -66,8 +66,8 @@
                                     <template v-if="sessions.length && !loading">
 
                                         <tr v-for="(session, index) in sessions" :key="index">
-                                            <td>{{ session.session_name }}</td>
-                                            <td>{{ numberFormat(session.putme_registration_fee) }}</td>
+                                            <td>{{ session.de_session_name }}</td>
+                                            <td>{{ numberFormat(session.de_reg_admin_fees) }}</td>
                                             <td>Admin</td>
                                             <td>{{ parseDate(session.createdAt, 'DD/MM/YYYY HH:mm:ss') }}</td>
                                             <td>
@@ -80,8 +80,8 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <nuxt-link :to="`/academic-session/utme/form/${session.id}`" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></nuxt-link>
-                                                    <nuxt-link :to="`/academic-session/utme/${session.id}`" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
+                                                    <nuxt-link :to="`/academic-session/direct-entry/form/${session.id}`" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></nuxt-link>
+                                                    <nuxt-link :to="`/academic-session/direct-entry/${session.id}`" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="View Record"><i class="fa fa-eye"></i></nuxt-link>
                                                 </div>
                                             </td>
                                         </tr>
@@ -128,14 +128,14 @@ export default {
     },
     methods: {
         getAcademicSessions(page) {
-            this.$axios.get(`api/putme-sessions?page=${page}`).then(res => {
-                this.sessions = res.data.data;
-                this.pagination = res.data;
+            this.$axios.get(`api/de-sessions?page=${page}`).then(res => {
+                this.sessions = res.data.data.data;
+                this.pagination = res.data.data;
                 this.loading = false;
             })
         },
         updateStatus(session, index, action) {
-            this.$axios.get(`api/putme-sessions/status/${session.id}?status=${action}`).then(res => {
+            this.$axios.get(`api/de-sessions/status/${session.id}?status=${action}`).then(res => {
                 if(res.data.status) {
                     if(action === 1) {
                         this.sessions[index].status = 0;

@@ -170,35 +170,31 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header" style="margin-left:110px;">
+                    <div class="card-header">
                         <div class="card-title text-primary">Search JAMB Result</div>
                     </div>
-                    <div class="card-body" style="margin-left:110px;">
+                    <div class="card-body">
                         <form style="width: 100%">
                             <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Enter Registration Number" required>
-                                </div>
-                                
-                            </div>
-                            &nbsp;
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="model.search_year" >
-                                        <option value="" selected>Select Jamb Result Year</option>
-                                        <option value="2010">2010</option>
-                                        <option value="2011">2011</option>
-                                        <option value="2012">2012</option>
-                                        <option value="2013">2013</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <button v-if="!loading" type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
-                                    <button v-if="loading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
-                                </div>
+                              <div class="col-md-5">
+                                  <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Enter Registration Number" required>
+                              </div>
+                              <div class="col-md-5">
+                                <select class="form-control" v-model="model.search_year" >
+                                  <option value="" selected>Select Jamb Result Year</option>
+                                  <option value="2010">2010</option>
+                                  <option value="2011">2011</option>
+                                  <option value="2012">2012</option>
+                                  <option value="2013">2013</option>
+                                  <option value="2019">2019</option>
+                                  <option value="2020">2020</option>
+                                  <option value="2021">2021</option>
+                                </select>
+                              </div>
+                              <div class="col-md-2">
+                                  <button v-if="!loading" type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
+                                  <button v-if="loading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
+                              </div>
                             </div>
                         </form>
                     </div>
@@ -420,7 +416,7 @@ export default {
             }).catch(err => {
                 this.loading = false
             })
-      }, 
+      },
       search(){
         this.loading = true
         this.getloading = true
@@ -472,9 +468,10 @@ export default {
         })
       },
       refresh(){
-          this.model.search_registration_number = ""
-          this.model.search_year = ""
-          this.getJambResults()
+        this.jamb_results = []
+        this.model.search_registration_number = ""
+        this.model.search_year = ""
+        this.getJambResults()
       },
       getJambResults(page){
         let payload = {}

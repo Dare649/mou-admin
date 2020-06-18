@@ -83,7 +83,13 @@ module.exports = {
     '@nuxtjs/auth',
     '@nuxtjs/toast',
     '@nuxtjs/moment',
-    // '@nuxtjs/bootstrap-vue'
+    [
+      'vue-sweetalert2/nuxt',
+      {
+        confirmButtonColor: '#41b882',
+        cancelButtonColor: '#ff7674'
+      }
+    ]
   ],
 
   bootstrapVue: {
