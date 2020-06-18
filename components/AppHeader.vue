@@ -33,7 +33,7 @@
         </div>
         <div class="bg-white">
             <div class="container p-l-0">
-                <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="-1">
+                <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="1">
                     <a href="#" class="btn-link toggle-sidebar d-lg-none pg pg-close" data-toggle="horizontal-menu">
                     </a>
                     <ul>

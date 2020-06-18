@@ -85,31 +85,31 @@
 </div>
 
 <!-- Delete Country Modal -->
-                <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="pg-close"></i>
-                    </button>
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
-                            </div>
-                            <div class="modal-body">
-                                <form class="full-width" @submit.prevent="deleteJambResult">
-                                    <div class="row">
-                                        <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
-                                        <div class="col-lg-12 m-t-10">
-                                            <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
-                                            <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
+          <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  <i class="pg-close"></i>
+              </button>
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
+                      </div>
+                      <div class="modal-body">
+                          <form class="full-width" @submit.prevent="deleteJambResult">
+                              <div class="row">
+                                  <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                                  <div class="col-lg-12 m-t-10">
+                                      <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                      <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+                  <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+          </div>
 
 <!-- Edit JAMB Result Modal -->
 <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
@@ -173,35 +173,31 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header" style="margin-left:110px;">
+                    <div class="card-header">
                         <div class="card-title text-primary">Search JAMB Result</div>
                     </div>
-                    <div class="card-body" style="margin-left:110px;">
+                    <div class="card-body">
                         <form style="width: 100%">
                             <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Enter Registration Number" required>
-                                </div>
-                                
-                            </div>
-                            &nbsp;
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <select class="form-control" v-model="model.search_year" >
-                                        <option value="" selected>Select Jamb Result Year</option>
-                                        <option value="2010">2010</option>
-                                        <option value="2011">2011</option>
-                                        <option value="2012">2012</option>
-                                        <option value="2013">2013</option>
-                                        <option value="2019">2019</option>
-                                        <option value="2020">2020</option>
-                                        <option value="2021">2021</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <button v-if="!loading" type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
-                                    <button v-if="loading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
-                                </div>
+                              <div class="col-md-5">
+                                  <input type="text" v-model="model.search_registration_number" class="form-control" placeholder="Enter Registration Number" required>
+                              </div>
+                              <div class="col-md-5">
+                                  <select class="form-control" v-model="model.search_year" >
+                                      <option value="" selected>Select Jamb Result Year</option>
+                                      <option value="2010">2010</option>
+                                      <option value="2011">2011</option>
+                                      <option value="2012">2012</option>
+                                      <option value="2013">2013</option>
+                                      <option value="2019">2019</option>
+                                      <option value="2020">2020</option>
+                                      <option value="2021">2021</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-2">
+                                  <button v-if="!loading" type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
+                                  <button v-if="loading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
+                              </div>
                             </div>
                         </form>
                     </div>
@@ -385,7 +381,7 @@ export default {
             }).catch(err => {
                 this.loading = false
             })
-      }, 
+      },
       search(){
         this.loading = true
         let payload = {}
@@ -432,9 +428,10 @@ export default {
         })
       },
       refresh(){
-          this.model.search_registration_number = ""
-          this.model.search_year = ""
-          this.getJambResults(1)
+        this.de_results = []
+        this.model.search_registration_number = ""
+        this.model.search_year = ""
+        this.getJambResults(1)
       },
       getJambResults(page){
         let payload = {}
