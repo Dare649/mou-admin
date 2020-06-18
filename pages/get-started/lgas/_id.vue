@@ -184,9 +184,9 @@
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">LGA Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <nuxt-link :to="'/get-started/states/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-                                  <button type="button" class="btn btn-primary btn-sm" data-target="#add_lga" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New LGA</strong></button>
-                                  <button type="button" class="btn btn-warning btn-sm" data-target="#upload_lga" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload LGAs</strong></button>
-                                  <button type="button" class="btn btn-success btn-sm" data-target="#export_lgas" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                                  <button v-permission="'Add lga'" type="button" class="btn btn-primary btn-sm" data-target="#add_lga" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New LGA</strong></button>
+                                  <button v-permission="'Upload lga'" type="button" class="btn btn-warning btn-sm" data-target="#upload_lga" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload LGAs</strong></button>
+                                  <button v-permission="'Export lga'" type="button" class="btn btn-success btn-sm" data-target="#export_lgas" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
                           </div>
@@ -205,8 +205,11 @@
                                           <tr v-if="getloading">
                                             <td colspan="4">Loading....Please wait.</td>
                                         </tr>
-                                        <tr v-if="!getloading && lgas.length < 1">
+                                        <tr v-if="!getloading && lgas.length < 1 && IsPermitted">
                                             <td colspan="4">No record at the moment</td>
+                                        </tr>
+                                        <tr v-if="!IsPermitted">
+                                            <td colspan="6" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                         </tr>
                                         <tr v-for="lga in lgas" :key="lga.id">                               
                                           <td>{{lga.state.country.name}}</td>       
@@ -215,10 +218,10 @@
                                           <td>{{lga.code}}</td>
                                           <td>
                                               <div class="btn-group">
-                                                  <span data-placement="top" @click="populateFields(lga)" data-toggle="tooltip" title="Edit Record">
+                                                  <span v-permission="'Edit lga'" data-placement="top" @click="populateFields(lga)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_lga"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                   </span>
-                                                  <span data-placement="top" @click="setId(lga.id)" data-toggle="tooltip" title="Delete Record">
+                                                  <span v-permission="'Delete lga'" data-placement="top" @click="setId(lga.id)" data-toggle="tooltip" title="Delete Record">
                                                     <a href="#delete_lga"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>              
                                                   </span>
                                               </div>
@@ -267,6 +270,7 @@ export default {
         loading: false,
         getloading: false,
         exportLoading: false,
+        IsPermitted: true,
         deleteLoading: false,
         editLoading: false,
         downloading: false,
@@ -459,31 +463,35 @@ export default {
         })
     },
     getLGAsByStateId(){
-        this.getloading = true
-        let stateId = (this.$route.params.id).split('_')[0]
-        let payload = {}
-        payload.current_page = this.pagination.current_page
-        payload.stateId = stateId
-            this.$store
-                .dispatch('lgas/getLGAsByStateId', payload)
-                .then(res => {
-                if(res != undefined){
-                    if(res.success == true){    
-                        console.log(res.data.data)          
-                        this.lgas = res.data.data
-                        this.getloading = false
-                        this.pagination = res.data
+        if(this.$laravel.hasPermission('View lga')){
+            this.getloading = true
+            let stateId = (this.$route.params.id).split('_')[0]
+            let payload = {}
+            payload.current_page = this.pagination.current_page
+            payload.stateId = stateId
+                this.$store
+                    .dispatch('lgas/getLGAsByStateId', payload)
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.success == true){             
+                            this.lgas = res.data.data
+                            this.getloading = false
+                            this.pagination = res.data
+                        }else{
+                            this.getloading = false
+                            this.ErrMsg = "Error Logging in!"
+                        }
                     }else{
                         this.getloading = false
                         this.ErrMsg = "Error Logging in!"
-                    }
-                }else{
-                    this.getloading = false
-                    this.ErrMsg = "Error Logging in!"
-                }      
-        }).catch(err => {
-            this.getloading = false
-        })
+                    }      
+            }).catch(err => {
+                this.getloading = false
+            })
+            }else{
+                this.IsPermitted = false
+                this.getLoading = false
+            }
     }
     },
     

@@ -46,9 +46,9 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Religion Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_religion" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Religion</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_religion" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Religions</strong></button>
-                            <button type="button" class="btn btn-success btn-sm" data-target="#export_religions" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                            <button type="button" v-permission="'Add religion'" class="btn btn-primary btn-sm" data-target="#add_religion" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Religion</strong></button>
+                            <button type="button" v-permission="'Upload religion'" class="btn btn-warning btn-sm" data-target="#upload_religion" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Religions</strong></button>
+                            <button type="button" v-permission="'Export religion'" class="btn btn-success btn-sm" data-target="#export_religions" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -64,8 +64,11 @@
                                     <tr v-if="getloading">
                                         <td colspan="4">Loading....Please wait.</td>
                                     </tr>
-                                    <tr v-if="!getloading && religions.length < 1">
+                                    <tr v-if="!getloading && religions.length < 1 && IsPermitted">
                                         <td colspan="4">No record at the moment</td>
+                                    </tr>
+                                    <tr v-if="!IsPermitted">
+                                        <td colspan="6" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                     </tr>
                                     <tr v-for="religion in religions" :key="religion.id">
                                         <td>{{religion.name}}</td>
@@ -75,10 +78,10 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <span data-placement="top" @click="populateFields(religion)" data-toggle="tooltip" title="Edit Record">
+                                                <span data-placement="top" v-permission="'Edit religion'" @click="populateFields(religion)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                 </span>
-                                                <span data-placement="top" @click="setId(religion.id)" data-toggle="tooltip" title="Delete Record">
+                                                <span data-placement="top" v-permission="'Delete religion'" @click="setId(religion.id)" data-toggle="tooltip" title="Delete Record">
                                                     <a href="#delete_religion"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                 </span>
                                             </div>
@@ -281,6 +284,7 @@ export default {
         editLoading: false,
         exportLoading: false,
         religions: [],
+        IsPermitted: true,
         file: "",
         model: {
           name: "",
@@ -466,26 +470,31 @@ export default {
             })
         },
         getReligions(page){
-            this.getloading = true
-            this.$store
-            .dispatch('get-started/getReligions', page)
-            .then(res => {
-            if(res != undefined){
-                if(res.status == true){
+            if(this.$laravel.hasPermission('View religion')){
+                this.getloading = true
+                this.$store
+                    .dispatch('get-started/getReligions', page)
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.status == true){
+                            this.getloading = false
+                            this.religions = res.data.data
+                            this.pagination = res.data
+                        }else{
+                            this.getloading = false
+                            this.ErrMsg = "Error Fetching data!"
+                        }
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                    }).catch(err => {
                     this.getloading = false
-                    this.religions = res.data.data
-                    this.pagination = res.data
-                }else{
-                    this.getloading = false
-                    this.ErrMsg = "Error Fetching data!"
-                }
+                })
             }else{
-                this.getloading = false
-                this.ErrMsg = "Error Fetching data!"
+                this.IsPermitted = false
+                this.getLoading = false
             }
-            }).catch(err => {
-            this.getloading = false
-            })
         },
     }
 }

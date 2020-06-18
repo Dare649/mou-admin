@@ -166,9 +166,9 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Program Management</h3>
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link :to="'/get-started/departments/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Program</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_programs" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
-                            <button type="button" class="btn btn-success btn-sm" data-target="#export_programs" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                            <button v-permission="'Add programme'" type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Program</strong></button>
+                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_programs" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
+                            <button v-permission="'Export programme'" type="button" class="btn btn-success btn-sm" data-target="#export_programs" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -187,8 +187,11 @@
                                   <tr v-if="getLoading">
                                     <td colspan="6">Loading....Please wait.</td>
                                   </tr>
-                                  <tr v-if="!getLoading && programs.length < 1">
+                                  <tr v-if="!getLoading && programs.length < 1 && IsPermitted">
                                     <td colspan="6">No record at the moment</td>
+                                  </tr>
+                                  <tr v-if="!IsPermitted">
+                                    <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                   </tr>
                                   <tr v-for="program in programs" :key="program.id">
                                       <td>{{program.department.name}}</td>
@@ -200,10 +203,10 @@
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                              <span data-placement="top"  data-toggle="tooltip" title="Edit Record">
+                                              <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
                                                   <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
-                                              <span data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                              <span v-permission="'Delete programme'" data-placement="top" data-toggle="tooltip" title="Delete Record">
                                                   <a href="#delete_department" @click="setId(program.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                               </span>
                                           </div>
@@ -313,6 +316,7 @@ export default {
       return {
         getLoading: true,
         loading: false,
+        IsPermitted: true,
         downloading: false,
         exportLoading: false,
         deleteLoading: false,
@@ -351,7 +355,13 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getProgramsByDepartmentId()
+        if(this.$laravel.hasPermission('View programme')){
+            this.getProgramsByDepartmentId(this.pagination.current_page)
+        }else{
+            this.IsPermitted = false
+            this.getLoading = false
+        }
+        
         this.routeId = (this.$route.params.id).split("_")[0]
     },
 
@@ -534,6 +544,7 @@ export default {
             })
         },
         getProgramsByDepartmentId(page) {
+            if(this.$laravel.hasPermission('View programme')){
             let departmentId = (this.$route.params.id).split("_")[1]
             let payload = {}
             payload.page = page
@@ -557,6 +568,10 @@ export default {
                 }).catch(err => {
                     this.getLoading = false
                 })
+                }else{
+                    this.IsPermitted = false
+                    this.getLoading = false
+                }
             },
     }
 }

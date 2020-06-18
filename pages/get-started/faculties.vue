@@ -13,7 +13,6 @@
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
-
             <!-- START JUMBOTRON -->
             <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
@@ -76,9 +75,9 @@
                     <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Faculty Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_o_faculty" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Faculty</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_o_faculty" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Faculty</strong></button>
-                            <button type="button" class="btn btn-success btn-sm" data-target="#export_faculties" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                            <button v-permission="'Add New Faculty'" type="button" class="btn btn-primary btn-sm" data-target="#add_o_faculty" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Faculty</strong></button>
+                            <button v-permission="'Upload faculty'" type="button" class="btn btn-warning btn-sm" data-target="#upload_o_faculty" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Faculty</strong></button>
+                            <button v-permission="'Export faculty'" type="button" class="btn btn-success btn-sm" data-target="#export_faculties" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -95,8 +94,11 @@
                                   <tr v-if="getloading">
                                     <td colspan="4">Loading....Please wait.</td>
                                   </tr>
-                                  <tr v-if="!getloading && faculties.length < 1">
+                                  <tr v-if="!getloading && faculties.length < 1 && IsPermitted">
                                     <td colspan="4">No record at the moment</td>
+                                  </tr>
+                                  <tr v-if="!IsPermitted">
+                                    <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                   </tr>
                                   <tr v-else v-for="faculty in faculties" :key="faculty.id">
                                       <td>{{faculty.prefix}}</td>
@@ -107,13 +109,13 @@
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                              <span data-placement="top" data-toggle="tooltip" title="Link to Department">
+                                              <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Department">
                                                   <nuxt-link :to="'/get-started/departments/' + faculty.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                               </span>
-                                              <span data-placement="top" @click="populateFields(faculty)" data-toggle="tooltip" title="Edit Record">
+                                              <span v-permission="'Edit faculty'"  data-placement="top" @click="populateFields(faculty)" data-toggle="tooltip" title="Edit Record">
                                                   <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
-                                              <span data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
+                                              <span v-permission="'Delete faculty'" data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
                                                   <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                               </span>
                                           </div>
@@ -199,12 +201,14 @@
                         </form>
                     </div>
                 </div>
+                
                 <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
+            
         </div>
-
-        <faculty-form></faculty-form>
+        
+        <faculty-form v-permission="'Add New Faculty'"></faculty-form>
         <upload-faculty></upload-faculty>
     </div>
 </template>
@@ -227,6 +231,7 @@ export default {
         addloading: false,
         downloading: false,
         loading: false,
+        IsPermitted: true,
         pagination: {
             total: 0,
             per_page: 2,
@@ -249,6 +254,9 @@ export default {
       }
     },
     methods: {
+        alert(){
+            alert("Am here")
+        },
         exportFaculties(){
             this.exportLoading = true
             this.$store
@@ -341,25 +349,30 @@ export default {
           this.model.edit_status = faculty.status
         },
         getFaculties(page){
-            this.$store
-                .dispatch('get-started/getFaculties', page)
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.getloading = false
-                        this.faculties = res.data.data
-                        this.pagination = res.data
+            if(this.$laravel.hasPermission('View faculty')){
+                this.$store
+                    .dispatch('get-started/getFaculties', page)
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.status == true){
+                            this.getloading = false
+                            this.faculties = res.data.data
+                            this.pagination = res.data
+                        }else{
+                            this.getloading = false
+                            this.ErrMsg = "Error Fetching data!"
+                        }
                     }else{
                         this.getloading = false
                         this.ErrMsg = "Error Fetching data!"
                     }
-                }else{
+                }).catch(err => {
                     this.getloading = false
-                    this.ErrMsg = "Error Fetching data!"
-                }
-            }).catch(err => {
+                })
+            }else{
+                this.IsPermitted = false
                 this.getloading = false
-            })
+            }
         },
     },
     mounted: function() {
@@ -369,7 +382,13 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getFaculties(this.pagination.current_page)
+        if(this.$laravel.hasPermission('View faculty')){
+            this.getFaculties(this.pagination.current_page)
+        }else{
+            this.IsPermitted = false
+            this.getloading = false
+        }
+        
     }
 }
 </script>

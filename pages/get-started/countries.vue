@@ -197,10 +197,10 @@
                           <div class="card-header">
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">Country Management</h3>
                               <div class="pull-right sm-pull-reset">
-                                  <button type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                                  <button type="button" class="btn btn-primary btn-sm" data-target="#add_country" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
-                                  <button type="button" class="btn btn-warning btn-sm" data-target="#upload_country" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
-                                  <button type="button" class="btn btn-success btn-sm" data-target="#export_countries" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                                  <button v-permission="'View country'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                                  <button v-permission="'Add country'" type="button" class="btn btn-primary btn-sm" data-target="#add_country" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Country</strong></button>
+                                  <button v-permission="'Upload country'" type="button" class="btn btn-warning btn-sm" data-target="#upload_country" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Countries</strong></button>
+                                  <button v-permission="'Export country'" type="button" class="btn btn-success btn-sm" data-target="#export_countries" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
                           </div>
@@ -225,8 +225,11 @@
                                         <tr v-if="getLoading">
                                           <td colspan="6">Loading....Please wait</td>
                                         </tr>
-                                        <tr v-if="!getLoading && countries.length < 1">
+                                        <tr v-if="!getLoading && countries.length < 1 && IsPermitted">
                                           <td colspan="6">No records. Please insert a record</td>
+                                        </tr>
+                                         <tr v-if="!IsPermitted">
+                                            <td colspan="6" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                         </tr>
                                         <tr :key="country.id" :id="country.id" v-for="country in countries">
                                             <td>{{country.iso2}}</td>
@@ -236,13 +239,13 @@
                                             <td>{{country.currency}}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <span data-placement="top" data-toggle="tooltip" title="Link to States">
+                                                    <span v-permission="'View state'" data-placement="top" data-toggle="tooltip" title="Link to States">
                                                       <nuxt-link :to="'/get-started/states/' + country.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                                     </span>
-                                                    <span data-placement="top" @click="populateFields(country)" data-toggle="tooltip" title="Edit Record">
+                                                    <span v-permission="'Edit country'" data-placement="top" @click="populateFields(country)" data-toggle="tooltip" title="Edit Record">
                                                           <a href="#edit_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                     </span>
-                                                    <span data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
+                                                    <span v-permission="'Delete country'" data-placement="top" @click="setId(country.id)" data-toggle="tooltip" title="Delete Record">
                                                         <a href="#delete_country"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                     </span>
                                                 </div>
@@ -288,6 +291,7 @@ export default {
           current_page: 1
         },
         getLoading: true,
+        IsPermitted: true,
         addloading: false,
         downloading: false,
         getloading: false,
@@ -471,6 +475,7 @@ export default {
         })
       },
       getCountries(page){
+        if(this.$laravel.hasPermission('View country')){
         this.getloading = true
         this.$store
         .dispatch('get-started/getCountries', page)
@@ -491,7 +496,11 @@ export default {
         }).catch(err => {
           this.getloading = false
         })
-      },
+        }else{
+            this.IsPermitted = false
+            this.getLoading = false
+        }
+    },
       createCountry(){
         this.loading = true
         let bodyFormData = new FormData();

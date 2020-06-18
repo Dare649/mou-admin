@@ -547,8 +547,8 @@ export default {
 
         document.head.appendChild(script1)
       }
-    this.getJambResults(this.pagination.current_page)
-    this.getAcademicTypes()
+    this.getJambResults(1)
+    //this.getAcademicTypes()
     }
 }
 </script>

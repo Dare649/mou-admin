@@ -579,7 +579,7 @@ export default {
 
         document.head.appendChild(script1)
       }
-    this.getJambResults(this.pagination.current_page)
+    this.getJambResults(1)
     this.getAcademicTypes()
     }
 }

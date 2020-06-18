@@ -23,6 +23,7 @@
     "@nuxtjs/toast": "^3.3.0",
     "cross-env": "^5.2.0",
     "file-saver": "^2.0.2",
+    "laravel-permissions": "^1.5.3",
     "moment": "^2.26.0",
     "nuxt": "^2.4.0",
     "qs": "^6.9.4",
