@@ -184,9 +184,9 @@
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">State Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <nuxt-link to="/get-started/countries"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-                                  <button type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New State</strong></button>
-                                  <button type="button" class="btn btn-warning btn-sm" data-target="#upload_state" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload States</strong></button>
-                                  <button type="button" class="btn btn-success btn-sm" data-target="#export_states" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                                  <button v-permission="'Add state'" type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New State</strong></button>
+                                  <button v-permission="'Upload state'" type="button" class="btn btn-warning btn-sm" data-target="#upload_state" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload States</strong></button>
+                                  <button v-permission="'Export state'" type="button" class="btn btn-success btn-sm" data-target="#export_states" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
                           </div>
@@ -203,8 +203,11 @@
                                       <tr v-if="getloading">
                                         <td colspan="4">Loading....Please wait.</td>
                                     </tr>
-                                    <tr v-if="!getloading && states.length < 1">
+                                    <tr v-if="!getloading && states.length < 1 && IsPermitted">
                                         <td colspan="4">No records. Please insert a record</td>
+                                    </tr>
+                                    <tr v-if="!IsPermitted">
+                                        <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                     </tr>
                                       <tr v-for="state in states" :key="state.id">
                                           <td>{{state.country.name}}</td>
@@ -212,13 +215,13 @@
                                           <td>{{state.code}}</td>
                                           <td>
                                               <div class="btn-group">
-                                                  <span data-placement="top" data-toggle="tooltip" title="Link to LGAs">
+                                                  <span v-permission="'View lga'" data-placement="top" data-toggle="tooltip" title="Link to LGAs">
                                                     <nuxt-link :to="'/get-started/lgas/' + state.id +'_'+state.country_id"> <button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                                   </span>
-                                                  <span data-placement="top" @click="populateFields(state)" data-toggle="tooltip" title="Edit Record">
+                                                  <span v-permission="'Edit state'" data-placement="top" @click="populateFields(state)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                   </span>
-                                                  <span data-placement="top" @click="setId(state.id)" data-toggle="tooltip" title="Delete Record">
+                                                  <span v-permission="'Delete state'" data-placement="top" @click="setId(state.id)" data-toggle="tooltip" title="Delete Record">
                                                     <a href="#delete_state"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                   </span>
                                               </div>
@@ -261,6 +264,7 @@ export default {
           current_page: 1
         },
         getloading: false,
+        IsPermitted: true,
         loading: false,
         downloading: false,
         exportLoading: false,
@@ -369,31 +373,42 @@ export default {
         })
     },
     getStatesByCountryId() {
-      this.getloading = true
-      let payload = {}
-      let countryId = this.$route.params.id
-      payload.countryId = countryId
-      payload.current_page = this.pagination.current_page
-      this.$store
-            .dispatch('states/getStatesByCountryId', payload)
-            .then(res => {
-                if(res != undefined){
-                    if(res.success == true){  
-                        console.log(res.data.data)            
-                        this.states = res.data.data
-                        this.getloading = false
-                        this.pagination = res.data
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Logging in!"
-                    }
-                }else{
-                    this.getloading = false
-                    this.ErrMsg = "Error Logging in!"
-                }
-        }).catch(err => {
-          this.getloading = false
-        })
+        if(this.$laravel.hasPermission('View state')){
+            this.getloading = true
+            let payload = {}
+            let countryId = this.$route.params.id
+            payload.countryId = countryId
+            payload.current_page = this.pagination.current_page
+            this.$store
+                    .dispatch('states/getStatesByCountryId', payload)
+                    .then(res => {
+                        if(res != undefined){
+                            if(res.success == true){  
+                                console.log(res.data.data)            
+                                this.states = res.data.data
+                                this.getloading = false
+                                this.pagination = res.data
+                            }else{
+                                this.getloading = false
+                                this.ErrMsg = "Error Logging in!"
+                            }
+                        }else{
+                            this.getloading = false
+                            this.ErrMsg = "Error Logging in!"
+                        }
+                }).catch(err => {
+                this.getloading = false
+                })
+        }else{
+            this.IsPermitted = false
+            this.getloading = false
+             this.$router.push(
+                decodeURIComponent(
+                  this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+        }
     },
     exportStates(){
         this.exportLoading = true

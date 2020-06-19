@@ -56,6 +56,5 @@ export default function({ app }) {
       })
     }
   }
-
   app.$auth.redirect = redirect.bind(app.$auth)
 }

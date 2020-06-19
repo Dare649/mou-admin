@@ -25,6 +25,19 @@ export default {
       
     }
   },
+  mounted: function(){
+    this.setPermissions()
+    this.setRoles()
+  
+  },
+  methods:{
+    setPermissions(){
+      this.$laravel.setPermissions(this.$auth.user.permissions);
+    },
+    setRoles(){
+      this.$laravel.setRoles(this.$auth.user.roles);
+    }
+  },
   created: function() {}
 };
 </script>

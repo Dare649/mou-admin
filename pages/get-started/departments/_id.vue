@@ -16,7 +16,7 @@
             <!-- END BREADCRUMBS -->
 
             <!-- Add Faculty Modal -->
-      <div class="modal fade SlideUp" id="add_department" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade SlideUp" v-permission="'Add department'" id="add_department" tabindex="-1" role="dialog" aria-hidden="true">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               <i class="pg-close"></i>
           </button>
@@ -165,9 +165,9 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Department Management</h3>
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link to="/get-started/faculties"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Department</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_departments" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Departments</strong></button>
-                            <button type="button" class="btn btn-success btn-sm" data-target="#export_departments" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                            <button v-permission="'Add department'" type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Department</strong></button>
+                            <button v-permission="'Upload department'" type="button" class="btn btn-warning btn-sm" data-target="#upload_departments" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Departments</strong></button>
+                            <button v-permission="'Export department'" type="button" class="btn btn-success btn-sm" data-target="#export_departments" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -187,8 +187,11 @@
                                   <tr v-if="getLoading">
                                     <td colspan="6">Loading....Please wait.</td>
                                   </tr>
-                                  <tr v-if="!getLoading && departments.length < 1">
+                                  <tr v-if="!getLoading && departments.length < 1 && IsPermitted">
                                     <td colspan="6">No record at the moment</td>
+                                  </tr>
+                                  <tr v-if="!IsPermitted">
+                                    <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                   </tr>
                                   <tr v-for="department in departments" :key="department.id">
                                     <td>{{department.prefix}}</td>
@@ -201,13 +204,13 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <span data-placement="top" data-toggle="tooltip" title="Link to Programs">
+                                            <span v-permission="'View programme'" data-placement="top" data-toggle="tooltip" title="Link to Programs">
                                                 <nuxt-link :to="'/get-started/programs/' + department.faculty_id +'_'+ department.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                             </span>
-                                            <span data-placement="top"  data-toggle="tooltip" title="Edit Record">
+                                            <span v-permission="'Edit department'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
                                                 <a href="#edit_department" @click="populateFields(department)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             </span>
-                                            <span data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                            <span v-permission="'Delete department'" data-placement="top" data-toggle="tooltip" title="Delete Record">
                                                 <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                             </span>
                                         </div>
@@ -326,6 +329,7 @@ export default {
         deleteLoading: false,
         editLoading: false,
         departments: [],
+        IsPermitted: true,
         pagination: {
             total: 0,
             per_page: 2,
@@ -356,7 +360,19 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getDepartmentsByFacultyId()
+        if(this.$laravel.hasPermission('View departments')){
+            this.getDepartmentsByFacultyId(this.pagination.current_page)
+        }else{
+            this.IsPermitted = false
+            this.getLoading = false
+            this.$router.push(
+                decodeURIComponent(
+                  this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+        }
+        
     },
 
     methods:{
@@ -537,6 +553,7 @@ export default {
             })
         },
         getDepartmentsByFacultyId(page) {
+            if(this.$laravel.hasPermission('View departments')){
             let facultyId = this.$route.params.id
             let payload = {}
             payload.facultyId = facultyId
@@ -560,6 +577,11 @@ export default {
                 }).catch(err => {
                     this.getLoading = false
                 })
+                }else{
+                    this.IsPermitted = false
+                    this.getLoading = false
+                }
+
             },
     }
 }

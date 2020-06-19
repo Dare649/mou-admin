@@ -148,7 +148,8 @@ module.exports = {
       {src: '~/plugins/libs.js', ssr: false},
       {src: '~/plugins/utils.js', ssr: false}
     ]
-	},
+  },
+  
 
   /*
   ** Build configuration

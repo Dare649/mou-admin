@@ -200,9 +200,9 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Subject Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#add_o_subject" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Subject</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#upload_subjects" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Subjects</strong></button>
-                            <button type="button" class="btn btn-success btn-sm" data-target="#export_subjects" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+                            <button v-permission="'Add subject'" type="button" class="btn btn-primary btn-sm" data-target="#add_o_subject" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Subject</strong></button>
+                            <button v-permission="'Upload subject'" type="button" class="btn btn-warning btn-sm" data-target="#upload_subjects" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Subjects</strong></button>
+                            <button v-permission="'Export subject'" type="button" class="btn btn-success btn-sm" data-target="#export_subjects" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -219,8 +219,11 @@
                                   <tr v-if="getLoading">
                                     <td colspan="4">Loading....Please wait.</td>
                                   </tr>
-                                  <tr v-if="!getLoading && subjects.length < 1">
+                                  <tr v-if="!getLoading && subjects.length < 1 && IsPermitted">
                                     <td colspan="4">No record at the moment... Please insert new record</td>
+                                  </tr>
+                                  <tr v-if="!IsPermitted">
+                                    <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                   </tr>
                                   <tr v-else v-for="subject in subjects" :key="subject.id">
                                       <td>{{subject.name}}</td>
@@ -231,10 +234,10 @@
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                              <span data-placement="top" @click="populateFields(subject)" data-toggle="tooltip" title="Edit Record">
+                                              <span v-permission="'Edit subject'" data-placement="top" @click="populateFields(subject)" data-toggle="tooltip" title="Edit Record">
                                                   <a href="#edit_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
-                                              <span data-placement="top" @click="setId(subject.id)" data-toggle="tooltip" title="Delete Record">
+                                              <span v-permission="'Delete subject'" data-placement="top" @click="setId(subject.id)" data-toggle="tooltip" title="Delete Record">
                                                   <a href="#delete_subject"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                               </span>
                                           </div>
@@ -277,6 +280,7 @@ export default {
             addloading: false,
             downloading: false,
             loading: false,
+            IsPermitted: true,
             deleteLoading: false,
             editLoading: false,
             getLoading: true,
@@ -471,6 +475,7 @@ export default {
             })
         },
         getSubjects(page){
+            if(this.$laravel.hasPermission('View subject')){
             this.$store
                 .dispatch('get-started/getSubjects', page)
                 .then(res => {
@@ -491,6 +496,16 @@ export default {
             }).catch(err => {
                 this.getLoading = false
             })
+            }else{
+                this.IsPermitted = false
+                this.getLoading = false
+                this.$router.push(
+                decodeURIComponent(
+                    this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+            }
         }
     },
     mounted: function() {
@@ -500,7 +515,14 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getSubjects()
+        this.getSubjects(this.pagination.current_page)
+        
+        // if(this.$laravel.hasPermission('View subject')){
+            
+        // }else{
+        //     this.IsPermitted = false
+        //     this.getLoading = false
+        // }
     }
 }
 </script>

@@ -5,6 +5,8 @@ import DatePicker from 'vue2-datepicker';
 import Vueditor from 'vueditor'
 import { ValidationProvider, extend, ValidationObserver } from "vee-validate";
 import { required, email } from 'vee-validate/dist/rules';
+import LaravelPermissions from 'laravel-permissions';
+
 import Select2 from 'v-select2-component';
 import 'sweetalert2/dist/sweetalert2.min.css';
 // Add the required rule
@@ -32,7 +34,7 @@ let config = {
 };
 
 Vue.use(Vueditor, config);
-
+Vue.use(LaravelPermissions, { persistent: true });
 Vue.use(DatePicker);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);

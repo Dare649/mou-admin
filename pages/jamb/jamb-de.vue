@@ -111,6 +111,67 @@
               <!-- /.modal-dialog -->
           </div>
 
+          <div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+    </button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
+            </div>
+            <div class="modal-body jamb_view">
+                <h5 >{{show_candidate_name}}</h5>
+                <ul class="info">
+                    <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
+                    <li><small>Year:</small> <span>{{show_year}}</span></li>
+                    <li><small>Gender:</small> <span>{{show_gender}}</span></li>
+                    <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
+                    <li><small>State:</small> <span>{{show_state_id}}</span></li>
+                    <!-- <li><small>Country:</small> <span>{{show_country_id}}</span></li> -->
+                    <!-- <li><small>1st Choice Institution:</small> <span>{{show_university1}}</span></li>
+                    <li><small>2nd Choice Institution:</small> <span>{{show_university2}}</span></li> -->
+                    <!-- <li><small>1st Choice Faculty:</small> <span>{{show_faculty_id1}}</span></li>
+                    <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
+                    <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
+                    <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li> -->
+                    <li><small>Department:</small> <span>{{show_department_id}}</span></li>
+                    <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>  
+                    <div class="clearfix"></div>
+                </ul>
+                <!-- <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Mark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{show_subject_id1}}</td>
+                            <td>{{show_mark1}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{show_subject_id2}}</td>
+                            <td>{{show_mark2}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{show_subject_id3}}</td>
+                            <td>{{show_mark3}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{show_subject_id4}}</td>
+                            <td>{{show_mark4}}</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <!-- Edit JAMB Result Modal -->
 <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -172,7 +233,7 @@
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
-                <div class="card card-default">
+                <div class="card card-default" v-permission="'Search Jamb Result DE'">
                     <div class="card-header">
                         <div class="card-title text-primary">Search JAMB Result</div>
                     </div>
@@ -206,9 +267,9 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
-                            <button type="button" class="btn btn-warning btn-sm" data-target="#export_jamb_result" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
+                            <button v-permission="'View Jamb Result DE'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                            <button v-permission="'Import Jamb Result DE'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
+                            <button v-permission="'Export Jamb Result DE'" type="button" class="btn btn-warning btn-sm" data-target="#export_jamb_result" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -217,10 +278,10 @@
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                 <th style="width:20%">Reg Number</th>
-                                <th style="width:38%">Name</th>
-                                <th style="width:12%">Gender</th>
-                                <th style="width:18%">Result Year</th>
-                                <th style="width:12%">Action</th>
+                                <th style="width:36%">Name</th>
+                                <th style="width:10%">Gender</th>
+                                <th style="width:16%">Result Year</th>
+                                <th style="width:18%">Action</th>
                                 </thead>
                                 <tbody>
                                     <tr v-if="getloading">
@@ -236,10 +297,13 @@
                                         <td>{{de_result.year}}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <span data-placement="top" @click="populateFields(de_result)" data-toggle="tooltip" title="Edit Record">
+                                                <span v-permission="'View Jamb Result DE'" data-placement="top" @click="showDetails(de_result)" data-toggle="tooltip" title="View Result">
+                                                    <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                                                </span>
+                                                <span v-permission="'Edit Jamb Result DE'" data-placement="top" @click="populateFields(de_result)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                 </span>
-                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
+                                                <button v-permission="'Delete Jamb Result DE'" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -289,6 +353,14 @@ export default {
         de_results: [],
         academicTypes: [],
         file: "",
+        show_candidate_name: "",
+        show_registration_number: "",
+        show_course_name: "",
+        show_gender: "",
+        show_state_id: "",
+        show_lga_id: "",
+        show_department_id: "",
+        show_year: "",
         model: {
           edit_year: "",
           jamb_entry_mode: "",
@@ -311,6 +383,16 @@ export default {
   methods: {
       setId(id){
           this.model.id = id
+      },
+      showDetails(jamb){
+          this.show_state_id = jamb.state_id
+          this.show_lga_id = jamb.lga_id
+          this.show_course_name = jamb.course_name
+          this.show_department_id = jamb.department_id
+          this.show_gender = jamb.gender
+          this.show_year = jamb.year
+          this.show_candidate_name = jamb.candidate_name
+          this.show_registration_number = jamb.registration_number
       },
       populateFields(jamb){
           this.model.id = jamb.id
@@ -434,6 +516,7 @@ export default {
         this.getJambResults(1)
       },
       getJambResults(page){
+          if(this.$laravel.hasPermission('View Jamb Result DE')){
         let payload = {}
         payload.page = page
         payload.year = this.model.search_year
@@ -458,6 +541,16 @@ export default {
         }).catch(err => {
           this.getloading = false
         })
+        }else{
+                this.IsPermitted = false
+                this.getLoading = false
+                this.$router.push(
+                decodeURIComponent(
+                  this.$route.query.redirect || "/dashboard"
+                        )
+                    );
+                    this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+            }
       },
       downloadJambResultSampleFile(){
           this.downloading = true
@@ -544,12 +637,15 @@ export default {
 
         document.head.appendChild(script1)
       }
-    this.getJambResults(this.pagination.current_page)
-    this.getAcademicTypes()
+    this.getJambResults(1)
+    //this.getAcademicTypes()
     }
 }
 </script>
 <style scoped>
+ul.info {
+  list-style-type:square;
+}
 .breadcrumb {
     background-color: #ffffff !important;;
 }
