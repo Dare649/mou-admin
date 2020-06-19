@@ -1,6 +1,6 @@
 <template>
 
-        <div class="content sm-gutter">
+        <div class="content sm-gutter" >
         <!-- START BREADCRUMBS -->
             <div class="bg-white">
                 <div class="container p-l-5">
@@ -14,7 +14,7 @@
             <!-- END BREADCRUMBS -->
 
             <!-- START JUMBOTRON -->
-            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container">
+            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View PUTME Result Page'">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
                     <div class="inner">
                         <!-- START BREADCRUMB -->
@@ -42,7 +42,7 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-b-20">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" v-permission="'Download PUTME result csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
                                 <h3 class="text-primary no-margin p-b-10">Download Prefilled CSV File</h3>
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" v-permission:any="'Upload PUTME result|Download sample csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
                                 <h3 class="text-primary no-margin p-b-10">Upload Prefilled CSV File</h3>
@@ -126,8 +126,8 @@
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" @click="uploadPUTMEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
-                                                <button v-if="!downloading" @click="downloadPUTMESampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
+                                                <button v-permission="'Upload PUTME result'" type="button" @click="uploadPUTMEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
+                                                <button v-permission="'Download sample csv'" v-if="!downloading" @click="downloadPUTMESampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
                                                 <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                                 <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                             </div>
@@ -317,7 +317,7 @@ export default {
             })
       }
   },
-  mounted: function() {
+  mounted: function() {    
       if (!process.server) {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
@@ -325,8 +325,19 @@ export default {
 
         document.head.appendChild(script1)
       }
-      this.getFaculties()
-      this.getAcademicSessions()
+     
+      if(this.$laravel.hasPermission('View PUTME Result Page')){
+        this.getFaculties()
+        this.getAcademicSessions()
+      }else{
+          this.$router.push(
+                decodeURIComponent(
+                    this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+      }
+      
     }
 }
 </script>

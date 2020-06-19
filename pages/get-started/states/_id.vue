@@ -402,6 +402,12 @@ export default {
         }else{
             this.IsPermitted = false
             this.getloading = false
+             this.$router.push(
+                decodeURIComponent(
+                  this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
     },
     exportStates(){
