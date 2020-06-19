@@ -26,17 +26,16 @@ export default {
     }
   },
   mounted: function(){
-    console.log(this.$auth)
     this.setPermissions()
     this.setRoles()
   
   },
   methods:{
     setPermissions(){
-      this.$laravel.setPermissions(["View religion","Upload PUTME result","Download sample csv","View Jamb Result UTME","View Jamb Result DE","View DE Result Page","View PUTME Result Page","Edit religion","Delete religion", "Edit lga","Delete lga","View lga", "Add state", "Edit state","Add New Faculty", "Edit faculty", "View faculty", "View departments", "Add department", "View programme", "View subject", "View country", "View state"]);
+      this.$laravel.setPermissions(this.$auth.user.permissions);
     },
     setRoles(){
-      //this.$laravel.setRoles(this.$auth.user);
+      this.$laravel.setRoles(this.$auth.user.roles);
     }
   },
   created: function() {}

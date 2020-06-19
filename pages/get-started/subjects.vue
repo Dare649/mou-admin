@@ -515,13 +515,14 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
+        this.getSubjects(this.pagination.current_page)
         
-        if(this.$laravel.hasPermission('View subject')){
-            this.getSubjects(this.pagination.current_page)
-        }else{
-            this.IsPermitted = false
-            this.getLoading = false
-        }
+        // if(this.$laravel.hasPermission('View subject')){
+            
+        // }else{
+        //     this.IsPermitted = false
+        //     this.getLoading = false
+        // }
     }
 }
 </script>
