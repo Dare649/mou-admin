@@ -136,35 +136,9 @@
                     <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
                     <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li> -->
                     <li><small>Department:</small> <span>{{show_department_id}}</span></li>
-                    <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>  
+                    <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>
                     <div class="clearfix"></div>
                 </ul>
-                <!-- <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Mark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{show_subject_id1}}</td>
-                            <td>{{show_mark1}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id2}}</td>
-                            <td>{{show_mark2}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id3}}</td>
-                            <td>{{show_mark3}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id4}}</td>
-                            <td>{{show_mark4}}</td>
-                        </tr>
-                    </tbody>
-                </table> -->
             </div>
         </div>
         <!-- /.modal-content -->

@@ -22,7 +22,7 @@
                         <a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
                         <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
                         <a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a>
-                        <a href="#" @click="logout()" class="dropdown-item"><i class="pg-power"></i>Logout</a>
+                        <a href="javascript;" @click="logout()" class="dropdown-item"><i class="pg-power"></i>Logout</a>
                         <div class="dropdown-divider"></div>
                         <span v-if="$auth.user" class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
                     </div>
@@ -54,7 +54,12 @@
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="title">Personnel</span></a></li>
+                        <li class="">
+                          <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
+                          <ul class="">
+                              <li><nuxt-link to="/personnel">Admin Users</nuxt-link></li>
+                          </ul>
+                      </li>
                         <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">
