@@ -18,7 +18,7 @@
 .dropdown-menu>li, .dropdown-menu>.dropdown-item {
     line-height: 20px;
     color: #3f3f3f;
-    padding: 4px 8px 4px 16px;
+    padding: 0px 0px 0px 0px;
     border-radius: 3px;
     display: block;
     clear: both;

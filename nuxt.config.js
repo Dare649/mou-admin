@@ -129,7 +129,7 @@ module.exports = {
 						url: 'api/me',
             method: 'get',
             propertyName: 'data'
-					}
+          }
         },
         tokenRequired: true,
         tokenType: 'bearer',
