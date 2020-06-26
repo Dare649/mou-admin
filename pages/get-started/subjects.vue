@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- START PAGE CONTENT -->
         <!-- Upload Modal -->
         <div class="modal fade SlideUp" id="upload_subjects" tabindex="-1" role="dialog" aria-hidden="true">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -375,7 +376,9 @@ export default {
                     this.getSubjects()
                     this.loading = false
                     $('#add_o_subject').modal('hide').data( 'bs.modal', null )
-                    this.model = {}
+                    this.model.name = ""
+                    this.model.prefix = ""
+                    this.model.status = ""
                 }else{
                     this.loading = false
                     this.ErrMsg = "Error Creating Record!"
@@ -516,13 +519,6 @@ export default {
             document.head.appendChild(script1)
         }
         this.getSubjects(this.pagination.current_page)
-        
-        // if(this.$laravel.hasPermission('View subject')){
-            
-        // }else{
-        //     this.IsPermitted = false
-        //     this.getLoading = false
-        // }
     }
 }
 </script>
