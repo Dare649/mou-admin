@@ -22,20 +22,20 @@ export default {
   },
   data(){
     return {
-      
+      roles:[]
     }
   },
   mounted: function(){
     this.setPermissions()
     this.setRoles()
-  
+    
   },
   methods:{
     setPermissions(){
-      this.$laravel.setPermissions(this.$auth.user.permissions);
+      this.$laravel.setPermissions(this.$auth.user.user_permissions);
     },
     setRoles(){
-      this.$laravel.setRoles(this.$auth.user.roles);
+      this.$laravel.setRoles(this.$auth.user.user_roles);
     }
   },
   created: function() {}
