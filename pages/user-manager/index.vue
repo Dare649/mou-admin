@@ -72,7 +72,7 @@
                             </table>
                             <Pagination
                               v-bind:pagination="pagination"
-                              v-on:click.native="getSubjects(pagination.current_page)"
+                              v-on:click.native="getAllUsers(pagination.current_page)"
                               :offset="4">
                             </Pagination>
                         </div>

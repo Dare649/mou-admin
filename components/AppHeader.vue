@@ -106,8 +106,16 @@ export default {
         
     },
     methods: {
+        setPermissions(){
+            this.$laravel.setPermissions(this.$auth.user.user_permissions);
+        },
+        setRoles(){
+            this.$laravel.setRoles(this.$auth.user.user_roles);
+        },
         logout() {
             this.$toast.success('Logging out...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            this.setPermissions([])
+            this.setRoles([])
             this.$auth.logout()
         },
     }
