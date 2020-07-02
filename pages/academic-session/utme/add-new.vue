@@ -422,8 +422,8 @@ export default {
                     'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
                 ],
                 fontName: [
-                    {val: 'arial black'}, 
-                    {val: 'times new roman'}, 
+                    {val: 'arial black'},
+                    {val: 'times new roman'},
                     {val: 'Courier New'}
                 ],
                 fontSize: [
@@ -479,27 +479,28 @@ export default {
             this.formData.acceptance_fee_instructions = this.acceptanceFeeInstruction.getContent();
             this.formData.document_upload_instructions = this.uploadInstruction.getContent();
             this.formData.school_fees_instruction = this.schoolFeesInstruction.getContent();
-            
-            
+
+
             if(!form1Status || !form2Status || !form3Status) {
                 this.$toast.error('Incomplete form. Please make sure all required fields have been filled.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 return;
             }
 
             this.$axios.post('api/putme-sessions', this.formData).then(res => {
-                $('#submitForm').attr('disabled', false).html('Finish'); 
+                $('#submitForm').attr('disabled', false).html('Finish');
                 if(res.data.status) {
                     // reset forms
-                    this.$refs.step1.reset();               
-                    this.$refs.step2.reset();               
-                    this.$refs.step3.reset();   
+                    this.$refs.step1.reset();
+                    this.$refs.step2.reset();
+                    this.$refs.step3.reset();
                     // show notification
-                    this.$toast.success('Form submitted successfully.')
+                    this.$toast.success('Academic session was created successfully.')
+                    this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/utme"));
                 } else {
-                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});                    
+                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 }
             }).catch(err => {
-                $('#submitForm').attr('disabled', false).html('Finish'); 
+                $('#submitForm').attr('disabled', false).html('Finish');
                 this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
             });
         }

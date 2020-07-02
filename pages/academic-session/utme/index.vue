@@ -142,6 +142,7 @@ export default {
                     } else {
                         this.sessions[index].status = 1;
                     }
+                    this.getAcademicSessions()
                 }
             })
         }
