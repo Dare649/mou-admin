@@ -19,10 +19,10 @@
                     </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
-                        <a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
-                        <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
-                        <a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a>
-                        <a href="javascript:;" @click="logout($event)" class="dropdown-item"><i class="pg-power"></i>Logout</a>
+                        <span><a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a></span>
+                        <span><a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a></span>
+                        <span><a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a></span>
+                        <span @click="logout()"><nuxt-link to="/" class="dropdown-item"><i class="pg-power"></i>Logout</nuxt-link> </span>
                         <div class="dropdown-divider"></div>
                         <span v-if="$auth.user" class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
                     </div>
@@ -64,15 +64,15 @@
                         <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
-                                <li><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                                <li v-permission="'View Jamb Result UME'"><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
+                                <li v-permission="'View Jamb Result DE'"><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
                           <a href="javascript:;"><span class="title">Exams</span><span class=" arrow"></span></a>
                           <ul class="">
-                              <li><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
-                              <li><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
+                              <li v-permission="'View PUTME Result'"><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
+                              <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
                           </ul>
                         </li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>

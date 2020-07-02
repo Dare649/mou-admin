@@ -14,7 +14,7 @@
             <!-- END BREADCRUMBS -->
 
             <!-- START JUMBOTRON -->
-            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View DE Result Page'">
+            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View DE Result'">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
                     <div class="inner">
                         <!-- START BREADCRUMB -->
@@ -321,7 +321,7 @@ export default {
 
         document.head.appendChild(script1)
       }
-      if(!this.$laravel.hasPermission('View DE Result Page')){
+      if(!this.$laravel.hasPermission('View DE Result')){
         this.$router.push(
                 decodeURIComponent(
                     this.$route.query.redirect || "/dashboard"

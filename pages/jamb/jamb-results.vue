@@ -229,7 +229,7 @@
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
-                <div class="card card-default" v-permission="'Search Jamb Result UTME'">
+                <div class="card card-default" v-permission="'Search Jamb Result UME'">
                     <div class="card-header">
                         <div class="card-title text-primary">Search JAMB Result</div>
                     </div>
@@ -263,9 +263,9 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button v-permission="'View Jamb Result UTME'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                            <button v-permission="'Import Jamb Result UTME'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
-                            <button v-permission="'Export Jamb Result UTME'" type="button" class="btn btn-warning btn-sm" data-target="#export_jamb_result" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
+                            <button v-permission="'View Jamb Result UME'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                            <button v-permission="'Import Jamb Result UME'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
+                            <button v-permission="'Export Jamb Result UME'" type="button" class="btn btn-warning btn-sm" data-target="#export_jamb_result" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -293,13 +293,13 @@
                                         <td>{{jamb_result.year}}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <span v-permission="'View Jamb Result UTME'" data-placement="top" @click="showDetails(jamb_result)" data-toggle="tooltip" title="View Result">
+                                                <span v-permission="'View Jamb Result UME'" data-placement="top" @click="showDetails(jamb_result)" data-toggle="tooltip" title="View Result">
                                                     <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                                                 </span>
-                                                <span v-permission="'Edit Jamb Result UTME'" data-placement="top" @click="populateFields(jamb_result)" data-toggle="tooltip" title="Edit Record">
+                                                <span v-permission="'Edit Jamb Result UME'" data-placement="top" @click="populateFields(jamb_result)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                 </span>
-                                                <button v-permission="'Delete Jamb Result UTME'" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
+                                                <button v-permission="'Delete Jamb Result UME'" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -584,7 +584,7 @@ export default {
         this.getJambResults()
       },
       getJambResults(page){
-          if(this.$laravel.hasPermission('View Jamb Result UTME')){
+          if(this.$laravel.hasPermission('View Jamb Result UME')){
         let payload = {}
         payload.page = page
         payload.year = this.model.search_year
