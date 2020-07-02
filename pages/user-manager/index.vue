@@ -379,7 +379,7 @@ export default {
             this.updateLoading = true
             let bodyFormData = new FormData();
             bodyFormData.set('user_id', this.model.user_id)
-            for(var i=0; i<this.selectedPermissions.length; i++){
+            for(var i=0; i<this.selectedRoles.length; i++){
                 bodyFormData.append('roles[]', this.selectedRoles[i])
             }
             this.$store
