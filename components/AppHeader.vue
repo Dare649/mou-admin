@@ -22,7 +22,7 @@
                         <a href="#" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
                         <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
                         <a href="#" class="dropdown-item"><i class="fa fa-envelope"></i> Feedback</a>
-                        <a href="javascript;" @click="logout()" class="dropdown-item"><i class="pg-power"></i>Logout</a>
+                        <a href="javascript:;" @click="logout($event)" class="dropdown-item"><i class="pg-power"></i>Logout</a>
                         <div class="dropdown-divider"></div>
                         <span v-if="$auth.user" class="dropdown-item fs-12 hint-text">Last visited<br />on {{$moment($auth.user.updated_at).format('dddd, h:mm a')}}</span>
                     </div>
@@ -115,11 +115,12 @@ export default {
         setRoles(){
             this.$laravel.setRoles(this.$auth.user.user_roles);
         },
-        logout() {
-            this.$toast.success('Logging out...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-            this.setPermissions([])
-            this.setRoles([])
-            this.$auth.logout()
+        logout(e) {
+          e.preventDefault
+          this.$toast.success('Logging out...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+          this.setPermissions([])
+          this.setRoles([])
+          this.$auth.logout()
         },
     }
 }
