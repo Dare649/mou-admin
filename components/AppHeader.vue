@@ -64,15 +64,15 @@
                         <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
-                                <li><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                                <li v-permission="'View Jamb Result UME'"><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
+                                <li v-permission="'View Jamb Result DE'"><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
                           <a href="javascript:;"><span class="title">Exams</span><span class=" arrow"></span></a>
                           <ul class="">
-                              <li><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
-                              <li><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
+                              <li v-permission="'View PUTME Result'"><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
+                              <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
                           </ul>
                         </li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>

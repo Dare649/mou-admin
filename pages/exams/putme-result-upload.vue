@@ -14,7 +14,7 @@
             <!-- END BREADCRUMBS -->
 
             <!-- START JUMBOTRON -->
-            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View PUTME Result Page'">
+            <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View PUTME Result'">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
                     <div class="inner">
                         <!-- START BREADCRUMB -->
@@ -326,7 +326,7 @@ export default {
         document.head.appendChild(script1)
       }
      
-      if(this.$laravel.hasPermission('View PUTME Result Page')){
+      if(this.$laravel.hasPermission('View PUTME Result')){
         this.getFaculties()
         this.getAcademicSessions()
       }else{
