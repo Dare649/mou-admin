@@ -46,8 +46,6 @@
                                 <li v-permission="'View country'"><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li v-permission="'View religion'"><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/roles">Roles</nuxt-link></li>
-                                <!-- <li><nuxt-link to="/get-started/permissions">Permissions</nuxt-link></li> -->
-                                <li><nuxt-link to="/user-manager">Manage User</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
@@ -60,7 +58,7 @@
                         <li class="">
                           <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
                           <ul class="">
-                              <li><nuxt-link to="/personnel">Admin Users</nuxt-link></li>
+                              <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
                           </ul>
                       </li>
                         <li class="">
