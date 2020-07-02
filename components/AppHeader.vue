@@ -46,8 +46,6 @@
                                 <li v-permission="'View country'"><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li v-permission="'View religion'"><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
                                 <li><nuxt-link to="/get-started/roles">Roles</nuxt-link></li>
-                                <!-- <li><nuxt-link to="/get-started/permissions">Permissions</nuxt-link></li> -->
-                                <li><nuxt-link to="/user-manager">Manage User</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
@@ -57,19 +55,24 @@
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="title">Personnel</span></a></li>
+                        <li class="">
+                          <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
+                          <ul class="">
+                              <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
+                          </ul>
+                      </li>
                         <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li v-permission="'View Jamb Result UTME'"><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
-                                <li v-permission="'View Jamb Result DE'"><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
+                                <li><nuxt-link to="/jamb/jamb-results">JAMB Result UTME</nuxt-link></li>
+                                <li><nuxt-link to="/jamb/jamb-de">JAMB Direct Entry</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
                           <a href="javascript:;"><span class="title">Exams</span><span class=" arrow"></span></a>
                           <ul class="">
-                              <li v-permission="'View PUTME Result Page'"><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
-                              <li v-permission="'View DE Result Page'"><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
+                              <li><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
+                              <li><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
                           </ul>
                         </li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>
@@ -103,7 +106,7 @@
 <script>
 export default {
     mounted(){
-        
+
     },
     methods: {
         setPermissions(){

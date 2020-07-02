@@ -48,3 +48,8 @@
 .jamb_view ul li:last-child{
     border-right: none!important;
 }
+@media (min-width: 768px) {
+    .modal-dialog {
+        max-width: 80%;
+    }
+}
