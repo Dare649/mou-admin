@@ -242,7 +242,7 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View Jamb Result DE'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                            <button v-permission="'Import Jamb Result DE'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
+                            <button v-permission="'Import JAMB Result DE'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
                             <button v-permission="'Export Jamb Result DE'" type="button" class="btn btn-warning btn-sm" data-target="#export_jamb_result" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
                         </div>
                         <div class="clearfix"></div>
