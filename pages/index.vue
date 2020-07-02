@@ -115,7 +115,6 @@
         .dispatch('authentication/login', bodyFormData)
         .then(res => {
           if(res != undefined){
-            console.log(res)
             if(res.status == true){
             this.IsMessageSentSuccessfully = true
             this.loading = false
@@ -150,9 +149,6 @@
           } catch (e) {
             this.authloading = false;
             console.log(e)
-            //this.$toast.error("Server Error", { icon: "times" });
-            /* if(e.response.status === 401)
-                            this.error = true */
           }
 
       }
