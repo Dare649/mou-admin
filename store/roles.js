@@ -43,7 +43,7 @@ export const actions = {
     async updateUserRoles(context, requests) {
         return await this.$axios({
             method: 'post',
-            url: 'api/auth/role/assign-user',
+            url: 'api/auth/user/sync-roles',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -58,7 +58,7 @@ export const actions = {
     async updateUserPermissions(context, requests) {
         return await this.$axios({
             method: 'post',
-            url: 'api/auth/permissions/assign-user',
+            url: 'api/auth/user/sync-permissions',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
