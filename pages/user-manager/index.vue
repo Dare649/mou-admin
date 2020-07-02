@@ -379,8 +379,12 @@ export default {
             this.updateLoading = true
             let bodyFormData = new FormData();
             bodyFormData.set('user_id', this.model.user_id)
-            for(var i=0; i<this.selectedRoles.length; i++){
-                bodyFormData.append('roles[]', this.selectedRoles[i])
+            if(this.selectedRoles.length != 0){
+                for(var i=0; i<this.selectedRoles.length; i++){
+                    bodyFormData.append('roles[]', this.selectedRoles[i])
+                }
+            }else{
+                bodyFormData.append('roles[]', this.selectedRoles)
             }
             this.$store
                 .dispatch('roles/updateUserRoles', bodyFormData)
