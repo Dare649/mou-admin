@@ -72,7 +72,7 @@
                             </table>
                             <Pagination
                               v-bind:pagination="pagination"
-                              v-on:click.native="getSubjects(pagination.current_page)"
+                              v-on:click.native="getAllUsers(pagination.current_page)"
                               :offset="4">
                             </Pagination>
                         </div>
@@ -379,7 +379,9 @@ export default {
             this.updateLoading = true
             let bodyFormData = new FormData();
             bodyFormData.set('user_id', this.model.user_id)
-            bodyFormData.append('roles[]', this.selectedRoles)
+            for(var i=0; i<this.selectedPermissions.length; i++){
+                bodyFormData.append('roles[]', this.selectedRoles[i])
+            }
             this.$store
                 .dispatch('roles/updateUserRoles', bodyFormData)
                 .then(res => {
@@ -387,7 +389,6 @@ export default {
                     if(res.status == true){
                         this.populateRoleCheckboxes(this.user)
                         this.updateLoading = false
-                        this.model = {}
                     }else{
                         this.updateLoading = false
                         this.ErrMsg = "Error Creating Record!"
@@ -405,7 +406,9 @@ export default {
             this.updateLoading = true
             let bodyFormData = new FormData();
             bodyFormData.set('user_id', this.model.user_id)
-            bodyFormData.set('permissions', this.selectedPermissions[2])
+            for(var i=0; i<this.selectedPermissions.length; i++){
+                bodyFormData.append('permissions[]', this.selectedPermissions[i])
+            }
             this.$store
                 .dispatch('roles/updateUserPermissions', bodyFormData)
                 .then(res => {
@@ -413,7 +416,6 @@ export default {
                     if(res.status == true){
                         this.populatePermissionCheckboxes(this.user)
                         this.updateLoading = false
-                        this.model = {}
                     }else{
                         this.updateLoading = false
                         this.ErrMsg = "Error Creating Record!"
