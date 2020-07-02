@@ -744,6 +744,21 @@ export const actions = {
             return err
         });
     },
+    async getUserDetails(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/me',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },
     async updateDepartment(context, payload) {
         return await this.$axios({
             method: 'put',
@@ -934,7 +949,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/countries?page='+page,
-            headers: {'Content-Type': 'application/json' }
+            
         })
         .then(function (response) {
             return response.data

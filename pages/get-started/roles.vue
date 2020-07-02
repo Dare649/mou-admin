@@ -231,6 +231,31 @@ export default {
         }
     },
     methods: {
+        setPermissions(){
+            this.$laravel.setPermissions(this.$auth.user.user_permissions);
+        },
+        setRoles(){
+            this.$laravel.setRoles(this.$auth.user.user_roles);
+        },
+        autoUpdateUserDetails(){
+          this.$store
+              .dispatch('get-started/getUserDetails')
+              .then(res => {
+              if(res != undefined){
+                  if(res.status == true){
+                      this.$auth.setUser(res.data)
+                      this.setPermissions()
+                      this.setRoles()
+                  }else{
+                      this.ErrMsg = "Error Fetching data!"
+                  }
+              }else{
+                  this.ErrMsg = "Error Fetching data!"
+              }
+          }).catch(err => {
+          })
+        
+        },
         populatePermissionCheckboxes(role){
             this.selectedPermissions = []
             this.model.role_id = role.id
@@ -243,8 +268,12 @@ export default {
             this.updateLoading = true
             let bodyFormData = new FormData();
             bodyFormData.set('role_id', this.model.role_id)
-            for(var i=0; i<this.selectedPermissions.length; i++){
-                bodyFormData.append('permissions[]', this.selectedPermissions[i])
+            if(this.selectedPermissions.length != 0){
+                for(var i=0; i<this.selectedPermissions.length; i++){
+                    bodyFormData.append('permissions[]', this.selectedPermissions[i])
+            }
+            }else{
+                bodyFormData.append('permissions[]', this.selectedPermissions)
             }
             this.$store
             .dispatch('roles/updateRolePermissions', bodyFormData)
@@ -252,7 +281,10 @@ export default {
             if(res != undefined){
                 if(res.status == true){
                     this.populatePermissionCheckboxes(this.role)
+                    this.autoUpdateUserDetails()
+                    $('#manage_permission').modal('hide')
                     this.updateLoading = false
+                    location.reload()
                 }else{
                     this.updateLoading = false
                     this.ErrMsg = "Error Creating Record!"
