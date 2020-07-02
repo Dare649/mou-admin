@@ -17,6 +17,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async updateUser(context, data) {
+    return await this.$axios.post('api/users/update-user', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

@@ -202,7 +202,7 @@
                           <h5 class="text-left p-b-5"><span class="semi-bold">ADD NEW ADMIN USER</span></h5>
                       </div>
                       <div class="modal-body">
-                        <form @submit.prevent="createUser">
+                        <form @submit.prevent="submitUser">
                           <div class="row">
                               <div class="col-lg-6 m-b-10">
                                 <label>First name:</label>
@@ -228,7 +228,11 @@
                                 <label>Phone No:</label>
                                 <input type="text" placeholder="Phone Number" required="required" v-model="addData.phone" class="form-control">
                               </div>
-                              <div class="col-lg-6 m-b-10">
+                              <div class="col-lg-6 m-b-10" v-if="update">
+                                <label>Email address:</label>
+                                <input type="text" placeholder="Email Address" readonly required="required" v-model="addData.email" class="form-control">
+                              </div>
+                              <div class="col-lg-6 m-b-10" v-else>
                                 <label>Email address:</label>
                                 <input type="text" placeholder="Email Address" required="required" v-model="addData.email" class="form-control">
                               </div>
@@ -345,6 +349,7 @@ export default {
     data(){
         return {
             subjects: [],
+            update: false,
             permissions: [],
             currentUserSelected: "",
             updateLoading: false,
@@ -383,7 +388,8 @@ export default {
               nok_phone: '',
               nok_relationship: '',
               nok_address: '',
-              id: ''
+              id: '',
+              nok_id: ''
             },
             permis: {
               checked: false
@@ -416,6 +422,7 @@ export default {
         }
       },
       addPersonnel() {
+        this.update = false
         this.addData.first_name = ''
         this.addData.last_name = ''
         this.addData.email = ''
@@ -433,12 +440,12 @@ export default {
         this.addData.nok_phone = ''
         this.addData.nok_relationship = ''
         this.addData.nok_address = ''
+        this.addData.nok_id = ''
         $('#add_personnel').modal()
       },
       createUser() {
         $('#createUserBtn').attr('disabled', true).html('Adding Record....');
         this.addData.name = this.addData.first_name+' '+this.addData.last_name
-        console.log(this.addData)
         this.$store.dispatch('users/createUser', this.addData)
           .then(res =>{
             if(res.data.status) {
@@ -453,18 +460,39 @@ export default {
           })
       },
       editUserInfo() {
-
+        $('#createUserBtn').attr('disabled', true).html('Updating....');
+        this.addData.name = this.addData.first_name+' '+this.addData.last_name
+        this.$store.dispatch('users/updateUser', this.addData)
+          .then(res =>{
+            if(res.data.status) {
+              $('#createUserBtn').attr('disabled', false).html('Add Record');
+              this.$toast.success(res.data.message)
+              this.getAllUsers(this.pagination.current_page)
+              $('#add_personnel').modal('hide')
+              this.update = false
+            }
+          }).catch(err =>{
+            $('#createUserBtn').attr('disabled', false).html('Add Record');
+            this.$toast.error(err)
+          })
       },
       editUser(user) {
+        this.update = true
         this.addData.first_name = user.first_name
         this.addData.last_name = user.last_name
         this.addData.email = user.email
         this.addData.phone = user.phone
         this.addData.marital_status = user.marital_status,
-        // this.addData.gender = user.gender
+        this.addData.gender = user.gender
         this.addData.dob = user.dob
         this.addData.date_employed = user.date_employed
         this.addData.id = user.id
+        this.addData.nok_name = user.kin.name
+        this.addData.nok_email = user.kin.email
+        this.addData.nok_phone = user.kin.phone
+        this.addData.nok_relationship = user.kin.relationship
+        this.addData.nok_address = user.kin.address
+        this.addData.nok_id = user.kin.id
         $('#add_personnel').modal()
       },
       setUserName(user){
