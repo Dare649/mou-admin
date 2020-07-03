@@ -327,6 +327,7 @@
                           </div>
                       </div>
                       <div class="modal-footer">
+                          
                       </div>
                   </div>
                   <!-- /.modal-content -->
@@ -412,6 +413,31 @@ export default {
         }
     },
     methods: {
+        setPermissions(){
+            this.$laravel.setPermissions(this.$auth.user.user_permissions);
+        },
+        setRoles(){
+            this.$laravel.setRoles(this.$auth.user.user_roles);
+        },
+        autoUpdateUserDetails(){
+          this.$store
+              .dispatch('get-started/getUserDetails')
+              .then(res => {
+              if(res != undefined){
+                  if(res.status == true){
+                      this.$auth.setUser(res.data)
+                      this.setPermissions()
+                      this.setRoles()
+                  }else{
+                      this.ErrMsg = "Error Fetching data!"
+                  }
+              }else{
+                  this.ErrMsg = "Error Fetching data!"
+              }
+          }).catch(err => {
+          })
+        
+        },
       submitUser() {
         if(this.addData.id === '') {
           //create
@@ -566,7 +592,10 @@ export default {
               if(res != undefined){
                   if(res.status == true){
                       this.populateRoleCheckboxes(this.user)
+                      this.autoUpdateUserDetails()
+                      $('#manage_role').modal('hide')
                       this.updateLoading = false
+                      location.reload()
                   }else{
                       this.updateLoading = false
                       this.ErrMsg = "Error Creating Record!"
@@ -593,7 +622,10 @@ export default {
               if(res != undefined){
                   if(res.status == true){
                       this.populatePermissionCheckboxes(this.user)
+                      this.autoUpdateUserDetails()
+                      $('#manage_permission').modal('hide')
                       this.updateLoading = false
+                      location.reload()
                   }else{
                       this.updateLoading = false
                       this.ErrMsg = "Error Creating Record!"
