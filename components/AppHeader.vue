@@ -115,8 +115,7 @@ export default {
         setRoles(){
             this.$laravel.setRoles(this.$auth.user.user_roles);
         },
-        logout(e) {
-          e.preventDefault
+        logout() {
           this.$toast.success('Logging out...', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
           this.setPermissions([])
           this.setRoles([])
