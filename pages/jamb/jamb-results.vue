@@ -15,7 +15,7 @@
                     <div class="col-lg-12 m-b-10">
                         <select class="form-control" v-model="uploadData.session">
                           <option value="" selected>Select Academic Session</option>
-                          <option v-for="session in sessions" :value="session.id">{{ session.name }}</option>
+                          <option v-for="session in sessions" :value="session.id">{{ session.session_name }}</option>
                         </select>
                     </div>
                     <div class="col-lg-12 m-b-10">
@@ -234,7 +234,7 @@
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default" v-permission="'Search Jamb Result UME'">
                     <div class="card-header">
-                        <div class="card-title text-primary">Search JAMB Result</div>
+                        <div class="card-title text-primary">Search UTME JAMB Result</div>
                     </div>
                     <div class="card-body">
                         <form style="width: 100%">
@@ -264,7 +264,7 @@
                 </div>
                 <div class="card card-default">
                     <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">UTME JAMB Result</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View Jamb Result UME'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button v-permission="'Import Jamb Result UME'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
@@ -284,10 +284,10 @@
                                 </thead>
                                 <tbody>
                                     <tr v-if="getloading">
-                                        <td colspan="4">Loading....Please wait.</td>
+                                        <td colspan="5">Loading....Please wait.</td>
                                     </tr>
                                     <tr v-if="!getloading && jamb_results.length < 1">
-                                        <td colspan="4">No record at the moment</td>
+                                        <td colspan="5">No record at the moment</td>
                                     </tr>
                                     <tr v-for="jamb_result in jamb_results" :key="jamb_result.id">
                                         <td>{{jamb_result.registration_number}}</td>
@@ -672,7 +672,7 @@ export default {
         this.uploadData.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
         formData.append('file', this.uploadData.file);
-        formData.append('academic_session', this.uploadData.session)
+        formData.append('academic_session_id', this.uploadData.session)
           this.$store
             .dispatch('get-started/uploadJambResults', formData)
             .then(res => {
@@ -684,12 +684,12 @@ export default {
                     this.$toast.success("Records Updated Successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    alert("File Upload Unsuccessful")
+                    this.$toast.error('An error occurred:' + res.data.message)
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{
                 this.loading = false
-                alert("File Upload Unsuccessful")
+                this.$toast.error('An error occurred please contact the administrator')
                 this.ErrMsg = "Error Logging in!"
             }
         }).catch(err => {
@@ -699,7 +699,6 @@ export default {
       getAcademicSession() {
         this.$store.dispatch('academic-session/getUtmeSession')
           .then(res =>{
-            console.log(res)
             this.sessions = res.data.data
           }).catch(err =>{
             this.$toast.error(err)

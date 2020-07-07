@@ -5,9 +5,9 @@
           <div class="container p-l-5">
               <ol class="breadcrumb breadcrumb-alt">
                   <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                  <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">Academic Session</nuxt-link></li>
-                  <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/putme/${id}`">PUTME Options</nuxt-link></li>
-                  <li class="breadcrumb-item active">Add Student Result</li>
+                  <li class="breadcrumb-item"><nuxt-link to="/academic-session/utme">Academic Session</nuxt-link></li>
+                  <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/utme/${id}`">PUTME Options</nuxt-link></li>
+                  <li class="breadcrumb-item active">Registered students</li>
               </ol>
           </div>
       </div>
@@ -17,7 +17,7 @@
       <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
           <div class="card card-default">
               <div class="card-header">
-                  <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UTME Result Upload</h3>
+                  <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME Registered Students</h3>
                   <div class="pull-right sm-pull-reset">
                       <a href="/api/putme-sessions/post-utme-result/download-sample" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong></strong></a>
                       <button type="button" class="btn btn-primary btn-sm" data-target="#download_csv" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Download CSV</strong></button>
@@ -29,23 +29,26 @@
                   <div class="table-responsive">
                       <table class="table table-striped table-condensed" id="basicTable">
                           <thead>
-                          <th style="width:50%">Slip Number</th>
-                          <th style="width:30%">Used</th>
-                          <th style="width:20%">Action</th>
+                            <th>Reg No</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Payment Mode</th>
+                            <th>Reference</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
                           </thead>
                           <tbody>
-                          <tr>
-                              <td>123345676878909</td>
-                              <td>Yes</td>
-                              <td>
-                                  <div class="btn-group">
-                                      <span data-placement="top" data-toggle="tooltip" title="Edit Record">
-                                          <a href="#edit_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                      </span>
-                                      <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
-                                  </div>
-                              </td>
-                          </tr>
+                            <tr v-if="loading" class="text-center"><td colspan="7">Loading....please wait</td></tr>
+                            <tr v-if="!loading && students.length < 1" class="text-center"><td colspan="7">No records to be displayed</td></tr>
+                            <tr v-else v-for="student in students">
+                              <td>{{ student.jambResult.registration_number }}</td>
+                              <td>{{ student.jambResult.name }}</td>
+                              <td>{{ student.jambResult.sex }}</td>
+                              <td>{{ student.mop }}</td>
+                              <td>{{ student.transaction_reference }}</td>
+                              <td>{{ student.amount }}</td>
+                              <td>{{ student.status }}</td>
+                            </tr>
                           </tbody>
                       </table>
                       <pagination
@@ -93,6 +96,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.putmeId;
+    this.getRegisteredStudents(this.pagination.current_page)
   }
 }
 </script>

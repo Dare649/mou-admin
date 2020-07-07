@@ -129,9 +129,9 @@ export default {
     methods: {
         getAcademicSessions(page) {
             this.$axios.get(`api/putme-sessions?page=${page}`).then(res => {
-                this.sessions = res.data.data;
-                this.pagination = res.data;
-                this.loading = false;
+              this.sessions = res.data.data.data;
+              this.pagination = res.data.data;
+              this.loading = false;
             })
         },
         updateStatus(session, index, action) {

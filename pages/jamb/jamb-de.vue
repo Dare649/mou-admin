@@ -12,27 +12,30 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <!-- <div class="col-lg-12 m-b-10">
-                        <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                    </div> -->
-                    <div class="col-lg-12 m-b-10">
-                        <div class="custom-file">
-                            <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
-                            <label class="custom-file-label" for="customFileLang">Select File</label>
-                        </div>
+                  <div class="col-lg-12 m-b-10">
+                    <select class="form-control" v-model="uploadData.session">
+                      <option value="" selected>Select Academic Session</option>
+                      <option v-for="session in sessions" :value="session.id">{{ session.de_session_name }}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-12 m-b-10">
+                    <div class="custom-file">
+                      <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                      <label class="custom-file-label" for="customFileLang">Select File</label>
                     </div>
-                    <div class="col-lg-12">
-                        <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                        <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                  </div>
+                  <div class="col-lg-12">
+                    <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                    <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                  </div>
+                  <div class="col-lg-12 m-t-15">
+                    <div class="dd-placeholder p-1">
+                        <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
+                        <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                        <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="col-lg-12 m-t-15">
-                        <div class="dd-placeholder p-1">
-                            <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                            <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
-                            <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -49,7 +52,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
+                <h5 class="text-left p-b-5"><span class="semi-bold">Export JAMB Result - DE</span></h5>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -118,7 +121,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
+                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result - DE</span></h5>
             </div>
             <div class="modal-body jamb_view">
                 <h5 >{{show_candidate_name}}</h5>
@@ -154,7 +157,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
+                <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result - DE</span></h5>
             </div>
             <div class="modal-body">
                 <form class="full-width" @submit.prevent="submitEditedJambResut">
@@ -209,7 +212,7 @@
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default" v-permission="'Search Jamb Result DE'">
                     <div class="card-header">
-                        <div class="card-title text-primary">Search JAMB Result</div>
+                        <div class="card-title text-primary">Search DE JAMB Result</div>
                     </div>
                     <div class="card-body">
                         <form style="width: 100%">
@@ -239,7 +242,7 @@
                 </div>
                 <div class="card card-default">
                     <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result - DE</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View Jamb Result DE'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button v-permission="'Import JAMB Result DE'" type="button" class="btn btn-primary btn-sm" data-target="#import_jamb_result" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
@@ -259,10 +262,10 @@
                                 </thead>
                                 <tbody>
                                     <tr v-if="getloading">
-                                        <td colspan="4">Loading....Please wait.</td>
+                                        <td colspan="5">Loading....Please wait.</td>
                                     </tr>
                                     <tr v-if="!getloading && de_results.length < 1">
-                                        <td colspan="4">No record at the moment... Pls insert new record</td>
+                                        <td colspan="5">No record at the moment... Pls insert new record</td>
                                     </tr>
                                     <tr v-for="de_result in de_results" :key="de_result.id">
                                         <td>{{de_result.registration_number}}</td>
@@ -327,6 +330,7 @@ export default {
         de_results: [],
         academicTypes: [],
         file: "",
+        sessions: [],
         show_candidate_name: "",
         show_registration_number: "",
         show_course_name: "",
@@ -335,6 +339,10 @@ export default {
         show_lga_id: "",
         show_department_id: "",
         show_year: "",
+        uploadData: {
+          session: '',
+          file: ''
+        },
         model: {
           edit_year: "",
           jamb_entry_mode: "",
@@ -576,9 +584,9 @@ export default {
       },
       uploadJambResults(){
         this.loading = true
-        this.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
-        formData.append('file', this.file);
+        formData.append('file', this.$refs.myFiles.files[0]);
+        formData.append('academic_session_id', this.uploadData.session);
           this.$store
             .dispatch('jamb-de/uploadJambResults', formData)
             .then(res => {
@@ -602,6 +610,14 @@ export default {
           this.loading = false
         })
       },
+      getAcademicSession() {
+        this.$store.dispatch('academic-session/getDeSession')
+          .then(res =>{
+            this.sessions = res.data.data
+          }).catch(err =>{
+            this.$toast.error(err)
+          })
+      }
   },
   mounted: function() {
       if (!process.server) {
@@ -612,6 +628,7 @@ export default {
         document.head.appendChild(script1)
       }
     this.getJambResults(1)
+    this.getAcademicSession()
     //this.getAcademicTypes()
     }
 }

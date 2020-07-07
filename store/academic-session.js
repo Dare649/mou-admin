@@ -11,7 +11,15 @@ export const mutations = {
 
 export const actions = {
   async getUtmeSession() {
-    return await this.$axios.get('api/putme-sessions')
+    return await this.$axios.get('api/putme-sessions/getSessions')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getDeSession() {
+    return await this.$axios.get('api/de-sessions/getSessions')
       .then(res =>{
         return res
       }).catch(err =>{
