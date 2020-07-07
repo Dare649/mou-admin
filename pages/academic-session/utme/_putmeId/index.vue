@@ -35,7 +35,7 @@
                           </nuxt-link>
                         </div>
                         <div class="col-lg-3">
-                            <nuxt-link :to="`/academic-session/utme/${id}/manage/view-registerd-students`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                            <nuxt-link :to="`/academic-session/utme/${id}/manage/view-registered-students`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
                                 <i class="fa fa-id-card fa-3x m-b-0"></i>
                                 <h6 class="text-uppercase semi-bold m-b-0">Step 2</h6>
                                 View registered students

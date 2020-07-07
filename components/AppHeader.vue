@@ -71,8 +71,10 @@
                         <li>
                           <a href="javascript:;"><span class="title">Exams</span><span class=" arrow"></span></a>
                           <ul class="">
-                              <li v-permission="'View PUTME Result'"><nuxt-link to="/exams/putme-result-upload">PUTME Admission Result</nuxt-link></li>
-                              <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Admission Result</nuxt-link></li>
+                              <li v-permission="'View PUTME Result'"><nuxt-link to="/exams/putme-result-upload">UTME Result</nuxt-link></li>
+                              <li><nuxt-link to="/exams/putme-admission-list">Admission List - UTME</nuxt-link></li>
+                              <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Result</nuxt-link></li>
+                              <li><nuxt-link to="/exams/de-admission-list">Admission List - DE</nuxt-link></li>
                           </ul>
                         </li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>

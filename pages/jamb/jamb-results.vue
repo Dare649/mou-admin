@@ -12,14 +12,17 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <!-- <div class="col-lg-12 m-b-10">
-                        <input type="text" placeholder="File Caption" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                    </div> -->
                     <div class="col-lg-12 m-b-10">
-                        <div class="custom-file">
-                            <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
-                            <label class="custom-file-label" for="customFileLang">Select File</label>
-                        </div>
+                        <select class="form-control" v-model="uploadData.session">
+                          <option value="" selected>Select Academic Session</option>
+                          <option v-for="session in sessions" :value="session.id">{{ session.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12 m-b-10">
+                      <div class="custom-file">
+                          <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                          <label class="custom-file-label" for="customFileLang">Select File</label>
+                      </div>
                     </div>
                     <div class="col-lg-12">
                         <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
@@ -65,7 +68,7 @@
                     <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
                     <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
                     <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li>
-                    <li><small>Phone Code:</small> <span>{{show_phone_code}}</span></li>  
+                    <li><small>Phone Code:</small> <span>{{show_phone_code}}</span></li>
                     <div class="clearfix"></div>
                 </ul>
                 <table class="table table-condensed">
@@ -115,15 +118,15 @@
                 <div class="row">
                     <form class="full-width">
                         <div class="col-lg-12 m-b-10">
-                            <select class="form-control" v-model="model.export_year" >
-                                <option value="" selected>Jamb Result Year</option>
-                                <option value="2010">2010</option>
-                                <option value="2011">2011</option>
-                                <option value="2012">2012</option>
-                                <option value="2013">2013</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
-                            </select>
+                          <select class="form-control" v-model="model.export_year" >
+                            <option value="" selected>Jamb Result Year</option>
+                            <option value="2010">2010</option>
+                            <option value="2011">2011</option>
+                            <option value="2012">2012</option>
+                            <option value="2013">2013</option>
+                            <option value="2019">2019</option>
+                            <option value="2020">2020</option>
+                          </select>
                         </div>
                         <!-- <div class="col-lg-12 m-b-10">
                             <select class="full-width" data-init-plugin="select2" >
@@ -145,31 +148,31 @@
 </div>
 
 <!-- Delete Country Modal -->
-                <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="pg-close"></i>
-                    </button>
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
-                            </div>
-                            <div class="modal-body">
-                                <form class="full-width" @submit.prevent="deleteJambResult">
-                                    <div class="row">
-                                        <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
-                                        <div class="col-lg-12 m-t-10">
-                                            <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
-                                            <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
-                </div>
+  <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="pg-close"></i>
+      </button>
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
+              </div>
+              <div class="modal-body">
+                  <form class="full-width" @submit.prevent="deleteJambResult">
+                      <div class="row">
+                          <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                          <div class="col-lg-12 m-t-10">
+                              <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                              <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+  </div>
 
 <!-- Edit JAMB Result Modal -->
 <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
@@ -310,7 +313,7 @@
                                 v-on:click.native="getJambResults(pagination.current_page)"
                                 :offset="4">
                             </Pagination>
-                        </div>      
+                        </div>
                     </div>
                 </div>
             </div>
@@ -339,6 +342,7 @@ export default {
             to: 0,
             current_page: 1
         },
+        sessions: [],
         addloading: false,
         downloading: false,
         loading: false,
@@ -371,7 +375,10 @@ export default {
         show_country_id: 0,
         show_registration_number:"",
         show_year:"",
-        file: "",
+        uploadData: {
+          file: '',
+          session: ''
+        },
         model: {
           edit_year: "",
           jamb_entry_mode: "",
@@ -585,40 +592,40 @@ export default {
       },
       getJambResults(page){
           if(this.$laravel.hasPermission('View Jamb Result UME')){
-        let payload = {}
-        payload.page = page
-        payload.year = this.model.search_year
-        payload.registration_number = this.model.search_registration_number
-        this.getloading = true
-        this.$store
-        .dispatch('get-started/getJambResults', payload)
-        .then(res => {
-          if(res != undefined){
-            if(res.status == true){
+            let payload = {}
+            payload.page = page
+            payload.year = this.model.search_year
+            payload.registration_number = this.model.search_registration_number
+            this.getloading = true
+            this.$store
+            .dispatch('get-started/getJambResults', payload)
+            .then(res => {
+              if(res != undefined){
+                if(res.status == true){
+                    this.getloading = false
+                    this.jamb_results = res.data.data
+                    this.pagination = res.data
+                }else{
+                  this.getloading = false
+                  this.ErrMsg = "Error Fetching data!"
+                }
+              }else{
                 this.getloading = false
-                this.jamb_results = res.data.data
-                this.pagination = res.data
-            }else{
+                this.ErrMsg = "Error Fetching data!"
+              }
+            }).catch(err => {
               this.getloading = false
-              this.ErrMsg = "Error Fetching data!"
-            }
-          }else{
-            this.getloading = false
-            this.ErrMsg = "Error Fetching data!"
-          }
-        }).catch(err => {
-          this.getloading = false
-        })
+            })
         }else{
-                this.IsPermitted = false
-                this.getLoading = false
-                this.$router.push(
-                decodeURIComponent(
-                  this.$route.query.redirect || "/dashboard"
-                        )
-                    );
-                    this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-            }
+            this.IsPermitted = false
+            this.getLoading = false
+            this.$router.push(
+            decodeURIComponent(
+              this.$route.query.redirect || "/dashboard"
+                    )
+                );
+                this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+        }
       },
       downloadJambResultSampleFile(){
           this.downloading = true
@@ -662,9 +669,10 @@ export default {
       },
       uploadJambResults(){
         this.loading = true
-        this.file = this.$refs.myFiles.files[0];
+        this.uploadData.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
-        formData.append('file', this.file);
+        formData.append('file', this.uploadData.file);
+        formData.append('academic_session', this.uploadData.session)
           this.$store
             .dispatch('get-started/uploadJambResults', formData)
             .then(res => {
@@ -688,18 +696,28 @@ export default {
           this.loading = false
         })
       },
+      getAcademicSession() {
+        this.$store.dispatch('academic-session/getUtmeSession')
+          .then(res =>{
+            console.log(res)
+            this.sessions = res.data.data
+          }).catch(err =>{
+            this.$toast.error(err)
+          })
+      }
   },
   mounted: function() {
-      if (!process.server) {
-        const script1 = document.createElement('script')
-        script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'
-
-        document.head.appendChild(script1)
-      }
     this.getJambResults(1)
+    this.getAcademicSession()
     this.getAcademicTypes()
+    if (!process.server) {
+      const script1 = document.createElement('script')
+      script1.type = 'text/javascript'
+      script1.src = '/pages/js/pages.min.js'
+
+      document.head.appendChild(script1)
     }
+  }
 }
 </script>
 <style scoped>

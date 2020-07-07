@@ -22,12 +22,12 @@
           <div class="card-title text-primary">Search Slip Number</div>
         </div>
         <div class="card-body">
-          <form class="row" style="width: 100%">
+          <form class="row" @submit.prevent="search" style="width: 100%">
             <div class="col-md-10">
-              <input type="text" class="form-control" placeholder="Slip Number" required>
+              <input type="text" v-model="searchData.slip_number" class="form-control" placeholder="Slip Number" required>
             </div>
             <div class="col-md-2">
-              <button type="submit" class="btn btn-primary btn-block">Search Record</button>
+              <button type="submit" id="searchBtn" class="btn btn-primary btn-block">Search Record</button>
             </div>
           </form>
         </div>
@@ -112,6 +112,10 @@
       slips: [],
       id: null,
       loading: true,
+      searchLoading: false,
+      searchData: {
+        slip_number: ''
+      },
       pagination: {
         total: 0,
         per_page: 2,
@@ -120,9 +124,22 @@
         current_page: 1
       },
       feeType: 'new',
-      feeTypes: []
+      feeTypes: [],
+      route: ''
     }),
     methods: {
+      search() {
+        this.searchLoading = true
+        this.loading = true
+        $('#searchBtn').attr('disabled', true).html('Searching...');
+        this.$axios.get('api/putme-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number).then(res => {
+          $('#searchBtn').attr('disabled', false).html('Search');
+          this.searchLoading = false
+          this.loading = false
+          this.slips = res.data.data.data
+          this.pagination = res.data.data
+        })
+      },
       downloadSampleCSV() {
         this.$axios.get('api/putme-sessions/student-union-dues/sample').then(res => {
           if (res.data.success) {
@@ -187,10 +204,10 @@
     },
     mounted() {
       this.id = this.$route.params.putmeId;
+      this.route = this.$route.fullPath
       this.getSlips(1);
 
       this.getFeeTypes()
     }
   }
 </script>
-

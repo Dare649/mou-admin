@@ -12,7 +12,7 @@
   <div class="login-container bg-white">
     <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
       <img src="/assets/img/mou_logo_c.png" alt="logo" data-src="/assets/img/mou_logo_c.png" data-src-retina="/assets/img/mou_logo_c.png"  height="70">
-      <p class="p-t-35 text-center">Welcome to the myMOUAU student portal.</p>
+      <p class="p-t-35 text-center">Welcome to the MOUAU admin portal.</p>
       <!-- START Login Form -->
       <form id="form-login" class="p-t-15" @submit.prevent="login" v-if="!IsMessageSentSuccessfully">
         <!-- START Form Control-->

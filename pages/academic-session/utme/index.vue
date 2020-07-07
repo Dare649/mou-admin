@@ -135,16 +135,31 @@ export default {
             })
         },
         updateStatus(session, index, action) {
-            this.$axios.get(`api/putme-sessions/status/${session.id}?status=${action}`).then(res => {
-                if(res.data.status) {
-                    if(action === 1) {
-                        this.sessions[index].status = 0;
-                    } else {
-                        this.sessions[index].status = 1;
-                    }
-                    this.getAcademicSessions()
-                }
-            })
+          const vm = this;
+          this.$swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+              this.$axios.get(`api/putme-sessions/status/${session.id}?status=${action}`).then(res => {
+                  if(res.data.status) {
+                    this.$toast.success('Deletion successful')
+                      if(action === 1) {
+                          this.sessions[index].status = 0;
+                      } else {
+                          this.sessions[index].status = 1;
+                      }
+                      this.getAcademicSessions()
+                  }
+              })
+
+            }
+          })
         }
     },
     mounted() {
