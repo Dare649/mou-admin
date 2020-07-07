@@ -179,7 +179,7 @@
                             </div>
                             <div class="card-header clearfix">
                                 <div class="user-pic">
-                                    <img alt="Avatar" width="33" height="33" data-src-retina="assets/img/profiles/avatar_small2x.jpg" data-src="assets/img/profiles/avatar.jpg" src="assets/img/profiles/avatar_small2x.jpg">
+                                    <!-- <img alt="Avatar" width="33" height="33" data-src-retina="assets/img/profiles/avatar_small2x.jpg" data-src="assets/img/profiles/avatar.jpg" src="assets/img/profiles/avatar_small2x.jpg"> -->
                                 </div>
                                 <h5>David Nester</h5>
                                 <h6>Shared a link on your wall</h6>
@@ -459,7 +459,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2 text-center">
-                                                <a href="#" class="block m-t-15"><img src="assets/img/plus.svg"></a>
+                                                <!-- <a href="#" class="block m-t-15"><img src="assets/img/plus.svg"></a> -->
                                             </div>
                                         </div>
                                     </div>
@@ -649,12 +649,11 @@ export default {
           document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="pages/css/windows.chrome.fix.css" />'
       }
       if (!process.server) {
-        const script1 = document.createElement('script')       
-        script1.type = 'text/javascript'
-        script1.src = 'pages/js/pages.min.js'        
-        
-        document.head.appendChild(script1)        
-      }
+            const script1 = document.createElement('script')
+            script1.type = 'text/javascript'
+            script1.src = '/pages/js/pages.min.js'
+            document.head.appendChild(script1)
+        }
     }
 }
 </script>
