@@ -176,9 +176,9 @@ export const actions = {
         });
     },
     async exportPUTMEs(context, payload) {
-       
+
         return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
-            
+
         }, {
             responseType: 'blob',
             data: payload
@@ -200,7 +200,7 @@ export const actions = {
         //     data: payload,
         //     headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
         //     responseType: "arraybuffer",
-            
+
         // })
         // .then(function (response) {
         //     //handle success
@@ -227,7 +227,7 @@ export const actions = {
     },
     async exportJambResults(context, requests) {
         return await this.$axios.post('api/jamb-results/export', {
-            
+
         }, {
             responseType: 'blob',
             data: requests
@@ -692,14 +692,14 @@ export const actions = {
     async updateJambResult(context, requests) {
         return await this.$axios({
             method: 'put',
-            url: 'api/jamb-results/'+ requests.id + '?registration_number=' + 
-                                requests.registration_number + '&name=' + requests.name + '&sex=' + 
-                                requests.sex + '&state_id=' + requests.state_id + '&lga_id=' + requests.lga_id + '&university1=' + 
-                                requests.university1 + '&faculty_id1=' + requests.faculty_id1 + '&department_id1=' + 
-                                requests.department_id1 + '&university2=' + requests.university2 + '&faculty_id2=' + 
-                                requests.faculty_id2 + '&department_id2=' + requests.department_id2 + '&subject_id1=' + 
-                                requests.subject_id1 + '&mark1=' + requests.mark1 + '&subject_id2=' + requests.subject_id2 + '&mark2=' + 
-                                requests.mark2 + '&subject_id3=' + requests.subject_id3 + '&mark3=' + requests.mark3 + '&subject_id4=' + 
+            url: 'api/jamb-results/'+ requests.id + '?registration_number=' +
+                                requests.registration_number + '&name=' + requests.name + '&sex=' +
+                                requests.sex + '&state_id=' + requests.state_id + '&lga_id=' + requests.lga_id + '&university1=' +
+                                requests.university1 + '&faculty_id1=' + requests.faculty_id1 + '&department_id1=' +
+                                requests.department_id1 + '&university2=' + requests.university2 + '&faculty_id2=' +
+                                requests.faculty_id2 + '&department_id2=' + requests.department_id2 + '&subject_id1=' +
+                                requests.subject_id1 + '&mark1=' + requests.mark1 + '&subject_id2=' + requests.subject_id2 + '&mark2=' +
+                                requests.mark2 + '&subject_id3=' + requests.subject_id3 + '&mark3=' + requests.mark3 + '&subject_id4=' +
                                 requests.subject_id4 + '&mark4=' + requests.mark4 + '&year=' + requests.year,
             headers: {'Content-Type': 'application/json' }
         })
@@ -949,7 +949,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/countries?page='+page,
-            
+
         })
         .then(function (response) {
             return response.data
@@ -961,7 +961,7 @@ export const actions = {
     async getAcademicSessions(context) {
         return await this.$axios({
             method: 'get',
-            url: 'api/putme-sessions',
+            url: 'api/putme-sessions/getSessions',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -987,7 +987,7 @@ export const actions = {
     async getJambResults(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results'+'?registration_number='+ payload.registration_number + '&year='+ payload.year +'&page='+ payload.page,
+            url: 'api/jamb-results?registration_number='+ payload.registration_number + '&year='+ payload.year +'&page='+ payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
