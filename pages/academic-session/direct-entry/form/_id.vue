@@ -288,6 +288,22 @@
                                           </ValidationProvider>
                                         </div>
                                         <div class="col-md-6">
+                                          <ValidationProvider rules="required" v-slot="{ errors }">
+                                            <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
+                                              <div class="form-input-group">
+                                                <label>Last date for school fees</label>
+                                                <date-picker v-model="formData.last_date_depositing_school_fees" format="DD/MM/YYYY" value-type="format" type="date" input-class="form-control" placeholder="Pick a date">
+                                                  <template v-slot:icon-calendar>
+                                                    <div></div>
+                                                  </template>
+                                                </date-picker>
+                                                <small class="ml-2 error">{{ errors[0] }}</small>
+                                              </div>
+                                              <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="pg-calender"></i></span>
+                                              </div>
+                                            </div>
+                                          </ValidationProvider>
                                         </div>
                                       </div>
                                     </form>
@@ -394,7 +410,7 @@ export default {
                 matriculation_year: '',
                 admin_fees_instruction: '',
                 school_fees_instruction: '',
-                acceptance_fee_instructions: '',
+                acceptance_fees_instruction: '',
             },
             adminFeesInstruction: null,
             acceptanceFeeInstruction: null,
@@ -411,7 +427,7 @@ export default {
             let form3Status = await this.$refs.step3.validate();
 
             this.formData.admin_fees_instruction = this.adminFeeInstruction.getContent();
-            this.formData.acceptance_fee_instructions = this.acceptanceFeeInstruction.getContent();
+            this.formData.acceptance_fees_instruction = this.acceptanceFeeInstruction.getContent();
             this.formData.school_fees_instruction = this.schoolFeesInstruction.getContent();
 
 
@@ -431,6 +447,7 @@ export default {
                         this.$refs.step3.reset();
                         // show notification
                         this.$toast.success(res.data.message)
+                        this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/direct-entry"))
                     } else {
                         this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                     }
@@ -448,6 +465,7 @@ export default {
                         this.$refs.step3.reset();
                         // show notification
                         this.$toast.success(res.data.message)
+                        this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/direct-entry"))
                     } else {
                         this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                     }
