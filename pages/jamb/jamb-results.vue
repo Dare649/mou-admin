@@ -15,7 +15,7 @@
                     <div class="col-lg-12 m-b-10">
                         <select class="form-control" v-model="uploadData.session">
                           <option value="" selected>Select Academic Session</option>
-                          <option v-for="session in sessions" :value="session.id">{{ session.session_name }}</option>
+                          <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.session_name }}</option>
                         </select>
                     </div>
                     <div class="col-lg-12 m-b-10">
@@ -472,9 +472,9 @@ export default {
             .dispatch('get-started/deleteJambResult', this.model.id)
             .then(res => {
             if(res != undefined){
-                if(res.success == true){
+                if(res.status == true){
                 this.deleteLoading = false
-                this.getCountries()
+                this.getJambResults()
                 $( '#delete_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
@@ -513,6 +513,7 @@ export default {
             bodyFormData.mark4 = this.model.edit_mark4
             bodyFormData.sex = this.model.edit_sex
             bodyFormData.year = this.model.edit_year
+            console.log(bodyFormData)
             this.$store
                 .dispatch('get-started/updateJambResult', bodyFormData)
                 .then(res => {
