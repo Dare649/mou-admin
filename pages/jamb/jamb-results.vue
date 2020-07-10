@@ -54,6 +54,65 @@
                 <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
             </div>
             <div class="modal-body jamb_view">
+                <h5>Benjamin Okeleke</h5>
+                <ul>
+                    <li>
+                        <small>Registration Number</small>
+                        <span>MOU/09/2353573</span>
+                    </li>
+                    <li>
+                        <small>Year</small>
+                        <span>2020</span>
+                    </li>
+                    <li>
+                        <small>Gender</small>
+                        <span>Male</span>
+                    </li>
+                    <div class="clearfix"></div>
+                </ul>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Mark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Subject 1</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Subject 2</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>Subject 3</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>Subject 4</td>
+                            <td>A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade SlideUp" id="" tabindex="-1" role="dialog" aria-hidden="true">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+    </button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
+            </div>
+            <div class="modal-body jamb_view">
                 <h5 >{{show_name}}</h5>
                 <ul class="info">
                     <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>

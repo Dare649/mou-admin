@@ -13,7 +13,7 @@ export const mutations = {
 export const actions = {
     async exportJambResults(context, payload) {
         return await this.$axios.post('api/jamb-results/de/export', {
-            
+
         }, {
             responseType: 'blob',
             data: payload
@@ -28,23 +28,6 @@ export const actions = {
             link.click()
             return true
         });
-
-        // return await this.$axios({
-        //     method: 'post',
-        //     data: requests,
-        //     url: 'api/jamb-results/de/export',
-        //     headers: {'Content-Type': 'application/json' },
-        //     responseType: "arraybuffer"
-        // })
-        // .then(function (response) {
-        //     //handle success
-        //     console.log(response.data)
-        //     return response.data
-            
-        // })
-        // .catch(err => {
-        //     return err
-        // });
     },
     async downloadJambResultSampleFile(context) {
         return await this.$axios({
