@@ -297,9 +297,9 @@ export default {
         })
       },
       getAcademicSessions(){
-          this.$store
-            .dispatch('get-started/getAcademicSessions')
-            .then(res => {
+        this.$store
+          .dispatch('get-started/getAcademicSessions')
+          .then(res => {
             if(res != undefined){
                 if(res.status == true){
                     this.academic_sessions = res.data.data
@@ -312,12 +312,12 @@ export default {
                 this.getloading = false
                 this.ErrMsg = "Error Fetching data!"
             }
-            }).catch(err => {
+          }).catch(err => {
             this.getloading = false
-            })
+          })
       }
   },
-  mounted: function() {    
+  mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
@@ -325,7 +325,7 @@ export default {
 
         document.head.appendChild(script1)
       }
-     
+
       if(this.$laravel.hasPermission('View PUTME Result')){
         this.getFaculties()
         this.getAcademicSessions()
@@ -337,7 +337,7 @@ export default {
             );
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
       }
-      
+
     }
 }
 </script>

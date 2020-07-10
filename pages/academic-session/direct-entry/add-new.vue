@@ -422,8 +422,8 @@ export default {
                     'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
                 ],
                 fontName: [
-                    {val: 'arial black'}, 
-                    {val: 'times new roman'}, 
+                    {val: 'arial black'},
+                    {val: 'times new roman'},
                     {val: 'Courier New'}
                 ],
                 fontSize: [
@@ -431,32 +431,27 @@ export default {
                 ],
             },
             formData: {
-                session_name: '',
+                de_session_name: '',
                 exam_date: '',
-                ume_reg_start_date: '',
-                ume_reg_end_date: '',
-                result_date: '',
+                admin_fees_start_date: '',
+                admin_fees_end_date: '',
                 acceptance_fee: '',
-                last_acceptance_date: '',
-                last_date_doc_upload: '',
-                last_date_fee_deposit: '',
-                supplementary_fees: '',
-                supp_list_publish_date: '',
-                supp_fee_late_date: '',
-                acceptance_processing_fee: '',
-                date_validating_old_students: '',
-                late_fee_returning_stud: '',
-                putme_late_fees: '',
-                late_fee_start_date: '',
-                late_fee_end_date: '',
+                last_date_acceptance_fee: '',
+                last_date_depositing_school_fees: '',
+                supplementary_list_date: '',
+                supplementary_list_last_date: '',
+                acceptance_processing_fees: '',
                 late_fees_amount: '',
+                de_late_fees_due: '',
+                late_fees_date: '',
+                late_fees_start_date_returning: '',
+                late_fees_end_date_returning: '',
+                late_fees_amount_returning: '',
                 course_registration_fee: '',
-                putme_registration_fee: '',
+                de_reg_admin_fees: '',
                 matriculation_year: '',
-                ume_instruction: '',
-                exam_venue: '',
-                acceptance_fee_instructions: '',
-                document_upload_instructions: '',
+                admin_fees_instruction: '',
+                acceptance_fees_instruction: '',
                 school_fees_instruction: ''
             },
             umeInstructions: null,
@@ -479,27 +474,27 @@ export default {
             this.formData.acceptance_fee_instructions = this.acceptanceFeeInstruction.getContent();
             this.formData.document_upload_instructions = this.uploadInstruction.getContent();
             this.formData.school_fees_instruction = this.schoolFeesInstruction.getContent();
-            
-            
+
+
             if(!form1Status || !form2Status || !form3Status) {
                 this.$toast.error('Incomplete form. Please make sure all required fields have been filled.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 return;
             }
 
-            this.$axios.post('api/putme-sessions', this.formData).then(res => {
-                $('#submitForm').attr('disabled', false).html('Finish'); 
+            this.$axios.post('api/de-sessions', this.formData).then(res => {
+                $('#submitForm').attr('disabled', false).html('Finish');
                 if(res.data.status) {
                     // reset forms
-                    this.$refs.step1.reset();               
-                    this.$refs.step2.reset();               
-                    this.$refs.step3.reset();   
+                    this.$refs.step1.reset();
+                    this.$refs.step2.reset();
+                    this.$refs.step3.reset();
                     // show notification
                     this.$toast.success('Form submitted successfully.')
                 } else {
-                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});                    
+                    this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 }
             }).catch(err => {
-                $('#submitForm').attr('disabled', false).html('Finish'); 
+                $('#submitForm').attr('disabled', false).html('Finish');
                 this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
             });
         }

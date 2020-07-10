@@ -24,7 +24,7 @@ export const actions = {
             return err
         });
     },
-    async exportDEs(context, payload) {  
+    async exportDEs(context, payload) {
         return await this.$axios.post('api/de-sessions/de-result/export', {
             }, {
             responseType: 'blob',
@@ -44,7 +44,7 @@ export const actions = {
     async getAcademicSessions(context) {
         return await this.$axios({
             method: 'get',
-            url: 'api/de-sessions',
+            url: 'api/de-sessions/getSessions',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

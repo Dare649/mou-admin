@@ -630,7 +630,7 @@ export default {
                 if(res.success == true)    {
                     window.location = res.message
                     this.downloading = false
-                    $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
+                    // $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
 
@@ -652,7 +652,7 @@ export default {
             .then(res => {
             if(res != undefined){
                 this.exportLoading = false
-                $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
+                // $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
                 this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
                 this.exportLoading = false
