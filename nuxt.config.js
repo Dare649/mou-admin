@@ -26,6 +26,7 @@ module.exports = {
       { rel: "stylesheet", href:"/pages/css/pages-icons.css"},
       { class:"main-stylesheet", rel: "stylesheet", type:"text/css", href:"/pages/css/themes/modern.css"},
       { rel: "stylesheet", href: "/assets/css/style.css"},
+      { rel: "stylesheet", href: "/assets/css/custom.css", type: "text/css"}
     ],
     script: [
       {type:"text/javascript", src: '/assets/plugins/pace/pace.min.js' },
