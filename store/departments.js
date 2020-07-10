@@ -67,6 +67,19 @@ export const actions = {
             return err
         });
     },
+    async getDepartments(context){
+        return await this.$axios({
+            method: 'get',
+            url: '/api/departments',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async createDepartment(context, requests) {
         return await this.$axios({
             method: 'post',

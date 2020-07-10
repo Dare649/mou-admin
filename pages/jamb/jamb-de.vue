@@ -88,7 +88,7 @@
 </div>
 
 <!-- Delete Country Modal -->
-          <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal fade SlideUp" id="delete_de_result" tabindex="-1" role="dialog" aria-hidden="true">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                   <i class="pg-close"></i>
               </button>
@@ -98,7 +98,7 @@
                           <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
                       </div>
                       <div class="modal-body">
-                          <form class="full-width" @submit.prevent="deleteJambResult">
+                          <form class="full-width" @submit.prevent="deleteJambDEt">
                               <div class="row">
                                   <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
                                   <div class="col-lg-12 m-t-10">
@@ -280,7 +280,9 @@
                                                 <span v-permission="'Edit Jamb Result DE'" data-placement="top" @click="populateFields(de_result)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                 </span>
-                                                <button v-permission="'Delete Jamb Result DE'" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
+                                                <span v-permission="'Delete Jamb Result UME'" data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                                    <a href="#delete_de_result" @click="setId(de_result.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
@@ -367,10 +369,10 @@ export default {
           this.model.id = id
       },
       showDetails(jamb){
-          this.show_state_id = jamb.state_id
-          this.show_lga_id = jamb.lga_id
+          this.show_state_id = jamb.state
+          this.show_lga_id = jamb.lga
           this.show_course_name = jamb.course_name
-          this.show_department_id = jamb.department_id
+          this.show_department_id = jamb.department
           this.show_gender = jamb.gender
           this.show_year = jamb.year
           this.show_candidate_name = jamb.candidate_name
@@ -387,16 +389,16 @@ export default {
           this.model.edit_candidate_name = jamb.candidate_name
           this.model.edit_registration_number = jamb.registration_number
       },
-      deleteJambResult(){
+      deleteJambDE(){
           this.deleteLoading = true
           this.$store
-            .dispatch('jamb-de/deleteJambResult', this.model.id)
+            .dispatch('jamb-de/deleteJambDE', this.model.id)
             .then(res => {
             if(res != undefined){
                 if(res.success == true){
                 this.deleteLoading = false
                 this.getCountries()
-                $( '#delete_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null );
+                $( '#delete_de_result' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
                 this.deleteLoading = false
@@ -407,7 +409,6 @@ export default {
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
             }
-
         }).catch(err => {
           this.loading = false
         })

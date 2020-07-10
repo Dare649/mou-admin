@@ -55,6 +55,36 @@ export const actions = {
             return err
         });
     },
+    async uploadPUTMEAdmission(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/putme-sessions/admissions/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async uploadDEAdmission(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/de-sessions/admission-list/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async uploadReligions(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -176,9 +206,7 @@ export const actions = {
         });
     },
     async exportPUTMEs(context, payload) {
-       
         return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
-            
         }, {
             responseType: 'blob',
             data: payload
@@ -209,6 +237,56 @@ export const actions = {
         // .catch(err => {
         //     return err
         // });
+    },
+    async exportUTMEs(context, payload) {
+        // return await this.$axios({
+        //     method: 'post',
+        //     url: 'api/putme-sessions/admissions/export',
+        //     data: payload,
+        //     headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
+        //     responseType: "arraybuffer",
+            
+        // })
+        // .then(function (response) {
+        //     //handle success
+        //     return response.data
+        // })
+        // .catch(err => {
+        //     return err
+        // });
+        return await this.$axios.post('api/putme-sessions/admissions/export', {
+        }, {
+            responseType: 'blob',
+            data: payload
+        }).then((response) => {
+            console.log(response)
+            const url = URL.createObjectURL(new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', "des")
+            document.body.appendChild(link)
+            link.click()
+            return true
+        });
+    },
+    async exportDEs(context, payload) {
+        return await this.$axios.post('api/de-sessions/admission-list/export', {
+        }, {
+            responseType: 'blob',
+            data: payload
+        }).then((response) => {
+            const url = URL.createObjectURL(new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', "putmes")
+            document.body.appendChild(link)
+            link.click()
+            return true
+        });
     },
     async exportReligions(context) {
         return await this.$axios({
@@ -379,6 +457,34 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/putme-sessions/post-utme-result/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadUTMEAdmissionSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme-sessions/admissions/sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async downloadDEAdmissionSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/de-sessions/admission-list/sample',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -962,6 +1068,19 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/putme-sessions',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getAdmissionCategories(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/admission-categories',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

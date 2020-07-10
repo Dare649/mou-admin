@@ -60,7 +60,7 @@ export const actions = {
             return err
         });
     },
-    async deleteJambResult(context, id){
+    async deleteJambDE(context, id){
         return await this.$axios({
             method: 'delete',
             url: 'api/jamb-results/'+ id,

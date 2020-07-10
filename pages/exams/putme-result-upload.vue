@@ -302,7 +302,7 @@ export default {
             .then(res => {
             if(res != undefined){
                 if(res.status == true){
-                    this.academic_sessions = res.data
+                    this.academic_sessions = res.data.data
                     this.getloading = false
                 }else{
                     this.getloading = false
