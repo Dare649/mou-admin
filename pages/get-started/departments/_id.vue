@@ -15,55 +15,55 @@
             </div>
             <!-- END BREADCRUMBS -->
 
-            <!-- Add Faculty Modal -->
-      <div class="modal fade SlideUp" v-permission="'Add department'" id="add_department" tabindex="-1" role="dialog" aria-hidden="true">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-              <i class="pg-close"></i>
-          </button>
-          <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="text-left p-b-5"><span class="semi-bold">Add New Record</span></h5>
-                  </div>
-                  <div class="modal-body">
-                      <div class="row">
-                          <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="Name" v-model="model.name" class="form-control input-lg" id="icon-filter" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
-                              <input type="text" placeholder="Abbreviation" v-model="model.abbreviation" class="form-control input-lg" id="icon-filter1" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
-                              <input type="number" placeholder="Length of Study" v-model="model.length_of_study" class="form-control input-lg" id="icon-filter2" name="icon-filter">
-                          </div>
-                          <div class="col-lg-12 m-b-10">
-                            <input v-model="model.department_status" type="radio" name="exampleRadios" id="departmentRadioA" value="1" checked>
-                            <label for="departmentRadioA">
-                                Activate Department
-                            </label>
-                        </div>
+        <!-- Add Faculty Modal -->
+        <div class="modal fade SlideUp" v-permission="'Add department'" id="add_department" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Add New Record</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 m-b-10">
+                                <input type="text" placeholder="Name" v-model="model.name" class="form-control input-lg" id="icon-filter" name="icon-filter">
+                            </div>
+                            <div class="col-lg-12 m-b-10">
+                                <input type="text" placeholder="Abbreviation" v-model="model.abbreviation" class="form-control input-lg" id="icon-filter1" name="icon-filter">
+                            </div>
+                            <div class="col-lg-12 m-b-10">
+                                <input type="number" placeholder="Length of Study" v-model="model.length_of_study" class="form-control input-lg" id="icon-filter2" name="icon-filter">
+                            </div>
+                            <div class="col-lg-12 m-b-10">
+                                <input v-model="model.department_status" type="radio" name="exampleRadios" id="departmentRadioA" value="1" checked>
+                                <label for="departmentRadioA">
+                                    Activate Department
+                                </label>
+                            </div>
 
-                        <div class="col-lg-12 m-b-10">
-                            <input v-model="model.department_status" type="radio" name="exampleRadios" id="departmentRadioD" value="0">
-                            <label for="departmentRadioD">
-                                Deactivate Department
-                            </label>
+                            <div class="col-lg-12 m-b-10">
+                                <input v-model="model.department_status" type="radio" name="exampleRadios" id="departmentRadioD" value="0">
+                                <label for="departmentRadioD">
+                                    Deactivate Department
+                                </label>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="button" v-if="!loading" @click="createDepartment()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
+                                <button type="button" v-if="loading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding Record</button>
+                            </div>
                         </div>
-                          <div class="col-lg-12">
-                              <button type="button" v-if="!loading" @click="createDepartment()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
-                              <button type="button" v-if="loading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding Record</button>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                  </div>
-              </div>
-              <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-      </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
 
-<!-- Upload Faculty Modal -->
+      <!-- Upload Faculty Modal -->
       <div class="modal fade SlideUp" id="upload_departments" tabindex="-1" role="dialog" aria-hidden="true">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               <i class="pg-close"></i>
@@ -360,22 +360,25 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        if(this.$laravel.hasPermission('View departments')){
-            this.getDepartmentsByFacultyId(this.pagination.current_page)
-        }else{
-            this.IsPermitted = false
-            this.getLoading = false
-            this.$router.push(
-                decodeURIComponent(
-                  this.$route.query.redirect || "/dashboard"
-                )
-            );
-            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-        }
         
+        this.checkPagePermission()
     },
 
     methods:{
+        checkPagePermission(){
+            if(this.$laravel.hasPermission('View departments')){
+                this.getDepartmentsByFacultyId(this.pagination.current_page)
+            }else{
+                this.IsPermitted = false
+                this.getLoading = false
+                this.$router.push(
+                    decodeURIComponent(
+                    this.$route.query.redirect || "/dashboard"
+                    )
+                );
+                this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+            }
+        },
         setId(id){
             this.model.id = id
         },
@@ -421,7 +424,6 @@ export default {
                     }
                 }else{
                     this.loading = false
-                    console.log(res)
                     alert("File Upload Unsuccessful")
                     this.ErrMsg = "Error Processing Request!"
                 }

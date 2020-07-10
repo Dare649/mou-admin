@@ -19,7 +19,7 @@ export const actions = {
       })
   },
   async getDeSession() {
-    return await this.$axios.get('api/de-sessions/getSessions')
+    return await this.$axios.get('api/de-sessions')
       .then(res =>{
         return res
       }).catch(err =>{

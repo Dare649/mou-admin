@@ -247,8 +247,8 @@ export default {
             }
         }).catch(err => {
           this.downloading = false
-        })
-      },
+            })
+        },
       exportPUTMEs(){
           this.exportLoading = true
           var payload = new FormData()
@@ -329,7 +329,7 @@ export default {
       if(this.$laravel.hasPermission('View PUTME Result')){
         this.getFaculties()
         this.getAcademicSessions()
-      }else{
+        }else{
           this.$router.push(
                 decodeURIComponent(
                     this.$route.query.redirect || "/dashboard"

@@ -5,7 +5,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Exams</a></li>
                         <li class="breadcrumb-item active">DE Admission List</li>
                     </ol>
@@ -61,7 +61,7 @@
                                         <label>Select Academic Session</label>
                                          <select class="form-control" v-model="model.import_session_id">
                                             <option value="" disabled selected>Select your option</option>
-                                            <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
+                                            <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                         </select>
                                       </div>
                                       <div class="form-group col-md-4">
@@ -122,7 +122,7 @@
                                           <label>Select Academic Session</label>
                                            <select class="form-control" v-model="model.export_session_id">
                                                 <option value="" disabled selected>Select your option</option>
-                                                <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
+                                                <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                             </select>
                                       </div>
                                       <div class="form-group col-md-4">
@@ -162,14 +162,11 @@ export default {
   layout: 'main',
   data() {
       return {
-        addloading: false,
         downloading: false,
         loading: false,
         deleteLoading: false,
-        editLoading: false,
         exportLoading: false,
         academic_sessions: [],
-        faculties: [],
         departments: [],
         programs: [],
         file: "",
@@ -220,30 +217,30 @@ export default {
             }
         },
         downloadDEAdmissionSampleFile(){
-          this.downloading = true
-          this.$store
-            .dispatch('get-started/downloadDEAdmissionSampleFile')
-            .then(res => {
-            if(res != undefined){
-                if(res.success == true)    {
-                    window.location = res.message
+            this.downloading = true
+            this.$store
+                .dispatch('get-started/downloadDEAdmissionSampleFile')
+                .then(res => {
+                if(res != undefined){
+                    if(res.success == true)    {
+                        window.location = res.message
+                        this.downloading = false
+                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }
+                }else{
                     this.downloading = false
-                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    alert("File Downloaded Unsuccessful")
                 }
-            }else{
-                this.downloading = false
-                alert("File Downloaded Unsuccessful")
-            }
-        }).catch(err => {
-          this.downloading = false
-        })
-      },
+            }).catch(err => {
+            this.downloading = false
+            })
+        },
         uploadDEAdmission(){
             this.loading = true
             this.file = this.$refs.myFiles.files[0];
             let formData = new FormData();
             formData.append('file', this.file);
-            formData.append('session_id', this.model.session_id)
+            formData.append('session_id', this.model.import_session_id)
             formData.append('department_id', this.model.import_department_id)
             formData.append('program_id', this.model.import_program_id)
             formData.append('admission_category', this.model.import_category_id)
@@ -257,7 +254,6 @@ export default {
                         this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
-                        console.log(res)
                         this.$toast.error(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }
                 }else{
@@ -320,11 +316,11 @@ export default {
             },
         getAcademicSessions(){
           this.$store
-            .dispatch('de-result-upload/getAcademicSessions')
+            .dispatch('academic-session/getDeSession')
             .then(res => {
             if(res != undefined){
-                if(res.status == true){
-                    this.academic_sessions = res.data.data
+                if(res.data.status == true){
+                    this.academic_sessions = res.data.data.data
                     this.getloading = false
                 }else{
                     this.getloading = false
@@ -337,30 +333,29 @@ export default {
             }).catch(err => {
             this.getloading = false
             })
-      },
-      getDepartments(){
-          this.$store
-            .dispatch('departments/getDepartments')
-            .then(res => {
-                console.log(res.data)
-            if(res != undefined){
-                if(res.status == true){
-                    
-                    this.departments = res.data.data
-                    this.getloading = false
+        },
+        getDepartments(){
+            this.$store
+                .dispatch('departments/getDepartments')
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        
+                        this.departments = res.data.data
+                        this.getloading = false
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                        
+                    }
                 }else{
                     this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
-                    
                 }
-            }else{
+                }).catch(err => {
                 this.getloading = false
-                this.ErrMsg = "Error Fetching data!"
-            }
-            }).catch(err => {
-            this.getloading = false
-            })
-      }
+                })
+        } 
     },
    mounted: function() {    
       if (!process.server) {

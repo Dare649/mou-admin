@@ -5,7 +5,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Exams</a></li>
                         <li class="breadcrumb-item active">UTME Admission List</li>
                     </ol>
@@ -162,14 +162,11 @@ export default {
   layout: 'main',
    data() {
       return {
-        addloading: false,
         downloading: false,
         loading: false,
         deleteLoading: false,
-        editLoading: false,
         exportLoading: false,
         academic_sessions: [],
-        faculties: [],
         departments: [],
         programs: [],
         file: "",
@@ -318,9 +315,10 @@ export default {
             this.$store
             .dispatch('get-started/getAcademicSessions')
             .then(res => {
+                console.log(res)
             if(res != undefined){
                 if(res.status == true){
-                    this.academic_sessions = res.data.data
+                    this.academic_sessions = res.data
                     this.getloading = false
                 }else{
                     this.getloading = false
@@ -334,7 +332,6 @@ export default {
             this.getloading = false
             })
         },
-
         getDepartments(){
             this.$store
                 .dispatch('departments/getDepartments')

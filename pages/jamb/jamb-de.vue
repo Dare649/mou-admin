@@ -1,93 +1,87 @@
 <template>
     <div>
         <!-- Import JAMB Result Modal -->
-<div class="modal fade SlideUp" id="import_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Result - DE</span></h5>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                  <div class="col-lg-12 m-b-10">
-                    <select class="form-control" v-model="uploadData.session">
-                      <option value="" selected>Select Academic Session</option>
-                      <option v-for="session in sessions" :value="session.id">{{ session.de_session_name }}</option>
-                    </select>
-                  </div>
-                  <div class="col-lg-12 m-b-10">
-                    <div class="custom-file">
-                      <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
-                      <label class="custom-file-label" for="customFileLang">Select File</label>
+        <div class="modal fade SlideUp" id="import_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Result - DE</span></h5>
                     </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                    <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
-                  </div>
-                  <div class="col-lg-12 m-t-15">
-                    <div class="dd-placeholder p-1">
-                        <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                        <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
-                        <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
-                        <div class="clearfix"></div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<!-- Export JAMB Result Modal -->
-<div class="modal fade SlideUp" id="export_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Export JAMB Result - DE</span></h5>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form class="full-width">
+                    <div class="modal-body">
+                        <div class="row">
                         <div class="col-lg-12 m-b-10">
-                            <select class="form-control" v-model="model.export_year" >
-                                <option value="" selected>Select Jamb Result Year</option>
-                                <option value="2010">2010</option>
-                                <option value="2011">2011</option>
-                                <option value="2012">2012</option>
-                                <option value="2013">2013</option>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
+                            <select class="form-control" v-model="uploadData.session">
+                            <option value="" selected>Select Academic Session</option>
+                            <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.de_session_name }}</option>
                             </select>
                         </div>
-                        <!-- <div class="col-lg-12 m-b-10">
-                            <select class="form-control" v-model="model.export_entry_mode">
-                                <option value="" selected>Select Jamb Entry Mode</option>
-                                <option v-for="academicType in academicTypes" :key="academicType.id" :value="academicTypes.id" >{{academicType.name}}</option>
-                            </select>
-                        </div> -->
+                        <div class="col-lg-12 m-b-10">
+                            <div class="custom-file">
+                            <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                            <label class="custom-file-label" for="customFileLang">Select File</label>
+                            </div>
+                        </div>
                         <div class="col-lg-12">
-                             <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
-                              <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
+                            <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                            <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                         </div>
-                    </form>
+                        <div class="col-lg-12 m-t-15">
+                            <div class="dd-placeholder p-1">
+                                <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
+                                <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
-<!-- Delete Country Modal -->
+            <!-- Export JAMB Result Modal -->
+            <div class="modal fade SlideUp" id="export_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="pg-close"></i>
+                </button>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="text-left p-b-5"><span class="semi-bold">Export JAMB Result - DE</span></h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <form class="full-width">
+                                    <div class="col-lg-12 m-b-10">
+                                        <select class="form-control" v-model="model.export_year" >
+                                            <option value="" selected>Select Jamb Result Year</option>
+                                            <option value="2010">2010</option>
+                                            <option value="2011">2011</option>
+                                            <option value="2012">2012</option>
+                                            <option value="2013">2013</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
+                                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+        <!-- Delete Country Modal -->
           <div class="modal fade SlideUp" id="delete_de_result" tabindex="-1" role="dialog" aria-hidden="true">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                   <i class="pg-close"></i>
@@ -98,7 +92,7 @@
                           <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
                       </div>
                       <div class="modal-body">
-                          <form class="full-width" @submit.prevent="deleteJambDEt">
+                          <form class="full-width" @submit.prevent="deleteJambDE">
                               <div class="row">
                                   <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
                                   <div class="col-lg-12 m-t-10">
@@ -115,84 +109,77 @@
           </div>
 
           <div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result - DE</span></h5>
-            </div>
-            <div class="modal-body jamb_view">
-                <h5 >{{show_candidate_name}}</h5>
-                <ul class="info">
-                    <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
-                    <li><small>Year:</small> <span>{{show_year}}</span></li>
-                    <li><small>Gender:</small> <span>{{show_gender}}</span></li>
-                    <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
-                    <li><small>State:</small> <span>{{show_state_id}}</span></li>
-                    <!-- <li><small>Country:</small> <span>{{show_country_id}}</span></li> -->
-                    <!-- <li><small>1st Choice Institution:</small> <span>{{show_university1}}</span></li>
-                    <li><small>2nd Choice Institution:</small> <span>{{show_university2}}</span></li> -->
-                    <!-- <li><small>1st Choice Faculty:</small> <span>{{show_faculty_id1}}</span></li>
-                    <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
-                    <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
-                    <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li> -->
-                    <li><small>Department:</small> <span>{{show_department_id}}</span></li>
-                    <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>
-                    <div class="clearfix"></div>
-                </ul>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<!-- Edit JAMB Result Modal -->
-<div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result - DE</span></h5>
-            </div>
-            <div class="modal-body">
-                <form class="full-width" @submit.prevent="submitEditedJambResut">
-                    <div class="row">
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" v-model="model.edit_registration_number" placeholder="Reg. Number" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Name" v-model="model.edit_candidate_name" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Course Name" v-model="model.edit_course_name" class="form-control">
-                        </div>
-                        <div class="col-lg-6 m-b-10">
-                            <select class="form-control" v-model="model.edit_gender">
-                                <option value="" disabled>Select your option</option>
-                                <option value="M">M</option>
-                                <option value="F">F</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6 m-b-10">
-                            <input type="text" placeholder="Result Year" v-model="model.edit_year" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-t-10">
-                            <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                            <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
-                        </div>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result - DE</span></h5>
                     </div>
-                </form>
+                    <div class="modal-body jamb_view">
+                        <h5 >{{show_candidate_name}}</h5>
+                        <ul class="info">
+                            <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
+                            <li><small>Year:</small> <span>{{show_year}}</span></li>
+                            <li><small>Gender:</small> <span>{{show_gender}}</span></li>
+                            <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
+                            <li><small>State:</small> <span>{{show_state_id}}</span></li>
+                            <li><small>Department:</small> <span>{{show_department_id}}</span></li>
+                            <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
+
+        <!-- Edit JAMB Result Modal -->
+        <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result - DE</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="submitEditedJambResut">
+                            <div class="row">
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" v-model="model.edit_registration_number" placeholder="Reg. Number" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Name" v-model="model.edit_candidate_name" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Course Name" v-model="model.edit_course_name" class="form-control">
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <select class="form-control" v-model="model.edit_gender">
+                                        <option value="" disabled>Select your option</option>
+                                        <option value="M">M</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <input type="text" placeholder="Result Year" v-model="model.edit_year" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <!-- START PAGE CONTENT -->
         <div class="content sm-gutter">
             <!-- START BREADCRUMBS -->
@@ -322,7 +309,6 @@ export default {
             to: 0,
             current_page: 1
         },
-        addloading: false,
         downloading: false,
         loading: false,
         deleteLoading: false,
@@ -330,7 +316,6 @@ export default {
         getloading: false,
         exportLoading: false,
         de_results: [],
-        academicTypes: [],
         file: "",
         sessions: [],
         show_candidate_name: "",
@@ -395,9 +380,9 @@ export default {
             .dispatch('jamb-de/deleteJambDE', this.model.id)
             .then(res => {
             if(res != undefined){
-                if(res.success == true){
+                if(res.status == true){
                 this.deleteLoading = false
-                this.getCountries()
+                this.getJambResults()
                 $( '#delete_de_result' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
@@ -406,11 +391,11 @@ export default {
                 this.ErrMsg = "Error Logging in!"
                 }
             }else{
-                this.loading = false
+                this.deleteLoading = false
                 this.ErrMsg = "Error Logging in!"
             }
         }).catch(err => {
-          this.loading = false
+          this.deleteLoading = false
         })
       },
       submitEditedJambResut(){
@@ -470,26 +455,6 @@ export default {
             }
         }).catch(err => {
           this.loading = false
-        })
-      },
-      getAcademicTypes(){
-        this.$store
-        .dispatch('jamb-de/getAcademicTypes')
-        .then(res => {
-          if(res != undefined){
-            if(res.status == true){
-                this.academicTypes = res.data.data
-                this.pagination = res.data
-            }else{
-              this.getloading = false
-              this.ErrMsg = "Error Fetching data!"
-            }
-          }else{
-            this.getloading = false
-            this.ErrMsg = "Error Fetching data!"
-          }
-        }).catch(err => {
-          this.getloading = false
         })
       },
       refresh(){
@@ -614,7 +579,8 @@ export default {
       getAcademicSession() {
         this.$store.dispatch('academic-session/getDeSession')
           .then(res =>{
-            this.sessions = res.data.data
+              
+            this.sessions = res.data.data.data
           }).catch(err =>{
             this.$toast.error(err)
           })
@@ -628,9 +594,8 @@ export default {
 
         document.head.appendChild(script1)
       }
-    this.getJambResults(1)
+    this.getJambResults(this.pagination.current_page)
     this.getAcademicSession()
-    //this.getAcademicTypes()
     }
 }
 </script>

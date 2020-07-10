@@ -46,7 +46,7 @@ export const actions = {
     async deleteJambDE(context, id){
         return await this.$axios({
             method: 'delete',
-            url: 'api/jamb-results/'+ id,
+            url: 'api/jamb-results/de/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -78,20 +78,6 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            return response.data
-        })
-        .catch(err => {
-            return err
-        });
-    },
-    async getAcademicTypes(context) {
-        return await this.$axios({
-            method: 'get',
-            url: 'api/academic-type',
-            headers: {'Content-Type': 'application/json' }
-        })
-        .then(function (response) {
-            //handle success
             return response.data
         })
         .catch(err => {

@@ -54,82 +54,31 @@
                 <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
             </div>
             <div class="modal-body jamb_view">
-                <h5>Benjamin Okeleke</h5>
+                <h5>{{show_name}}</h5>
                 <ul>
                     <li>
                         <small>Registration Number</small>
-                        <span>MOU/09/2353573</span>
+                        <span>{{show_registration_number}}</span>
                     </li>
                     <li>
                         <small>Year</small>
-                        <span>2020</span>
+                        <span>{{show_year}}</span>
                     </li>
                     <li>
                         <small>Gender</small>
-                        <span>Male</span>
+                        <span>{{show_sex}}</span>
                     </li>
-                    <div class="clearfix"></div>
-                </ul>
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Mark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Subject 1</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 2</td>
-                            <td>B</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 3</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 4</td>
-                            <td>A</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade SlideUp" id="" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
-            </div>
-            <div class="modal-body jamb_view">
-                <h5 >{{show_name}}</h5>
-                <ul class="info">
-                    <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
-                    <li><small>Year:</small> <span>{{show_year}}</span></li>
-                    <li><small>Gender:</small> <span>{{show_sex}}</span></li>
-                    <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
-                    <li><small>State:</small> <span>{{show_state_id}}</span></li>
-                    <!-- <li><small>Country:</small> <span>{{show_country_id}}</span></li> -->
+                     <li><small>LGA:</small><span>{{show_lga_id}}</span></li>
+                    <li><small>State:</small><span>{{show_state_id}}</span></li>
                     <li><small>1st Choice Institution:</small> <span>{{show_university1}}</span></li>
                     <li><small>2nd Choice Institution:</small> <span>{{show_university2}}</span></li>
                     <li><small>1st Choice Faculty:</small> <span>{{show_faculty_id1}}</span></li>
                     <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
                     <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
                     <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li>
-                    <!-- <li><small>Phone Code:</small> <span>{{show_phone_code}}</span></li> -->
                     <div class="clearfix"></div>
                 </ul>
+                
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -280,7 +229,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">JAMB</a></li>
                         <li class="breadcrumb-item active">JAMB Result - UTME</li>
                     </ol>
