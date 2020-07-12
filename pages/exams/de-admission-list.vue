@@ -5,7 +5,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Exams</a></li>
                         <li class="breadcrumb-item active">DE Admission List</li>
                     </ol>
@@ -58,28 +58,38 @@
                                           </div>
                                       </div>
                                       <div class="form-group col-md-4">
-                                        <label>Select Department</label>
-                                        <select class="form-control" required>
+                                        <label>Select Academic Session</label>
+                                         <select class="form-control" v-model="model.import_session_id">
                                             <option value="" disabled selected>Select your option</option>
+                                            <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                         </select>
                                       </div>
                                       <div class="form-group col-md-4">
-                                        <label>Select Programme</label>
-                                        <select class="form-control" required>
+                                        <label>Select Category</label>
+                                        <select class="form-control" required v-model="model.import_category_id">
                                             <option value="" disabled selected>Select your option</option>
+                                            <option v-for="category in admission_categories" :key="category.id" :value="category.id">{{category.name}}</option>
                                         </select>
                                       </div>
                                     </div>
                                     <div class="row">
-                                      <div class="form-group col-md-6">
-                                        <label>Select Category</label>
-                                        <select class="form-control" required>
+                                      <div class="form-group col-md-4">
+                                        <label>Select Department</label>
+                                        <select class="form-control" required @change="populatePrograms($event)" v-model="model.import_department_id">
                                             <option value="" disabled selected>Select your option</option>
+                                            <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-6">
+                                      <div class="form-group col-md-4">
+                                        <label>Select Programme</label>
+                                        <select class="form-control" required v-model="model.import_program_id">
+                                            <option value="" disabled selected>Select your option</option>
+                                            <option v-for="program in programs" :key="program.id" :value="program.id">{{program.name}}</option>
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-md-4">
                                         <label>Overwrite existing marks</label>
-                                        <select class="form-control" required>
+                                        <select class="form-control" required v-model="model.import_overwrite">
                                             <option value="" disabled selected>Select your option</option>
                                             <option value="1">YES</option>
                                             <option value="0">NO</option>
@@ -89,8 +99,10 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                           <hr/>
-                                          <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
-                                          <button type="button"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
+                                          <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadDEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
+                                          <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                                          <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+                                          <button type="button" @click="uploadDEAdmission()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
                                       </div>
                                     </div>
                                 </form>
@@ -108,27 +120,31 @@
                                     <div class="row">
                                       <div class="form-group col-md-4">
                                           <label>Select Academic Session</label>
-                                          <select class="form-control">
-                                              <option value="" selected>Select your option</option>
-                                          </select>
+                                           <select class="form-control" v-model="model.export_session_id">
+                                                <option value="" disabled selected>Select your option</option>
+                                                <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
+                                            </select>
                                       </div>
                                       <div class="form-group col-md-4">
                                           <label>Select Department</label>
-                                          <select class="form-control">
+                                          <select class="form-control" v-model="model.export_department_id">
                                               <option value="" selected>Select your option</option>
+                                              <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                           </select>
                                       </div>
                                       <div class="form-group col-md-4">
                                           <label>Select Category</label>
-                                          <select class="form-control">
+                                          <select class="form-control" required v-model="model.export_category_id">
                                               <option value="" selected>Select your option</option>
+                                              <option v-for="category in admission_categories" :key="category.id" :value="category.id">{{category.name}}</option>
                                           </select>
                                       </div>
                                     </div>
                                     <div class="row">
                                       <div class="col-md-12">
                                         <hr/>
-                                        <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                       </div>
                                     </div>
                                 </form>
@@ -143,6 +159,227 @@
 </template>
 <script>
 export default {
-  layout: 'main'
+  layout: 'main',
+  data() {
+      return {
+        downloading: false,
+        loading: false,
+        deleteLoading: false,
+        exportLoading: false,
+        academic_sessions: [],
+        departments: [],
+        programs: [],
+        file: "",
+        admission_categories: [],
+        model: {
+          name: "",
+          export_session_id: "",
+          import_session_id: "",
+          import_category_id: "",
+          export_category_id: "",
+          overwrite: "",
+          import_overwrite: "",
+          import_program_id: "",
+          export_department_id: "",
+          import_department_id:"",
+          export_faculty_id: "",
+          export_session_id: ""
+        },
+      }
+    },
+    methods: {
+        exportDEs(){
+            this.exportLoading = true
+            var payload = new FormData()
+            payload.session_id = this.model.export_session_id
+            payload.department_id = this.model.export_department_id
+            payload.category_id = this.model.export_category_id
+            this.$store
+                .dispatch('get-started/exportDEs', payload)
+                .then(res => {
+                    if(res){
+                        this.exportLoading = false
+                        this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }else{
+                        this.exportLoading = false
+                        alert("File Downloaded Unsuccessful")
+                    }
+            }).catch(err => {
+            this.exportLoading = false
+            })
+        },
+        populatePrograms(event){
+            if(event.target.value != ""){
+                this.getProgramsByDepartmentId(1, event.target.value)
+            }else{
+                this.model.import_department_id = ""
+                this.programs = []
+            }
+        },
+        downloadDEAdmissionSampleFile(){
+            this.downloading = true
+            this.$store
+                .dispatch('get-started/downloadDEAdmissionSampleFile')
+                .then(res => {
+                if(res != undefined){
+                    if(res.success == true)    {
+                        window.location = res.message
+                        this.downloading = false
+                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }
+                }else{
+                    this.downloading = false
+                    alert("File Downloaded Unsuccessful")
+                }
+            }).catch(err => {
+            this.downloading = false
+            })
+        },
+        uploadDEAdmission(){
+            this.loading = true
+            this.file = this.$refs.myFiles.files[0];
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('session_id', this.model.import_session_id)
+            formData.append('department_id', this.model.import_department_id)
+            formData.append('program_id', this.model.import_program_id)
+            formData.append('admission_category', this.model.import_category_id)
+            formData.append('overwrite', this.model.import_overwrite)
+            this.$store
+                .dispatch('get-started/uploadDEAdmission', formData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.loading = false
+                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }else{
+                        this.loading = false
+                        this.$toast.error(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }
+                }else{
+                    this.loading = false
+                    alert("File Upload Unsuccessful")
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }).catch(err => {
+                this.loading = false
+            })
+        },
+        getProgramsByDepartmentId(page, id) {
+            //if(this.$laravel.hasPermission('View programme')){
+            let payload = {}
+            payload.page = page
+            payload.departmentId = id
+            this.$store
+                .dispatch('get-started/getProgramsByDepartmentId', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.programs = res.data.data
+                        this.pagination = res.data
+                        this.getLoading = false
+                    }else{
+                        this.getLoading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.getLoading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+                }).catch(err => {
+                    this.getLoading = false
+                })
+                // }else{
+                //     this.IsPermitted = false
+                //     this.getLoading = false
+                // }
+            },
+            getAdmissionCategories(){
+                this.$store
+                    .dispatch('get-started/getAdmissionCategories')
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.status == true){
+                            this.admission_categories = res.data
+                            this.getloading = false
+                        }else{
+                            this.getloading = false
+                            this.ErrMsg = "Error Fetching data!"
+                        }
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                    }).catch(err => {
+                    this.getloading = false
+                    })
+            },
+        getAcademicSessions(){
+          this.$store
+            .dispatch('academic-session/getDeSession')
+            .then(res => {
+            if(res != undefined){
+                if(res.data.status == true){
+                    this.academic_sessions = res.data.data.data
+                    this.getloading = false
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }else{
+                this.getloading = false
+                this.ErrMsg = "Error Fetching data!"
+            }
+            }).catch(err => {
+            this.getloading = false
+            })
+        },
+        getDepartments(){
+            this.$store
+                .dispatch('departments/getDepartments')
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        
+                        this.departments = res.data.data
+                        this.getloading = false
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                        
+                    }
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+                }).catch(err => {
+                this.getloading = false
+                })
+        } 
+    },
+   mounted: function() {    
+      if (!process.server) {
+        const script1 = document.createElement('script')
+        script1.type = 'text/javascript'
+        script1.src = '/pages/js/pages.min.js'
+
+        document.head.appendChild(script1)
+      }
+     
+      //if(this.$laravel.hasPermission('View PUTME Result')){
+        //this.getFaculties()
+        this.getAcademicSessions()
+        this.getDepartments()
+        this.getAdmissionCategories()
+    //   }else{
+    //       this.$router.push(
+    //             decodeURIComponent(
+    //                 this.$route.query.redirect || "/dashboard"
+    //             )
+    //         );
+    //         this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+    //   }
+      
+    }
 }
 </script>

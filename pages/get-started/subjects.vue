@@ -188,7 +188,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Get Started</a></li>
                         <li class="breadcrumb-item active">Subjects (JAMB)</li>
                     </ol>

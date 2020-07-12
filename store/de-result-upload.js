@@ -44,7 +44,7 @@ export const actions = {
     async getAcademicSessions(context) {
         return await this.$axios({
             method: 'get',
-            url: 'api/de-sessions/getSessions',
+            url: 'api/de-sessions',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

@@ -15,7 +15,7 @@
                     <div class="col-lg-12 m-b-10">
                         <select class="form-control" v-model="uploadData.session">
                           <option value="" selected>Select Academic Session</option>
-                          <option v-for="session in sessions" :value="session.id">{{ session.session_name }}</option>
+                          <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.session_name }}</option>
                         </select>
                     </div>
                     <div class="col-lg-12 m-b-10">
@@ -54,82 +54,31 @@
                 <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
             </div>
             <div class="modal-body jamb_view">
-                <h5>Benjamin Okeleke</h5>
+                <h5>{{show_name}}</h5>
                 <ul>
                     <li>
                         <small>Registration Number</small>
-                        <span>MOU/09/2353573</span>
+                        <span>{{show_registration_number}}</span>
                     </li>
                     <li>
                         <small>Year</small>
-                        <span>2020</span>
+                        <span>{{show_year}}</span>
                     </li>
                     <li>
                         <small>Gender</small>
-                        <span>Male</span>
+                        <span>{{show_sex}}</span>
                     </li>
-                    <div class="clearfix"></div>
-                </ul>
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Mark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Subject 1</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 2</td>
-                            <td>B</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 3</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Subject 4</td>
-                            <td>A</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade SlideUp" id="" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
-            </div>
-            <div class="modal-body jamb_view">
-                <h5 >{{show_name}}</h5>
-                <ul class="info">
-                    <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
-                    <li><small>Year:</small> <span>{{show_year}}</span></li>
-                    <li><small>Gender:</small> <span>{{show_sex}}</span></li>
-                    <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
-                    <li><small>State:</small> <span>{{show_state_id}}</span></li>
-                    <li><small>Country:</small> <span>{{show_country_id}}</span></li>
+                     <li><small>LGA:</small><span>{{show_lga_id}}</span></li>
+                    <li><small>State:</small><span>{{show_state_id}}</span></li>
                     <li><small>1st Choice Institution:</small> <span>{{show_university1}}</span></li>
                     <li><small>2nd Choice Institution:</small> <span>{{show_university2}}</span></li>
                     <li><small>1st Choice Faculty:</small> <span>{{show_faculty_id1}}</span></li>
                     <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
                     <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
                     <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li>
-                    <li><small>Phone Code:</small> <span>{{show_phone_code}}</span></li>
                     <div class="clearfix"></div>
                 </ul>
+                
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -280,7 +229,7 @@
             <div class="bg-white">
                 <div class="container p-l-5">
                     <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">JAMB</a></li>
                         <li class="breadcrumb-item active">JAMB Result - UTME</li>
                     </ol>
@@ -361,7 +310,10 @@
                                                 <span v-permission="'Edit Jamb Result UME'" data-placement="top" @click="populateFields(jamb_result)" data-toggle="tooltip" title="Edit Record">
                                                     <a href="#edit_jamb_result"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                                 </span>
-                                                <button v-permission="'Delete Jamb Result UME'" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><i class="pg-trash"></i></button>
+                                                <span v-permission="'Delete Jamb Result UME'" data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                                    <a href="#delete_jamb_result" @click="setId(jamb_result.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                </span>
+                                                
                                             </div>
                                         </td>
                                     </tr>
@@ -501,18 +453,18 @@ export default {
       showDetails(jamb){
           this.model.id = jamb.id
           this.show_country_id = jamb.country_id
-          this.show_state_id = jamb.state_id
-          this.show_lga_id = jamb.lga_id
+          this.show_state_id = jamb.state
+          this.show_lga_id = jamb.lga
           this.show_university1 = jamb.university1
           this.show_university2 = jamb.university2
-          this.show_faculty_id1 = jamb.faculty_id1
-          this.show_faculty_id2 = jamb.faculty_id2
-          this.show_department_id1 = jamb.department_id1
-          this.show_department_id2 = jamb.department_id2
-          this.show_subject_id1 = jamb.subject_id1
-          this.show_subject_id2 = jamb.subject_id2
-          this.show_subject_id3 = jamb.subject_id3
-          this.show_subject_id4 = jamb.subject_id4
+          this.show_faculty_id1 = jamb.faculty1
+          this.show_faculty_id2 = jamb.faculty2
+          this.show_department_id1 = jamb.department1
+          this.show_department_id2 = jamb.department2
+          this.show_subject_id1 = jamb.subject1
+          this.show_subject_id2 = jamb.subject2
+          this.show_subject_id3 = jamb.subject3
+          this.show_subject_id4 = jamb.subject4
           this.show_mark1 = jamb.mark1
           this.show_mark2 = jamb.mark2
           this.show_mark3 = jamb.mark3
@@ -528,19 +480,17 @@ export default {
             .dispatch('get-started/deleteJambResult', this.model.id)
             .then(res => {
             if(res != undefined){
-                if(res.success == true){
+                if(res.status == true){
                 this.deleteLoading = false
-                this.getCountries()
+                this.getJambResults()
                 $( '#delete_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null );
                 this.loading = false
                 }else{
                 this.deleteLoading = false
                 this.loading = false
-                this.ErrMsg = "Error Logging in!"
                 }
             }else{
                 this.loading = false
-                this.ErrMsg = "Error Logging in!"
             }
 
         }).catch(err => {
@@ -571,6 +521,7 @@ export default {
             bodyFormData.mark4 = this.model.edit_mark4
             bodyFormData.sex = this.model.edit_sex
             bodyFormData.year = this.model.edit_year
+            console.log(bodyFormData)
             this.$store
                 .dispatch('get-started/updateJambResult', bodyFormData)
                 .then(res => {
@@ -583,11 +534,9 @@ export default {
 
                     }else{
                     this.editLoading = false
-                    this.ErrMsg = "Error Processing Request!"
                     }
                 }else{
                     this.loading = false
-                    this.ErrMsg = "Error Processing Request!"
                 }
             }).catch(err => {
                 this.loading = false
@@ -611,12 +560,10 @@ export default {
                 }else{
                     this.loading = false
                     this.getloading = false
-                    this.ErrMsg = "Error Fetching data!"
                 }
             }else{
                 this.loading = false
                 this.getloading = false
-                this.ErrMsg = "Error Fetching data!"
             }
         }).catch(err => {
             this.getloading = false
@@ -633,11 +580,9 @@ export default {
                 this.pagination = res.data
             }else{
               this.getloading = false
-              this.ErrMsg = "Error Fetching data!"
             }
           }else{
             this.getloading = false
-            this.ErrMsg = "Error Fetching data!"
           }
         }).catch(err => {
           this.getloading = false
@@ -666,14 +611,13 @@ export default {
                     this.pagination = res.data
                 }else{
                   this.getloading = false
-                  this.ErrMsg = "Error Fetching data!"
                 }
               }else{
                 this.getloading = false
-                this.ErrMsg = "Error Fetching data!"
               }
             }).catch(err => {
               this.getloading = false
+              this.$toast.error('An error occurred please contact the administrator' + err)
             })
         }else{
             this.IsPermitted = false
@@ -705,6 +649,7 @@ export default {
             }
         }).catch(err => {
           this.downloading = false
+          this.$toast.error('An error occurred please contact the administrator' + err)
         })
       },
       exportJambResults(){
@@ -724,6 +669,7 @@ export default {
             }
         }).catch(err => {
           this.exportLoading = false
+          this.$toast.error('An error occurred please contact the administrator' + err)
         })
       },
       uploadJambResults(){
@@ -744,15 +690,14 @@ export default {
                 }else{
                     this.loading = false
                     this.$toast.error('An error occurred:' + res.data.message)
-                    this.ErrMsg = "Error Logging in!"
                 }
             }else{
                 this.loading = false
                 this.$toast.error('An error occurred please contact the administrator')
-                this.ErrMsg = "Error Logging in!"
             }
         }).catch(err => {
           this.loading = false
+          this.$toast.error('An error occurred please contact the administrator' + err)
         })
       },
       getAcademicSession() {

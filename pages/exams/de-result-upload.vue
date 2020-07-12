@@ -228,8 +228,7 @@ export default {
         this.loading = true
         this.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
-        formData.append('file', this.file);
-        console.log(this.model.session_id)
+        formData.append('file', this.file)
         formData.append('session_id', this.model.session_id)
         formData.append('overwrite', this.model.overwrite)
           this.$store
@@ -282,6 +281,19 @@ export default {
             }).catch(err => {
                 this.getloading = false
          })
+      },
+      checkPagePermission(){
+          if(!this.$laravel.hasPermission('View DE Result')){
+        this.$router.push(
+                decodeURIComponent(
+                    this.$route.query.redirect || "/dashboard"
+                )
+            );
+            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
+        }else{
+                this.getFaculties(this.pagination.current_page)
+                this.getAcademicSessions()
+        }
       }
   },
   data() {
@@ -318,19 +330,10 @@ export default {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
         script1.src = '/pages/js/pages.min.js'
-
         document.head.appendChild(script1)
       }
-      if(!this.$laravel.hasPermission('View DE Result')){
-        this.$router.push(
-                decodeURIComponent(
-                    this.$route.query.redirect || "/dashboard"
-                )
-            );
-            this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-      }
-      this.getFaculties()
-      this.getAcademicSessions()
+      
+      this.checkPagePermission()
     }
 }
 </script>
