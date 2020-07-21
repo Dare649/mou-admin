@@ -98,6 +98,14 @@ export const actions = {
             return err
         });
     },
+    async getProgByDeptId(context, id) {
+      return await this.$axios.get('api/programs/by-department/' + id)
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
+        })
+    },
     async deleteProgram(context, id){
         return await this.$axios({
             method: 'delete',

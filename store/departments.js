@@ -80,6 +80,14 @@ export const actions = {
             return err
         });
     },
+    async getDepartmentAndColleges () {
+      return await this.$axios.get('api/departments/getDepartmentColleges')
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
+        })
+    },
     async createDepartment(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -110,6 +118,14 @@ export const actions = {
             console.log(err)
             return err
         });
+    },
+    async getDeptByColledId(context, id) {
+      return await this.$axios.get('api/departments/get-faculty/' + id)
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
+        })
     },
     async deleteDepartment(context, id){
         return await this.$axios({

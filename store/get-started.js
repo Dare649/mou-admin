@@ -206,55 +206,24 @@ export const actions = {
         });
     },
     async exportPUTMEs(context, payload) {
-        return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "putmes")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
-
-        // return await this.$axios({
-        //     method: 'post',
-        //     url: 'api/putme-sessions/post-utme-result/export',
-        //     data: payload,
-        //     headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
-        //     responseType: "arraybuffer",
-
-        // })
-        // .then(function (response) {
-        //     //handle success
-        //     return response.data
-        // })
-        // .catch(err => {
-        //     return err
-        // });
+      return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
+      }, {
+          responseType: 'blob',
+          data: payload
+      }).then((response) => {
+          const url = URL.createObjectURL(new Blob([response.data], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          }))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', "putmes")
+          document.body.appendChild(link)
+          link.click()
+          return true
+      });
     },
     async exportUTMEs(context, payload) {
-        // return await this.$axios({
-        //     method: 'post',
-        //     url: 'api/putme-sessions/admissions/export',
-        //     data: payload,
-        //     headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'},
-        //     responseType: "arraybuffer",
-            
-        // })
-        // .then(function (response) {
-        //     //handle success
-        //     return response.data
-        // })
-        // .catch(err => {
-        //     return err
-        // });
-        return await this.$axios.post('api/putme-sessions/admissions/export', {
+      return await this.$axios.post('api/putme-sessions/admissions/export', {
         }, {
             responseType: 'blob',
             data: payload

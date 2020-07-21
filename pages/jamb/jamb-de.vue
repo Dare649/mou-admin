@@ -120,15 +120,39 @@
                     <div class="modal-body jamb_view">
                         <h5 >{{show_candidate_name}}</h5>
                         <ul class="info">
-                            <li><small>Registration Number:</small> <span>{{show_registration_number}}</span></li>
-                            <li><small>Year:</small> <span>{{show_year}}</span></li>
-                            <li><small>Gender:</small> <span>{{show_gender}}</span></li>
-                            <li><small>LGA:</small> <span>{{show_lga_id}}</span></li>
-                            <li><small>State:</small> <span>{{show_state_id}}</span></li>
-                            <li><small>Department:</small> <span>{{show_department_id}}</span></li>
-                            <li><small>Course Name:</small> <span>{{show_course_name}}</span></li>
+                            <li>
+                              <small>Registration Number:</small> <br />
+                              <span>{{show_registration_number}}</span>
+                            </li>
+                            <li>
+                              <small>Year:</small> <br />
+                              <span>{{show_year}}</span>
+                            </li>
+                            <li>
+                              <small>Gender:</small> <br />
+                              <span>{{show_gender}}</span>
+                            </li>
+                            <li>
+                              <small>LGA:</small> <br />
+                              <span>{{show_lga_id}}</span>
+                            </li>
+                            <li>
+                              <small>State:</small> <br />
+                              <span>{{show_state_id}}</span>
+                            </li>
                             <div class="clearfix"></div>
                         </ul>
+
+                        <table class="table table-striped table-bordered">
+                          <tr>
+                            <th>Faculty:</th>
+                            <td>{{show_course_name}}</td>
+                          </tr>
+                          <tr>
+                            <th>Department:</th>
+                            <td>{{show_department_id}}</td>
+                          </tr>
+                        </table>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -579,7 +603,7 @@ export default {
       getAcademicSession() {
         this.$store.dispatch('academic-session/getDeSession')
           .then(res =>{
-              
+
             this.sessions = res.data.data.data
           }).catch(err =>{
             this.$toast.error(err)

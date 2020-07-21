@@ -148,6 +148,7 @@
 
           } catch (e) {
             this.authloading = false;
+            this.$toast.error('Invalid token supplied.')
             console.log(e)
           }
 

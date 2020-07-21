@@ -40,6 +40,14 @@ export const actions = {
             return err
         });
     },
+    async getAllFacultiesWithoutPagination() {
+      return await this.$axios.get('api/faculties/getAllFaculties')
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
+        })
+    },
     async downloadFacultySampleFile(context) {
         return await this.$axios({
             method: 'get',

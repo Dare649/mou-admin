@@ -57,28 +57,57 @@
                 <h5>{{show_name}}</h5>
                 <ul>
                     <li>
-                        <small>Registration Number</small>
+                        <small>Registration Number</small><br />
                         <span>{{show_registration_number}}</span>
                     </li>
                     <li>
-                        <small>Year</small>
+                        <small>Year</small> <br />
                         <span>{{show_year}}</span>
                     </li>
                     <li>
-                        <small>Gender</small>
+                        <small>Gender</small><br />
                         <span>{{show_sex}}</span>
                     </li>
-                     <li><small>LGA:</small><span>{{show_lga_id}}</span></li>
-                    <li><small>State:</small><span>{{show_state_id}}</span></li>
-                    <li><small>1st Choice Institution:</small> <span>{{show_university1}}</span></li>
-                    <li><small>2nd Choice Institution:</small> <span>{{show_university2}}</span></li>
-                    <li><small>1st Choice Faculty:</small> <span>{{show_faculty_id1}}</span></li>
-                    <li><small>2nd Choice Faculty:</small> <span>{{show_faculty_id2}}</span></li>
-                    <li><small>1st Choice Department:</small> <span>{{show_department_id1}}</span></li>
-                    <li><small>2nd Choice Department:</small> <span>{{show_department_id2}}</span></li>
+                   <li>
+                     <small>LGA:</small><br />
+                     <span>{{show_lga_id}}</span>
+                   </li>
+                    <li>
+                      <small>State:</small> <br />
+                      <span>{{show_state_id}}</span>
+                    </li>
                     <div class="clearfix"></div>
                 </ul>
-                
+
+                <table class="table table-striped table-bordered">
+                  <tr>
+                    <th>1st Choice Institution:</th>
+                    <td>{{show_university1}}</td>
+                  </tr>
+                  <tr>
+                    <th>1st Choice Faculty:</th>
+                    <td>{{show_faculty_id1}}</td>
+                  </tr>
+                  <tr>
+                    <th>1st Choice Department:</th>
+                    <td>{{show_department_id1}}</td>
+                  </tr>
+                </table>
+                <table class="table table-striped table-bordered">
+                  <tr>
+                    <th>2nd Choice Institution:</th>
+                    <td>{{show_university2}}</td>
+                  </tr>
+                  <tr>
+                    <th>2nd Choice Faculty:</th>
+                    <td>{{show_faculty_id2}}</td>
+                  </tr>
+                  <tr>
+                    <th>2nd Choice Department:</th>
+                    <td>{{show_department_id2}}</td>
+                  </tr>
+                </table>
+
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -102,6 +131,10 @@
                         <tr>
                             <td>{{show_subject_id4}}</td>
                             <td>{{show_mark4}}</td>
+                        </tr>
+                        <tr>
+                          <td><b>TOTAL</b></td>
+                          <td>{{ (show_mark1 + show_mark2 + show_mark3 + show_mark4) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -313,7 +346,7 @@
                                                 <span v-permission="'Delete Jamb Result UME'" data-placement="top" data-toggle="tooltip" title="Delete Record">
                                                     <a href="#delete_jamb_result" @click="setId(jamb_result.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                                 </span>
-                                                
+
                                             </div>
                                         </td>
                                     </tr>

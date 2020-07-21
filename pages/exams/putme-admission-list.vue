@@ -74,10 +74,21 @@
                                     </div>
                                     <div class="row">
                                       <div class="form-group col-md-4">
+                                        <label>Select College</label>
+                                        <select class="form-control" required @change="populateDepartment($event)">
+                                            <option value="" disabled selected>Select your option</option>
+                                            <option v-for="college in colleges" :key="college.id" :value="college.id">
+                                              {{college.name}}
+                                            </option>
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-md-4">
                                         <label>Select Department</label>
                                         <select class="form-control" required @change="populatePrograms($event)" v-model="model.import_department_id">
                                             <option value="" disabled selected>Select your option</option>
-                                            <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                              {{department.name}}
+                                            </option>
                                         </select>
                                       </div>
                                       <div class="form-group col-md-4">
@@ -170,6 +181,7 @@ export default {
         departments: [],
         programs: [],
         file: "",
+        colleges: [],
         admission_categories: [],
         model: {
           name: "",
@@ -208,32 +220,42 @@ export default {
             this.exportLoading = false
             })
         },
+        populateDepartment(e) {
+          let id = e.target.value
+          this.$store.dispatch('departments/getDeptByColledId', id)
+            .then(res =>{
+              this.departments = res.data.data
+            }).catch(err =>{
+              this.$toast.error(err)
+            })
+        },
         populatePrograms(event){
-            if(event.target.value != ""){
-                this.getProgramsByDepartmentId(1, event.target.value)
-            }else{
-                this.model.import_department_id = ""
-                this.programs = []
-            }
+          let id = event.target.value
+          this.$store.dispatch('programs/getProgByDeptId', id)
+            .then(res =>{
+              this.programs = res.data.data
+            }).catch(err =>{
+              this.$toast.error(err)
+            })
         },
         downloadUTMEAdmissionSampleFile(){
-            this.downloading = true
-            this.$store
-                .dispatch('get-started/downloadUTMEAdmissionSampleFile')
-                .then(res => {
-                if(res != undefined){
-                    if(res.success == true)    {
-                        window.location = res.message
-                        this.downloading = false
-                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                    }
-                }else{
+          this.downloading = true
+          this.$store
+              .dispatch('get-started/downloadUTMEAdmissionSampleFile')
+              .then(res => {
+              if(res != undefined){
+                  if(res.success == true)    {
+                    window.location = res.message
                     this.downloading = false
-                    alert("File Downloaded Unsuccessful")
-                }
-            }).catch(err => {
+                    this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                  }
+              }else{
+                this.downloading = false
+                alert("File Downloaded Unsuccessful")
+              }
+          }).catch(err => {
             this.downloading = false
-            })
+          })
         },
         uploadPUTMEAdmission(){
             this.loading = true
@@ -268,54 +290,61 @@ export default {
             })
         },
         getProgramsByDepartmentId(page, id) {
-            let payload = {}
-            payload.page = page
-            payload.departmentId = id
-            this.$store
-                .dispatch('get-started/getProgramsByDepartmentId', payload)
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.programs = res.data.data
-                        this.pagination = res.data
-                        this.getLoading = false
-                    }else{
-                        this.getLoading = false
-                        this.ErrMsg = "Error Processing Request!"
-                    }
-                }else{
-                    this.getLoading = false
-                    this.ErrMsg = "Error Processing Request!"
-                }
-                }).catch(err => {
-                    this.getLoading = false
-                })
-            },
-            getAdmissionCategories(){
-                this.$store
-                    .dispatch('get-started/getAdmissionCategories')
-                    .then(res => {
-                    if(res != undefined){
-                        if(res.status == true){
-                            this.admission_categories = res.data
-                            this.getloading = false
-                        }else{
-                            this.getloading = false
-                            this.ErrMsg = "Error Fetching data!"
-                        }
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Fetching data!"
-                    }
-                    }).catch(err => {
-                    this.getloading = false
-                    })
-            },
+          let payload = {}
+          payload.page = page
+          payload.departmentId = id
+          this.$store
+              .dispatch('get-started/getProgramsByDepartmentId', payload)
+              .then(res => {
+              if(res != undefined){
+                  if(res.status == true){
+                      this.programs = res.data.data
+                      this.pagination = res.data
+                      this.getLoading = false
+                  }else{
+                      this.getLoading = false
+                      this.ErrMsg = "Error Processing Request!"
+                  }
+              }else{
+                  this.getLoading = false
+                  this.ErrMsg = "Error Processing Request!"
+              }
+              }).catch(err => {
+                  this.getLoading = false
+              })
+          },
+          getAdmissionCategories(){
+              this.$store
+                  .dispatch('get-started/getAdmissionCategories')
+                  .then(res => {
+                  if(res != undefined){
+                      if(res.status == true){
+                          this.admission_categories = res.data
+                          this.getloading = false
+                      }else{
+                          this.getloading = false
+                          this.ErrMsg = "Error Fetching data!"
+                      }
+                  }else{
+                      this.getloading = false
+                      this.ErrMsg = "Error Fetching data!"
+                  }
+                  }).catch(err => {
+                  this.getloading = false
+                  })
+          },
+          getColleges() {
+            this.$store.dispatch('faculties/getAllFacultiesWithoutPagination')
+              .then(res =>{
+                this.colleges = res.data.data
+              }).catch(err =>{
+                this.$toast.error(err)
+              })
+          },
         getAcademicSessions(){
             this.$store
             .dispatch('get-started/getAcademicSessions')
             .then(res => {
-                console.log(res)
             if(res != undefined){
                 if(res.status == true){
                     this.academic_sessions = res.data
@@ -331,31 +360,9 @@ export default {
             }).catch(err => {
             this.getloading = false
             })
-        },
-        getDepartments(){
-            this.$store
-                .dispatch('departments/getDepartments')
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        
-                        this.departments = res.data.data
-                        this.getloading = false
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Fetching data!"
-                        
-                    }
-                }else{
-                    this.getloading = false
-                    this.ErrMsg = "Error Fetching data!"
-                }
-                }).catch(err => {
-                this.getloading = false
-                })
         }
     },
-   mounted: function() {    
+   mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
@@ -363,21 +370,10 @@ export default {
 
         document.head.appendChild(script1)
       }
-     
-      //if(this.$laravel.hasPermission('View PUTME Result')){
-        //this.getFaculties()
-        this.getAcademicSessions()
-        this.getDepartments()
-        this.getAdmissionCategories()
-    //   }else{
-    //       this.$router.push(
-    //             decodeURIComponent(
-    //                 this.$route.query.redirect || "/dashboard"
-    //             )
-    //         );
-    //         this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-    //   }
-      
+      this.getAcademicSessions()
+      this.getAdmissionCategories()
+      this.getColleges()
+
     }
 }
 </script>
