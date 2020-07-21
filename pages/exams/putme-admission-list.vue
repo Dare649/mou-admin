@@ -73,7 +73,7 @@
                                       </div>
                                     </div>
                                     <div class="row">
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                         <label>Select College</label>
                                         <select class="form-control" required @change="populateDepartment($event)">
                                             <option value="" disabled selected>Select your option</option>
@@ -82,7 +82,7 @@
                                             </option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                         <label>Select Department</label>
                                         <select class="form-control" required @change="populatePrograms($event)" v-model="model.import_department_id">
                                             <option value="" disabled selected>Select your option</option>
@@ -91,14 +91,14 @@
                                             </option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                         <label>Select Programme</label>
                                         <select class="form-control" required v-model="model.import_program_id">
                                             <option value="" disabled selected>Select your option</option>
                                             <option v-for="program in programs" :key="program.id" :value="program.id">{{program.name}}</option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                         <label>Overwrite existing marks</label>
                                         <select class="form-control" required v-model="model.import_overwrite">
                                             <option value="" disabled selected>Select your option</option>
@@ -129,32 +129,32 @@
                             <div class="card-body">
                                 <form class="p-4">
                                     <div class="row">
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                           <label>Select Academic Session</label>
                                            <select class="form-control" v-model="model.export_session_id">
                                                 <option value="" disabled selected>Select your option</option>
                                                 <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                             </select>
                                       </div>
-                                     <div class="form-group col-md-4">
+                                     <div class="form-group col-md-6">
                                         <label>Select College</label>
-                                        <select class="form-control" required @change="populateDepartment($event)">
+                                        <select class="form-control" required @change="populateDownloadDepartment($event)">
                                             <option value="" disabled selected>Select your option</option>
                                             <option v-for="college in colleges" :key="college.id" :value="college.id">
                                               {{college.name}}
                                             </option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                           <label>Select Department</label>
                                           <select class="form-control" required v-model="model.export_department_id">
                                             <option value="" disabled selected>Select your option</option>
-                                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                            <option v-for="department in downloadDepartments" :key="department.id" :value="department.id">
                                               {{department.name}}
                                             </option>
                                         </select>
                                       </div>
-                                      <div class="form-group col-md-4">
+                                      <div class="form-group col-md-6">
                                           <label>Select Category</label>
                                           <select class="form-control" required v-model="model.export_category_id">
                                               <option value="" selected>Select your option</option>
@@ -190,6 +190,7 @@ export default {
         exportLoading: false,
         academic_sessions: [],
         departments: [],
+        downloadDepartments: [],
         programs: [],
         file: "",
         colleges: [],
@@ -236,6 +237,15 @@ export default {
           this.$store.dispatch('departments/getDeptByColledId', id)
             .then(res =>{
               this.departments = res.data.data
+            }).catch(err =>{
+              this.$toast.error(err)
+            })
+        },
+        populateDownloadDepartment(e) {
+          let id = e.target.value
+          this.$store.dispatch('departments/getDeptByColledId', id)
+            .then(res =>{
+              this.downloadDepartments = res.data.data
             }).catch(err =>{
               this.$toast.error(err)
             })
