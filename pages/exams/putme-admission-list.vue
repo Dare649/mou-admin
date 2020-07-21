@@ -136,12 +136,23 @@
                                                 <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                             </select>
                                       </div>
+                                     <div class="form-group col-md-4">
+                                        <label>Select College</label>
+                                        <select class="form-control" required @change="populateDepartment($event)">
+                                            <option value="" disabled selected>Select your option</option>
+                                            <option v-for="college in colleges" :key="college.id" :value="college.id">
+                                              {{college.name}}
+                                            </option>
+                                        </select>
+                                      </div>
                                       <div class="form-group col-md-4">
                                           <label>Select Department</label>
-                                          <select class="form-control" v-model="model.export_department_id">
-                                              <option value="" selected>Select your option</option>
-                                              <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
-                                          </select>
+                                          <select class="form-control" required v-model="model.export_department_id">
+                                            <option value="" disabled selected>Select your option</option>
+                                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                              {{department.name}}
+                                            </option>
+                                        </select>
                                       </div>
                                       <div class="form-group col-md-4">
                                           <label>Select Category</label>
@@ -277,12 +288,10 @@ export default {
                     }else{
                         this.loading = false
                         alert("File Upload Unsuccessful")
-                        this.ErrMsg = "Error Logging in!"
                     }
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
-                    this.ErrMsg = "Error Logging in!"
                 }
             }).catch(err => {
                 this.loading = false
