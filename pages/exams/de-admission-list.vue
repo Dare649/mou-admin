@@ -74,10 +74,21 @@
                                     </div>
                                     <div class="row">
                                       <div class="form-group col-md-4">
+                                        <label>Select College</label>
+                                        <select class="form-control" required @change="populateDepartment($event)">
+                                            <option value="" disabled selected>Select your option</option>
+                                            <option v-for="college in colleges" :key="college.id" :value="college.id">
+                                              {{college.name}}
+                                            </option>
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-md-4">
                                         <label>Select Department</label>
                                         <select class="form-control" required @change="populatePrograms($event)" v-model="model.import_department_id">
                                             <option value="" disabled selected>Select your option</option>
-                                            <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                              {{department.name}}
+                                            </option>
                                         </select>
                                       </div>
                                       <div class="form-group col-md-4">
@@ -170,6 +181,7 @@ export default {
         departments: [],
         programs: [],
         file: "",
+        colleges: [],
         admission_categories: [],
         model: {
           name: "",
@@ -188,6 +200,14 @@ export default {
       }
     },
     methods: {
+        getColleges() {
+            this.$store.dispatch('faculties/getAllFacultiesWithoutPagination')
+              .then(res =>{
+                this.colleges = res.data.data
+              }).catch(err =>{
+                this.$toast.error(err)
+              })
+          },
         exportDEs(){
             this.exportLoading = true
             var payload = new FormData()
@@ -206,6 +226,15 @@ export default {
                     }
             }).catch(err => {
             this.exportLoading = false
+            })
+        },
+        populateDepartment(e) {
+          let id = e.target.value
+          this.$store.dispatch('departments/getDeptByColledId', id)
+            .then(res =>{
+              this.departments = res.data.data
+            }).catch(err =>{
+              this.$toast.error(err)
             })
         },
         populatePrograms(event){
@@ -369,7 +398,7 @@ export default {
       //if(this.$laravel.hasPermission('View PUTME Result')){
         //this.getFaculties()
         this.getAcademicSessions()
-        this.getDepartments()
+        this.getColleges()
         this.getAdmissionCategories()
     //   }else{
     //       this.$router.push(

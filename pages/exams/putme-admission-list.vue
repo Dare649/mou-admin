@@ -277,12 +277,10 @@ export default {
                     }else{
                         this.loading = false
                         alert("File Upload Unsuccessful")
-                        this.ErrMsg = "Error Logging in!"
                     }
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
-                    this.ErrMsg = "Error Logging in!"
                 }
             }).catch(err => {
                 this.loading = false
