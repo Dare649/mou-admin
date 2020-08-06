@@ -278,13 +278,14 @@ export default {
           this.$store
             .dispatch('get-started/uploadPUTMEResults', formData)
             .then(res => {
+                console.log(res)
             if(res != undefined){
                 if(res.success == true){
                     this.loading = false
                     this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    alert("File Upload Unsuccessful")
+                    alert(res.message)
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{
