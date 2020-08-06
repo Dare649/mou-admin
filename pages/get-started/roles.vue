@@ -143,8 +143,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="text-left p-b-5"><span class="semi-bold">Manage Permission</span></h5>
-                            <span @click="selectAll()">
-                                <input type="checkbox" :value="permissions" v-model="checked" id="all">
+                            <span>
+                                <input type="checkbox" :value="permissions" v-model="selectAllPermissions">
                                 <label for="all">Select all</label>
                             </span>
                         </div>
@@ -365,13 +365,6 @@ export default {
                 this.loading = false
             })
         },
-        selectAll(){
-            if(this.checked){
-                this.permis.checked = false
-            }else{
-                this.permis.checked = true
-            }
-        },
         createRole(){
             this.loading = true
             let bodyFormData = new FormData();
@@ -519,6 +512,24 @@ export default {
             // );
             // this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
             // }
+        }
+    },
+    computed: {
+        selectAllPermissions: {
+            get: function () {
+                return this.permissions ? this.selectedPermissions.length == this.permissions.length : false;
+            },
+            set: function (value) {
+                var selectedPermissions = [];
+
+                if (value) {
+                    this.permissions.forEach(function (permission) {
+                        selectedPermissions.push(permission.id);
+                    });
+                }
+
+                this.selectedPermissions = selectedPermissions;
+            }
         }
     },
     mounted: function() {

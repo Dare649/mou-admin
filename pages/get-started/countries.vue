@@ -204,14 +204,24 @@
                               </div>
                               <div class="clearfix"></div>
                           </div>
-
+                            <div class="card-header">
+                                <form @submit.prevent="searchCountry">
+                                    <div class="input-group col-lg-4" >
+                                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                        <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </form>
+                          </div>
                           <div class="card-body">
                               <div class="overflow-auto">
                               </div>
                               <div class="table-responsive">
-                                  <span style="float:left; margin-bottom:5px;">
-                                  <input class="form-control col-lg-24" id="inputSearch" type="text" placeholder="Search..">
-                                  </span>
+                                  
+                                  
                                   <table class="table table-striped table-condensed" id="countryTable">
                                       <thead style="text-align:center;">
                                         <th style="width:15%;">Abbreviation</th>
@@ -301,6 +311,7 @@ export default {
         exportLoading: false,
         countries: [],
         file: "",
+        searchItem: "",
         model: {
           name: "",
           id: 0,
@@ -332,6 +343,7 @@ export default {
         this.currentPage = 1
       },
       refresh(){
+          this.searchItem = ""
           this.countries = []
           this.getCountries()
       },
@@ -428,6 +440,24 @@ export default {
             }else{
                 this.loading = false
                 this.ErrMsg = "Error Logging in!"
+            }
+
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      searchCountry(){
+          this.deleteLoading = true
+          this.$store
+            .dispatch('get-started/searchCountry', this.searchItem)
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                    this.countries = res.data
+                    this.pagination = res.data
+                }else{
+                }
+            }else{
             }
 
         }).catch(err => {

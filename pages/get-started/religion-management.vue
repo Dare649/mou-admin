@@ -46,11 +46,24 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Religion Management</h3>
                         <div class="pull-right sm-pull-reset">
+                            <button v-permission="'View country'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button type="button" v-permission="'Add religion'" class="btn btn-primary btn-sm" data-target="#add_religion" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Religion</strong></button>
                             <button type="button" v-permission="'Upload religion'" class="btn btn-warning btn-sm" data-target="#upload_religion" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Religions</strong></button>
                             <button type="button" v-permission="'Export religion'" class="btn btn-success btn-sm" data-target="#export_religions" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
+                    </div>
+                    <div class="card-header">
+                        <form @submit.prevent="searchReligion">
+                            <div class="input-group col-lg-4" >
+                                <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -284,6 +297,7 @@ export default {
         editLoading: false,
         exportLoading: false,
         religions: [],
+        searchItem: "",
         IsPermitted: true,
         file: "",
         model: {
@@ -303,9 +317,33 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getReligions()
+        this.getReligions(this.pagination.current_page)
     },
     methods: {
+        refresh(){
+            this.searchItem = ""
+            this.religions = []
+            this.getReligions(1)
+        },
+        searchReligion(){
+            this.$store
+                .dispatch('get-started/searchReligion', this.searchItem)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        if(res.data == null){
+                            this.religions = []
+                        }else{
+                            this.religions = res.data
+                        }
+                    }else{
+                    }
+                }else{
+                }
+            }).catch(err => {
+            this.loading = false
+            })
+        },
         uploadReligions(){
             this.loading = true
             this.file = this.$refs.myFiles.files[0];

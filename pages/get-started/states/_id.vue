@@ -184,11 +184,24 @@
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">State Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <nuxt-link to="/get-started/countries"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+                                  <button v-permission="'View state'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                                   <button v-permission="'Add state'" type="button" class="btn btn-primary btn-sm" data-target="#add_state" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New State</strong></button>
                                   <button v-permission="'Upload state'" type="button" class="btn btn-warning btn-sm" data-target="#upload_state" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload States</strong></button>
                                   <button v-permission="'Export state'" type="button" class="btn btn-success btn-sm" data-target="#export_states" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
+                          </div>
+                          <div class="card-header">
+                                <form @submit.prevent="searchState">
+                                    <div class="input-group col-lg-4" >
+                                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                        <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </form>
                           </div>
                           <div class="card-body">
                               <div class="table-responsive">
@@ -271,6 +284,7 @@ export default {
         deleteLoading: false,
         editLoading: false,
         states: [],
+        searchItem: "",
         file: "",
         model: {
           name: "",
@@ -372,6 +386,26 @@ export default {
           this.loading = false
         })
     },
+    refresh(){
+        this.searchItem = ""
+          this.states = []
+          this.getStatesByCountryId()
+      },
+    searchState(){
+          this.$store
+            .dispatch('get-started/searchState', this.searchItem)
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                    this.states = res.data
+                    this.pagination = res.data
+                }else{
+                }
+            }else{
+            }
+        }).catch(err => {
+        })
+    },
     getStatesByCountryId() {
         if(this.$laravel.hasPermission('View state')){
             this.getloading = true
@@ -383,8 +417,7 @@ export default {
                     .dispatch('states/getStatesByCountryId', payload)
                     .then(res => {
                         if(res != undefined){
-                            if(res.success == true){  
-                                console.log(res.data.data)            
+                            if(res.success == true){           
                                 this.states = res.data.data
                                 this.getloading = false
                                 this.pagination = res.data
