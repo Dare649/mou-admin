@@ -113,6 +113,19 @@ export const actions = {
             return err
         });
     },
+    async getRoleUsers(context, id) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/auth/role/'+id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getRolePermissions(context, id) {
         return await this.$axios({
             method: 'get',
