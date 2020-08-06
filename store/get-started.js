@@ -922,6 +922,104 @@ export const actions = {
             return err
         });
     },
+    async searchCountry(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/countries/search?country_id='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchState(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/states/search?state_id='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchLGA(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/lgas/search?lga_id='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchSubject(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/subjects/search?subject_id='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchFaculty(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/faculties/search?faculty='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchDepartment(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/departments/search?department='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchReligion(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/religions/search?religion_id='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async deleteReligion(context, id){
         return await this.$axios({
             method: 'delete',

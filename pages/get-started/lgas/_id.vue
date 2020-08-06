@@ -184,11 +184,24 @@
                               <h3 class="text-primary no-margin pull-left sm-pull-reset">LGA Management</h3>
                               <div class="pull-right sm-pull-reset">
                                   <nuxt-link :to="'/get-started/states/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+                                  <button v-permission="'View lga'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                                   <button v-permission="'Add lga'" type="button" class="btn btn-primary btn-sm" data-target="#add_lga" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New LGA</strong></button>
                                   <button v-permission="'Upload lga'" type="button" class="btn btn-warning btn-sm" data-target="#upload_lga" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload LGAs</strong></button>
                                   <button v-permission="'Export lga'" type="button" class="btn btn-success btn-sm" data-target="#export_lgas" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                               </div>
                               <div class="clearfix"></div>
+                          </div>
+                          <div class="card-header">
+                                <form @submit.prevent="searchLGA">
+                                    <div class="input-group col-lg-4" >
+                                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                        <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </form>
                           </div>
                           <div class="card-body">
                               <div class="table-responsive">
@@ -275,6 +288,7 @@ export default {
         editLoading: false,
         downloading: false,
         states: [],
+        searchItem: "",
         file: "",
         model: {
           name: "",
@@ -323,7 +337,27 @@ export default {
           this.loading = false
         })
     },
-      downloadLGASampleFile(){
+    refresh(){
+        this.searchItem = ""
+        this.lgas = []
+        this.getLGAsByStateId()
+    },
+    searchLGA(){
+          this.$store
+            .dispatch('get-started/searchLGA', this.searchItem)
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                    this.lgas = res.data
+                    this.pagination = res.data
+                }else{
+                }
+            }else{
+            }
+        }).catch(err => {
+        })
+    },
+    downloadLGASampleFile(){
         this.downloading = true
           this.$store
             .dispatch('get-started/downloadLGASampleFile')

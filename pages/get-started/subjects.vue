@@ -201,12 +201,25 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Subject Management</h3>
                         <div class="pull-right sm-pull-reset">
+                            <button v-permission="'View state'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button v-permission="'Add subject'" type="button" class="btn btn-primary btn-sm" data-target="#add_o_subject" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Subject</strong></button>
                             <button v-permission="'Upload subject'" type="button" class="btn btn-warning btn-sm" data-target="#upload_subjects" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Subjects</strong></button>
                             <button v-permission="'Export subject'" type="button" class="btn btn-success btn-sm" data-target="#export_subjects" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
+                    <div class="card-header">
+                                <form @submit.prevent="searchSubject">
+                                    <div class="input-group col-lg-4" >
+                                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                        <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </form>
+                          </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
@@ -286,6 +299,7 @@ export default {
             editLoading: false,
             getLoading: true,
             exportLoading: false,
+            searchItem: "",
             file: "",
             pagination: {
                 total: 0,
@@ -476,6 +490,26 @@ export default {
             }).catch(err => {
             this.downloading = false
             })
+        },
+        searchSubject(){
+            this.$store
+                .dispatch('get-started/searchSubject', this.searchItem)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.subjects = res.data
+                        this.pagination = res.data
+                    }else{
+                    }
+                }else{
+                }
+            }).catch(err => {
+            })
+        },
+        refresh(){
+            this.searchItem = ""
+            this.subjects = []
+            this.getSubjects(1)
         },
         getSubjects(page){
             if(this.$laravel.hasPermission('View subject')){

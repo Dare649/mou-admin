@@ -75,11 +75,24 @@
                     <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Faculty Management</h3>
                         <div class="pull-right sm-pull-reset">
+                            <button v-permission="'View faculty'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button v-permission="'Add New Faculty'" type="button" class="btn btn-primary btn-sm" data-target="#add_o_faculty" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Faculty</strong></button>
                             <button v-permission="'Upload faculty'" type="button" class="btn btn-warning btn-sm" data-target="#upload_o_faculty" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Faculty</strong></button>
                             <button v-permission="'Export faculty'" type="button" class="btn btn-success btn-sm" data-target="#export_faculties" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
+                    </div>
+                    <div class="card-header">
+                        <form @submit.prevent="searchFaculty">
+                            <div class="input-group col-lg-4" >
+                                <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -232,6 +245,7 @@ export default {
         downloading: false,
         loading: false,
         IsPermitted: true,
+        searchItem:"",
         pagination: {
             total: 0,
             per_page: 2,
@@ -256,6 +270,32 @@ export default {
     methods: {
         alert(){
             alert("Am here")
+        },
+        refresh(){
+            this.searchItem = ""
+            this.faculties = []
+            this.getFaculties(1)
+        },
+        searchFaculty(){
+            this.$store
+                .dispatch('get-started/searchFaculty', this.searchItem)
+                .then(res => {
+                    console.log(res)
+                if(res != undefined){
+                    if(res.status == true){
+                        if(res.data == null){
+                            this.faculties = []
+                        }else{
+                            this.faculties = res.data.data
+                            this.pagination = res.data
+                        }
+                    }else{
+                    }
+                }else{
+                }
+            }).catch(err => {
+            this.loading = false
+            })
         },
         exportFaculties(){
             this.exportLoading = true

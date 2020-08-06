@@ -42,8 +42,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="text-left p-b-5"><span class="semi-bold">Manage Roles: {{currentUserSelected}}</span></h5>
-                            <span @click="selectAllRoles()">
-                                <input type="checkbox" :value="roles" v-model="checked" id="all">
+                            <span >
+                                <input type="checkbox" v-bind:value="roles" v-model="selectAllRoles" id="all">
                                 <label for="all">Select all</label>
                             </span>
                         </div>
@@ -58,7 +58,7 @@
                                         <div class="text-body mb-10">
                                             <!-- <h6 class="font-weight-bold">Faculties</h6> -->
                                             <div class="checkbox check-primary mt-0 mb-0 pl-2">
-                                                <input type="checkbox" v-bind:id="'role'+role.id" :value="role.id" v-model="selectedRoles">
+                                                <input type="checkbox" :value="role.id" v-model="selectedRoles">
                                                 <label :for="'role'+role.id">{{role.name}}</label>
                                             </div>
                                         </div>
@@ -156,8 +156,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="text-left p-b-5"><span class="semi-bold">Manage Permissions: {{currentUserSelected}}</span></h5>
-                            <span @click="selectAll()">
-                                <input type="checkbox" :value="permissions" v-model="checked" id="all">
+                            <span>
+                                <input type="checkbox" v-model="selectAllPermissions" >
                                 <label for="all">Select all</label>
                             </span>
                         </div>
@@ -346,6 +346,40 @@ export default {
     middleware: "auth",
     components: {
       Pagination
+    },
+    computed: {
+        selectAllPermissions: {
+            get: function () {
+                return this.permissions ? this.selectedPermissions.length == this.permissions.length : false;
+            },
+            set: function (value) {
+                var selectedPermissions = [];
+
+                if (value) {
+                    this.permissions.forEach(function (permission) {
+                        selectedPermissions.push(permission.id);
+                    });
+                }
+
+                this.selectedPermissions = selectedPermissions;
+            }
+        },
+        selectAllRoles: {
+            get: function () {
+                return this.roles ? this.selectedRoles.length == this.roles.length : false;
+            },
+            set: function (value) {
+                var selectedRoles = [];
+
+                if (value) {
+                    this.roles.forEach(function (role) {
+                        selectedRoles.push(role.id);
+                    });
+                }
+
+                this.selectedRoles = selectedRoles;
+            }
+        }
     },
     data(){
         return {
@@ -568,13 +602,15 @@ export default {
               this.permis.checked = true
           }
       },
-      selectAllRoles(){
-          if(this.checked){
-              this.permis.checked = false
-          }else{
-              this.permis.checked = true
-          }
-      },
+    //   selectAllRoles(Roles){
+    //       if(this.checked){
+    //            this.selectedRoles = []
+    //         }else{
+    //             for(var i=0; i<Roles.length; i++){
+    //                 this.selectedRoles.push(Roles[i].id)
+    //             }
+    //         }
+    //   },
       updateUserRoles(){
           this.updateLoading = true
           let bodyFormData = new FormData();
@@ -613,8 +649,12 @@ export default {
           this.updateLoading = true
           let bodyFormData = new FormData();
           bodyFormData.set('user_id', this.model.user_id)
-          for(var i=0; i<this.selectedPermissions.length; i++){
-              bodyFormData.append('permissions[]', this.selectedPermissions[i])
+          if(this.selectedPermissions.length != 0){
+            for(var i=0; i<this.selectedPermissions.length; i++){
+                bodyFormData.append('permissions[]', this.selectedPermissions[i])
+            }
+          } else {
+            bodyFormData.append('permissions[]', this.selectedPermissions)
           }
           this.$store
               .dispatch('roles/updateUserPermissions', bodyFormData)

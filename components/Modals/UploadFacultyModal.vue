@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-lg-12 m-b-10">
                             <div class="custom-file">
-                                <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                                <input type="file" ref="myFiles" @change="incomingfile($event)" class="custom-file-input" id="customFileLang" lang="en" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                 <label class="custom-file-label" for="customFileLang">Select File</label>
                             </div>
                         </div>
@@ -54,6 +54,13 @@ export default {
       }
     },
     methods: {
+        incomingfile(event){
+            var fileName = document.getElementById('customFileLang').value.toLowerCase();
+            if(!fileName.endsWith('.xlsx') && !fileName.endsWith('.xls') && !fileName.endsWith('.csv')){
+                alert('Please upload excel file or CSV file only.');
+                return false;
+            }
+        },
         uploadFaculties(){
             this.loading = true
             this.file = this.$refs.myFiles.files[0];

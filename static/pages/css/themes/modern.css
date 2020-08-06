@@ -7020,6 +7020,11 @@ fieldset[disabled] .form-control {
 .checkbox label:after {
   border-radius: 3px;
 }
+
+.custom-file-input{
+  opacity: unset;
+  margin: 6px;
+}
 /* .checkbox input[type=checkbox] {
   opacity: 0;
   width: 0;

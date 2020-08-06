@@ -55,6 +55,9 @@
                                               <span data-placement="top" @click="populatePermissionCheckboxes(role)" data-toggle="tooltip" title="Manage Role">
                                                 <a href="#manage_permission" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-cog"></i></a>
                                              </span>
+                                             <span data-placement="top" @click="populateUsersRoleView(role)" data-toggle="tooltip" title="Manage Role">
+                                                <a href="#users_role" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-users" aria-hidden="true"></i></a>
+                                             </span>
                                           </div>
                                       </td>
                                   </tr>
@@ -134,6 +137,38 @@
             </div>
 
             <!-- Add Role -->
+            <div class="modal fade SlideUp" id="users_role" tabindex="-1" role="dialog" aria-hidden="true">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="pg-close"></i>
+                </button>
+                <div class="modal-dialog" style="width: 95%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="text-left p-b-5"><span class="semi-bold">View Role Users: {{assignedUserRoles.name}}</span></h5>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div style="text-align:center; font-size:24px;" v-if="usersRoleLoading">
+                                <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+                            </div>
+                            <form v-if="!usersRoleLoading">
+                                <div class="row" >
+                                    <div class="col-lg-3 m-b-10" v-for="usersrole in assignedUserRoles.users" :key="usersrole.id">
+                                        <div class="text-body mb-10">
+                                            <!-- <h6 class="font-weight-bold">Faculties</h6> -->
+                                            <div class="checkbox check-primary mt-0 mb-0 pl-2"  >
+                                                <span><i class="fa fa-check" aria-hidden="true"></i> <label :for="'permission'+usersrole.id" >{{usersrole.name}}</label></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
             <!-- Add Role -->
             <div class="modal fade SlideUp" id="manage_permission" tabindex="-1" role="dialog" aria-hidden="true">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -143,8 +178,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="text-left p-b-5"><span class="semi-bold">Manage Permission</span></h5>
-                            <span @click="selectAll()">
-                                <input type="checkbox" :value="permissions" v-model="checked" id="all">
+                            <span>
+                                <input type="checkbox" :value="permissions" v-model="selectAllPermissions">
                                 <label for="all">Select all</label>
                             </span>
                         </div>
@@ -202,8 +237,10 @@ export default {
             updateLoading: false,
             permissions: [],
             selectedPermissions:[],
+            assignedUserRoles: [],
             getLoading: true,
             exportLoading: false,
+            usersRoleLoading: false,
             permissionLoading: false,
             checked: false,
             file: "",
@@ -255,6 +292,13 @@ export default {
           }).catch(err => {
           })
         
+        },
+        populateUsersRoleView(role){
+            this.assignedUserRoles = []
+            this.model.role_id = role.id
+            this.role = role
+           
+            this.getRoleUsers(role.id)
         },
         populatePermissionCheckboxes(role){
             this.selectedPermissions = []
@@ -315,6 +359,27 @@ export default {
             }).catch(err => {
             })
         },
+        getRoleUsers(id){
+            this.usersRoleLoading = true
+            this.$store
+                .dispatch('roles/getRoleUsers', id)
+                .then(res => {
+                    if(res != undefined){
+                        if(res.status == true){
+                            this.assignedUserRoles = res.data  
+                            this.usersRoleLoading = false  
+                        }else{
+                            this.ErrMsg = "Error fetching data!"
+                            this.usersRoleLoading = false
+                        }
+                    }else{
+                        this.ErrMsg = "Error fetching data!"
+                        this.usersRoleLoading = false
+                    }
+            }).catch(err => {
+                this.usersRoleLoading = false
+            })
+        },
         getAllPermissions(){
             this.permissionLoading = true
             this.$store
@@ -364,13 +429,6 @@ export default {
             }).catch(err => {
                 this.loading = false
             })
-        },
-        selectAll(){
-            if(this.checked){
-                this.permis.checked = false
-            }else{
-                this.permis.checked = true
-            }
         },
         createRole(){
             this.loading = true
@@ -519,6 +577,24 @@ export default {
             // );
             // this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
             // }
+        }
+    },
+    computed: {
+        selectAllPermissions: {
+            get: function () {
+                return this.permissions ? this.selectedPermissions.length == this.permissions.length : false;
+            },
+            set: function (value) {
+                var selectedPermissions = [];
+
+                if (value) {
+                    this.permissions.forEach(function (permission) {
+                        selectedPermissions.push(permission.id);
+                    });
+                }
+
+                this.selectedPermissions = selectedPermissions;
+            }
         }
     },
     mounted: function() {

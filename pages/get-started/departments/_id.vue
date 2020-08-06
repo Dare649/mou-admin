@@ -165,11 +165,24 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Department Management</h3>
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link to="/get-started/faculties"> <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+                            <button v-permission="'View departments'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                             <button v-permission="'Add department'" type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Department</strong></button>
                             <button v-permission="'Upload department'" type="button" class="btn btn-warning btn-sm" data-target="#upload_departments" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Departments</strong></button>
                             <button v-permission="'Export department'" type="button" class="btn btn-success btn-sm" data-target="#export_departments" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
+                    </div>
+                    <div class="card-header">
+                        <form @submit.prevent="searchDepartment">
+                            <div class="input-group col-lg-4" >
+                                <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                                <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                     <div class="card-body">
@@ -329,6 +342,7 @@ export default {
         deleteLoading: false,
         editLoading: false,
         departments: [],
+        searchItem: "",
         IsPermitted: true,
         pagination: {
             total: 0,
@@ -363,8 +377,32 @@ export default {
         
         this.checkPagePermission()
     },
-
     methods:{
+        refresh(){
+            this.searchItem = ""
+            this.departments = []
+            this.getDepartmentsByFacultyId(1)
+        },
+        searchDepartment(){
+            this.$store
+                .dispatch('get-started/searchDepartment', this.searchItem)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        if(res.data == null){
+                            this.departments = []
+                        }else{
+                            this.departments = res.data.data
+                            this.pagination = res.data
+                        }
+                    }else{
+                    }
+                }else{
+                }
+            }).catch(err => {
+            this.loading = false
+            })
+        },
         checkPagePermission(){
             if(this.$laravel.hasPermission('View departments')){
                 this.getDepartmentsByFacultyId(this.pagination.current_page)
