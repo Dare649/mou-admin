@@ -38,7 +38,26 @@
                 </div>
             </div>
             <!-- END JUMBOTRON -->
-
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" >
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" >
+                            <strong>The Following Errors Occurred:</strong> 
+                            <p>
+                                <!-- <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul> -->
+                                <!-- <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a> -->
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong> 
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-b-20">
                 <div class="row">
@@ -307,6 +326,7 @@ export default {
         },
         addloading: false,
         downloading: false,
+        importResponse: {},
         loading: false,
         deleteLoading: false,
         editLoading: false,
