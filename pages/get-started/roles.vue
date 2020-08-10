@@ -586,13 +586,11 @@ export default {
             },
             set: function (value) {
                 var selectedPermissions = [];
-
                 if (value) {
                     this.permissions.forEach(function (permission) {
                         selectedPermissions.push(permission.id);
                     });
                 }
-
                 this.selectedPermissions = selectedPermissions;
             }
         }

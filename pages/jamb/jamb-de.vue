@@ -217,7 +217,26 @@
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
-
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                            <strong>The Following Errors Occurred:</strong> 
+                            <p>
+                                <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul>
+                                <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong> 
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
@@ -334,6 +353,7 @@ export default {
             current_page: 1
         },
         downloading: false,
+        importResponse: {},
         loading: false,
         deleteLoading: false,
         editLoading: false,
@@ -585,7 +605,8 @@ export default {
                     this.loading = false
                     this.getJambResults(this.pagination.current_page)
                     $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
-                    this.$toast.success("Data uploaded successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    // this.$toast.success("Data uploaded successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    this.importResponse = res
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
