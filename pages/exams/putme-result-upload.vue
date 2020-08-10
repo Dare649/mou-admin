@@ -39,10 +39,11 @@
             </div>
             <!-- END JUMBOTRON -->
             <!-- Audit Trail -->
-            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" >
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
                 <div class="card card-default">
                     <div class="card-body">
-                        <div class="alert alert-danger" >
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
                             <strong>The Following Errors Occurred:</strong> 
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
@@ -299,10 +300,12 @@ export default {
           this.$store
             .dispatch('get-started/uploadPUTMEResults', formData)
             .then(res => {
+                console.log(res)
             if(res != undefined){
                 if(res.success == true){
                     this.loading = false
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    this.importResponse = res
+                    //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful!")
