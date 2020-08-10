@@ -34,47 +34,54 @@
                 <!-- /.modal-dialog -->
             </div>
 
-            <div class="modal fade SlideUp" id="manage_role" tabindex="-1" role="dialog" aria-hidden="true">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="pg-close"></i>
-                </button>
-                <div class="modal-dialog" style="width: 95%">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="text-left p-b-5"><span class="semi-bold">Manage Roles: {{currentUserSelected}}</span></h5>
-                            <span >
-                                <input type="checkbox" v-bind:value="roles" v-model="selectAllRoles" id="all">
-                                <label for="all">Select all</label>
-                            </span>
-                        </div>
-
-                        <div class="modal-body">
-                            <div style="text-align:center; font-size:24px;" v-if="roleLoading">
-                                <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
-                            </div>
-                            <form v-if="!roleLoading">
-                                <div class="row" >
-                                    <div class="col-lg-3 m-b-10" v-for="role in roles" :key="role.id">
-                                        <div class="text-body mb-10">
-                                            <!-- <h6 class="font-weight-bold">Faculties</h6> -->
-                                            <div class="checkbox check-primary mt-0 mb-0 pl-2">
-                                                <input type="checkbox" :value="role.id" v-model="selectedRoles">
-                                                <label :for="'role'+role.id">{{role.name}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="button" v-if="!updateLoading" @click="updateUserRoles()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                                    <button type="button" disabled v-if="updateLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Updating</button>
-                                </div>
-                            </form>
-                        </div>
+             <!-- Edit JAMB Result Modal -->
+        <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
                     </div>
-                    <!-- /.modal-content -->
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="submitEditedJambResut">
+                            <div class="row">
+                                <div class="col-lg-6 m-b-10">
+                                    <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
+                                        <option value="" disabled>Marital Status</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_department_id">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <!-- /.modal-dialog -->
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
+        </div>
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
@@ -107,7 +114,7 @@
                                   <th style="width:20%">Email</th>
                                   <th>Phone</th>
                                   <th>Type</th>
-                                  <th>Status</th>
+                                  <th style="width:16%">Status</th>
                                   <th style="width:18%">Action</th>
                                 </thead>
                                 <tbody>
@@ -124,23 +131,23 @@
                                         <td>{{user.primary_phone}}</td>
                                         <td>{{user.type}}</td>
                                         <td>
-                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Active</span>
-                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Inactive</span>
+                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Completed</span>
+                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Not Completed</span>
                                         </td>
                                         <td>
                                           <div class="btn-group">
-                                              <span data-placement="top" data-toggle="tooltip" title="Edit User">
-                                                  <a href="javascript:;" @click="editUser(user)" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                              <span data-placement="top" data-toggle="tooltip" @click="populateFields(user)" title="Edit User">
+                                                  <a href="#edit_jamb_result" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
                                           </div>
                                           <div class="btn-group">
-                                              <span data-placement="top" data-toggle="tooltip" title="View User Details">
-                                                  <a href="javascript:;" @click="editUser(user)" title="View Student Details" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                                              <span data-placement="top" @click="showDetails(user.registration_number)" data-toggle="tooltip" title="View User Details">
+                                                  <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                                               </span>
                                           </div>
                                           <div class="btn-group">
                                               <span data-placement="top" data-toggle="tooltip" title="Edit Role">
-                                                  <a href="javascript:;" @click="editUser(user)" title="Download Olevel Result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-download"></i></a>
+                                                  <a href="javascript:;" @click="exportOlevel(user.registration_number)" title="Download Olevel Result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-download"></i></a>
                                               </span>
                                           </div>
                                         </td>
@@ -308,7 +315,135 @@
               <!-- /.modal-dialog -->
             </div>
             <!-- /.ADD ADMIN USER ENDS HERE -->
+            <div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="pg-close"></i>
+                </button>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="text-left p-b-5"><span class="semi-bold">View PUMTE Details</span></h5>
+                        </div>
+                        <div class="modal-body jamb_view">
+                            <h5 v-if="putmeDetails.jamb_result != null">{{putmeDetails.screening_id}} :- {{putmeDetails.jamb_result.name}} </h5>
+                            <ul>
+                                <li>
+                                    <small>Reg. Number</small><br />
+                                    <span>{{putmeDetails.registration_number}}</span>
+                                </li>
+                                <li>
+                                    <small>Type</small> <br />
+                                    <span>{{putmeDetails.type}}</span>
+                                </li>
+                                <li>
+                                    <small>DOB</small><br />
+                                    <span>{{putmeDetails.dob}}</span>
+                                </li>
+                            <li>
+                                <small>LGA:</small><br />
+                                <span v-if="putmeDetails.lga != null">{{putmeDetails.lga.name}}</span>
+                            </li>
+                                <li>
+                                <small>State:</small> <br />
+                                <span v-if="putmeDetails.state != null">{{putmeDetails.state.name}}</span>
+                                </li>
+                                <div class="clearfix"></div>
+                            </ul>
 
+                            <table class="table table-striped table-bordered">
+                            <tr>
+                                <th>Country:</th>
+                                <td v-if="putmeDetails.country != null">{{putmeDetails.country.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Marital Status:</th>
+                                <td v-if="putmeDetails != null">{{putmeDetails.marital_status}}</td>
+                            </tr>
+                            <tr>
+                                <th>Department:</th>
+                                <td v-if="putmeDetails.department != null">{{putmeDetails.department.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Faculty:</th>
+                                <td v-if="putmeDetails.faculty != null">{{putmeDetails.faculty.name}}</td>
+                            </tr>
+                            </table>
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th>Email:</th>
+                                    <td>{{putmeDetails.email}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Status:</th>
+                                    <td>{{putmeDetails.payment_status}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Passport</th>
+                                    <td><img :src="putmeDetails.photo" width="100px" height="100px"/></td>
+                                </tr>
+                            </table>
+                            <table class="table table-striped table-bordered">
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>1st Choice Institution:</th>
+                                    <td>{{putmeDetails.jamb_result.university1}}</td>
+                                </tr>
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>2nd Choice Institution:</th>
+                                    <td>{{putmeDetails.jamb_result.university2}}</td>
+                                </tr>
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>1st Choice Department:</th>
+                                    <td>{{putmeDetails.jamb_result.department.name}}</td>
+                                </tr>
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>1st Choice Faculty:</th>
+                                    <td>{{putmeDetails.jamb_result.faculty.name}}</td>
+                                </tr>
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>2nd Choice Department:</th>
+                                    <td>{{putmeDetails.jamb_result.department.name}}</td>
+                                </tr>
+                                <tr v-if="putmeDetails.jamb_result != null">
+                                    <th>2nd Choice Faculty:</th>
+                                    <td>{{putmeDetails.jamb_result.faculty.name}}</td>
+                                </tr>
+                            </table>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Mark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-if="putmeDetails.jamb_result != null">
+                                            <td>{{putmeDetails.jamb_result.subject1.name}}</td>
+                                            <td>{{putmeDetails.jamb_result.mark1}}</td>
+                                        </tr>
+                                        <tr v-if="putmeDetails.jamb_result != null">
+                                            <td>{{putmeDetails.jamb_result.subject2.name}}</td>
+                                            <td>{{putmeDetails.jamb_result.mark2}}</td>
+                                        </tr>
+                                        <tr v-if="putmeDetails.jamb_result != null">
+                                            <td>{{putmeDetails.jamb_result.subject3.name}}</td>
+                                            <td>{{putmeDetails.jamb_result.mark3}}</td>
+                                        </tr>
+                                        <tr v-if="putmeDetails.jamb_result != null">
+                                            <td>{{putmeDetails.jamb_result.subject4.name}}</td>
+                                            <td>{{putmeDetails.jamb_result.mark4}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><b>TOTAL</b></td>
+                                        <td v-if="putmeDetails.jamb_result != null">{{ (putmeDetails.jamb_result.mark1 + putmeDetails.jamb_result.mark2 + putmeDetails.jamb_result.mark3 + putmeDetails.jamb_result.mark4) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
             <!-- /.UPLOAD ADMIN USER -->
             <div class="modal fade SlideUp" id="upload_personnel" tabindex="-1" role="dialog" aria-hidden="true">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -392,6 +527,7 @@ export default {
     },
     data(){
         return {
+            putmeDetails: {},
             subjects: [],
             update: false,
             permissions: [],
@@ -405,6 +541,8 @@ export default {
             loading: false,
             searchItem: "",
             IsPermitted: true,
+            departments: [],
+            faculties:[],
             makeAdminLoading: false,
             deleteLoading: false,
             editLoading: false,
@@ -449,19 +587,120 @@ export default {
               current_page: 1
             },
             model: {
-              name: "",
-              id: 0,
-              user_id: 0,
-              edit_name: ""
+                name: "",
+                id: 0,
+                user_id: 0,
+                edit_name: "",
+                edit_sex: "",
+                edit_name: "",
+                edit_state_id: "",
+                edit_lga_id: "",
+                edit_university1:"",
+                edit_faculty_id1:"",
+                edit_faculty_id2:"",
+                edit_department_id:"",
+                edit_university1:"",
+                edit_university2:"",
+                edit_department_id2:"",
+                edit_phone_number: "",
+                edit_country_id: 0
             },
         }
     },
     methods: {
-        setPermissions(){
-            this.$laravel.setPermissions(this.$auth.user.user_permissions);
+        submitEditedPUTMEStudent(){
+            this.editLoading = true
+            let bodyFormData = new Object();
+            bodyFormData.id = this.model.id
+            this.$store
+                .dispatch('get-started/updateJambResult', bodyFormData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.editLoading = false
+                        this.getJambResults()
+                        $('#edit_jamb_result').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+
+                    }else{
+                    this.editLoading = false
+                    }
+                }else{
+                    this.loading = false
+                }
+            }).catch(err => {
+                this.loading = false
+            })
         },
-        setRoles(){
-            this.$laravel.setRoles(this.$auth.user.user_roles);
+        showDetails(registration_number){  
+            this.putmeDetails = {}
+            this.$store
+                .dispatch('get-started/getPUTMERegistrationDetails', registration_number)
+                .then(res => {
+                if(res != undefined){
+                    if(res.data.status == true){
+                        this.getLoading = false
+                        this.putmeDetails = res.data
+                    }else{
+                        this.getLoading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                }else{
+                    this.getLoading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }).catch(err => {
+                this.getLoading = false
+            })
+        },
+        getFaculties(page){
+            this.$store
+                .dispatch('get-started/getFaculties', page)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.getloading = false
+                        this.faculties = res.data.data
+                        this.pagination = res.data
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }).catch(err => {
+                this.getloading = false
+            })
+        },
+        getDepartmentsByFacultyId(page, Id) {
+            let facultyId = Id
+            let payload = {}
+            payload.facultyId = facultyId
+            payload.page = page
+            this.$store
+                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.departments = res.data.data
+                    }else{
+                        this.ErrMsg = "Error Logging in!"
+                    }
+                }else{
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }).catch(err => {
+            })
+        },
+        populateDepartments(event){
+            if(event.target.value !== ""){
+                this.getDepartmentsByFacultyId(1, event.target.value)
+            }else{
+                this.model.export_department_id = ''
+                this.departments = []
+            }
         },
         autoUpdateUserDetails(){
             this.$store
@@ -482,314 +721,94 @@ export default {
             })
         
         },
-      submitUser() {
-        if(this.addData.id === '') {
-          //create
-          this.createUser()
-        }else{
-          //edit
-          this.editUserInfo()
-        }
-      },
-      addPersonnel() {
-        this.update = false
-        this.addData.first_name = ''
-        this.addData.last_name = ''
-        this.addData.email = ''
-        this.addData.phone = ''
-        this.addData.marital_status = ''
-        this.addData.gender = ''
-        this.addData.address = ''
-        this.addData.dob = ''
-        this.addData.date_employed = ''
-        this.addData.id = ''
-        this.addData.password = ''
-        this.addData.password_confirmation = ''
-        this.addData.nok_name = ''
-        this.addData.nok_email = ''
-        this.addData.nok_phone = ''
-        this.addData.nok_relationship = ''
-        this.addData.nok_address = ''
-        this.addData.nok_id = ''
-        $('#add_personnel').modal()
-      },
-      createUser() {
-        $('#createUserBtn').attr('disabled', true).html('Adding Record....');
-        this.addData.name = this.addData.first_name+' '+this.addData.last_name
-        this.$store.dispatch('users/createUser', this.addData)
-          .then(res =>{
-            if(res.data.status) {
-              $('#createUserBtn').attr('disabled', false).html('Add Record');
-              this.$toast.success(res.data.message)
-              this.getAllUsers(this.pagination.current_page)
-              $('#add_personnel').modal('hide')
-            }
-          }).catch(err =>{
-            $('#createUserBtn').attr('disabled', false).html('Add Record');
-            this.$toast.error(err)
-          })
-      },
-      editUserInfo() {
-        $('#createUserBtn').attr('disabled', true).html('Updating....');
-        this.addData.name = this.addData.first_name+' '+this.addData.last_name
-        this.$store.dispatch('users/updateUser', this.addData)
-          .then(res =>{
-            if(res.data.status) {
-              $('#createUserBtn').attr('disabled', false).html('Add Record');
-              this.$toast.success(res.data.message)
-              this.getAllUsers(this.pagination.current_page)
-              $('#add_personnel').modal('hide')
-              this.update = false
-            }
-          }).catch(err =>{
-            $('#createUserBtn').attr('disabled', false).html('Add Record');
-            this.$toast.error(err)
-          })
-      },
-      editUser(user) {
-        this.update = true
-        this.addData.first_name = user.first_name
-        this.addData.last_name = user.last_name
-        this.addData.email = user.email
-        this.addData.phone = user.phone
-        this.addData.marital_status = user.marital_status,
-        this.addData.gender = user.gender
-        this.addData.dob = user.dob
-        this.addData.date_employed = user.date_employed
-        this.addData.id = user.id
-        this.addData.nok_name = user.kin.name
-        this.addData.nok_email = user.kin.email
-        this.addData.nok_phone = user.kin.phone
-        this.addData.nok_relationship = user.kin.relationship
-        this.addData.nok_address = user.kin.address
-        this.addData.nok_id = user.kin.id
-        $('#add_personnel').modal()
-      },
-      setUserName(user){
-          this.currentUserSelected = user.name
-      },
-      populatePermissionCheckboxes(user){
-          this.selectedPermissions = []
-          this.model.user_id = user.id
-          this.currentUserSelected = user.name
-          this.user = user
-          this.getAllPermissions(this.pagination.current_page);
-          this.getUserPermissions(user.id)
-      },
-      getAllPermissions(){
-          this.permissionLoading = true
-          this.$store
-            .dispatch('permissions/getPermissions')
-            .then(res => {
+        exportOlevel(reg_no){
+            this.exportLoading = true
+            this.$store
+                .dispatch('get-started/exportOLevel', reg_no)
+                .then(res => {
             if(res != undefined){
-                if(res.status == true){
-                    this.permissionLoading = false
-                    this.permissions = res.data
-                }else{
-                    this.permissionLoading = false
-                    this.ErrMsg = "Error fetching data!"
-                }
+                this.exportLoading = false
+                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
-                this.permissionLoading = false
-                this.ErrMsg = "Error fetching data!"
+                this.exportLoading = false
+                alert("File Downloaded Unsuccessful")
             }
-        }).catch(err => {
-            this.permissionLoading = false
-        })
-      },
-      populateRoleCheckboxes(user){
-          this.selectedRoles = []
-          this.model.user_id = user.id
-          this.currentUserSelected = user.name
-          this.user = user
-          this.getRoles(this.pagination.current_page);
-          this.getUserRoles(user.id)
-      },
-      selectAll(){
-          if(this.checked){
-              this.permis.checked = false
-          }else{
-              this.permis.checked = true
-          }
-      },
-    //   selectAllRoles(Roles){
-    //       if(this.checked){
-    //            this.selectedRoles = []
-    //         }else{
-    //             for(var i=0; i<Roles.length; i++){
-    //                 this.selectedRoles.push(Roles[i].id)
-    //             }
-    //         }
-    //   },
-      updateUserRoles(){
-          this.updateLoading = true
-          let bodyFormData = new FormData();
-          bodyFormData.set('user_id', this.model.user_id)
-          if(this.selectedRoles.length != 0){
-            for(var i=0; i < this.selectedRoles.length; i++){
-                bodyFormData.append('roles[]', this.selectedRoles[i])
+                }).catch(err => {
+                    this.exportLoading = false
+                    this.$toast.error('An error occurred please contact the administrator' + err)
+            })
+        },
+        addPersonnel() {
+            this.update = false
+            this.addData.first_name = ''
+            this.addData.last_name = ''
+            this.addData.email = ''
+            this.addData.phone = ''
+            this.addData.marital_status = ''
+            this.addData.gender = ''
+            this.addData.address = ''
+            this.addData.dob = ''
+            this.addData.date_employed = ''
+            this.addData.id = ''
+            this.addData.password = ''
+            this.addData.password_confirmation = ''
+            this.addData.nok_name = ''
+            this.addData.nok_email = ''
+            this.addData.nok_phone = ''
+            this.addData.nok_relationship = ''
+            this.addData.nok_address = ''
+            this.addData.nok_id = ''
+            $('#add_personnel').modal()
+        },
+        setUserName(user){
+            this.currentUserSelected = user.name
+        },
+        selectAll(){
+            if(this.checked){
+                this.permis.checked = false
+            }else{
+                this.permis.checked = true
             }
-          } else {
-            bodyFormData.append('roles[]', this.selectedRoles)
-          }
-          this.$store
-              .dispatch('roles/updateUserRoles', bodyFormData)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      this.populateRoleCheckboxes(this.user)
-                      this.autoUpdateUserDetails()
-                      $('#manage_role').modal('hide')
-                      this.updateLoading = false
-                      location.reload()
-                  }else{
-                      this.updateLoading = false
-                      this.ErrMsg = "Error Creating Record!"
-                  }
-              }else{
-
-                  this.updateLoading = false
-                  this.ErrMsg = "Error Processing Request!"
-              }
-          }).catch(err => {
-          this.updateLoading = false
-          })
-      },
-      updateUserPermissions(){
-          this.updateLoading = true
-          let bodyFormData = new FormData();
-          bodyFormData.set('user_id', this.model.user_id)
-          if(this.selectedPermissions.length != 0){
-            for(var i=0; i<this.selectedPermissions.length; i++){
-                bodyFormData.append('permissions[]', this.selectedPermissions[i])
-            }
-          } else {
-            bodyFormData.append('permissions[]', this.selectedPermissions)
-          }
-          this.$store
-              .dispatch('roles/updateUserPermissions', bodyFormData)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      this.populatePermissionCheckboxes(this.user)
-                      this.autoUpdateUserDetails()
-                      $('#manage_permission').modal('hide')
-                      this.updateLoading = false
-                      location.reload()
-                  }else{
-                      this.updateLoading = false
-                      this.ErrMsg = "Error Creating Record!"
-                  }
-              }else{
-
-                  this.updateLoading = false
-                  this.ErrMsg = "Error Processing Request!"
-              }
-          }).catch(err => {
-          this.updateLoading = false
-          })
-      },
-      getUserPermissions(id){
-          var req = {}
-          req.id = id
-          this.$store
-              .dispatch('permissions/getUserPermissions', req)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      for(var i=0; i<res.data.length; i++){
-                          this.selectedPermissions.push(res.data[i].id)
-                      }
-                  }else{
-                      this.ErrMsg = "Error Fetching data!"
-                  }
-              }else{
-                  this.ErrMsg = "Error Fetching data!"
-              }
-          }).catch(err => {
-          })
-      },
-      getUserRoles(id){
-          var req = {}
-          req.id = id
-          this.$store
-              .dispatch('roles/getUserRoles', req)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      for(var i=0; i<res.data.length; i++){
-                          this.selectedRoles.push(res.data[i].id)
-                      }
-                  }else{
-                      this.ErrMsg = "Error Fetching data!"
-                  }
-              }else{
-                  this.ErrMsg = "Error Fetching data!"
-              }
-          }).catch(err => {
-          })
-      },
-      getRoles(page){
-          this.roleLoading = true
-          let req = {}
-          req.page = page
-          req.pager = false
-          this.$store
-              .dispatch('roles/getRoles', req)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      this.roleLoading = false
-                      this.roles = res.data
-                  }else{
-                      this.roleLoading = false
-                      this.ErrMsg = "Error Fetching data!"
-                  }
-              }else{
-                  this.roleLoading = false
-                  this.ErrMsg = "Error Fetching data!"
-              }
-          }).catch(err => {
-              this.roleLoading = false
-          })
-      },
-      setId(id){
-        this.model.id = id
-      },
-      populateFields(request){
-        this.model.edit_id = request.id
-        this.model.edit_name = request.name
-        this.model.edit_prefix = request.prefix
-        this.model.edit_status = request.status
-      },
-      getAllUsers(page){
-          this.getLoading = true
-          let payload = {}
-          payload.page = page
-          payload.registration_number = ""
-          payload.type = ""
-          payload.screening_id = ""
-
-          this.$store
-              .dispatch('get-started/getPUTMERegistrations', payload)
-              .then(res => {
-              if(res != undefined){
-                  if(res.status == true){
-                      this.getLoading = false
-                      this.users = res.data.data
-                      this.pagination = res.data
-                  }else{
-                      this.getLoading = false
-                      this.ErrMsg = "Error Fetching data!"
-                  }
-              }else{
-                  this.getLoading = false
-                  this.ErrMsg = "Error Fetching data!"
-              }
-          }).catch(err => {
-              this.getLoading = false
-          })
-      }
+        }, 
+        setId(id){
+            this.model.id = id
+        },
+        populateFields(jamb){
+            console.log(jamb)
+            this.model.id = jamb.id
+            this.model.edit_marital_status = jamb.marital_status
+            this.model.edit_phone_number = jamb.primary_phone
+            this.model.edit_department_id = jamb.department_id
+            
+            this.model.edit_registration_number = jamb.registration_number
+        },
+        getAllUsers(page){
+            this.getLoading = true
+            let payload = {}
+            payload.page = page
+            payload.registration_number = ""
+            payload.type = ""
+            payload.screening_id = ""
+            this.$store
+                .dispatch('get-started/getPUTMERegistrations', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.getLoading = false
+                        this.users = res.data.data
+                        this.pagination = res.data
+                    }else{
+                        this.getLoading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                }else{
+                    this.getLoading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }).catch(err => {
+                this.getLoading = false
+            })
+        }
     },
     mounted: function() {
         if (!process.server) {
@@ -798,7 +817,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        this.getRoles(this.pagination.current_page);
+        this.getFaculties()
         this.getAllUsers(this.pagination.current_page)
     }
 }
