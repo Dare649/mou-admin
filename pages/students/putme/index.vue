@@ -47,21 +47,28 @@
                     <div class="modal-body">
                         <form class="full-width" @submit.prevent="submitEditedJambResut">
                             <div class="row">
-                                <div class="col-lg-12 m-b-10">
-                                    <input type="text" v-model="model.edit_registration_number" placeholder="Reg. Number" class="form-control">
-                                </div>
-                                <div class="col-lg-12 m-b-10">
-                                    <input type="text" placeholder="Name" v-model="model.edit_name" class="form-control">
-                                </div>
                                 <div class="col-lg-6 m-b-10">
-                                    <select class="form-control" v-model="model.edit_sex">
-                                        <option value="" disabled>Select your option</option>
-                                        <option value="M">M</option>
-                                        <option value="F">F</option>
+                                    <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
+                                        <option value="" disabled>Marital Status</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_department_id">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6 m-b-10">
-                                    <input type="text" placeholder="Result Year" v-model="model.edit_year" class="form-control">
+                                    <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
                                 </div>
                                 <div class="col-lg-12 m-t-10">
                                     <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
@@ -107,7 +114,7 @@
                                   <th style="width:20%">Email</th>
                                   <th>Phone</th>
                                   <th>Type</th>
-                                  <th>Status</th>
+                                  <th style="width:16%">Status</th>
                                   <th style="width:18%">Action</th>
                                 </thead>
                                 <tbody>
@@ -124,8 +131,8 @@
                                         <td>{{user.primary_phone}}</td>
                                         <td>{{user.type}}</td>
                                         <td>
-                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Active</span>
-                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Inactive</span>
+                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Completed</span>
+                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Not Completed</span>
                                         </td>
                                         <td>
                                           <div class="btn-group">
@@ -386,19 +393,19 @@
                                 </tr>
                                 <tr v-if="putmeDetails.jamb_result != null">
                                     <th>1st Choice Department:</th>
-                                    <td>{{putmeDetails.jamb_result.department_id1}}</td>
+                                    <td>{{putmeDetails.jamb_result.department.name}}</td>
                                 </tr>
                                 <tr v-if="putmeDetails.jamb_result != null">
                                     <th>1st Choice Faculty:</th>
-                                    <td>{{putmeDetails.jamb_result.faculty_id1}}</td>
+                                    <td>{{putmeDetails.jamb_result.faculty.name}}</td>
                                 </tr>
                                 <tr v-if="putmeDetails.jamb_result != null">
                                     <th>2nd Choice Department:</th>
-                                    <td>{{putmeDetails.jamb_result.department_id2}}</td>
+                                    <td>{{putmeDetails.jamb_result.department.name}}</td>
                                 </tr>
                                 <tr v-if="putmeDetails.jamb_result != null">
                                     <th>2nd Choice Faculty:</th>
-                                    <td>{{putmeDetails.jamb_result.faculty_id2}}</td>
+                                    <td>{{putmeDetails.jamb_result.faculty.name}}</td>
                                 </tr>
                             </table>
                                 <table class="table table-condensed">
@@ -410,19 +417,19 @@
                                     </thead>
                                     <tbody>
                                         <tr v-if="putmeDetails.jamb_result != null">
-                                            <td>{{putmeDetails.jamb_result.subject_id1}}</td>
+                                            <td>{{putmeDetails.jamb_result.subject1.name}}</td>
                                             <td>{{putmeDetails.jamb_result.mark1}}</td>
                                         </tr>
                                         <tr v-if="putmeDetails.jamb_result != null">
-                                            <td>{{putmeDetails.jamb_result.subject_id2}}</td>
+                                            <td>{{putmeDetails.jamb_result.subject2.name}}</td>
                                             <td>{{putmeDetails.jamb_result.mark2}}</td>
                                         </tr>
                                         <tr v-if="putmeDetails.jamb_result != null">
-                                            <td>{{putmeDetails.jamb_result.subject_id3}}</td>
+                                            <td>{{putmeDetails.jamb_result.subject3.name}}</td>
                                             <td>{{putmeDetails.jamb_result.mark3}}</td>
                                         </tr>
                                         <tr v-if="putmeDetails.jamb_result != null">
-                                            <td>{{putmeDetails.jamb_result.subject_id4}}</td>
+                                            <td>{{putmeDetails.jamb_result.subject4.name}}</td>
                                             <td>{{putmeDetails.jamb_result.mark4}}</td>
                                         </tr>
                                         <tr>
@@ -534,6 +541,8 @@ export default {
             loading: false,
             searchItem: "",
             IsPermitted: true,
+            departments: [],
+            faculties:[],
             makeAdminLoading: false,
             deleteLoading: false,
             editLoading: false,
@@ -589,26 +598,42 @@ export default {
                 edit_university1:"",
                 edit_faculty_id1:"",
                 edit_faculty_id2:"",
-                edit_department_id1:"",
+                edit_department_id:"",
                 edit_university1:"",
                 edit_university2:"",
                 edit_department_id2:"",
-                edit_subject_id1:"",
-                edit_subject_id2:"",
-                edit_subject_id3:"",
-                edit_subject_id4:"",
-                edit_mark1:"",
-                edit_mark2:"",
-                edit_mark3:"",
-                edit_mark4:"",
-                edit_phone_code: "",
-                edit_country_id: 0,
-                edit_year: "",
+                edit_phone_number: "",
+                edit_country_id: 0
             },
         }
     },
     methods: {
-        showDetails(registration_number){     
+        submitEditedPUTMEStudent(){
+            this.editLoading = true
+            let bodyFormData = new Object();
+            bodyFormData.id = this.model.id
+            this.$store
+                .dispatch('get-started/updateJambResult', bodyFormData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.editLoading = false
+                        this.getJambResults()
+                        $('#edit_jamb_result').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+
+                    }else{
+                    this.editLoading = false
+                    }
+                }else{
+                    this.loading = false
+                }
+            }).catch(err => {
+                this.loading = false
+            })
+        },
+        showDetails(registration_number){  
+            this.putmeDetails = {}
             this.$store
                 .dispatch('get-started/getPUTMERegistrationDetails', registration_number)
                 .then(res => {
@@ -627,6 +652,55 @@ export default {
             }).catch(err => {
                 this.getLoading = false
             })
+        },
+        getFaculties(page){
+            this.$store
+                .dispatch('get-started/getFaculties', page)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.getloading = false
+                        this.faculties = res.data.data
+                        this.pagination = res.data
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Fetching data!"
+                    }
+                }else{
+                    this.getloading = false
+                    this.ErrMsg = "Error Fetching data!"
+                }
+            }).catch(err => {
+                this.getloading = false
+            })
+        },
+        getDepartmentsByFacultyId(page, Id) {
+            let facultyId = Id
+            let payload = {}
+            payload.facultyId = facultyId
+            payload.page = page
+            this.$store
+                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        this.departments = res.data.data
+                    }else{
+                        this.ErrMsg = "Error Logging in!"
+                    }
+                }else{
+                    this.ErrMsg = "Error Logging in!"
+                }
+            }).catch(err => {
+            })
+        },
+        populateDepartments(event){
+            if(event.target.value !== ""){
+                this.getDepartmentsByFacultyId(1, event.target.value)
+            }else{
+                this.model.export_department_id = ''
+                this.departments = []
+            }
         },
         autoUpdateUserDetails(){
             this.$store
@@ -686,42 +760,6 @@ export default {
             this.addData.nok_id = ''
             $('#add_personnel').modal()
         },
-        editUserInfo() {
-            $('#createUserBtn').attr('disabled', true).html('Updating....');
-            this.addData.name = this.addData.first_name+' '+this.addData.last_name
-            this.$store.dispatch('users/updateUser', this.addData)
-            .then(res =>{
-                if(res.data.status) {
-                $('#createUserBtn').attr('disabled', false).html('Add Record');
-                this.$toast.success(res.data.message)
-                this.getAllUsers(this.pagination.current_page)
-                $('#add_personnel').modal('hide')
-                this.update = false
-                }
-            }).catch(err =>{
-                $('#createUserBtn').attr('disabled', false).html('Add Record');
-                this.$toast.error(err)
-            })
-        },
-        editUser(user) {
-            this.update = true
-            this.addData.first_name = user.first_name
-            this.addData.last_name = user.last_name
-            this.addData.email = user.email
-            this.addData.phone = user.phone
-            this.addData.marital_status = user.marital_status,
-            this.addData.gender = user.gender
-            this.addData.dob = user.dob
-            this.addData.date_employed = user.date_employed
-            this.addData.id = user.id
-            this.addData.nok_name = user.kin.name
-            this.addData.nok_email = user.kin.email
-            this.addData.nok_phone = user.kin.phone
-            this.addData.nok_relationship = user.kin.relationship
-            this.addData.nok_address = user.kin.address
-            this.addData.nok_id = user.kin.id
-            $('#add_personnel').modal()
-        },
         setUserName(user){
             this.currentUserSelected = user.name
         },
@@ -736,26 +774,12 @@ export default {
             this.model.id = id
         },
         populateFields(jamb){
+            console.log(jamb)
             this.model.id = jamb.id
-            this.model.edit_state_id = jamb.state_id
-            this.model.edit_lga_id = jamb.lga_id
-            this.model.edit_university1 = jamb.university1
-            this.model.edit_university2 = jamb.university2
-            this.model.edit_faculty_id1 = jamb.faculty_id1
-            this.model.edit_faculty_id2 = jamb.faculty_id2
-            this.model.edit_department_id1 = jamb.department_id1
-            this.model.edit_department_id2 = jamb.department_id2
-            this.model.edit_subject_id1 = jamb.subject_id1
-            this.model.edit_subject_id2 = jamb.subject_id2
-            this.model.edit_subject_id3 = jamb.subject_id3
-            this.model.edit_subject_id4 = jamb.subject_id4
-            this.model.edit_mark1 = jamb.mark1
-            this.model.edit_mark2 = jamb.mark2
-            this.model.edit_mark3 = jamb.mark3
-            this.model.edit_mark4 = jamb.mark4
-            this.model.edit_sex = jamb.sex
-            this.model.edit_year = jamb.year
-            this.model.edit_name = jamb.name
+            this.model.edit_marital_status = jamb.marital_status
+            this.model.edit_phone_number = jamb.primary_phone
+            this.model.edit_department_id = jamb.department_id
+            
             this.model.edit_registration_number = jamb.registration_number
         },
         getAllUsers(page){
@@ -793,6 +817,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
+        this.getFaculties()
         this.getAllUsers(this.pagination.current_page)
     }
 }

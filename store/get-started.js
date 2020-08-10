@@ -309,6 +309,14 @@ export const actions = {
         .then(function (response) {
             //handle success
             console.log(response.data)
+            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'olevels.xlsx');
+            document.body.appendChild(fileLink);
+
+            fileLink.click();
             return response.data
         })
         .catch(err => {
