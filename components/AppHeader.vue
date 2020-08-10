@@ -56,11 +56,17 @@
                             </ul>
                         </li>
                         <li class="">
-                          <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
-                          <ul class="">
-                              <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
-                          </ul>
-                      </li>
+                            <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
+                            <ul class="">
+                                <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
+                            </ul>
+                        </li>
+                        <li class="">
+                            <a href="javascript:;"><span class="title">Students</span><span class=" arrow"></span></a>
+                            <ul class="">
+                                <li><nuxt-link to="/students/putme">PUTME Students</nuxt-link></li>
+                            </ul>
+                        </li>
                         <li class="">
                             <a href="javascript:;"><span class="title">JAMB</span><span class=" arrow"></span></a>
                             <ul class="">

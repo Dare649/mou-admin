@@ -38,6 +38,26 @@
                 </div>
             </div>
             <!-- END JUMBOTRON -->
+           <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                            <strong>The Following Errors Occurred:</strong> 
+                            <p>
+                                <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul>
+                                <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong> 
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-b-20">
@@ -190,7 +210,7 @@ export default {
         exportLoading: false,
         academic_sessions: [],
         departments: [],
-        downloadDepartments: [],
+        importResponse: {},
         programs: [],
         file: "",
         colleges: [],
@@ -299,9 +319,10 @@ export default {
                 .dispatch('get-started/uploadDEAdmission', formData)
                 .then(res => {
                 if(res != undefined){
-                    if(res.status == true){
+                    if(res.success == true){
+                        this.importResponse = res
                         this.loading = false
-                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                        //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
                         this.$toast.error(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
@@ -421,8 +442,8 @@ export default {
         this.getAcademicSessions()
         this.getColleges()
         this.getAdmissionCategories()
-    //   }else{
-    //       this.$router.push(
+    // }else{
+    //   this.$router.push(
     //             decodeURIComponent(
     //                 this.$route.query.redirect || "/dashboard"
     //             )

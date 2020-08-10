@@ -12,7 +12,7 @@
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
-
+            
             <!-- START JUMBOTRON -->
             <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View PUTME Result'">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
@@ -38,6 +38,27 @@
                 </div>
             </div>
             <!-- END JUMBOTRON -->
+            <!-- Audit Trail -->
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                            <strong>The Following Errors Occurred:</strong> 
+                            <p>
+                                <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul>
+                                <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong> 
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-b-20">
@@ -164,6 +185,7 @@ export default {
         downloading: false,
         loading: false,
         deleteLoading: false,
+        importResponse: {},
         editLoading: false,
         exportLoading: false,
         academic_sessions: [],
@@ -278,13 +300,15 @@ export default {
           this.$store
             .dispatch('get-started/uploadPUTMEResults', formData)
             .then(res => {
+                console.log(res)
             if(res != undefined){
                 if(res.success == true){
                     this.loading = false
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    this.importResponse = res
+                    //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
-                    alert("File Upload Unsuccessful")
+                    alert("File Upload Unsuccessful!")
                     this.ErrMsg = "Error Logging in!"
                 }
             }else{

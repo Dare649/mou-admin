@@ -38,7 +38,26 @@
                 </div>
             </div>
             <!-- END JUMBOTRON -->
-
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                            <strong>The Following Errors Occurred:</strong> 
+                            <p>
+                                <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul>
+                                <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong> 
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-b-20">
                 <div class="row">
@@ -118,7 +137,7 @@
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button v-permission="'Download DE result sample csv'" v-if="!downloading" @click="downloadDEResultsSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
+                                                <button v-permission="'Download sample csv'" v-if="!downloading" @click="downloadDEResultsSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
                                                 <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
 
                                                 <button v-permission="'Upload DE result'" type="button" @click="uploadDEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>                                               
@@ -235,11 +254,10 @@ export default {
             .dispatch('de-result-upload/uploadDEResults', formData)
             .then(res => {
             if(res != undefined){
-                console.log(res)
                 if(res.success == true){
-                    
+                    this.importResponse = res
                     this.loading = false
-                    this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
                     alert("File Upload Unsuccessful")
@@ -307,6 +325,7 @@ export default {
         },
         addloading: false,
         downloading: false,
+        importResponse: {},
         loading: false,
         deleteLoading: false,
         editLoading: false,

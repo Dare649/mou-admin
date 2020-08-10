@@ -49,6 +49,21 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
+            console.log(response.data)
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getPUTMERegistrations(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme?registration_number='+payload.registration_number+'&type='+payload.type+'&screening_id='+payload.screening_id+'&page='+payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            console.log(response)
             return response.data
         })
         .catch(err => {
