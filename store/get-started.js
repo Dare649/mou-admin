@@ -63,7 +63,19 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            console.log(response)
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getPUTMERegistrationDetails(context, registration_number) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme/'+ registration_number,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
             return response.data
         })
         .catch(err => {
@@ -281,6 +293,22 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async exportOLevel(context, reg_no) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/ssce-result/export?registration_number='+reg_no,
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response.data)
             return response.data
         })
         .catch(err => {

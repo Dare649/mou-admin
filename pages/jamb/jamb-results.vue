@@ -188,74 +188,74 @@
     <!-- /.modal-dialog -->
 </div>
 
-<!-- Delete Country Modal -->
-  <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          <i class="pg-close"></i>
-      </button>
-      <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
-              </div>
-              <div class="modal-body">
-                  <form class="full-width" @submit.prevent="deleteJambResult">
-                      <div class="row">
-                          <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
-                          <div class="col-lg-12 m-t-10">
-                              <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
-                              <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
-                          </div>
-                      </div>
-                  </form>
-              </div>
-          </div>
-          <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-  </div>
-
-<!-- Edit JAMB Result Modal -->
-<div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
-            </div>
-            <div class="modal-body">
-                <form class="full-width" @submit.prevent="submitEditedJambResut">
-                    <div class="row">
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" v-model="model.edit_registration_number" placeholder="Reg. Number" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-b-10">
-                            <input type="text" placeholder="Name" v-model="model.edit_name" class="form-control">
-                        </div>
-                        <div class="col-lg-6 m-b-10">
-                            <select class="form-control" v-model="model.edit_sex">
-                                <option value="" disabled>Select your option</option>
-                                <option value="M">M</option>
-                                <option value="F">F</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-6 m-b-10">
-                            <input type="text" placeholder="Result Year" v-model="model.edit_year" class="form-control">
-                        </div>
-                        <div class="col-lg-12 m-t-10">
-                            <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                            <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
-                        </div>
+        <!-- Delete Country Modal -->
+        <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Delete Record</span></h5>
                     </div>
-                </form>
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="deleteJambResult">
+                            <div class="row">
+                                <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                    <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
+
+        <!-- Edit JAMB Result Modal -->
+        <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="submitEditedJambResut">
+                            <div class="row">
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" v-model="model.edit_registration_number" placeholder="Reg. Number" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <input type="text" placeholder="Name" v-model="model.edit_name" class="form-control">
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <select class="form-control" v-model="model.edit_sex">
+                                        <option value="" disabled>Select your option</option>
+                                        <option value="M">M</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <input type="text" placeholder="Result Year" v-model="model.edit_year" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <!-- START PAGE CONTENT -->
         <div class="content sm-gutter">
             <!-- START BREADCRUMBS -->
@@ -720,10 +720,10 @@ export default {
                 this.exportLoading = false
                 alert("File Downloaded Unsuccessful")
             }
-        }).catch(err => {
-          this.exportLoading = false
-          this.$toast.error('An error occurred please contact the administrator' + err)
-        })
+            }).catch(err => {
+                this.exportLoading = false
+                this.$toast.error('An error occurred please contact the administrator' + err)
+            })
       },
       uploadJambResults(){
         this.loading = true
