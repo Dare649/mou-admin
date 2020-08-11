@@ -110,7 +110,6 @@
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                   <th>REG Number</th>
-                                  <th>Screening ID</th>
                                   <th style="width:20%">Email</th>
                                   <th>Phone</th>
                                   <th>Type</th>
@@ -126,7 +125,6 @@
                                     </tr>
                                     <tr v-else v-for="user in users" :key="user.id">
                                         <td>{{user.registration_number}}</td>
-                                        <td>{{user.screening_id}}</td>
                                         <td>{{user.email}}</td>
                                         <td>{{user.primary_phone}}</td>
                                         <td>{{user.type}}</td>
@@ -475,7 +473,7 @@
                           </div>
                       </div>
                       <div class="modal-footer">
-                          
+
                       </div>
                   </div>
                   <!-- /.modal-content -->
@@ -632,7 +630,7 @@ export default {
                 this.loading = false
             })
         },
-        showDetails(registration_number){  
+        showDetails(registration_number){
             this.putmeDetails = {}
             this.$store
                 .dispatch('get-started/getPUTMERegistrationDetails', registration_number)
@@ -719,7 +717,7 @@ export default {
                 }
             }).catch(err => {
             })
-        
+
         },
         exportOlevel(reg_no){
             this.exportLoading = true
@@ -769,7 +767,7 @@ export default {
             }else{
                 this.permis.checked = true
             }
-        }, 
+        },
         setId(id){
             this.model.id = id
         },
@@ -779,7 +777,7 @@ export default {
             this.model.edit_marital_status = jamb.marital_status
             this.model.edit_phone_number = jamb.primary_phone
             this.model.edit_department_id = jamb.department_id
-            
+
             this.model.edit_registration_number = jamb.registration_number
         },
         getAllUsers(page){
