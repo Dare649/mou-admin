@@ -49,7 +49,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response.data)
             return response.data
         })
         .catch(err => {
@@ -255,7 +254,6 @@ export const actions = {
             responseType: 'blob',
             data: payload
         }).then((response) => {
-            console.log(response)
             const url = URL.createObjectURL(new Blob([response.data], {
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }))
@@ -308,7 +306,29 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response.data)
+            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'olevels.xlsx');
+            document.body.appendChild(fileLink);
+
+            fileLink.click();
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async exportPUTMERegistrations(context, year) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme/export?year='+year,
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
             var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
             var fileLink = document.createElement('a');
 
@@ -870,6 +890,22 @@ export const actions = {
             return err
         });
     },
+    async updatePUTMEStudent(context, payload) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/putme/update',
+            data: qs.stringify(payload),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },
     async getUserDetails(context) {
         return await this.$axios({
             method: 'get',
@@ -976,7 +1012,7 @@ export const actions = {
     async searchCountry(context, id){
         return await this.$axios({
             method: 'get',
-            url: 'api/countries/search?country_id='+ id,
+            url: 'api/countries/search?country='+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -990,7 +1026,7 @@ export const actions = {
     async searchState(context, id){
         return await this.$axios({
             method: 'get',
-            url: 'api/states/search?state_id='+ id,
+            url: 'api/states/search?state='+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -1004,7 +1040,7 @@ export const actions = {
     async searchLGA(context, id){
         return await this.$axios({
             method: 'get',
-            url: 'api/lgas/search?lga_id='+ id,
+            url: 'api/lgas/search?lga='+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -1033,6 +1069,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/faculties/search?faculty='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchPUTMERegistraton(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/putme?registration_number='+payload.registration_number+'&type='+payload.type+'&screening_id='+payload.screening_id+'&page='+payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

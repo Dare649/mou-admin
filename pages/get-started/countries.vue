@@ -447,14 +447,16 @@ export default {
         })
       },
       searchCountry(){
-          this.deleteLoading = true
+          this.getLoading = true
           this.$store
             .dispatch('get-started/searchCountry', this.searchItem)
-            .then(res => {
+            .then(res => {            
             if(res != undefined){
                 if(res.status == true){
-                    this.countries = res.data
+                    this.countries = res.data.data
+                    this.getLoading = false
                     this.pagination = res.data
+                    
                 }else{
                 }
             }else{

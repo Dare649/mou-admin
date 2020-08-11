@@ -498,7 +498,7 @@ export default {
                 if(res != undefined){
                     if(res.status == true){
                         this.subjects = res.data
-                        this.pagination = res.data
+                        //this.pagination = res.data
                     }else{
                     }
                 }else{

@@ -280,7 +280,6 @@ export default {
             this.$store
                 .dispatch('get-started/searchFaculty', this.searchItem)
                 .then(res => {
-                    console.log(res)
                 if(res != undefined){
                     if(res.status == true){
                         if(res.data == null){
