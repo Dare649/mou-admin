@@ -49,7 +49,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response.data)
             return response.data
         })
         .catch(err => {
@@ -255,7 +254,6 @@ export const actions = {
             responseType: 'blob',
             data: payload
         }).then((response) => {
-            console.log(response)
             const url = URL.createObjectURL(new Blob([response.data], {
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }))
@@ -308,7 +306,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response.data)
             var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
             var fileLink = document.createElement('a');
 
@@ -332,7 +329,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response.data)
             var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
             var fileLink = document.createElement('a');
 
@@ -1084,7 +1080,6 @@ export const actions = {
         });
     },
     async searchPUTMERegistraton(context, payload){
-        console.log(payload)
         return await this.$axios({
             method: 'get',
             url: 'api/putme?registration_number='+payload.registration_number+'&type='+payload.type+'&screening_id='+payload.screening_id+'&page='+payload.page,
