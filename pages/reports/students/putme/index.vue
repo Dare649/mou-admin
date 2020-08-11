@@ -93,7 +93,7 @@
                                         <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="col-lg-12 m-t-10">
                                     <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
                                     <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
@@ -135,7 +135,6 @@
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                   <th>REG Number</th>
-                                  <th>Screening ID</th>
                                   <th style="width:20%">Email</th>
                                   <th>Phone</th>
                                   <th>Type</th>
@@ -151,7 +150,6 @@
                                     </tr>
                                     <tr v-else v-for="user in users" :key="user.id">
                                         <td>{{user.registration_number}}</td>
-                                        <td>{{user.screening_id}}</td>
                                         <td>{{user.email}}</td>
                                         <td>{{user.primary_phone}}</td>
                                         <td>{{user.type}}</td>
@@ -321,6 +319,44 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
+            <!-- /.UPLOAD ADMIN USER -->
+            <div class="modal fade SlideUp" id="upload_personnel" tabindex="-1" role="dialog" aria-hidden="true">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  <i class="pg-close"></i>
+              </button>
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="text-left p-b-5"><span class="semi-bold">UPLOAD ADMIN USER</span></h5>
+                      </div>
+                      <div class="modal-body">
+                          <div class="row">
+                              <div class="col-lg-12 m-b-10">
+                                  <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                      <label class="custom-file-label" for="customFileLang">Select File</label>
+                                  </div>
+                              </div>
+                              <div class="col-lg-12">
+                                  <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                              </div>
+                              <div class="col-lg-12 m-t-15">
+                                  <div class="dd-placeholder p-1">
+                                      <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
+                                      <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                      <div class="clearfix"></div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+
+                      </div>
+                  </div>
+                  <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+          </div>
             <!-- /.UPLOAD ADMIN USER ENDS HERE -->
     </div>
 </template>
@@ -360,7 +396,7 @@ export default {
             search_screening_id: "",
             search_type: "",
             search_registration_number: "",
-            users:[],  
+            users:[],
             user:{},
             pagination: {
               total: 0,
@@ -398,7 +434,7 @@ export default {
             this.model.edit_faculty_id = jamb.faculty_id
             this.model.edit_department_id = jamb.department_id
             this.getDepartmentsByFacultyId(1, jamb.faculty_id)
-            
+
             this.model.edit_registration_number = jamb.registration_number
         },
         submitEditedPUTMEStudent(){
@@ -430,6 +466,7 @@ export default {
                 this.loading = false
             })
         },
+<<<<<<< HEAD:pages/students/putme/index.vue
         searchRecord(){
             let payload = {}
             payload.registration_number = this.search_registration_number
@@ -473,7 +510,10 @@ export default {
                     this.$toast.error('An error occurred please contact the administrator' + err)
             })
         },
-        showDetails(registration_number){  
+        showDetails(registration_number){
+=======
+        showDetails(registration_number){
+>>>>>>> 481b0636cf26c182d37a12e4ca148a989b4b4c68:pages/reports/students/putme/index.vue
             this.putmeDetails = {}
             this.$store
                 .dispatch('get-started/getPUTMERegistrationDetails', registration_number)
@@ -561,7 +601,7 @@ export default {
                 }
             }).catch(err => {
             })
-        
+
         },
         exportOlevel(reg_no){
             this.exportLoading = true
@@ -611,8 +651,24 @@ export default {
             }else{
                 this.permis.checked = true
             }
-        }, 
-        
+<<<<<<< HEAD:pages/students/putme/index.vue
+        },
+
+=======
+        },
+        setId(id){
+            this.model.id = id
+        },
+        populateFields(jamb){
+            console.log(jamb)
+            this.model.id = jamb.id
+            this.model.edit_marital_status = jamb.marital_status
+            this.model.edit_phone_number = jamb.primary_phone
+            this.model.edit_department_id = jamb.department_id
+
+            this.model.edit_registration_number = jamb.registration_number
+        },
+>>>>>>> 481b0636cf26c182d37a12e4ca148a989b4b4c68:pages/reports/students/putme/index.vue
         getAllUsers(page){
             this.getLoading = true
             let payload = {}
