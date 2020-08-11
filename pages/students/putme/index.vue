@@ -8,24 +8,48 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                        <li class="breadcrumb-item active">Admin users</li>
+                        <li class="breadcrumb-item active">PUTME Students</li>
                     </ol>
                 </div>
             </div>
-            <!-- END BREADCRUMBS -->
-            <div class="modal fade SlideUp" id="assign_admin_role" tabindex="-1" role="dialog" aria-hidden="true">
+            <!-- Export JAMB Result Modal -->
+            <div class="modal fade SlideUp" id="export_putme_students" tabindex="-1" role="dialog" aria-hidden="true">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <i class="pg-close"></i>
                 </button>
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="text-left p-b-5"><span class="semi-bold">Please click confirm to make <strong>{{currentUserSelected}}</strong> an admin</span></h5>
+                            <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
                         </div>
                         <div class="modal-body">
-                            <div class="col-lg-12">
-                                <button type="button" disabled v-if="!makeAdminLoading" @click="makeAdmin()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
-                                <button type="button" v-if="makeAdminLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                            <div class="row">
+                                <form class="full-width">
+                                    <div class="col-lg-12 m-b-10">
+                                    <select class="form-control" v-model="model.export_year" >
+                                        <option value="" selected>Jamb Result Year</option>
+                                        <option value="2010">2010</option>
+                                        <option value="2011">2011</option>
+                                        <option value="2012">2012</option>
+                                        <option value="2013">2013</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                    </select>
+                                    </div>
+                                    <!-- <div class="col-lg-12 m-b-10">
+                                        <select class="full-width" data-init-plugin="select2" >
+                                            <option value="" disabled selected>Jamb Entry Mode</option>
+                                            <option v-for="academicType in academicTypes" :key="academicType.id" value="academicTypes.id" >{{academicType.name}}</option>
+                                        </select>
+                                    </div> -->
+                                    <div class="col-lg-12">
+                                        <button type="button" v-if="!exportLoading"  @click="exportPUTMERegistrations()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
+                                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -33,7 +57,6 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-
              <!-- Edit JAMB Result Modal -->
         <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -42,10 +65,10 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit JAMB Result</span></h5>
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Edit PUTME Student</span></h5>
                     </div>
                     <div class="modal-body">
-                        <form class="full-width" @submit.prevent="submitEditedJambResut">
+                        <form class="full-width" @submit.prevent="submitEditedPUTMEStudent">
                             <div class="row">
                                 <div class="col-lg-6 m-b-10">
                                     <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
@@ -54,6 +77,9 @@
                                         <option value="Single">Single</option>
                                         <option value="Divorced">Divorced</option>
                                     </select>
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
                                 </div>
                                 <div class="form-group m-b-10">
                                     <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
@@ -67,9 +93,7 @@
                                         <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-6 m-b-10">
-                                    <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
-                                </div>
+                                
                                 <div class="col-lg-12 m-t-10">
                                     <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
                                     <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
@@ -87,16 +111,17 @@
                 <div class="card card-default">
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME Students</h3>
-                        <!-- <div class="pull-right sm-pull-reset">
-                          <button type="button" class="btn btn-primary btn-sm" @click="addPersonnel"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Admin</strong></button>
-                          <button type="button" class="btn btn-warning btn-sm" data-target="#upload_personnel" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Admins</strong></button>
-                        </div> -->
+                        <div class="pull-right sm-pull-reset">
+                          <button type="button" class="btn btn-warning btn-sm" data-target="#export_putme_students" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
+                        </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="card-header">
-                        <form @submit.prevent="searchFaculty">
-                            <div class="input-group col-lg-4" >
-                                <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
+                        <form @submit.prevent="searchRecord">
+                            <div class="input-group col-lg-12" >
+                                <input type="text" class="form-control" v-model="search_registration_number" placeholder="Registration Number">
+                                <input type="text" class="form-control" v-model="search_type" placeholder="Select Type">
+                                <input type="text" class="form-control" v-model="search_screening_id" placeholder="Screening Id">
                                 <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -166,154 +191,6 @@
             <!-- END CONTAINER FLUID -->
         </div>
 
-
-            <!--  -->
-            <div class="modal fade SlideUp" id="manage_permission" tabindex="-1" role="dialog" aria-hidden="true">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="pg-close"></i>
-                </button>
-                <div class="modal-dialog" style="width: 95%">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="text-left p-b-5"><span class="semi-bold">Manage Permissions: {{currentUserSelected}}</span></h5>
-                            <span>
-                                <input type="checkbox" v-model="selectAllPermissions" >
-                                <label for="all">Select all</label>
-                            </span>
-                        </div>
-
-                        <div class="modal-body">
-                            <div style="text-align:center; font-size:24px;" v-if="permissionLoading">
-                                <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
-                            </div>
-                            <form v-if="!permissionLoading">
-                                <div class="row" >
-                                    <div class="col-lg-3 m-b-10" v-for="permission in permissions" :key="permission.id">
-                                        <div class="text-body mb-10">
-                                            <!-- <h6 class="font-weight-bold">Faculties</h6> -->
-                                            <div class="checkbox check-primary mt-0 mb-0 pl-2">
-                                                <input type="checkbox" :value="permission.id" v-model="selectedPermissions">
-                                                <label :for="'permission'+permission.id">{{permission.name}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <button type="button" v-if="!updateLoading" @click="updateUserPermissions()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                                    <button type="button" disabled v-if="updateLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Updating</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-
-
-            <!-- /.ADD NEW ADMIN USER -->
-            <div class="modal fade SlideUp" id="add_personnel" tabindex="-1" role="dialog" aria-hidden="true">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                  <i class="pg-close"></i>
-              </button>
-              <div class="modal-dialog modal-xlg">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h5 class="text-left p-b-5"><span class="semi-bold">ADD NEW ADMIN USER</span></h5>
-                      </div>
-                      <div class="modal-body">
-                        <form @submit.prevent="submitUser">
-                          <div class="row">
-                              <div class="col-lg-6 m-b-10">
-                                <label>First name:</label>
-                                <input type="text" placeholder="First Name" required="required" v-model="addData.first_name" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Last name:</label>
-                                <input type="text" placeholder="Last Name" required="required" v-model="addData.last_name" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Password:</label>
-                                <input type="password" placeholder="Password" required="required" v-model="addData.password" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Confirm Password:</label>
-                                <input type="password" placeholder="Confirm Password" required="required" v-model="addData.password_confirmation" class="form-control">
-                              </div>
-                              <div class="col-lg-12 m-b-10">
-                                <label>Address:</label>
-                                <input type="text" placeholder="Address" required="required" v-model="addData.address" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Phone No:</label>
-                                <input type="text" placeholder="Phone Number" required="required" v-model="addData.phone" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10" v-if="update">
-                                <label>Email address:</label>
-                                <input type="text" placeholder="Email Address" readonly required="required" v-model="addData.email" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10" v-else>
-                                <label>Email address:</label>
-                                <input type="text" placeholder="Email Address" required="required" v-model="addData.email" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Marital Status:</label>
-                                <select class="full-width form-control" required="required" v-model="addData.marital_status">
-                                    <option value="" disabled>Marital Status</option>
-                                    <option value="Married">Married</option>
-                                    <option value="Single">Single</option>
-                                    <option value="Divorced">Divorced</option>
-                                </select>
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                  <label>Date of Birth:</label>
-                                  <input type="date" v-model="addData.dob" required="required" placeholder="Date of Birth (dd/mm/yyyy)" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Gender:</label>
-                                <select class="full-width form-control" required="required" v-model="addData.gender">
-                                    <option value="" disabled>Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                <label>Date Employed:</label>
-                                <input type="date" required="required" v-model="addData.date_employed" placeholder="Date Joined (dd/mm/yyyy)" class="form-control">
-                              </div>
-                              <div class="col-lg-12">
-                                  <h6>NEXT OF KIN DETAILS</h6>
-                                  <hr>
-                              </div>
-                              <div class="col-lg-12 m-b-10">
-                                  <input type="text" required="required" v-model="addData.nok_name" placeholder="Name" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                  <input type="text" required="required" v-model="addData.nok_relationship" placeholder="Relationship" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                  <input type="text" required="required" v-model="addData.nok_email" placeholder="Email Address" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                  <input type="text" required="required" v-model="addData.nok_phone" placeholder="Phone Number" class="form-control">
-                              </div>
-                              <div class="col-lg-6 m-b-10">
-                                  <input type="text" v-model="addData.nok_address" placeholder="Address" class="form-control">
-                              </div>
-
-                              <div class="col-lg-12">
-                                  <button type="submit" id="createUserBtn" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
-                              </div>
-                          </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                      </div>
-                  </div>
-                  <!-- /.modal-content -->
-              </div>
-              <!-- /.modal-dialog -->
-            </div>
             <!-- /.ADD ADMIN USER ENDS HERE -->
             <div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -444,44 +321,6 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.UPLOAD ADMIN USER -->
-            <div class="modal fade SlideUp" id="upload_personnel" tabindex="-1" role="dialog" aria-hidden="true">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                  <i class="pg-close"></i>
-              </button>
-              <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h5 class="text-left p-b-5"><span class="semi-bold">UPLOAD ADMIN USER</span></h5>
-                      </div>
-                      <div class="modal-body">
-                          <div class="row">
-                              <div class="col-lg-12 m-b-10">
-                                  <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="customFileLang" lang="es">
-                                      <label class="custom-file-label" for="customFileLang">Select File</label>
-                                  </div>
-                              </div>
-                              <div class="col-lg-12">
-                                  <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                              </div>
-                              <div class="col-lg-12 m-t-15">
-                                  <div class="dd-placeholder p-1">
-                                      <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                                      <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
-                                      <div class="clearfix"></div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="modal-footer">
-                          
-                      </div>
-                  </div>
-                  <!-- /.modal-content -->
-              </div>
-              <!-- /.modal-dialog -->
-          </div>
             <!-- /.UPLOAD ADMIN USER ENDS HERE -->
     </div>
 </template>
@@ -496,41 +335,12 @@ export default {
       Pagination
     },
     computed: {
-        selectAllPermissions: {
-            get: function () {
-                return this.permissions ? this.selectedPermissions.length == this.permissions.length : false;
-            },
-            set: function (value) {
-                var selectedPermissions = [];
-                if (value) {
-                    this.permissions.forEach(function (permission) {
-                        selectedPermissions.push(permission.id);
-                    });
-                }
-                this.selectedPermissions = selectedPermissions;
-            }
-        },
-        selectAllRoles: {
-            get: function () {
-                return this.roles ? this.selectedRoles.length == this.roles.length : false;
-            },
-            set: function (value) {
-                var selectedRoles = [];
-                if (value) {
-                    this.roles.forEach(function (role) {
-                        selectedRoles.push(role.id);
-                    });
-                }
-                this.selectedRoles = selectedRoles;
-            }
-        }
     },
     data(){
         return {
             putmeDetails: {},
             subjects: [],
             update: false,
-            permissions: [],
             currentUserSelected: "",
             updateLoading: false,
             user_permissions: [],
@@ -540,7 +350,6 @@ export default {
             downloading: false,
             loading: false,
             searchItem: "",
-            IsPermitted: true,
             departments: [],
             faculties:[],
             makeAdminLoading: false,
@@ -548,36 +357,10 @@ export default {
             editLoading: false,
             getLoading: true,
             exportLoading: false,
-            selectedPermissions: [],
-            roleLoading: false,
-            users:[],
-            roles: [],
-            selectedRoles: [],
-            addData: {
-              name: '',
-              first_name: '',
-              last_name: '',
-              email: '',
-              phone: '',
-              address: '',
-              marital_status: '',
-              gender: '',
-              dob: '',
-              date_employed: '',
-              password: '',
-              password_confirmation: '',
-              nok_name: '',
-              nok_email: '',
-              nok_phone: '',
-              nok_relationship: '',
-              nok_address: '',
-              id: '',
-              nok_id: ''
-            },
-            permis: {
-              checked: false
-            },
-            file: "",
+            search_screening_id: "",
+            search_type: "",
+            search_registration_number: "",
+            users:[],  
             user:{},
             pagination: {
               total: 0,
@@ -590,13 +373,13 @@ export default {
                 name: "",
                 id: 0,
                 user_id: 0,
+                export_year: "",
                 edit_name: "",
-                edit_sex: "",
-                edit_name: "",
+                edit_screening_id: "",
                 edit_state_id: "",
                 edit_lga_id: "",
                 edit_university1:"",
-                edit_faculty_id1:"",
+                edit_faculty_id:"",
                 edit_faculty_id2:"",
                 edit_department_id:"",
                 edit_university1:"",
@@ -608,12 +391,27 @@ export default {
         }
     },
     methods: {
+        populateFields(jamb){
+            this.model.edit_screening_id = jamb.screening_id
+            this.model.edit_marital_status = jamb.marital_status
+            this.model.edit_phone_number = jamb.primary_phone
+            this.model.edit_faculty_id = jamb.faculty_id
+            this.model.edit_department_id = jamb.department_id
+            this.getDepartmentsByFacultyId(1, jamb.faculty_id)
+            
+            this.model.edit_registration_number = jamb.registration_number
+        },
         submitEditedPUTMEStudent(){
             this.editLoading = true
-            let bodyFormData = new Object();
-            bodyFormData.id = this.model.id
+            let bodyFormData = new FormData();
+            bodyFormData.screening_id = this.model.edit_screening_id
+            bodyFormData.marital_status = this.model.edit_marital_status
+            bodyFormData.primary_phone = this.model.edit_phone_number
+            bodyFormData.faculty_id = this.model.edit_faculty_id
+            bodyFormData.department_id = this.model.edit_department_id
+
             this.$store
-                .dispatch('get-started/updateJambResult', bodyFormData)
+                .dispatch('get-started/updatePUTMEStudent', bodyFormData)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
@@ -630,6 +428,49 @@ export default {
                 }
             }).catch(err => {
                 this.loading = false
+            })
+        },
+        searchRecord(){
+            let payload = {}
+            payload.registration_number = this.search_registration_number
+            payload.type = this.search_type
+            payload.screening_id = this.search_screening_id
+            payload.page = 1
+            this.$store
+                .dispatch('get-started/searchPUTMERegistraton', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status == true){
+                        if(res.data == null){
+                            this.users = []
+                        }else{
+                            this.users = res.data.data
+                            this.pagination = res.data
+                        }
+                    }else{
+                    }
+                }else{
+                }
+            }).catch(err => {
+            this.loading = false
+            })
+        },
+        exportPUTMERegistrations(){
+            this.exportLoading = true
+            this.$store
+                .dispatch('get-started/exportPUTMERegistrations', this.model.export_year)
+                .then(res => {
+            if(res != undefined){
+                this.exportLoading = false
+                $('#export_putme_students').modal('hide').data( 'bs.modal', null )
+                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            }else{
+                this.exportLoading = false
+                alert("File Downloaded Unsuccessful")
+            }
+                }).catch(err => {
+                    this.exportLoading = false
+                    this.$toast.error('An error occurred please contact the administrator' + err)
             })
         },
         showDetails(registration_number){  
@@ -695,6 +536,7 @@ export default {
             })
         },
         populateDepartments(event){
+            this.departments = []
             if(event.target.value !== ""){
                 this.getDepartmentsByFacultyId(1, event.target.value)
             }else{
@@ -770,18 +612,7 @@ export default {
                 this.permis.checked = true
             }
         }, 
-        setId(id){
-            this.model.id = id
-        },
-        populateFields(jamb){
-            console.log(jamb)
-            this.model.id = jamb.id
-            this.model.edit_marital_status = jamb.marital_status
-            this.model.edit_phone_number = jamb.primary_phone
-            this.model.edit_department_id = jamb.department_id
-            
-            this.model.edit_registration_number = jamb.registration_number
-        },
+        
         getAllUsers(page){
             this.getLoading = true
             let payload = {}

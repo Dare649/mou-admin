@@ -225,8 +225,8 @@
                                             <td colspan="6" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                         </tr>
                                         <tr v-for="lga in lgas" :key="lga.id">                               
-                                          <td>{{lga.state.country.name}}</td>       
-                                          <td>{{lga.state.name}}</td>
+                                          <td v-if="lga.state != null">{{lga.state.country.name}}</td>       
+                                          <td v-if="lga.state != null">{{lga.state.name}}</td>
                                           <td>{{lga.name}}</td>
                                           <td>{{lga.code}}</td>
                                           <td>
@@ -348,7 +348,7 @@ export default {
             .then(res => {
             if(res != undefined){
                 if(res.status == true){
-                    this.lgas = res.data
+                    this.lgas = res.data.data
                     this.pagination = res.data
                 }else{
                 }
