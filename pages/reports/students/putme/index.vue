@@ -58,7 +58,7 @@
                 <!-- /.modal-dialog -->
             </div>
              <!-- Edit JAMB Result Modal -->
-        <div class="modal fade SlideUp" id="edit_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade SlideUp" id="edit_putme_student" tabindex="-1" role="dialog" aria-hidden="true">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                 <i class="pg-close"></i>
             </button>
@@ -414,6 +414,7 @@ export default {
                 edit_screening_id: "",
                 edit_state_id: "",
                 edit_lga_id: "",
+                edit_email:"",
                 edit_university1:"",
                 edit_faculty_id:"",
                 edit_faculty_id2:"",
@@ -422,7 +423,8 @@ export default {
                 edit_university2:"",
                 edit_department_id2:"",
                 edit_phone_number: "",
-                edit_country_id: 0
+                edit_country_id: 0,
+                edit_photo: ""
             },
         }
     },
@@ -436,6 +438,8 @@ export default {
             this.getDepartmentsByFacultyId(1, jamb.faculty_id)
 
             this.model.edit_registration_number = jamb.registration_number
+            this.model.edit_email = jamb.email
+            this.model.edit_photo = jamb.photo
         },
         submitEditedPUTMEStudent(){
             this.editLoading = true
@@ -445,6 +449,9 @@ export default {
             bodyFormData.primary_phone = this.model.edit_phone_number
             bodyFormData.faculty_id = this.model.edit_faculty_id
             bodyFormData.department_id = this.model.edit_department_id
+            bodyFormData.registration_number = this.model.edit_registration_number
+            bodyFormData.email = this.model.edit_email
+            bodyFormData.photo = this.model.edit_photo
 
             this.$store
                 .dispatch('get-started/updatePUTMEStudent', bodyFormData)
@@ -453,7 +460,7 @@ export default {
                     if(res.status == true){
                         this.editLoading = false
                         this.getJambResults()
-                        $('#edit_jamb_result').modal('hide').data( 'bs.modal', null )
+                        $('#edit_putme_student').modal('hide').data( 'bs.modal', null )
                         this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
                     }else{
