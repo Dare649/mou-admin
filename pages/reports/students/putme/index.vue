@@ -419,7 +419,6 @@ export default {
                 edit_faculty_id:"",
                 edit_faculty_id2:"",
                 edit_department_id:"",
-                edit_university1:"",
                 edit_university2:"",
                 edit_department_id2:"",
                 edit_phone_number: "",
@@ -473,7 +472,6 @@ export default {
                 this.loading = false
             })
         },
-<<<<<<< HEAD:pages/students/putme/index.vue
         searchRecord(){
             let payload = {}
             payload.registration_number = this.search_registration_number
@@ -518,9 +516,6 @@ export default {
             })
         },
         showDetails(registration_number){
-=======
-        showDetails(registration_number){
->>>>>>> 481b0636cf26c182d37a12e4ca148a989b4b4c68:pages/reports/students/putme/index.vue
             this.putmeDetails = {}
             this.$store
                 .dispatch('get-started/getPUTMERegistrationDetails', registration_number)
@@ -658,24 +653,10 @@ export default {
             }else{
                 this.permis.checked = true
             }
-<<<<<<< HEAD:pages/students/putme/index.vue
-        },
-
-=======
         },
         setId(id){
             this.model.id = id
         },
-        populateFields(jamb){
-            console.log(jamb)
-            this.model.id = jamb.id
-            this.model.edit_marital_status = jamb.marital_status
-            this.model.edit_phone_number = jamb.primary_phone
-            this.model.edit_department_id = jamb.department_id
-
-            this.model.edit_registration_number = jamb.registration_number
-        },
->>>>>>> 481b0636cf26c182d37a12e4ca148a989b4b4c68:pages/reports/students/putme/index.vue
         getAllUsers(page){
             this.getLoading = true
             let payload = {}
