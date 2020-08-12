@@ -70,6 +70,7 @@
                     <div class="modal-body">
                         <form class="full-width" @submit.prevent="submitEditedPUTMEStudent">
                             <div class="row">
+
                                 <div class="col-lg-6 m-b-10">
                                     <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
                                         <option value="" disabled>Marital Status</option>
@@ -81,6 +82,30 @@
                                 <div class="col-lg-6 m-b-10">
                                     <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
                                 </div>
+                                <div class="col-lg-6 m-b-10">
+                                    <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
+                                </div>
+                                <!-- <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group m-b-10">
+                                    <select class="form-control" v-model="model.edit_lga_id">
+                                        <option value="" selected>Select your option</option>
+                                        <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
+                                    </select>
+                                </div> -->
+
                                 <div class="form-group m-b-10">
                                     <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
                                         <option value="" selected>Select your option</option>
@@ -135,7 +160,7 @@
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                   <th>REG Number</th>
-                                  <th style="width:20%">Email</th>
+                                  <th style="width:22%">Email</th>
                                   <th>Phone</th>
                                   <th>Type</th>
                                   <th style="width:16%">Status</th>
@@ -160,7 +185,7 @@
                                         <td>
                                           <div class="btn-group">
                                               <span data-placement="top" data-toggle="tooltip" @click="populateFields(user)" title="Edit User">
-                                                  <a href="#edit_jamb_result" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                  <a href="#edit_putme_student" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
                                           </div>
                                           <div class="btn-group">
@@ -381,7 +406,6 @@ export default {
             updateLoading: false,
             user_permissions: [],
             addloading: false,
-            permissionLoading: false,
             checked: false,
             downloading: false,
             loading: false,
@@ -396,6 +420,9 @@ export default {
             search_screening_id: "",
             search_type: "",
             search_registration_number: "",
+            countries: [],
+            states: [],
+            lgas: [],
             users:[],
             user:{},
             pagination: {
@@ -416,6 +443,9 @@ export default {
                 edit_lga_id: "",
                 edit_email:"",
                 edit_university1:"",
+                edit_lga_id: "",
+                edit_state_id: "",
+                edit_country_id: "",
                 edit_faculty_id:"",
                 edit_faculty_id2:"",
                 edit_department_id:"",
@@ -450,26 +480,23 @@ export default {
             bodyFormData.department_id = this.model.edit_department_id
             bodyFormData.registration_number = this.model.edit_registration_number
             bodyFormData.email = this.model.edit_email
-            bodyFormData.photo = this.model.edit_photo
 
             this.$store
                 .dispatch('get-started/updatePUTMEStudent', bodyFormData)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
-                        this.editLoading = false
-                        this.getJambResults()
+                        this.editLoading = false 
                         $('#edit_putme_student').modal('hide').data( 'bs.modal', null )
-                        this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-
+                        this.getAllUsers(1)
                     }else{
                     this.editLoading = false
                     }
                 }else{
-                    this.loading = false
+                    this.editLoading = false
                 }
             }).catch(err => {
-                this.loading = false
+                this.editLoading = false
             })
         },
         searchRecord(){
@@ -586,25 +613,6 @@ export default {
                 this.departments = []
             }
         },
-        autoUpdateUserDetails(){
-            this.$store
-                .dispatch('get-started/getUserDetails')
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.$auth.setUser(res.data)
-                        this.setPermissions()
-                        this.setRoles()
-                    }else{
-                        this.ErrMsg = "Error Fetching data!"
-                    }
-                }else{
-                    this.ErrMsg = "Error Fetching data!"
-                }
-            }).catch(err => {
-            })
-
-        },
         exportOlevel(reg_no){
             this.exportLoading = true
             this.$store
@@ -621,41 +629,6 @@ export default {
                     this.exportLoading = false
                     this.$toast.error('An error occurred please contact the administrator' + err)
             })
-        },
-        addPersonnel() {
-            this.update = false
-            this.addData.first_name = ''
-            this.addData.last_name = ''
-            this.addData.email = ''
-            this.addData.phone = ''
-            this.addData.marital_status = ''
-            this.addData.gender = ''
-            this.addData.address = ''
-            this.addData.dob = ''
-            this.addData.date_employed = ''
-            this.addData.id = ''
-            this.addData.password = ''
-            this.addData.password_confirmation = ''
-            this.addData.nok_name = ''
-            this.addData.nok_email = ''
-            this.addData.nok_phone = ''
-            this.addData.nok_relationship = ''
-            this.addData.nok_address = ''
-            this.addData.nok_id = ''
-            $('#add_personnel').modal()
-        },
-        setUserName(user){
-            this.currentUserSelected = user.name
-        },
-        selectAll(){
-            if(this.checked){
-                this.permis.checked = false
-            }else{
-                this.permis.checked = true
-            }
-        },
-        setId(id){
-            this.model.id = id
         },
         getAllUsers(page){
             this.getLoading = true
@@ -682,6 +655,28 @@ export default {
                 }
             }).catch(err => {
                 this.getLoading = false
+            })
+        },
+        getCountries(){
+            this.getloading = true
+            this.$store
+            .dispatch('get-started/getCountries', page)
+            .then(res => {
+            if(res != undefined){
+                if(res.status == true){
+                this.getLoading = false
+                this.countries = res.data.data
+                this.pagination = res.data
+                }else{
+                this.getLoading = false
+                this.ErrMsg = "Error Fetching data!"
+                }
+            }else{
+                this.getLoading = false
+                this.ErrMsg = "Error Fetching data!"
+            }
+            }).catch(err => {
+            this.getloading = false
             })
         }
     },
