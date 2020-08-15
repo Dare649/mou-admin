@@ -320,6 +320,27 @@ export const actions = {
             return err
         });
     },
+    async exportSSCEResults(context, year) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/ssce-result/export?year='+year,
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'ssce-results.xlsx');
+            document.body.appendChild(fileLink);
+            fileLink.click();
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportPUTMERegistrations(context, year) {
         return await this.$axios({
             method: 'get',
