@@ -216,6 +216,7 @@ export default {
         file: "",
         colleges: [],
         admission_categories: [],
+        downloadDepartments: [],
         model: {
           name: "",
           export_session_id: "",

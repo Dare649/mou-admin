@@ -117,19 +117,19 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{show_subject_id1}}</td>
+                            <td>{{show_subject_id1.name}}</td>
                             <td>{{show_mark1}}</td>
                         </tr>
                         <tr>
-                            <td>{{show_subject_id2}}</td>
+                            <td>{{show_subject_id2.name}}</td>
                             <td>{{show_mark2}}</td>
                         </tr>
                         <tr>
-                            <td>{{show_subject_id3}}</td>
+                            <td>{{show_subject_id3.name}}</td>
                             <td>{{show_mark3}}</td>
                         </tr>
                         <tr>
-                            <td>{{show_subject_id4}}</td>
+                            <td>{{show_subject_id4.name}}</td>
                             <td>{{show_mark4}}</td>
                         </tr>
                         <tr>

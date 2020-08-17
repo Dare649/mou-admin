@@ -164,19 +164,12 @@ export default {
 
   },
   methods: {
-      getFaculties(page){
+      getFaculties(){
             this.$store
-                .dispatch('get-started/getFaculties', page)
+                .dispatch('get-started/getAllFaculties')
                 .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.getloading = false
-                        this.faculties = res.data.data
-                        this.pagination = res.data
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Fetching data!"
-                    }
+                if(res != undefined){    
+                    this.faculties = res
                 }else{
                     this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
@@ -185,20 +178,14 @@ export default {
                 this.getloading = false
             })
         },
-        getDepartmentsByFacultyId(page, Id) {
-            let facultyId = Id
+        getDepartmentsByFacultyId(facultyId) {
             let payload = {}
             payload.facultyId = facultyId
-            payload.page = page
             this.$store
-                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .dispatch('get-started/getAllDepartmentsByFacultyId', payload)
                 .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.departments = res.data.data
-                    }else{
-                        this.ErrMsg = "Error Logging in!"
-                    }
+                if(res != undefined){  
+                    this.departments = res   
                 }else{
                     this.ErrMsg = "Error Logging in!"
                 }
@@ -309,7 +296,7 @@ export default {
             );
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }else{
-                this.getFaculties(this.pagination.current_page)
+                this.getFaculties()
                 this.getAcademicSessions()
         }
       }

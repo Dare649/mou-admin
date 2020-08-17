@@ -320,6 +320,27 @@ export const actions = {
             return err
         });
     },
+    async exportSSCEResults(context, year) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/ssce-result/export?year='+year,
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'ssce-results.xlsx');
+            document.body.appendChild(fileLink);
+            fileLink.click();
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportPUTMERegistrations(context, year) {
         return await this.$axios({
             method: 'get',
@@ -650,6 +671,19 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/departments/faculty/'+ payload.facultyId + '?page=' + payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getAllDepartmentsByFacultyId(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/utilities/get-departments/'+ payload.facultyId,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -1232,6 +1266,19 @@ export const actions = {
             return err
         });
     },
+    async getAllCountries(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/utilities/get-countries',
+
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getAcademicSessions(context) {
         return await this.$axios({
             method: 'get',
@@ -1301,6 +1348,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/faculties?page='+page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getAllFaculties(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/utilities/get-faculties',
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
