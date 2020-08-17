@@ -336,9 +336,10 @@ export const actions = {
             fileLink.setAttribute('download', 'ssce-results.xlsx');
             document.body.appendChild(fileLink);
             fileLink.click();
+            return true
         })
         .catch(err => {
-            return err
+            
         });
     },
     async exportPUTMERegistrations(context, year) {
