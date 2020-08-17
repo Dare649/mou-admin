@@ -12,7 +12,7 @@
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
-            
+
             <!-- START JUMBOTRON -->
             <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container" v-permission="'View PUTME Result'">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
@@ -44,7 +44,7 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
-                            <strong>The Following Errors Occurred:</strong> 
+                            <strong>The Following Errors Occurred:</strong>
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
                                     <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
@@ -53,7 +53,7 @@
                             </p>
                         </div>
                         <div class="alert alert-success">
-                            <strong>Audit Trail Performed.</strong> 
+                            <strong>Audit Trail Performed.</strong>
                             <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
                         </div>
                     </div>
@@ -201,14 +201,14 @@ export default {
           export_session_id: ""
         },
       }
-    },
+   },
   methods: {
         getFaculties(page){
             this.$store
                 .dispatch('get-started/getFaculties', page)
                 .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
+                if(res !== undefined){
+                    if(res.status === true){
                         this.getloading = false
                         this.faculties = res.data.data
                         this.pagination = res.data
@@ -232,8 +232,8 @@ export default {
             this.$store
                 .dispatch('get-started/getDepartmentsByFacultyId', payload)
                 .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
+                if(res !== undefined){
+                    if(res.status === true){
                         this.departments = res.data.data
                     }else{
                         this.ErrMsg = "Error Logging in!"
@@ -245,7 +245,7 @@ export default {
             })
         },
         populateDepartments(event){
-            if(event.target.value != ""){
+            if(event.target.value !== ""){
                 this.getDepartmentsByFacultyId(1, event.target.value)
             }else{
                 this.model.export_department_id = ""
@@ -257,8 +257,8 @@ export default {
           this.$store
             .dispatch('get-started/downloadPUTMESampleFile')
             .then(res => {
-            if(res != undefined){
-                if(res.success == true)    {
+            if(res !== undefined){
+                if(res.success === true)    {
                     window.location = res.message
                     this.downloading = false
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
@@ -300,9 +300,8 @@ export default {
           this.$store
             .dispatch('get-started/uploadPUTMEResults', formData)
             .then(res => {
-                console.log(res)
-            if(res != undefined){
-                if(res.success == true){
+            if(res !== undefined){
+                if(res.success === true){
                     this.loading = false
                     this.importResponse = res
                     //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
@@ -324,8 +323,8 @@ export default {
         this.$store
           .dispatch('get-started/getAcademicSessions')
           .then(res => {
-            if(res != undefined){
-                if(res.status == true){
+            if(res !== undefined){
+                if(res.status === true){
                     this.academic_sessions = res.data
                     this.getloading = false
                 }else{
