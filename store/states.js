@@ -67,6 +67,19 @@ export const actions = {
             return err
         });
     },
+    async getAllStatesByCountryId(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/utilities/get-state/'+ payload.countryId,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async createState(context, requests) {
         return await this.$axios({
             method: 'post',
