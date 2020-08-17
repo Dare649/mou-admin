@@ -67,6 +67,19 @@ export const actions = {
             return err
         });
     },
+    async getAllLGAsByStateId(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/utilities/get-lga/'+ payload.stateId,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async createLGA(context, requests) {
         return await this.$axios({
             method: 'post',

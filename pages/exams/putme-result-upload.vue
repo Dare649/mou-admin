@@ -205,39 +205,24 @@ export default {
   methods: {
         getFaculties(page){
             this.$store
-                .dispatch('get-started/getFaculties', page)
+                .dispatch('get-started/getAllFaculties')
                 .then(res => {
                 if(res !== undefined){
-                    if(res.status === true){
-                        this.getloading = false
-                        this.faculties = res.data.data
-                        this.pagination = res.data
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Fetching data!"
-                    }
+                    this.faculties = res
                 }else{
-                    this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
                 }
             }).catch(err => {
-                this.getloading = false
             })
         },
-        getDepartmentsByFacultyId(page, Id) {
-            let facultyId = Id
+        getDepartmentsByFacultyId(facultyId) {
             let payload = {}
             payload.facultyId = facultyId
-            payload.page = page
             this.$store
-                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .dispatch('get-started/getAllDepartmentsByFacultyId', payload)
                 .then(res => {
                 if(res !== undefined){
-                    if(res.status === true){
-                        this.departments = res.data.data
-                    }else{
-                        this.ErrMsg = "Error Logging in!"
-                    }
+                    this.departments = res
                 }else{
                     this.ErrMsg = "Error Logging in!"
                 }
@@ -245,8 +230,10 @@ export default {
             })
         },
         populateDepartments(event){
+            this.model.export_department_id = ""
+            this.departments = []
             if(event.target.value !== ""){
-                this.getDepartmentsByFacultyId(1, event.target.value)
+                this.getDepartmentsByFacultyId(event.target.value)
             }else{
                 this.model.export_department_id = ""
                 this.departments = []
