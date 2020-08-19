@@ -103,7 +103,6 @@ export default {
     methods: {
         exportStudentSSCEs(){
             this.exportLoading = true
-            console.log(this.model.export_year)
             this.$store
                 .dispatch('get-started/exportSSCEResults', this.model.export_year)
                 .then(res => {
@@ -115,7 +114,8 @@ export default {
                         alert("File Downloaded Unsuccessful")
                     }
             }).catch(err => {
-            this.exportLoading = false
+                this.exportLoading = false
+                alert("File Downloaded Unsuccessful")
             })
         }
     },
