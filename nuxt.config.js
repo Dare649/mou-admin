@@ -106,7 +106,7 @@ module.exports = {
 		proxy: false
   },
   proxy: {
-		'/api/': 'http://portal.streeties.com.ng/'
+		'/api/': 'http://portal.streeties.com.ng/',
     // '/api/': 'http://127.0.0.1:8000/'
   },
   env: {

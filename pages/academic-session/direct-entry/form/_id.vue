@@ -480,29 +480,29 @@ export default {
                 const session = res.data.data;
                 this.formData = {
                     de_session_name: session.de_session_name,
-                    admin_fees_start_date: session.admin_fees_start_date,
-                    admin_fees_end_date: session.admin_fees_end_date,
+                    admin_fees_start_date: this.$moment(session.admin_fees_start_date).format('DD/MM/YYYY'),
+                    admin_fees_end_date: this.$moment(session.admin_fees_end_date).format('DD/MM/YYYY'),
                     acceptance_fee: session.acceptance_fee,
-                    last_date_acceptance_fee: session.last_date_acceptance_fee,
-                    last_date_depositing_school_fees: session.last_date_depositing_school_fees,
+                    last_date_acceptance_fee: this.$moment(session.last_date_acceptance_fee).format('DD/MM/YYYY'),
+                    last_date_depositing_school_fees: this.$moment(session.last_date_depositing_school_fees).format('DD/MM/YYYY'),
                     supplementary_list_date: session.showUpload,
-                    supplementary_list_last_date: session.supplementary_list_last_date,
+                    supplementary_list_last_date: this.$moment(session.supplementary_list_last_date).format('DD/MM/YYYY'),
                     acceptance_processing_fees: session.acceptance_processing_fees,
-                    late_fees_amount: session.late_fee_end_date,
+                    late_fees_amount: this.$moment(session.late_fee_end_date).format('DD/MM/YYYY'),
                     de_late_fees_due: session.de_late_fees_due,
-                    late_fees_date: session.late_fees_date,
-                    late_fees_start_date_returning: session.late_fees_start_date_returning,
-                    late_fees_end_date_returning: session.late_fees_end_date_returning,
+                    late_fees_date: this.$moment(session.late_fees_date).format('DD/MM/YYYY'),
+                    late_fees_start_date_returning: this.$moment(session.late_fees_start_date_returning).format('DD/MM/YYYY'),
+                    late_fees_end_date_returning: this.$moment(session.late_fees_end_date_returning).format('DD/MM/YYYY'),
                     late_fees_amount_returning: session.late_fees_amount_returning,
                     course_registration_fee: session.course_registration_fee,
                     de_reg_admin_fees: session.de_reg_admin_fees,
                     matriculation_year: session.matriculation_year,
                     admin_fees_instruction: session.admin_fees_instruction,
                     school_fees_instruction: session.school_fees_instruction,
-                    acceptance_fee_instructions: session.acceptance_fee_instructions,
+                    acceptance_fee_instructions: session.acceptance_fees_instruction,
                 }
                 this.adminFeeInstruction.setContent(session.admin_fees_instruction);
-                this.acceptanceFeeInstruction.setContent(session.acceptance_fee_instructions);
+                this.acceptanceFeeInstruction.setContent(session.acceptance_fees_instruction);
                 this.schoolFeesInstruction.setContent(session.school_fees_instruction)
             })
         }
