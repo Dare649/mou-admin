@@ -65,7 +65,7 @@
                             <a href="javascript:;"><span class="title">Reports</span><span class=" arrow"></span></a>
                             <ul class="">
                                 <li><nuxt-link to="/reports/students/putme">PUTME Students</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/putme/ssce-result">Students SSCE</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
