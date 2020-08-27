@@ -25,6 +25,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async markForDepartmentalApproval(context, data) {
+    return await this.$axios.post('api/academic-session/marked-for-departmental-approval', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
