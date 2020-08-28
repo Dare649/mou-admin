@@ -83,9 +83,9 @@
         if(this.serviceType === 'dues') {
           $url = `api/${this.queryType}/student-union-dues/auto-generate`;
         }
+        console.log(this.formData)
         this.$axios.post($url, this.formData).then(res => {
           $('#generateBtn').attr('disabled', false).html('Generate Slip');
-
           if(res.data.status) {
             $('#auto_slip').modal('hide');
             this.$swal({
@@ -103,7 +103,10 @@
               fee_type: '',
               session_id: ''
             }
+            return
           }
+
+          this.$toast.error(res.data.message)
         }).catch(err => {
           $('#generateBtn').attr('disabled', false).html('Generate Slip');
           this.$toast.error('Something went wrong.', {position: 'top-center', fullWidth: false, theme: 'bubble'});

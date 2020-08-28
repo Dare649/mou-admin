@@ -102,7 +102,7 @@
     <!-- END CONTAINER FLUID -->
     <add-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
     <auto-generate-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
-    <import-slip-modal queryType="putme-session" />
+    <import-slip-modal queryType="putme-sessions" />
   </div>
   <!-- END PAGE CONTENT -->
 </template>

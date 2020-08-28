@@ -20,8 +20,8 @@
                 <div class="card-header  separator">
                     <h3 class="text-primary no-margin pull-left sm-pull-reset">Post UME Options</h3>
                     <div class="pull-right sm-pull-reset">
-                        <nuxt-link to="/academic-session/putme/form/new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
-                        <nuxt-link :to="`/academic-session/putme/form/${id}`" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> &nbsp; <strong>Edit Exam</strong></nuxt-link>
+                        <nuxt-link to="/academic-session/utme/form/new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New UME Exams</strong></nuxt-link>
+                        <nuxt-link :to="`/academic-session/utme/form/${id}`" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> &nbsp; <strong>Edit Exam</strong></nuxt-link>
                     </div>
                     <div class="clearfix"></div>
                 </div>
