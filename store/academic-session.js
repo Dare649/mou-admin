@@ -33,6 +33,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importPutmeSug(context, data) {
+    return await this.$axios.post('api/putme-sessions/student-union-dues/import', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
