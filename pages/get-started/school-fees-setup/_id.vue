@@ -179,7 +179,7 @@
                     <th>New hostel</th>
                     <th>Old hostel</th>
                     <th>Level</th>
-                    <th>Action</th>
+                    <th style="width: 17%;">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -188,6 +188,19 @@
                   </tr>
                   <tr v-if="!loading && setups.length < 1">
                     <td colspan="7">No record at the moment</td>
+                  </tr>
+                  <tr v-if="!loading && setups.length > 0">
+                    <td>Year 1 school</td>
+                    <td>6500</td>
+                    <td>0</td>
+                    <td>5000</td>
+                    <td>1000</td>
+                    <td>100</td>
+                    <td>
+                      <a href="" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                      <a href=""  class="btn btn-default btn-sm" title="Edit details" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                      <a href="" class="btn btn-default btn-sm" title="Delete detail" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                    </td>
                   </tr>
                 </tbody>
               </table>
