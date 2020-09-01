@@ -65,6 +65,53 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+
+
+    <div class="modal fade SlideUp" id="import_school_fees" tabindex="-1" role="dialog" aria-hidden="true">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+      </button>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="text-left p-b-5"><span class="semi-bold">Import Schol Fees - Program Name</span></h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control">
+                  <option value="" selected>Select Academic Session</option>
+                </select>
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control">
+                  <option value="" selected>Entry Mode</option>
+                  <option value="putme">PUTME</option>
+                  <option value="direct-entry">Direct Entry</option>
+                </select>
+              </div>
+              <div class="col-lg-12 m-b-10">
+                <input type="file" class="form-control" ref="file" />
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-lg-6">
+                <button type="button" class="btn btn-primary m-t-5 m-r-10">Import Record</button>
+              </div>
+              <div class="col-lg-6">
+                <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10">
+                  <i class="fa fa-arrow-down"></i> &nbsp; Download Sample
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
     <!-- START PAGE CONTENT -->
     <div class="content sm-gutter">
       <!-- START BREADCRUMBS -->
@@ -115,7 +162,9 @@
             <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup Management</h3>
             <div class="pull-right sm-pull-reset">
               <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-              <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>New School Fees Setup</strong></button>
+              <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;<strong>New School Fees Setup</strong></button>
+              <button type="button" class="btn btn-warning btn-sm" data-target="#import_school_fees" data-toggle="modal"><i class="fa fa-upload"></i>&nbsp;<strong>Import School Fees</strong></button>
+              <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"><i class="fa fa-download"></i>&nbsp;<strong>Export Record</strong></button>
             </div>
             <div class="clearfix"></div>
           </div>
