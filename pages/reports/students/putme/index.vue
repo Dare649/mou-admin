@@ -69,56 +69,78 @@
                     </div>
                     <div class="modal-body">
                         <form class="full-width" @submit.prevent="submitEditedPUTMEStudent">
+                            <table>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Marital Status:</label></td>
+                                    <td>
+                                        <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
+                                            <option value="" disabled>Marital Status</option>
+                                            <option value="Married">Married</option>
+                                            <option value="Single">Single</option>
+                                            <option value="Divorced">Divorced</option>
+                                        </select>  
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Phone Number:</label></td>
+                                    <td>
+                                        <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Email Address:</label></td>
+                                    <td>
+                                        <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Country:</label></td>
+                                    <td>
+                                        <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
+                                            <option value="" selected>Select your option</option>
+                                            <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>State:</label></td>
+                                    <td>
+                                        <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
+                                            <option value="" selected>Select your option</option>
+                                            <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>LGA:</label></td>
+                                    <td>
+                                        <select class="form-control" v-model="model.edit_lga_id">
+                                            <option value="" selected>Select your option</option>
+                                            <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Faculty:</label></td>
+                                    <td>
+                                        <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
+                                            <option value="" selected>Select your option</option>
+                                            <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Department:</label></td>
+                                    <td>
+                                        <select class="form-control" v-model="model.edit_department_id">
+                                            <option value="" selected>Select your option</option>
+                                            <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                            
                             <div class="row">
-
-                                <div class="col-lg-6 m-b-10">
-                                    <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
-                                        <option value="" disabled>Marital Status</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Divorced">Divorced</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6 m-b-10">
-                                    <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
-                                </div>
-                                <div class="col-lg-6 m-b-10">
-                                    <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
-                                </div>
-                                <!-- <div class="form-group m-b-10">
-                                    <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
-                                        <option value="" selected>Select your option</option>
-                                        <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group m-b-10">
-                                    <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
-                                        <option value="" selected>Select your option</option>
-                                        <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group m-b-10">
-                                    <select class="form-control" v-model="model.edit_lga_id">
-                                        <option value="" selected>Select your option</option>
-                                        <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
-                                    </select>
-                                </div> -->
-
-                                <div class="form-group m-b-10">
-                                    <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
-                                        <option value="" selected>Select your option</option>
-                                        <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group m-b-10">
-                                    <select class="form-control" v-model="model.edit_department_id">
-                                        <option value="" selected>Select your option</option>
-                                        <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
-                                    </select>
-                                </div>
-
                                 <div class="col-lg-12 m-t-10">
                                     <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
                                     <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
@@ -442,9 +464,8 @@ export default {
                 edit_state_id: "",
                 edit_lga_id: "",
                 edit_email:"",
+                edit_dob:"",
                 edit_university1:"",
-                edit_lga_id: "",
-                edit_state_id: "",
                 edit_country_id: "",
                 edit_faculty_id:"",
                 edit_faculty_id2:"",
@@ -452,7 +473,6 @@ export default {
                 edit_university2:"",
                 edit_department_id2:"",
                 edit_phone_number: "",
-                edit_country_id: 0,
                 edit_photo: ""
             },
         }
@@ -464,7 +484,13 @@ export default {
             this.model.edit_phone_number = jamb.primary_phone
             this.model.edit_faculty_id = jamb.faculty_id
             this.model.edit_department_id = jamb.department_id
-            this.getDepartmentsByFacultyId(1, jamb.faculty_id)
+            this.model.edit_country_id = jamb.country_id
+            this.model.edit_state_id = jamb.state_id
+            this.model.edit_lga_id = jamb.lga_id
+            this.model.edit_dob = jamb.dob
+            this.getDepartmentsByFacultyId(jamb.faculty_id)
+            this.getStatesByCountryID(jamb.country_id)
+            this.getLGAsByStateID(jamb.state_id)
 
             this.model.edit_registration_number = jamb.registration_number
             this.model.edit_email = jamb.email
@@ -480,6 +506,10 @@ export default {
             bodyFormData.department_id = this.model.edit_department_id
             bodyFormData.registration_number = this.model.edit_registration_number
             bodyFormData.email = this.model.edit_email
+            bodyFormData.country_id = this.model.edit_country_id
+            bodyFormData.state_id = this.model.edit_state_id
+            bodyFormData.lga_id = this.model.edit_lga_id
+            bodyFormData.dob = this.model.edit_dob
 
             this.$store
                 .dispatch('get-started/updatePUTMEStudent', bodyFormData)
@@ -563,19 +593,13 @@ export default {
                 this.getLoading = false
             })
         },
-        getFaculties(page){
+        getFaculties(){
             this.$store
-                .dispatch('get-started/getFaculties', page)
+                .dispatch('get-started/getAllFaculties')
                 .then(res => {
                 if(res != undefined){
-                    if(res.status == true){
-                        this.getloading = false
-                        this.faculties = res.data.data
-                        this.pagination = res.data
-                    }else{
-                        this.getloading = false
-                        this.ErrMsg = "Error Fetching data!"
-                    }
+                    this.getloading = false
+                    this.faculties = res
                 }else{
                     this.getloading = false
                     this.ErrMsg = "Error Fetching data!"
@@ -584,20 +608,14 @@ export default {
                 this.getloading = false
             })
         },
-        getDepartmentsByFacultyId(page, Id) {
-            let facultyId = Id
+        getDepartmentsByFacultyId(facultyId) {
             let payload = {}
             payload.facultyId = facultyId
-            payload.page = page
             this.$store
-                .dispatch('get-started/getDepartmentsByFacultyId', payload)
+                .dispatch('get-started/getAllDepartmentsByFacultyId', payload)
                 .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.departments = res.data.data
-                    }else{
-                        this.ErrMsg = "Error Logging in!"
-                    }
+                if(res != undefined){      
+                    this.departments = res         
                 }else{
                     this.ErrMsg = "Error Logging in!"
                 }
@@ -660,17 +678,12 @@ export default {
         getCountries(){
             this.getloading = true
             this.$store
-            .dispatch('get-started/getCountries', page)
+            .dispatch('get-started/getAllCountries')
             .then(res => {
             if(res != undefined){
-                if(res.status == true){
                 this.getLoading = false
-                this.countries = res.data.data
-                this.pagination = res.data
-                }else{
-                this.getLoading = false
-                this.ErrMsg = "Error Fetching data!"
-                }
+                this.countries = res
+                
             }else{
                 this.getLoading = false
                 this.ErrMsg = "Error Fetching data!"
@@ -678,6 +691,54 @@ export default {
             }).catch(err => {
             this.getloading = false
             })
+        },
+        getStatesByCountryID(countryId){
+            let payload = {}
+            payload.countryId = countryId
+            this.$store
+                .dispatch('states/getAllStatesByCountryId', payload)
+                .then(res => {
+                    if(res != undefined){   
+                        this.states = res
+                    }else{
+                        this.getloading = false
+                        this.ErrMsg = "Error Logging in!"
+                    }
+            }).catch(err => {
+            this.getloading = false
+            })
+        },
+        getLGAsByStateID(stateId){
+            let payload = {}
+            payload.stateId = stateId
+                this.$store
+                    .dispatch('lgas/getAllLGAsByStateId', payload)
+                    .then(res => {
+                    if(res != undefined){            
+                        this.lgas = res
+                    }else{
+                        this.ErrMsg = "Error Logging in!"
+                    }      
+            }).catch(err => {
+            })
+        },
+        populateLGA(event){
+            this.lgas = []
+            if(event.target.value !== ""){
+                this.getLGAsByStateID(event.target.value)
+            }else{
+                this.model.export_lga_id = ''
+                this.lgas = []
+            }
+        },
+        populateState(event){
+            this.states = []
+            if(event.target.value !== ""){
+                this.getStatesByCountryID(event.target.value)
+            }else{
+                this.model.export_state_id = ''
+                this.states = []
+            }
         }
     },
     mounted: function() {
@@ -687,6 +748,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
+        this.getCountries()
         this.getFaculties()
         this.getAllUsers(this.pagination.current_page)
     }
