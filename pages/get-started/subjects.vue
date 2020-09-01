@@ -197,8 +197,27 @@
             <!-- END BREADCRUMBS -->
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
+              <div class="card card-default">
+                <div class="card-header">
+                  <div class="card-title text-primary">Search Record</div>
+                </div>
+                <div class="card-body">
+                  <form style="width: 100%" @submit.prevent="searchSubject">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search here" />
+                      </div>
+                      <div class="col-md-2">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
                 <div class="card card-default">
-                    <div class="card-header  separator">
+                    <div class="card-header ">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Subject Management</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View state'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
@@ -208,18 +227,6 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="card-header">
-                                <form @submit.prevent="searchSubject">
-                                    <div class="input-group col-lg-4" >
-                                        <input type="text" class="form-control" v-model="searchItem" placeholder="Search">
-                                        <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                        </div>
-                                    </div>
-                                </form>
-                          </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
@@ -492,19 +499,22 @@ export default {
             })
         },
         searchSubject(){
-            this.$store
-                .dispatch('get-started/searchSubject', this.searchItem)
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.subjects = res.data
-                        //this.pagination = res.data
-                    }else{
-                    }
-                }else{
-                }
-            }).catch(err => {
-            })
+          this.getLoading = true
+          this.subjects = []
+          this.$store
+              .dispatch('get-started/searchSubject', this.searchItem)
+              .then(res => {
+                  if(res.data.status){
+                    this.getLoading = false
+                    this.subjects = res.data.data.data
+                    this.pagination = res.data.data
+                  }else{
+                    this.getLoading = false
+                    this.$toast.error(res.data.message)
+                  }
+          }).catch(err => {
+            this.$toast.error(err)
+          })
         },
         refresh(){
             this.searchItem = ""
@@ -521,7 +531,6 @@ export default {
                         this.getLoading = false
                         this.subjects = res.data.data
                         this.pagination = res.data
-                        //console.log(this.countries)
                     }else{
                         this.getLoading = false
                         this.ErrMsg = "Error Fetching data!"

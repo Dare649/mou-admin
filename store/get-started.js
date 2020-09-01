@@ -338,7 +338,7 @@ export const actions = {
             return true
         })
         .catch(err => {
-            
+
         });
     },
     async exportPUTMERegistrations(context, year) {
@@ -1093,7 +1093,7 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            return response.data
+            return response
         })
         .catch(err => {
             return err
