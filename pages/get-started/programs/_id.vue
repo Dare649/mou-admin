@@ -203,8 +203,10 @@
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Department">
-                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                            <span data-placement="top" data-toggle="tooltip" title="School Fees Management">
+                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id" >
+                                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-bar-chart"></i></button>
+                                              </nuxt-link>
                                             </span>
                                             <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
                                               <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
