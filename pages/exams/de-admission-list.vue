@@ -43,7 +43,7 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
-                            <strong>The Following Errors Occurred:</strong> 
+                            <strong>The Following Errors Occurred:</strong>
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
                                     <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
@@ -52,7 +52,7 @@
                             </p>
                         </div>
                         <div class="alert alert-success">
-                            <strong>Audit Trail Performed.</strong> 
+                            <strong>Audit Trail Performed.</strong>
                             <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
                         </div>
                     </div>
@@ -217,7 +217,6 @@ export default {
         admission_categories: [],
         model: {
           name: "",
-          export_session_id: "",
           import_session_id: "",
           import_category_id: "",
           export_category_id: "",

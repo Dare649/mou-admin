@@ -22,12 +22,18 @@
           <div class="card-title text-primary">Search Slip Number</div>
         </div>
         <div class="card-body">
-          <form class="row" style="width: 100%">
-            <div class="col-md-10">
-              <input type="text" class="form-control" placeholder="Slip Number" required>
+          <form class="row" @submit.prevent="search" style="width: 100%">
+            <div class="col-md-5">
+              <input type="text" v-model="searchData.slip_number" class="form-control" placeholder="Slip Number">
+            </div>
+            <div class="col-md-5">
+              <select class="form-control" v-model="searchData.type">
+                <option value="" selected>Select Type</option>
+                <option v-for="feeType in feeTypes" :value="feeType.id">{{ feeType.text }}</option>
+              </select>
             </div>
             <div class="col-md-2">
-              <button type="submit" class="btn btn-primary btn-block">Search Record</button>
+              <button type="submit" id="searchBtn" class="btn btn-primary btn-block">Search Record</button>
             </div>
           </form>
         </div>
@@ -36,6 +42,7 @@
         <div class="card-header ">
           <h3 class="text-primary no-margin pull-left sm-pull-reset">Student Union Dues</h3>
           <div class="pull-right sm-pull-reset">
+            <button type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
             <button type="button" class="btn btn-primary btn-sm"  @click="openModal('add_slip')"><i class="fa fa-plus"></i> &nbsp; <strong>Add Slip</strong></button>
             <button type="button" class="btn btn-info btn-sm" @click="downloadSampleCSV"><i class="fa fa-cloud-download"></i> &nbsp; <strong>Download Sample CSV</strong></button>
             <button type="button" class="btn btn-warning btn-sm" data-target="#import_record" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Record</strong></button>
@@ -47,7 +54,8 @@
           <div class="table-responsive">
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
-              <th style="width:50%">Slip Number</th>
+              <th>Slip Number</th>
+              <th>Type</th>
               <th style="width:30%">Used</th>
               <th style="width:20%">Action</th>
               </thead>
@@ -56,6 +64,7 @@
 
                 <tr v-for="slip in slips">
                   <td>{{ slip.slip_number}}</td>
+                  <td>{{ slip.type.name }} students</td>
                   <td>{{ (slip.status === 0) ? 'No' : 'Yes'}}</td>
                   <td>
                     <div class="btn-group">
@@ -93,14 +102,14 @@
     <!-- END CONTAINER FLUID -->
     <add-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
     <auto-generate-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
-    <import-slip-modal queryType="de-session" />
+    <import-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
   </div>
   <!-- END PAGE CONTENT -->
 </template>
 <script>
-  import AddSlipModal from '~/components/Modals/AddSlipModal'
-  import AutoGenerateSlipModal from '~/components/Modals/AutoGenerateSlipModal'
-  import ImportSlipModal from '~/components/Modals/ImportSlipModal'
+  import AddSlipModal from '~/components/Modals/DeAddSlipModal'
+  import AutoGenerateSlipModal from '~/components/Modals/DeAutoGenerateSlipModal'
+  import ImportSlipModal from '~/components/Modals/DeImportSlipModal'
   export default {
     layout: 'main',
     components: {
@@ -119,6 +128,10 @@
         to: 0,
         current_page: 1
       },
+      searchData: {
+        slip_number: '',
+        type: ''
+      },
       feeType: 'new',
       feeTypes: []
     }),
@@ -130,8 +143,18 @@
           }
         })
       },
+      search() {
+        this.loading = true
+        $('#searchBtn').attr('disabled', true).html('Searching...');
+        this.$axios.get('api/de-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type).then(res => {
+          $('#searchBtn').attr('disabled', false).html('Search');
+          this.loading = false
+          this.slips = res.data.data.data
+          this.pagination = res.data.data
+        })
+      },
       getSlips(page) {
-        this.$axios.get(`api/de-sessions/student-union-dues?session_id=${this.id}&slug=${this.feeType}`).then(res => {
+        this.$axios.get(`api/de-sessions/student-union-dues?session_id=${this.id}`).then(res => {
           this.loading = false
           this.slips = res.data.data.data;
           this.pagination = res.data.data;
@@ -177,6 +200,10 @@
           }
         })
       },
+      refresh() {
+        this.loading = true
+        this.getSlips(1);
+      },
       openModal(modal, slip = '') {
         $('#' + modal).modal('show');
         setTimeout(() => {
@@ -186,9 +213,8 @@
       }
     },
     mounted() {
-      this.id = this.$route.params.putmeId;
+      this.id = this.$route.params.deId;
       this.getSlips(1);
-
       this.getFeeTypes()
     }
   }

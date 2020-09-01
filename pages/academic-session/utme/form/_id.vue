@@ -7,7 +7,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item"><a href="#">Academic Session</a></li>
-                        <li class="breadcrumb-item"><nuxt-link to="/academic-session/putme">PUTME</nuxt-link></li>
+                        <li class="breadcrumb-item"><nuxt-link to="/academic-session/utme">PUTME</nuxt-link></li>
                         <li class="breadcrumb-item active">{{ (id === 'new') ? 'Add New' : 'Edit Details'}}</li>
                     </ol>
                 </div>
@@ -115,8 +115,8 @@
                                                 <ValidationProvider rules="required" v-slot="{ errors }">
                                                     <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
                                                         <div class="form-input-group">
-                                                            <label>Exam Date and Time</label>
-                                                            <date-picker v-model="formData.exam_date" format="DD/MM/YYYY HH:mm" value-type="format" type="datetime" input-class="form-control" placeholder="Pick a date">
+                                                            <label>Exam Date</label>
+                                                            <date-picker v-model="formData.exam_date" format="DD/MM/YYYY" value-type="format" type="date" input-class="form-control" placeholder="Pick a date">
                                                                 <template v-slot:icon-calendar>
                                                                     <div></div>
                                                                 </template>
@@ -284,7 +284,7 @@
                                                 <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
                                                     <div class="form-input-group">
                                                         <label>Last Date for Re-validation (Old Student Returning)</label>
-                                                        <date-picker v-model="formData.date_validating_old_students" type="date" value-type="format"  input-class="form-control" placeholder="Pick a date">
+                                                        <date-picker v-model="formData.date_validating_old_students" format="DD/MM/YYYY" type="date" value-type="format"  input-class="form-control" placeholder="Pick a date">
                                                             <template v-slot:icon-calendar>
                                                                 <div></div>
                                                             </template>
@@ -492,12 +492,13 @@ export default {
                 this.$axios.post('api/putme-sessions', this.formData).then(res => {
                     $('#submitForm').attr('disabled', false).html('Finish');
                     if(res.data.status) {
-                        // reset forms
-                        this.$refs.step1.reset();
-                        this.$refs.step2.reset();
-                        this.$refs.step3.reset();
-                        // show notification
-                        this.$toast.success('Form submitted successfully.')
+                      // reset forms
+                      this.$refs.step1.reset();
+                      this.$refs.step2.reset();
+                      this.$refs.step3.reset();
+                      // show notification
+                      this.$toast.success('UTME details was created successfully.')
+                      this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/utme"));
                     } else {
                         this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                     }
@@ -509,14 +510,15 @@ export default {
                 this.$axios.put('api/putme-sessions/' + this.id, this.formData).then(res => {
                     $('#submitForm').attr('disabled', false).html('Finish');
                     if(res.data.status) {
-                        // reset forms
-                        this.$refs.step1.reset();
-                        this.$refs.step2.reset();
-                        this.$refs.step3.reset();
-                        // show notification
-                        this.$toast.success('PUTME updates successfully.')
+                      // reset forms
+                      this.$refs.step1.reset();
+                      this.$refs.step2.reset();
+                      this.$refs.step3.reset();
+                      // show notification
+                      this.$toast.success('UTME updated successfully.')
+                      this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/utme"));
                     } else {
-                        this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
+                      this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                     }
                 }).catch(err => {
                     $('#submitForm').attr('disabled', false).html('Finish');
@@ -529,23 +531,23 @@ export default {
                 const session = res.data.data;
                 this.formData = {
                     session_name: session.session_name,
-                    exam_date: session.exam_date,
-                    ume_reg_start_date: session.ume_registration_start,
-                    ume_reg_end_date: session.ume_registration_end,
-                    result_date: session.result_date,
+                    exam_date:  this.$moment(session.exam_date).format('DD/MM/YYYY'),
+                    ume_reg_start_date: this.$moment(session.ume_registration_start).format('DD/MM/YYYY'),
+                    ume_reg_end_date: this.$moment(session.ume_registration_end).format('DD/MM/YYYY'),
+                    result_date: this.$moment(session.result_date).format('DD/MM/YYYY'),
                     acceptance_fee: session.acceptance_fee,
-                    last_acceptance_date: session.last_date_for_acceptance,
-                    last_date_doc_upload: session.last_date_for_document_upload,
-                    last_date_fee_deposit: session.last_date_for_fees_deposit,
+                    last_acceptance_date: this.$moment(session.last_date_for_acceptance).format('DD/MM/YYYY'),
+                    last_date_doc_upload: this.$moment(session.last_date_for_document_upload).format('DD/MM/YYYY'),
+                    last_date_fee_deposit: this.$moment(session.last_date_for_fees_deposit).format('DD/MM/YYYY'),
                     supplementary_fees: session.supplementary_fees,
-                    supp_list_publish_date: session.supplementary_list_publish_date,
-                    supp_fee_late_date: session.supplementary_fee_late_date,
+                    supp_list_publish_date: this.$moment(session.supplementary_list_publish_date).format('DD/MM/YYYY'),
+                    supp_fee_late_date: this.$moment(session.supplementary_fee_late_date).format('DD/MM/YYYY'),
                     acceptance_processing_fee: session.acceptance_fee,
-                    date_validating_old_students: session.date_validating_old_students,
+                    date_validating_old_students: this.$moment(session.date_validating_old_students).format('DD/MM/YYYY'),
                     late_fee_returning_stud: session.late_fee_for_returning_students,
                     putme_late_fees: session.putme_late_fees_returning_students,
-                    late_fee_start_date: session.late_fee_start_date_old_student,
-                    late_fee_end_date: session.late_fee_end_date_old_student,
+                    late_fee_start_date: this.$moment(session.late_fee_start_date_old_student).format('DD/MM/YYYY'),
+                    late_fee_end_date: this.$moment(session.late_fee_end_date_old_student).format('DD/MM/YYYY'),
                     late_fees_amount: session.late_fees_amount_old_student,
                     course_registration_fee: session.course_registration_fee,
                     putme_registration_fee: session.putme_registration_fee,

@@ -203,12 +203,15 @@
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                              <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
-                                                  <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                              </span>
-                                              <span v-permission="'Delete programme'" data-placement="top" data-toggle="tooltip" title="Delete Record">
-                                                  <a href="#delete_department" @click="setId(program.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
-                                              </span>
+                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Department">
+                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                            </span>
+                                            <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
+                                              <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                            </span>
+                                            <span v-permission="'Delete programme'" data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                              <a href="#delete_department" @click="setId(program.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                            </span>
                                           </div>
                                       </td>
                                   </tr>
@@ -325,11 +328,11 @@ export default {
         routeId: 0,
         file: "",
         pagination: {
-            total: 0,
-            per_page: 2,
-            from: 1,
-            to: 0,
-            current_page: 1
+          total: 0,
+          per_page: 2,
+          from: 1,
+          to: 0,
+          current_page: 1
         },
         model: {
           name: "",
@@ -367,7 +370,7 @@ export default {
             );
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
-        
+
         this.routeId = (this.$route.params.id).split("_")[0]
     },
 
