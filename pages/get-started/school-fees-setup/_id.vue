@@ -13,45 +13,55 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="Name" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <select class="form-control">
-                  <option value="" selected>Select Academic Session</option>
-                </select>
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="School Fees Amount" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="School Fees Amount Returning " />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="New Hostel Fees" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="Old Hostel Fees" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="Extra Year Fees" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" placeholder="Level" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <select class="form-control">
-                  <option value="" selected>Semester</option>
-                  <option value="1">1st Semester</option>
-                  <option value="2">2nd Semester</option>
-                </select>
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <select class="form-control">
+                <select class="form-control" @change="getAddSession($event)" v-model="formData.entry_mode">
                   <option value="" selected>Entry Mode</option>
                   <option value="putme">PUTME</option>
                   <option value="direct-entry">Direct Entry</option>
                 </select>
               </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control" v-model="formData.academic_session">
+                  <option value="" selected>Select Academic Session</option>
+                  <option v-for="session in add_sessions" :value="session.id">
+                    {{ (formData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.name" placeholder="Fee Caption" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.school_fees_amount" placeholder="School Fees Amount" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.returning_school_fees_amount" placeholder="School Fees Amount Returning " />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.new_hostel_fees" placeholder="New Hostel Fees" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.old_hostel_fees" placeholder="Old Hostel Fees" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <input type="text" class="form-control" v-model="formData.extra_year_fees" placeholder="Extra Year Fees" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control" v-model="formData.level">
+                  <option value="" selected>Level</option>
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                  <option value="300">300</option>
+                  <option value="400">400</option>
+                </select>
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control" v-model="formData.semester">
+                  <option value="" selected>Semester</option>
+                  <option value="1">1st Semester</option>
+                  <option value="2">2nd Semester</option>
+                </select>
+              </div>
+
             </div>
             <hr />
             <div class="row">
@@ -74,20 +84,23 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">Import Schol Fees - Program Name</span></h5>
+            <h5 class="text-left p-b-5"><span class="semi-bold">Import School Fees - Program Name</span></h5>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-lg-6 m-b-10">
-                <select class="form-control">
-                  <option value="" selected>Select Academic Session</option>
-                </select>
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <select class="form-control">
+                <select class="form-control" @change="getSession($event)" v-model="importData.entry_mode">
                   <option value="" selected>Entry Mode</option>
                   <option value="putme">PUTME</option>
                   <option value="direct-entry">Direct Entry</option>
+                </select>
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control" v-model="importData.academic_session">
+                  <option value="" selected>Select Academic Session</option>
+                  <option v-for="session in sessions" :value="session.id">
+                    {{ (importData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
+                  </option>
                 </select>
               </div>
               <div class="col-lg-12 m-b-10">
@@ -230,6 +243,7 @@ export default {
     return {
       setups: [],
       loading: true,
+      aLoading: true,
       pagination: {
         total: 0,
         per_page: 2,
@@ -237,14 +251,57 @@ export default {
         to: 0,
         current_page: 1
       },
+      importData: {
+        entry_mode: '',
+        academic_session: ''
+      },
+      formData: {
+        entry_mode: '',
+        academic_session: '',
+        name: '',
+        school_fees_amount: '',
+        returning_school_fees_amount: '',
+        new_hostel_fees: '',
+        old_hostel_fees: '',
+        extra_year_fees: '',
+        level: '',
+        semester: ''
+      },
+      sessions: [],
+      add_sessions: []
     }
   },
   methods: {
     getSchoolFeesById(page) {
       this.loading = false
     },
-    searchSetup() {
+    getSession(e) {
+      let session = e.target.value
+      if(session === '') {
+        this.sessions = []
+        return
+      }
 
+      this.$store.dispatch('academic-session/getSession', this.importData)
+        .then(res =>{
+          this.sessions = res.data.data
+        }).catch(err =>{
+          this.$toast.error(err)
+      })
+    },
+    getAddSession(e) {
+      let session = e.target.value
+      if(session === '') {
+        this.add_sessions = []
+        return
+      }
+
+      this.$store.dispatch('academic-session/getSession', this.formData)
+        .then(res =>{
+          this.add_sessions = res.data.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
     }
   },
   mounted() {

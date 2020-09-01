@@ -49,6 +49,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getSession(context, data) {
+    return await this.$axios.post('api/putme-sessions/get-sessions', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
