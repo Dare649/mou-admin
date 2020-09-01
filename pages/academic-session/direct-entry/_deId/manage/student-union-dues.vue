@@ -102,14 +102,14 @@
     <!-- END CONTAINER FLUID -->
     <add-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
     <auto-generate-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
-    <import-slip-modal queryType="de-sessions" />
+    <import-slip-modal :feeTypes="feeTypes" queryType="de-sessions" />
   </div>
   <!-- END PAGE CONTENT -->
 </template>
 <script>
   import AddSlipModal from '~/components/Modals/DeAddSlipModal'
   import AutoGenerateSlipModal from '~/components/Modals/DeAutoGenerateSlipModal'
-  import ImportSlipModal from '~/components/Modals/ImportSlipModal'
+  import ImportSlipModal from '~/components/Modals/DeImportSlipModal'
   export default {
     layout: 'main',
     components: {

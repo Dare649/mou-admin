@@ -123,13 +123,13 @@
                                       <td>
                                           <div class="btn-group">
                                               <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Department">
-                                                  <nuxt-link :to="'/get-started/departments/' + faculty.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                                <nuxt-link :to="'/get-started/departments/' + faculty.id" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                               </span>
                                               <span v-permission="'Edit faculty'"  data-placement="top" @click="populateFields(faculty)" data-toggle="tooltip" title="Edit Record">
-                                                  <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                                <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
                                               <span v-permission="'Delete faculty'" data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
-                                                  <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                                               </span>
                                           </div>
                                       </td>
@@ -214,13 +214,13 @@
                         </form>
                     </div>
                 </div>
-                
+
                 <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
-            
+
         </div>
-        
+
         <faculty-form v-permission="'Add New Faculty'"></faculty-form>
         <upload-faculty></upload-faculty>
     </div>
@@ -268,9 +268,6 @@ export default {
       }
     },
     methods: {
-        alert(){
-            alert("Am here")
-        },
         refresh(){
             this.searchItem = ""
             this.faculties = []
@@ -433,7 +430,7 @@ export default {
             );
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
-        
+
     }
 }
 </script>

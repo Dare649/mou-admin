@@ -169,12 +169,6 @@
                             <option value="2020">2020</option>
                           </select>
                         </div>
-                        <!-- <div class="col-lg-12 m-b-10">
-                            <select class="full-width" data-init-plugin="select2" >
-                                <option value="" disabled selected>Jamb Entry Mode</option>
-                                <option v-for="academicType in academicTypes" :key="academicType.id" value="academicTypes.id" >{{academicType.name}}</option>
-                            </select>
-                        </div> -->
                         <div class="col-lg-12">
                              <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
                               <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
@@ -274,7 +268,7 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
-                            <strong>The Following Errors Occurred:</strong> 
+                            <strong>The Following Errors Occurred:</strong>
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
                                     <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
@@ -283,7 +277,7 @@
                             </p>
                         </div>
                         <div class="alert alert-success">
-                            <strong>Audit Trail Performed.</strong> 
+                            <strong>Audit Trail Performed.</strong>
                             <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
                         </div>
                     </div>
@@ -336,11 +330,11 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                <th style="width:20%">Reg Number</th>
-                                <th style="width:36%">Name</th>
-                                <th style="width:10%">Gender</th>
-                                <th style="width:16%">Result Year</th>
-                                <th style="width:18%">Action</th>
+                                  <th style="width:20%">Reg Number</th>
+                                  <th style="width:36%">Name</th>
+                                  <th style="width:10%">Gender</th>
+                                  <th style="width:16%">Result Year</th>
+                                  <th style="width:18%">Action</th>
                                 </thead>
                                 <tbody>
                                     <tr v-if="getloading">
@@ -574,7 +568,7 @@ export default {
             bodyFormData.mark4 = this.model.edit_mark4
             bodyFormData.sex = this.model.edit_sex
             bodyFormData.year = this.model.edit_year
-          
+
             this.$store
                 .dispatch('get-started/updateJambResult', bodyFormData)
                 .then(res => {
