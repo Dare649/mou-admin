@@ -719,6 +719,18 @@ export const actions = {
             return err
         });
     },
+    async getSchoolFeeByProgramId(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/school-fee',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
     async createCountry(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -821,7 +833,20 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
+        });
+    },
+    async createSchoolFee(context, requests) { 
+        return await this.$axios({
+            method: 'post',
+            url: 'api/school-fee',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
         });
     },
     async createLGA(context, requests) {
@@ -836,7 +861,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
         });
     },
     async updateCountry(context, requests) {

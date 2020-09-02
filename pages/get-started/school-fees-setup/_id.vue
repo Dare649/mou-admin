@@ -8,7 +8,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">School Fees Setup - Program Name</span></h5>
+            <h5 class="text-left p-b-5"><span class="semi-bold">School Fees Setup - {{programName}}</span></h5>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -22,7 +22,7 @@
               <div class="col-lg-6 m-b-10">
                 <select class="form-control" v-model="formData.academic_session">
                   <option value="" selected>Select Academic Session</option>
-                  <option v-for="session in add_sessions" :value="session.id">
+                  <option v-for="session in add_sessions"  :key="session.id" :value="session.id">
                     {{ (formData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
                   </option>
                 </select>
@@ -66,7 +66,8 @@
             <hr />
             <div class="row">
               <div class="col-lg-12">
-                <button type="button" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Record</button>
+                <button type="button" v-if="!aLoading" @click="addNewSchoolFeeSetUp()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Record</button>
+                <button type="button" v-if="aLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Saving Record</button>
               </div>
             </div>
           </div>
@@ -98,7 +99,7 @@
               <div class="col-lg-6 m-b-10">
                 <select class="form-control" v-model="importData.academic_session">
                   <option value="" selected>Select Academic Session</option>
-                  <option v-for="session in sessions" :value="session.id">
+                  <option v-for="session in sessions" :key="session.id" :value="session.id">
                     {{ (importData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
                   </option>
                 </select>
@@ -175,7 +176,9 @@
             <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup Management</h3>
             <div class="pull-right sm-pull-reset">
               <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-              <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;<strong>New School Fees Setup</strong></button>
+              <span @click="setProgramName()">
+                <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;<strong>New School Fees Setup</strong></button>
+              </span>
               <button type="button" class="btn btn-warning btn-sm" data-target="#import_school_fees" data-toggle="modal"><i class="fa fa-upload"></i>&nbsp;<strong>Import School Fees</strong></button>
               <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"><i class="fa fa-download"></i>&nbsp;<strong>Export Record</strong></button>
             </div>
@@ -202,19 +205,21 @@
                   <tr v-if="!loading && setups.length < 1">
                     <td colspan="7">No record at the moment</td>
                   </tr>
-                  <tr v-if="!loading && setups.length > 0">
-                    <td>Year 1 school</td>
-                    <td>6500</td>
-                    <td>0</td>
-                    <td>5000</td>
-                    <td>1000</td>
-                    <td>100</td>
-                    <td>
-                      <a href="" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                      <a href=""  class="btn btn-default btn-sm" title="Edit details" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                      <a href="" class="btn btn-default btn-sm" title="Delete detail" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
-                    </td>
-                  </tr>
+                  <span v-if="loading && setups.length > 1">
+                    <tr v-for="setup in setups" :key="setup.id">
+                      <td>{{setup.fee_caption}}</td>
+                      <td>6500</td>
+                      <td>0</td>
+                      <td>5000</td>
+                      <td>1000</td>
+                      <td>100</td>
+                      <td>
+                        <a href="" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                        <a href=""  class="btn btn-default btn-sm" title="Edit details" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                        <a href="" class="btn btn-default btn-sm" title="Delete detail" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                      </td>
+                    </tr>
+                  </span>
                 </tbody>
               </table>
               <Pagination
@@ -243,7 +248,8 @@ export default {
     return {
       setups: [],
       loading: true,
-      aLoading: true,
+      aLoading: false,
+      programName: '',
       pagination: {
         total: 0,
         per_page: 2,
@@ -272,8 +278,29 @@ export default {
     }
   },
   methods: {
+    setProgramName(){
+      this.programName = (this.$route.params.id).split('_')[1]
+    },
     getSchoolFeesById(page) {
-      this.loading = false
+      this.loading = true
+      let programId = (this.$route.params.id).split('_')[0]
+      let payload = {}
+      payload.page = page
+      payload.programId = programId
+      this.$store
+          .dispatch('get-started/getSchoolFeeByProgramId', payload)
+          .then(res => {
+              if(res.status == true){
+                  this.setups = res.data.data
+                  this.pagination = res.data
+                  this.loading = false
+              }else{
+                  this.loading = false
+                  this.ErrMsg = "Error Processing Request!"
+              }
+        }).catch(err => {
+            this.loading = false
+        })
     },
     getSession(e) {
       let session = e.target.value
@@ -281,13 +308,45 @@ export default {
         this.sessions = []
         return
       }
-
       this.$store.dispatch('academic-session/getSession', this.importData)
         .then(res =>{
           this.sessions = res.data.data
         }).catch(err =>{
           this.$toast.error(err)
       })
+    },
+    addNewSchoolFeeSetUp(){
+            this.aLoading = true
+            let programId = (this.$route.params.id).split('_')[0]
+            let bodyFormData = new FormData();
+            bodyFormData.set('program_id', programId)
+            bodyFormData.set('fee_caption', this.formData.name)
+            bodyFormData.set('amount', this.formData.school_fees_amount)
+            bodyFormData.set('returning_amount', this.formData.returning_school_fees_amount)
+            bodyFormData.set('with_new_hostel', this.formData.new_hostel_fees)
+            bodyFormData.set('with_old_hostel', this.formData.old_hostel_fees)
+            bodyFormData.set('extra_year', this.formData.extra_year_fees)
+            bodyFormData.set('level', this.formData.level)
+            bodyFormData.set('semester', this.formData.semester)
+            bodyFormData.set('entry_mode', this.formData.entry_mode)
+            bodyFormData.set('pg_mode', null)
+            this.$store
+              .dispatch('get-started/createSchoolFee', bodyFormData)
+              .then(res => {
+                if(res.status == true){
+                    this.getSchoolFeeSetUps()
+                    this.aLoading = false
+                    $('#add_school_fees').modal('hide').data( 'bs.modal', null )
+                    this.formData = {}
+                }else{
+                    this.aLoading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+            }).catch(err => {
+              console.log(err)
+              this.$toast.error(err)
+              this.aLoading = false
+        })
     },
     getAddSession(e) {
       let session = e.target.value
@@ -305,6 +364,12 @@ export default {
     }
   },
   mounted() {
+    if (!process.server) {
+      const script1 = document.createElement('script')
+      script1.type = 'text/javascript'
+      script1.src = '/pages/js/pages.min.js'
+      document.head.appendChild(script1)
+    }
     this.getSchoolFeesById(1)
   }
 }
