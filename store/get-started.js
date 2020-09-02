@@ -9,6 +9,20 @@ export const mutations = {
 }
 
 export const actions = {
+    async uploadSchoolFees(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/school-fee/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
     async uploadJambResults(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -21,7 +35,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
         });
     },
     async uploadCountries(context, requests) {
@@ -456,6 +469,21 @@ export const actions = {
             return err
         });
     },
+    async exportSchoolFee(context) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/school-fee/export',
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportStates(context) {
         return await this.$axios({
             method: 'get',
@@ -598,6 +626,20 @@ export const actions = {
             return err
         });
     },
+    async downloadSchoolFeesSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/school-fee/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async downloadDepartmentSampleFile(context) {
         return await this.$axios({
             method: 'get',
@@ -713,10 +755,26 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
+            
             return response.data
         })
         .catch(err => {
             return err
+        });
+    },
+    
+    async getSchoolFeeByProgramId(context, payload){
+        console.log(payload)
+        return await this.$axios({
+            method: 'get',
+            url: 'api/school-fee/program/'+ payload.programId + '?page=' + payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            console.log(response)
+            return response.data
+        })
+        .catch(err => {
         });
     },
     async createCountry(context, requests) {
@@ -821,7 +879,20 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
+        });
+    },
+    async createSchoolFee(context, requests) { 
+        return await this.$axios({
+            method: 'post',
+            url: 'api/school-fee',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
         });
     },
     async createLGA(context, requests) {
@@ -836,7 +907,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
         });
     },
     async updateCountry(context, requests) {
@@ -987,6 +1057,22 @@ export const actions = {
             return err
         });
     },
+    async updateSchoolFee(context, payload) {
+        return await this.$axios({
+            method: 'put',
+            url: 'api/school-fee/'+ payload.id,
+            data: qs.stringify(payload.bodyFormData),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(err)
+            return err
+        });
+    },   
     async updateState(context, requests) {
         return await this.$axios({
             method: 'put',
@@ -1229,6 +1315,20 @@ export const actions = {
         return await this.$axios({
             method: 'delete',
             url: 'api/departments/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async deleteSchoolFee(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/school-fee/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
