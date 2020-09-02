@@ -16,7 +16,7 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header  separator">
+                    <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Roles</h3>
                         <div class="pull-right sm-pull-reset">
                             <button type="button" class="btn btn-primary btn-sm" data-target="#add_role" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Role</strong></button>
@@ -146,7 +146,7 @@
                         <div class="modal-header">
                             <h5 class="text-left p-b-5"><span class="semi-bold">View Role Users: {{assignedUserRoles.name}}</span></h5>
                         </div>
-                        
+
                         <div class="modal-body">
                             <div style="text-align:center; font-size:24px;" v-if="usersRoleLoading">
                                 <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
@@ -183,7 +183,7 @@
                                 <label for="all">Select all</label>
                             </span>
                         </div>
-                        
+
                         <div class="modal-body">
                             <div style="text-align:center; font-size:24px;" v-if="permissionLoading">
                                 <i class="fa fa-spinner fa-spin fa-3x fa-fw" aria-hidden="true"></i>
@@ -291,20 +291,20 @@ export default {
               }
           }).catch(err => {
           })
-        
+
         },
         populateUsersRoleView(role){
             this.assignedUserRoles = []
             this.model.role_id = role.id
             this.role = role
-           
+
             this.getRoleUsers(role.id)
         },
         populatePermissionCheckboxes(role){
             this.selectedPermissions = []
             this.model.role_id = role.id
             this.role = role
-           
+
             this.getRolePermissions(role.id)
             this.getAllPermissions();
         },
@@ -349,7 +349,7 @@ export default {
                         if(res.status == true){
                             for(var i=0; i<res.data.length; i++){
                                 this.selectedPermissions.push(res.data[i].id)
-                            }  
+                            }
                         }else{
                             this.ErrMsg = "Error fetching data!"
                         }
@@ -366,8 +366,8 @@ export default {
                 .then(res => {
                     if(res != undefined){
                         if(res.status == true){
-                            this.assignedUserRoles = res.data  
-                            this.usersRoleLoading = false  
+                            this.assignedUserRoles = res.data
+                            this.usersRoleLoading = false
                         }else{
                             this.ErrMsg = "Error fetching data!"
                             this.usersRoleLoading = false

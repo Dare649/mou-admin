@@ -12,8 +12,11 @@
           </div>
           <div class="modal-body">
             <div class="row">
+              <div class="col-lg-12 m-b-10">
+                <input type="text" class="form-control" v-model="formData.name" placeholder="Fee Caption" />
+              </div>
               <div class="col-lg-6 m-b-10">
-                <select class="form-control" @change="getAddSession($event)" v-model="formData.entry_mode">
+                <select class="form-control" v-model="formData.entry_mode">
                   <option value="" selected>Entry Mode</option>
                   <option value="putme">PUTME</option>
                   <option value="direct-entry">Direct Entry</option>
@@ -258,7 +261,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">Import School Fees - Program Name</span></h5>
+            <h5 class="text-left p-b-5"><span class="semi-bold">IMPORT SCHOOL FEES - {{details.name}}</span></h5>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -311,7 +314,7 @@
             <li class="breadcrumb-item">Get Started</li>
             <li class="breadcrumb-item"><nuxt-link :to="'/get-started/departments/'" >Departments</nuxt-link></li>
             <li class="breadcrumb-item">Programs</li>
-            <li class="breadcrumb-item active">School Fees Setup</li>
+            <li class="breadcrumb-item active">School Fees Setup - {{ details.name }}</li>
           </ol>
         </div>
       </div>
@@ -327,16 +330,13 @@
             <form style="width: 100%">
               <div class="row">
                 <div class="col-md-5">
-                  <input type="text" class="form-control" placeholder="Setup Name" required />
+                  <input type="text" class="form-control" placeholder="Fees caption" />
                 </div>
                 <div class="col-md-5">
                   <select class="form-control">
-                    <option value="" selected>Session</option>
-                    <option value="2012">2012</option>
-                    <option value="2013">2013</option>
-                    <option value="2019">2019</option>
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
+                    <option value="" selected>Entry mode</option>
+                    <option value="putme">PUTME</option>
+                    <option value="direct-entry">Direct Entry</option>
                   </select>
                 </div>
                 <div class="col-md-2">
@@ -348,7 +348,7 @@
         </div>
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup Management</h3>
+            <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup - {{ details.name }}</h3>
             <div class="pull-right sm-pull-reset">
               <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
               <span @click="setProgramName()">
@@ -450,12 +450,10 @@ export default {
       },
       importData: {
         entry_mode: '',
-        academic_session: ''
       },
       formData: {
         delete_id: 0,
         entry_mode: '',
-        academic_session: '',
         name: '',
         school_fees_amount: '',
         returning_school_fees_amount: '',
@@ -476,8 +474,8 @@ export default {
         edit_level: '',
         edit_semester: ''
       },
-      sessions: [],
-      add_sessions: []
+      id: '',
+      details: {}
     }
   },
   methods: {
@@ -652,7 +650,7 @@ export default {
       }
       this.$store.dispatch('academic-session/getSession', this.importData)
         .then(res =>{
-          this.sessions = res.data.data
+          this.details = res.data.data
         }).catch(err =>{
           this.$toast.error(err)
       })

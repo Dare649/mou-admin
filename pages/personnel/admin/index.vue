@@ -78,7 +78,7 @@
             <!-- START CONTAINER FLUID -->
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
-                    <div class="card-header  separator">
+                    <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Admin users</h3>
                         <div class="pull-right sm-pull-reset">
                           <button type="button" class="btn btn-primary btn-sm" @click="addPersonnel"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Admin</strong></button>
@@ -327,7 +327,7 @@
                           </div>
                       </div>
                       <div class="modal-footer">
-                          
+
                       </div>
                   </div>
                   <!-- /.modal-content -->
@@ -470,7 +470,7 @@ export default {
               }
           }).catch(err => {
           })
-        
+
         },
       submitUser() {
         if(this.addData.id === '') {
