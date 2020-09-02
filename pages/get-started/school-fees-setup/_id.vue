@@ -18,8 +18,8 @@
               <div class="col-lg-6 m-b-10">
                 <select class="form-control" v-model="formData.entry_mode">
                   <option value="" selected>Entry Mode</option>
-                  <option value="putme">PUTME</option>
-                  <option value="direct-entry">Direct Entry</option>
+                  <option value="PUTME">PUTME</option>
+                  <option value="DE">Direct Entry</option>
                 </select>
               </div>
               <!-- <div class="col-lg-6 m-b-10">
@@ -262,7 +262,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">IMPORT SCHOOL FEES - {{details.name}}</span></h5>
+            <h5 class="text-left p-b-5"><span class="semi-bold">IMPORT SCHOOL FEES - {{programName}}</span></h5>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -331,17 +331,17 @@
             <form style="width: 100%">
               <div class="row">
                 <div class="col-md-5">
-                  <input type="text" class="form-control" placeholder="Fees caption" />
+                  <input type="text" class="form-control" v-model="formData.search_fee_caption" placeholder="Fees caption" />
                 </div>
                 <div class="col-md-5">
-                  <select class="form-control">
+                  <select class="form-control" v-model="formData.search_entry_mode">
                     <option value="" selected>Entry mode</option>
                     <option value="PUTME">PUTME</option>
                     <option value="DE">Direct Entry</option>
                   </select>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-primary btn-block">Search Record</button>
+                  <button type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
                 </div>
               </div>
             </form>
@@ -352,6 +352,7 @@
             <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup - {{ programName }}</h3>
             <div class="pull-right sm-pull-reset">
               <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+              <button v-permission="'View School Fee'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
               <span @click="setProgramName()">
                 <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;<strong>New School Fees Setup</strong></button>
               </span>
@@ -474,13 +475,44 @@ export default {
         edit_old_hostel_fees: '',
         edit_extra_year_fees: '',
         edit_level: '',
-        edit_semester: ''
+        edit_semester: '',
+        search_fee_caption: '',
+        search_entry_mode:''
       },
       id: '',
       details: {}
     }
   },
   methods: {
+    refresh(){
+        this.jamb_results = []
+        this.formData.search_fee_caption = ""
+        this.formData.search_entry_mode = ""
+        this.getSchoolFeesById(1)
+    },
+    search(){
+        this.getloading = true
+        let payload = {}
+        payload.fee_caption = this.formData.search_fee_caption
+        payload.entry_mode = this.formData.search_entry_mode
+          this.$store
+            .dispatch('get-started/searchSchoolFee', payload)
+            .then(res => {
+            if(res != undefined){
+                if(res.status){
+                    this.getloading = false
+                    this.setups = res.data.data
+                    this.pagination = res.data
+                }else{
+                    this.getloading = false
+                }
+            }else{              
+                this.getloading = false
+            }
+        }).catch(err => {
+            this.getloading = false
+        })
+    },
     downloadSchoolFeesSampleFile(){
           this.downloading = true
           this.$store
@@ -508,7 +540,6 @@ export default {
           this.$store
             .dispatch('get-started/uploadSchoolFees', formData)
             .then(res => {
-              console.log(res)
                 if(res.success === true){
                     this.uLoading = false
                     this.importResponse = res  
@@ -578,17 +609,17 @@ export default {
       let payload = {}
       let programId = (this.$route.params.id).split('_')[0]
       let bodyFormData = new FormData();
-      bodyFormData.set('program_id', programId)
-      bodyFormData.set('fee_caption', this.formData.edit_name)
-      bodyFormData.set('amount', this.formData.edit_school_fees_amount)
-      bodyFormData.set('returning_amount', this.formData.edit_returning_school_fees_amount)
-      bodyFormData.set('with_new_hostel', this.formData.edit_new_hostel_fees)
-      bodyFormData.set('with_old_hostel', this.formData.edit_old_hostel_fees)
-      bodyFormData.set('extra_year', this.formData.edit_extra_year_fees)
-      bodyFormData.set('level', this.formData.edit_level)
-      bodyFormData.set('semester', this.formData.edit_semester)
-      bodyFormData.set('entry_mode', this.formData.edit_entry_mode)
-      bodyFormData.set('pg_mode', null)
+      bodyFormData.append('program_id', programId)
+      bodyFormData.append('fee_caption', this.formData.edit_name)
+      bodyFormData.append('amount', this.formData.edit_school_fees_amount)
+      bodyFormData.append('returning_amount', this.formData.edit_returning_school_fees_amount)
+      bodyFormData.append('with_new_hostel', this.formData.edit_new_hostel_fees)
+      bodyFormData.append('with_old_hostel', this.formData.edit_old_hostel_fees)
+      bodyFormData.append('extra_year', this.formData.edit_extra_year_fees)
+      bodyFormData.append('level', this.formData.edit_level)
+      bodyFormData.append('semester', this.formData.edit_semester)
+      bodyFormData.append('entry_mode', this.formData.edit_entry_mode)
+      bodyFormData.append('pg_mode', null)
       payload.id = this.formData.edit_id
       payload.bodyFormData = bodyFormData
       this.$store

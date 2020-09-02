@@ -764,14 +764,12 @@ export const actions = {
     },
     
     async getSchoolFeeByProgramId(context, payload){
-        console.log(payload)
         return await this.$axios({
             method: 'get',
             url: 'api/school-fee/program/'+ payload.programId + '?page=' + payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -1059,9 +1057,9 @@ export const actions = {
     },
     async updateSchoolFee(context, payload) {
         return await this.$axios({
-            method: 'put',
-            url: 'api/school-fee/'+ payload.id,
-            data: qs.stringify(payload.bodyFormData),
+            method: 'post',
+            url: 'api/school-fee/update/'+ payload.id,
+            data: payload.bodyFormData,
             headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
         })
         .then(function (response) {
@@ -1133,6 +1131,20 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/countries/search?country='+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async searchSchoolFee(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/school-fee?fee_caption=' + payload.fee_caption +'&entry_mode='+ payload.entry_mode,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
