@@ -315,7 +315,7 @@
             <li class="breadcrumb-item">Get Started</li>
             <li class="breadcrumb-item"><nuxt-link :to="'/get-started/departments/'" >Departments</nuxt-link></li>
             <li class="breadcrumb-item">Programs</li>
-            <li class="breadcrumb-item active">School Fees Setup - {{ details.name }}</li>
+            <li class="breadcrumb-item active">School Fees Setup - {{ programName }}</li>
           </ol>
         </div>
       </div>
@@ -349,7 +349,7 @@
         </div>
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup - {{ details.name }}</h3>
+            <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup - {{ programName }}</h3>
             <div class="pull-right sm-pull-reset">
               <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
               <span @click="setProgramName()">
@@ -712,7 +712,7 @@ export default {
       script1.src = '/pages/js/pages.min.js'
       document.head.appendChild(script1)
     }
-    this.getSession(1)
+    this.setProgramName()
     this.getSchoolFeesById(1)
   }
 }
