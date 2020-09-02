@@ -99,8 +99,8 @@
                                 <div class="col-lg-6 m-b-10">
                                   <select class="form-control" v-model="formData.edit_entry_mode">
                                     <option value="" selected>Entry Mode</option>
-                                    <option value="putme">PUTME</option>
-                                    <option value="direct-entry">Direct Entry</option>
+                                    <option value="PUTME">PUTME</option>
+                                    <option value="DE">Direct Entry</option>
                                   </select>
                                 </div>
                                 <!-- <div class="col-lg-6 m-b-10">
