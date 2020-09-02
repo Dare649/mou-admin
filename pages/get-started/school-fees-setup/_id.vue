@@ -336,8 +336,8 @@
                 <div class="col-md-5">
                   <select class="form-control">
                     <option value="" selected>Entry mode</option>
-                    <option value="putme">PUTME</option>
-                    <option value="direct-entry">Direct Entry</option>
+                    <option value="PUTME">PUTME</option>
+                    <option value="DE">Direct Entry</option>
                   </select>
                 </div>
                 <div class="col-md-2">
