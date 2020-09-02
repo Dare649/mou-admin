@@ -22,17 +22,17 @@
                   <option value="direct-entry">Direct Entry</option>
                 </select>
               </div>
-              <div class="col-lg-6 m-b-10">
+              <!-- <div class="col-lg-6 m-b-10">
                 <select class="form-control" v-model="formData.academic_session">
                   <option value="" selected>Select Academic Session</option>
                   <option v-for="session in add_sessions"  :key="session.id" :value="session.id">
                     {{ (formData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
                   </option>
                 </select>
-              </div>
-              <div class="col-lg-6 m-b-10">
+              </div> -->
+              <!-- <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.name" placeholder="Fee Caption" />
-              </div>
+              </div> -->
               <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.school_fees_amount" placeholder="School Fees Amount" />
               </div>
@@ -93,24 +93,25 @@
                     <div class="modal-body">
                         <form class="full-width" @submit.prevent="submitEditedSchoolFee">
                             <div class="row">
+                                <div class="col-lg-12 m-b-10">
+                                  <input type="text" class="form-control" v-model="formData.edit_name" placeholder="Fee Caption" />
+                                </div>
                                 <div class="col-lg-6 m-b-10">
-                                  <select class="form-control" @change="getAddSession($event)" v-model="formData.edit_entry_mode">
+                                  <select class="form-control" v-model="formData.edit_entry_mode">
                                     <option value="" selected>Entry Mode</option>
                                     <option value="putme">PUTME</option>
                                     <option value="direct-entry">Direct Entry</option>
                                   </select>
                                 </div>
-                                <div class="col-lg-6 m-b-10">
+                                <!-- <div class="col-lg-6 m-b-10">
                                   <select class="form-control" v-model="formData.academic_session">
                                     <option value="" selected>Select Academic Session</option>
                                     <option v-for="session in add_sessions"  :key="session.id" :value="session.id">
                                       {{ (formData.edit_entry_mode === 'putme') ? session.session_name : session.de_session_name }}
                                     </option>
                                   </select>
-                                </div>
-                                <div class="col-lg-6 m-b-10">
-                                  <input type="text" class="form-control" v-model="formData.edit_name" placeholder="Fee Caption" />
-                                </div>
+                                </div> -->
+
                                 <div class="col-lg-6 m-b-10">
                                   <input type="text" class="form-control" v-model="formData.edit_school_fees_amount" placeholder="School Fees Amount" />
                                 </div>
@@ -440,6 +441,7 @@ export default {
       importResponse: {},
       programName: '',
       feeDetails: {},
+      sessions: [],
       file:'',
       pagination: {
         total: 0,
@@ -643,11 +645,11 @@ export default {
         })
     },
     getSession(e) {
-      let session = e.target.value
-      if(session === '') {
-        this.sessions = []
-        return
-      }
+      // let session = e.target.value
+      // if(session === '') {
+      //   this.sessions = []
+      //   return
+      // }
       this.$store.dispatch('academic-session/getSession', this.importData)
         .then(res =>{
           this.details = res.data.data
@@ -710,6 +712,7 @@ export default {
       script1.src = '/pages/js/pages.min.js'
       document.head.appendChild(script1)
     }
+    this.getSession(1)
     this.getSchoolFeesById(1)
   }
 }
