@@ -341,7 +341,8 @@
                   </select>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" @click="search()" class="btn btn-primary btn-block">Search Record</button>
+                  <button type="button" v-if="!getloading" @click="search()" class="btn btn-primary btn-block">Search Record</button>
+                  <button v-if="getloading" type="button" disabled class="btn btn-primary btn-block">Searching</button>
                 </div>
               </div>
             </form>
@@ -433,6 +434,7 @@ export default {
     return {
       setups: [],
       loading: false,
+      getloading: false,
       aLoading: false,
       eLoading: false,
       exLoading: false,
