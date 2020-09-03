@@ -1144,11 +1144,12 @@ export const actions = {
     async searchSchoolFee(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/school-fee?fee_caption=' + payload.fee_caption +'&entry_mode='+ payload.entry_mode,
+            url: 'api/school-fee?fee_caption=' + payload.fee_caption +'&entry_mode='+ payload.entry_mode + '&program_id=' + payload.program_id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
             //handle success
+            console.log(response)
             return response.data
         })
         .catch(err => {
