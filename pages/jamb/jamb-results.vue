@@ -317,7 +317,7 @@
                     </div>
                 </div>
                 <div class="card card-default">
-                    <div class="card-header  separator">
+                    <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">UTME JAMB Result</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View Jamb Result UME'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>

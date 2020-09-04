@@ -222,7 +222,7 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
-                            <strong>The Following Errors Occurred:</strong> 
+                            <strong>The Following Errors Occurred:</strong>
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
                                     <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
@@ -231,7 +231,7 @@
                             </p>
                         </div>
                         <div class="alert alert-success">
-                            <strong>Audit Trail Performed.</strong> 
+                            <strong>Audit Trail Performed.</strong>
                             <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
                         </div>
                     </div>
@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <div class="card card-default">
-                    <div class="card-header  separator">
+                    <div class="card-header">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">JAMB Result - DE</h3>
                         <div class="pull-right sm-pull-reset">
                             <button v-permission="'View Jamb Result DE'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>

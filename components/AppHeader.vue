@@ -66,6 +66,8 @@
                             <ul class="">
                                 <li><nuxt-link to="/reports/students/putme">PUTME Students</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/acceptance-letter-report">Acceptance Letter Report</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/school-fee-report">School Fee Report</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
@@ -84,9 +86,15 @@
                               <li><nuxt-link to="/exams/de-admission-list">DE Admission List</nuxt-link></li>
                           </ul>
                         </li>
+                      <li>
+                        <a href="javascript:;"><span class="title">Utilities</span><span class=" arrow"></span></a>
+                        <ul class="">
+                          <li class=""><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
+                          <li class=""><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
+                        </ul>
+                      </li>
+                      <li><a href="#"><span class="title">CMS</span></a></li>
                         <li><a href="#"><span class="title">Hostel Management</span></a></li>
-                        <li><a href="#"><span class="title">CMS</span></a></li>
-                        <li><a href="#"><span class="title">Reports</span></a></li>
                         <li><a href="#"><span class="title">Misc</span></a></li>
                         <li><a href="#"><span class="title">Transaction Logs</span></a></li>
                         <li><a href="#"><span class="title">Scripts</span></a></li>
@@ -102,10 +110,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#"><span class="title">Audit Trail</span></a></li>
-                        <li><a href="#"><span class="title">PUTME/DE Utilities</span></a></li>
-                        <li><a href="#"><span class="title">CEC Utilities</span></a></li>
-                        <li><a href="#"><span class="title">PG Utilities</span></a></li>
                     </ul>
                 </div>
             </div>
