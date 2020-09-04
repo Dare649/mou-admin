@@ -96,12 +96,9 @@
                 <td>PUTME</td>
                 <td>
                   <div class="btn-group">
-                      <span data-placement="top" data-toggle="tooltip" title="View Details">
-                        <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                      </span>
-                    <span data-placement="top" data-toggle="tooltip" title="Edit Bio Data Form">
-                        <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-edit"></i></a>
-                      </span>
+                    <span data-placement="top" data-toggle="tooltip" title="View Details">
+                      <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                    </span>
                   </div>
                 </td>
               </tr>
