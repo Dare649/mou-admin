@@ -94,6 +94,7 @@
         <div class="card-header separator">
           <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Report</h3>
           <div class="pull-right sm-pull-reset">
+            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
             <button type="button" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
           </div>
           <div class="clearfix"></div>
