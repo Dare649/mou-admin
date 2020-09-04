@@ -1149,7 +1149,6 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            console.log(response)
             return response.data
         })
         .catch(err => {
