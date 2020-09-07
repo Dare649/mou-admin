@@ -101,16 +101,16 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    baseURL: process.env.BASE_URL || 'http://portal.streeties.com.ng/',
+    baseURL: process.env.BASE_URL || 'https://portal.olsslekki.org/',
     // baseURL: process.env.BASE_URL || 'http://127.0.0.1:8000/',
 		proxy: false
   },
   proxy: {
-		'/api/': 'http://portal.streeties.com.ng/',
+		'/api/': 'https://portal.olsslekki.org/',
     // '/api/': 'http://127.0.0.1:8000/'
   },
   env: {
-		BASE_URL: 'http://portal.streeties.com.ng/',
+		BASE_URL: 'https://portal.olsslekki.org/',
     // BASE_URL: 'http://127.0.0.1:8000/'
   },
 
