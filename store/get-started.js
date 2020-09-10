@@ -468,6 +468,22 @@ export const actions = {
         .catch(err => {
             return err
         });
+    },  
+    async exportUploadedJambCandidates(context, payload) {
+        console.log(payload)
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date,
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
     },
     async exportSchoolFee(context) {
         return await this.$axios({
