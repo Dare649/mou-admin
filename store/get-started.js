@@ -468,6 +468,22 @@ export const actions = {
         .catch(err => {
             return err
         });
+    },  
+    async exportUploadedJambCandidates(context, payload) {
+        console.log(payload)
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date,
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
     },
     async exportSchoolFee(context) {
         return await this.$axios({
@@ -1144,7 +1160,7 @@ export const actions = {
     async searchSchoolFee(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/school-fee?fee_caption=' + payload.fee_caption +'&entry_mode='+ payload.entry_mode,
+            url: 'api/school-fee?fee_caption=' + payload.fee_caption +'&entry_mode='+ payload.entry_mode + '&program_id=' + payload.program_id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

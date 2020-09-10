@@ -352,7 +352,7 @@
           <div class="card-header">
             <h3 class="text-primary no-margin pull-left sm-pull-reset">School Fees Setup - {{ programName }}</h3>
             <div class="pull-right sm-pull-reset">
-              <nuxt-link :to="'/get-started/program/'" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+              <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
               <button v-permission="'View School Fee'" type="button" @click="refresh()" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
               <span @click="setProgramName()">
                 <button type="button" class="btn btn-primary btn-sm" data-target="#add_school_fees" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;<strong>New School Fees Setup</strong></button>
@@ -434,6 +434,7 @@ export default {
     return {
       setups: [],
       loading: false,
+      routeId:0,
       getloading: false,
       aLoading: false,
       eLoading: false,
@@ -494,9 +495,11 @@ export default {
     },
     search(){
         this.getloading = true
+        let programId = (this.$route.params.id).split('_')[0]
         let payload = {}
         payload.fee_caption = this.formData.search_fee_caption
         payload.entry_mode = this.formData.search_entry_mode
+        payload.program_id = programId
           this.$store
             .dispatch('get-started/searchSchoolFee', payload)
             .then(res => {
@@ -745,6 +748,7 @@ export default {
       script1.src = '/pages/js/pages.min.js'
       document.head.appendChild(script1)
     }
+    this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
     this.setProgramName()
     this.getSchoolFeesById(1)
   }

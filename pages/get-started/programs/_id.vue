@@ -204,7 +204,7 @@
                                       <td>
                                           <div class="btn-group">
                                             <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Fee Setup">
-                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id + '_' + program.name" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
+                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                             </span>
                                             <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
                                               <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
@@ -326,6 +326,7 @@ export default {
         editLoading: false,
         programs: [],
         routeId: 0,
+        subRouteId: '',
         file: "",
         pagination: {
           total: 0,
@@ -370,7 +371,7 @@ export default {
             );
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
-
+        this.subRouteId = this.$route.params.id
         this.routeId = (this.$route.params.id).split("_")[0]
     },
 
