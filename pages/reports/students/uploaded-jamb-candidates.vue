@@ -74,7 +74,7 @@
               </div>
               <div class="col-md-2">
                 <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
-                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates(true)"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
               </div>
             </div>
           </form>
@@ -93,21 +93,21 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th>Name</th>
+                <th>Full Name</th>
                 <th>Reg No</th>
-                <th>Email</th>
+                <!-- <th>Email</th> -->
                 <th>Gender</th>
                 <th>Entry Mode</th>
                 <th style="width:8%">Action</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>Chinedu Rowland</td>
-                <td>TY764281</td>
-                <td>chinicerow@yahoo.com</td>
-                <td>Male</td>
-                <td>PUTME</td>
+              <tr v-for="can in candidates" :key="can.jamb_number">
+                <td>{{can.name}}</td>
+                <td>{{can.jamb_number}}</td>
+                <!-- <td>chinicerow@yahoo.com</td> -->
+                <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
+                <td>{{can.entry_mode}}</td>
                 <td>
                   <div class="btn-group">
                     <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
@@ -142,6 +142,8 @@ export default {
     faculties: [],
     departments: [],
     exLoading: false,
+    Loading: false,
+    candidates: [],
     model: {
       faculty_id: "",
       department_id: "",
@@ -170,6 +172,7 @@ export default {
 
       //if(this.$laravel.hasPermission('View PUTME Result')){
         this.getFaculties()
+        this.getUploadedJambCandidates(false)
       //   }else{
       //     this.$router.push(
       //           decodeURIComponent(
@@ -217,7 +220,33 @@ export default {
           }).catch(err => {
           })
       },
-    exportUploadedJambCandidates(){
+    getUploadedJambCandidates(IsExport){
+      this.Loading = true
+      let payload = {}
+      payload.registration_number = ""
+      payload.faculty_id = ""
+      payload.department_id = ""
+      payload.entry_mode = ""
+      payload.year = ""
+      payload.from_date = ""
+      payload.to_date = ""
+      payload.export = IsExport
+      this.$store
+          .dispatch('get-started/getUploadedJambCandidates', payload)
+              .then(res => {
+              if(res != undefined){
+                  console.log(res)
+                  this.Loading = false
+                  this.candidates = res.data
+              }else{
+                  this.Loading = false
+                  alert("File Downloaded Unsuccessful")
+              }
+          }).catch(err => {
+            this.exLoading = false
+        })
+    },
+    exportUploadedJambCandidates(IsExport){
       this.exLoading = true
       let payload = {}
       payload.registration_number = this.model.registration_number
@@ -227,11 +256,13 @@ export default {
       payload.year = this.model.year
       payload.from_date = this.model.from_date
       payload.to_date = this.model.to_date
+      payload.export = IsExport
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
                   this.exLoading = false
+                  console.log("Gether", res)
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                   var fileLink = document.createElement('a');
                   fileLink.href = fileURL;
