@@ -1,4 +1,4 @@
 export default {
-  backend: 'http://portal.streeties.com.ng/api/',
-  hostname: 'http://admin.streeties.com.ng/api/'
+  backend: 'https://portal.olsslekki.org/api/',
+  hostname: 'https://admin.olsslekki.org/api/'
 }

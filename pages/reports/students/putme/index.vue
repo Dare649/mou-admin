@@ -199,12 +199,12 @@
                                           <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Not Completed</span>
                                         </td>
                                         <td>
-                                          <div class="btn-group">
+                                          <div class="btn-group" v-if="user.status === 1">
                                             <a href="#edit_putme_student" @click="populateFields(user)" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             <a href="#view_jamb_result" @click="showDetails(user.registration_number)" title="View Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                                             <a href="javascript:;" @click="exportOlevel(user.registration_number)" title="Download Olevel Result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-download"></i></a>
-                                            <button type="button" @click="markForApproval(user.registration_number)" v-if="user.admission_details.marked_for_dept_clearance == '0'" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                                            <button type="button" disabled v-if="user.admission_details.marked_for_dept_clearance == '1'" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+<!--                                            <button type="button" @click="markForApproval(user.registration_number)" v-if="user.admission_details.marked_for_dept_clearance == '0'" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>-->
+<!--                                            <button type="button" disabled v-if="user.admission_details.marked_for_dept_clearance == '1'" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>-->
                                             <a href="javascript:;" @click="printForm(user.registration_number)" title="View Printable form" class="btn btn-default btn-sm" role="button"><i class="fa fa-print"></i></a>
                                           </div>
                                         </td>
@@ -652,6 +652,7 @@ export default {
                 if(res.status == true){
                     this.getLoading = false
                     this.users = res.data.data
+                  console.log(this.users)
                     this.pagination = res.data
                 }else{
                     this.getLoading = false
