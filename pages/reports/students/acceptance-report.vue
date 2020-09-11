@@ -179,10 +179,12 @@ export default {
     },
     getAcceptanceLetter(page) {
       this.loading = true
+      this.searchData.page = page
       this.$store.dispatch('reports/getAcceptanceStudents', this.searchData)
         .then(res =>{
           if(res.data.status) {
-            this.students = res.data.data
+            this.students = res.data.data.data
+            this.pagination = res.data.data
           }
           this.loading = false
         }).catch(err =>{
@@ -209,7 +211,7 @@ export default {
   },
   mounted() {
     this.getColleges()
-    this.getAcceptanceLetter()
+    this.getAcceptanceLetter(this.pagination.current_page)
   }
 }
 </script>

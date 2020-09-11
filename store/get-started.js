@@ -468,9 +468,8 @@ export const actions = {
         .catch(err => {
             return err
         });
-    },  
+    },
     async exportUploadedJambCandidates(context, payload) {
-        console.log(payload)
         return await this.$axios({
             method: 'get',
             url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
@@ -488,7 +487,7 @@ export const actions = {
     async getUploadedJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -784,14 +783,14 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            
+
             return response.data
         })
         .catch(err => {
             return err
         });
     },
-    
+
     async getSchoolFeeByProgramId(context, payload){
         return await this.$axios({
             method: 'get',
@@ -908,7 +907,7 @@ export const actions = {
         .catch(err => {
         });
     },
-    async createSchoolFee(context, requests) { 
+    async createSchoolFee(context, requests) {
         return await this.$axios({
             method: 'post',
             url: 'api/school-fee',
@@ -1099,7 +1098,7 @@ export const actions = {
             console.log(err)
             return err
         });
-    },   
+    },
     async updateState(context, requests) {
         return await this.$axios({
             method: 'put',

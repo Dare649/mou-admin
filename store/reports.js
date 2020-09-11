@@ -11,7 +11,7 @@ export const mutations = {
 
 export const actions = {
   async getAcceptanceStudents(context, data) {
-    return await this.$axios.get('api/reports/accepted-admission?registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export)
+    return await this.$axios.get('api/reports/accepted-admission?registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export+'&page='+data.page)
       .then(res =>{
         return res
       }).catch(err =>{

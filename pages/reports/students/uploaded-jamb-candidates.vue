@@ -74,7 +74,7 @@
               </div>
               <div class="col-md-2">
                 <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
-                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates(true)"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
               </div>
             </div>
           </form>
@@ -120,7 +120,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getJambStudents(pagination.current_page)"
+              v-on:click.native="getUploadedJambCandidates(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -151,7 +151,8 @@ export default {
       year: "",
       entry_mode: "",
       from_date: "",
-      to_date: ""
+      to_date: "",
+      export: false
     },
     pagination: {
       total: 0,
@@ -220,7 +221,7 @@ export default {
           }).catch(err => {
           })
       },
-    getUploadedJambCandidates(IsExport){
+    getUploadedJambCandidates(page){
       this.Loading = true
       let payload = {}
       payload.registration_number = ""
@@ -230,14 +231,15 @@ export default {
       payload.year = ""
       payload.from_date = ""
       payload.to_date = ""
-      payload.export = IsExport
+      payload.export = this.model.export
+      payload.page = page
       this.$store
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                console.log(res.data)
-                  this.Loading = false
-                  this.candidates = res.data
+                this.Loading = false
+                this.candidates = res.data.data
+                this.pagination = res.data
               }else{
                   this.Loading = false
                   alert("File Downloaded Unsuccessful")
@@ -246,7 +248,7 @@ export default {
             this.exLoading = false
         })
     },
-    exportUploadedJambCandidates(IsExport){
+    exportUploadedJambCandidates(){
       this.exLoading = true
       let payload = {}
       payload.registration_number = this.model.registration_number
@@ -254,9 +256,9 @@ export default {
       payload.department_id = this.model.department_id
       payload.entry_mode = this.model.entry_mode
       payload.year = this.model.year
-      payload.from_date = this.model.from_date
-      payload.to_date = this.model.to_date
-      payload.export = IsExport
+      payload.from = this.model.from_date
+      payload.to = this.model.to_date
+      payload.export = true
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
@@ -278,9 +280,6 @@ export default {
           }).catch(err => {
             this.exLoading = false
         })
-    },
-    getJambStudents() {
-
     }
   }
 }
