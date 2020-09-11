@@ -62,7 +62,7 @@
               <button type="button" @click="getAcceptanceLetter" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
             <div class="col-md-2">
-              <button type="button" @click="exportData" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+              <button type="button" id="exportBtn" @click="exportData" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
             </div>
           </div>
         </div>
@@ -71,6 +71,7 @@
         <div class="card-header separator">
           <h3 class="text-primary no-margin pull-left sm-pull-reset">Acceptance Letter Report</h3>
           <div class="pull-right sm-pull-reset">
+            <button type="button" @click="cancelSearch" class="btn btn-default btn-sm"><i class="fa fa-stop"></i>&nbsp; Cancel Search </button>
             <button type="button" @click="refreshData" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
           </div>
           <div class="clearfix"></div>
@@ -154,6 +155,17 @@ export default {
     departments: []
   }),
   methods: {
+    cancelSearch() {
+      this.searchData.registration_number = ''
+      this.searchData.faculty_id = ''
+      this.searchData.department_id = ''
+      this.searchData.year = ''
+      this.searchData.from = ''
+      this.searchData.entry_mode = ''
+      this.searchData.to = ''
+      this.searchData.export = false
+      this.getAcceptanceLetter(this.pagination.current_page)
+    },
     refreshData() {
       this.getAcceptanceLetter()
     },
@@ -162,9 +174,11 @@ export default {
       window.open(url, '_blank')
     },
     exportData() {
+      $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.searchData.export = true
       this.$store.dispatch('reports/exportAcceptanceStudents', this.searchData)
         .then(res =>{
+          $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
@@ -174,7 +188,8 @@ export default {
           this.exLoading = false
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
         }).catch(err =>{
-          this.$toast.error(err)
+        $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
+        this.$toast.error(err)
       })
     },
     getAcceptanceLetter(page) {
