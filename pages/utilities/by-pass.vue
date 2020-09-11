@@ -34,14 +34,14 @@
                     <label>College</label>
                     <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.college">
                       <option value="" disabled selected>Select your option</option>
-                      <option v-for="college in colleges" :value="college.id">{{ college.name }}</option>
+                      <option v-for="college in colleges" :value="college.id" :key="college.id">{{ college.name }}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Department</label>
                     <select class="form-control" v-model="formData.department">
                       <option value="" disabled selected>Select your option</option>
-                      <option v-for="department in departments" :value="department.id">
+                      <option v-for="department in departments" :value="department.id" :key="department.id">
                         {{department.name}}
                       </option>
                     </select>

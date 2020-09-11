@@ -473,12 +473,25 @@ export const actions = {
         console.log(payload)
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
             headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
             //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getUploadedJambCandidates(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
             return response.data
         })
         .catch(err => {
