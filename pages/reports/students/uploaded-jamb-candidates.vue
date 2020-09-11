@@ -92,30 +92,30 @@
           <div class="table-responsive">
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
-              <tr>
-                <th>Full Name</th>
-                <th>Reg No</th>
-                <!-- <th>Email</th> -->
-                <th>Gender</th>
-                <th>Entry Mode</th>
-                <th style="width:8%">Action</th>
-              </tr>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Reg No</th>
+                  <!-- <th>Email</th> -->
+                  <th>Gender</th>
+                  <th>Entry Mode</th>
+                  <th style="width:8%">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="can in candidates" :key="can.jamb_number">
-                <td>{{can.name}}</td>
-                <td>{{can.jamb_number}}</td>
-                <!-- <td>chinicerow@yahoo.com</td> -->
-                <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
-                <td>{{can.entry_mode}}</td>
-                <td>
-                  <div class="btn-group">
-                    <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
-                      <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                    </span>
-                  </div>
-                </td>
-              </tr>
+                <tr v-for="can in candidates" :key="can.jamb_number">
+                  <td>{{can.name}}</td>
+                  <td>{{can.jamb_number}}</td>
+                  <!-- <td>chinicerow@yahoo.com</td> -->
+                  <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
+                  <td>{{can.entry_mode}}</td>
+                  <td>
+                    <div class="btn-group">
+                      <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
+                        <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <Pagination
@@ -235,7 +235,7 @@ export default {
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  console.log(res)
+                console.log(res.data)
                   this.Loading = false
                   this.candidates = res.data
               }else{
@@ -261,8 +261,8 @@ export default {
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
+                console.log(res)
                   this.exLoading = false
-                  console.log("Gether", res)
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                   var fileLink = document.createElement('a');
                   fileLink.href = fileURL;
