@@ -473,17 +473,41 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
-            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
             //handle success
+            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            var fileLink = document.createElement('a');
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'uploaded_jamb_reports.xlsx');
+            document.body.appendChild(fileLink);
+
+            fileLink.click();
             return response.data
         })
         .catch(err => {
             return err
         });
     },
+    // async exportUploadedJambCandidates(context, payload) {
+    //     console.log(payload)
+    //     return await this.$axios({
+    //         method: 'get',
+    //         url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
+    //         headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+    //         responseType: "arraybuffer"
+    //     })
+    //     .then(function (response) {
+    //         //handle success
+    //         return response.data
+    //     })
+    //     .catch(err => {
+    //         return err
+    //     });
+    // },
     async getUploadedJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
