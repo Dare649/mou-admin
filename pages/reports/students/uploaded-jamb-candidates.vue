@@ -75,7 +75,7 @@
               </div>
               <div class="col-md-2">
                 <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
-                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates(true)"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
               </div>
             </div>
           </form>
@@ -93,30 +93,30 @@
           <div class="table-responsive">
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
-              <tr>
-                <th>Full Name</th>
-                <th>Reg No</th>
-                <!-- <th>Email</th> -->
-                <th>Gender</th>
-                <th>Entry Mode</th>
-                <th style="width:8%">Action</th>
-              </tr>
+                <tr>
+                  <th>Full Name</th>
+                  <th>Reg No</th>
+                  <!-- <th>Email</th> -->
+                  <th>Gender</th>
+                  <th>Entry Mode</th>
+                  <th style="width:8%">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="can in candidates" :key="can.jamb_number">
-                <td>{{can.name}}</td>
-                <td>{{can.jamb_number}}</td>
-                <!-- <td>chinicerow@yahoo.com</td> -->
-                <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
-                <td>{{can.entry_mode}}</td>
-                <td>
-                  <div class="btn-group">
-                    <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
-                      <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                    </span>
-                  </div>
-                </td>
-              </tr>
+                <tr v-for="can in candidates" :key="can.jamb_number">
+                  <td>{{can.name}}</td>
+                  <td>{{can.jamb_number}}</td>
+                  <!-- <td>chinicerow@yahoo.com</td> -->
+                  <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
+                  <td>{{can.entry_mode}}</td>
+                  <td>
+                    <div class="btn-group">
+                      <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
+                        <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <Pagination
@@ -153,7 +153,8 @@ export default {
       year: "",
       entry_mode: "",
       from_date: "",
-      to_date: ""
+      to_date: "",
+      export: false
     },
     pagination: {
       total: 0,
@@ -269,15 +270,15 @@ export default {
       payload.year = ""
       payload.from_date = ""
       payload.to_date = ""
+      payload.export = this.model.export
       payload.page = page
-      payload.export = false
       this.$store
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  this.Loading = false
-                  this.candidates = res.data.data
-                  this.pagination = res.data
+                this.Loading = false
+                this.candidates = res.data.data
+                this.pagination = res.data
               }else{
                   this.Loading = false
                   alert("File Downloaded Unsuccessful")
@@ -286,8 +287,7 @@ export default {
             this.exLoading = false
         })
     },
-    
-    exportUploadedJambCandidates(IsExport){
+    exportUploadedJambCandidates(){
       this.exLoading = true
       let payload = {}
       payload.registration_number = this.model.registration_number
@@ -295,13 +295,21 @@ export default {
       payload.department_id = this.model.department_id
       payload.entry_mode = this.model.entry_mode
       payload.year = this.model.year
-      payload.from_date = this.model.from_date
-      payload.to_date = this.model.to_date
-      payload.export = IsExport
+      payload.from = this.model.from_date
+      payload.to = this.model.to_date
+      payload.export = true
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
+                console.log(res)
+                  this.exLoading = false
+                  var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                  var fileLink = document.createElement('a');
+                  fileLink.href = fileURL;
+                  fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
+                  document.body.appendChild(fileLink);
+                  fileLink.click();
                   this.exLoading = false
                   this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
               }else{
@@ -311,9 +319,6 @@ export default {
           }).catch(err => {
             this.exLoading = false
         })
-    },
-    getJambStudents() {
-
     }
   }
 }

@@ -468,7 +468,7 @@ export const actions = {
         .catch(err => {
             return err
         });
-    },  
+    },
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
@@ -807,14 +807,14 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            
+
             return response.data
         })
         .catch(err => {
             return err
         });
     },
-    
+
     async getSchoolFeeByProgramId(context, payload){
         return await this.$axios({
             method: 'get',
@@ -931,7 +931,7 @@ export const actions = {
         .catch(err => {
         });
     },
-    async createSchoolFee(context, requests) { 
+    async createSchoolFee(context, requests) {
         return await this.$axios({
             method: 'post',
             url: 'api/school-fee',
@@ -1122,7 +1122,7 @@ export const actions = {
             console.log(err)
             return err
         });
-    },   
+    },
     async updateState(context, requests) {
         return await this.$axios({
             method: 'put',
