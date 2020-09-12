@@ -27,11 +27,11 @@
               </div>
               <div class="col-md-4">
                 <label>From Date:</label>
-                <input type="date" class="form-control" v-model="model.from_date" required />
+                <input type="date" class="form-control" v-model="model.from_date" />
               </div>
               <div class="col-md-4">
                 <label>To Date:</label>
-                <input type="date" class="form-control" v-model="model.to_date" required />
+                <input type="date" class="form-control" v-model="model.to_date" />
               </div>
             </div>
             <div class="row m-t-5">
@@ -70,7 +70,8 @@
             </div>
             <div class="row m-t-15">
               <div class="col-md-2">
-                <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+                <button type="submit" @click="searchRecord()" v-if="!sLoading" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+                <button type="submit" disabled v-if="sLoading" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Searching...</button>
               </div>
               <div class="col-md-2">
                 <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
@@ -84,7 +85,7 @@
         <div class="card-header separator">
           <h3 class="text-primary no-margin pull-left sm-pull-reset">Uploaded Jamb Result</h3>
           <div class="pull-right sm-pull-reset">
-            <button type="button" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+            <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -120,7 +121,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getJambStudents(pagination.current_page)"
+              v-on:click.native="getUploadedJambCandidates(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -142,6 +143,7 @@ export default {
     faculties: [],
     departments: [],
     exLoading: false,
+    sLoading: false,
     Loading: false,
     candidates: [],
     model: {
@@ -172,7 +174,7 @@ export default {
 
       //if(this.$laravel.hasPermission('View PUTME Result')){
         this.getFaculties()
-        this.getUploadedJambCandidates(false)
+        this.getUploadedJambCandidates(1)
       //   }else{
       //     this.$router.push(
       //           decodeURIComponent(
@@ -220,7 +222,44 @@ export default {
           }).catch(err => {
           })
       },
-    getUploadedJambCandidates(IsExport){
+    refresh() {
+        this.model.faculty_id = ""
+        this.model.department_id = ""
+        this.model.registration_number = ""
+        this.model.year = ""
+        this.model.entry_mode = ""
+        this.model.from_date = ""
+        this.model.to_date = ""
+        this.getUploadedJambCandidates(1)
+      },
+    searchRecord(){
+      this.sLoading = true
+      let payload = {}
+      payload.registration_number = this.model.registration_number
+      payload.faculty_id = this.model.faculty_id
+      payload.department_id = this.model.department_id
+      payload.entry_mode = this.model.entry_mode
+      payload.year = this.model.year
+      payload.from_date = this.model.from_date
+      payload.to_date = this.model.to_date
+      payload.page = 1
+      payload.export = false
+      this.$store
+          .dispatch('get-started/getUploadedJambCandidates', payload)
+              .then(res => {
+              if(res != undefined){
+                  this.sLoading = false
+                  this.candidates = res.data.data
+                  this.pagination = res.data
+              }else{
+                  this.sLoading = false
+                  alert("File Downloaded Unsuccessful")
+              }
+          }).catch(err => {
+            this.sLoading = false
+        })
+    },
+    getUploadedJambCandidates(page){
       this.Loading = true
       let payload = {}
       payload.registration_number = ""
@@ -230,14 +269,15 @@ export default {
       payload.year = ""
       payload.from_date = ""
       payload.to_date = ""
-      payload.export = IsExport
+      payload.page = page
+      payload.export = false
       this.$store
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  console.log(res)
                   this.Loading = false
-                  this.candidates = res.data
+                  this.candidates = res.data.data
+                  this.pagination = res.data
               }else{
                   this.Loading = false
                   alert("File Downloaded Unsuccessful")
@@ -246,6 +286,7 @@ export default {
             this.exLoading = false
         })
     },
+    
     exportUploadedJambCandidates(IsExport){
       this.exLoading = true
       let payload = {}
@@ -261,14 +302,6 @@ export default {
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  this.exLoading = false
-                  console.log("Gether", res)
-                  var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                  var fileLink = document.createElement('a');
-                  fileLink.href = fileURL;
-                  fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
-                  document.body.appendChild(fileLink);
-                  fileLink.click();
                   this.exLoading = false
                   this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
               }else{
