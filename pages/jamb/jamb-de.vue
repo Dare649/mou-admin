@@ -13,14 +13,14 @@
                     <div class="modal-body">
                         <div class="row">
                         <div class="col-lg-12 m-b-10">
-                            <select class="form-control" v-model="uploadData.session">
-                            <option value="" selected>Select Academic Session</option>
-                            <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.de_session_name }}</option>
+                            <select required class="form-control" v-model="uploadData.session">
+                              <option value="" selected>Select Academic Session</option>
+                              <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.de_session_name }}</option>
                             </select>
                         </div>
                         <div class="col-lg-12 m-b-10">
                             <div class="custom-file">
-                            <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                            <input type="file" required ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                             <label class="custom-file-label" for="customFileLang">Select File</label>
                             </div>
                         </div>

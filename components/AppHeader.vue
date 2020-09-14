@@ -105,7 +105,7 @@
                                 <span class=" arrow"></span></a>
                             <ul class="">
                                 <li class="">
-                                    <a href="#">Basic Tables</a>
+                                  <nuxt-link to="/">Basic Tables</nuxt-link>
                                 </li>
                                 <li class="">
                                     <a href="#">Data Tables</a>

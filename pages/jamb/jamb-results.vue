@@ -13,14 +13,14 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12 m-b-10">
-                        <select class="form-control" v-model="uploadData.session">
+                        <select class="form-control" required v-model="uploadData.session">
                           <option value="" selected>Select Academic Session</option>
                           <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.session_name }}</option>
                         </select>
                     </div>
                     <div class="col-lg-12 m-b-10">
                       <div class="custom-file">
-                          <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                          <input type="file" ref="myFiles" required class="custom-file-input" id="customFileLang" lang="es">
                           <label class="custom-file-label" for="customFileLang">Select File</label>
                       </div>
                     </div>
@@ -734,7 +734,7 @@ export default {
                     this.getJambResults(this.pagination.current_page)
                     $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
                     this.importResponse = res
-                    // this.$toast.success("Records Updated Successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    // this.$toast.success("Records Imported Successfully!", {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.loading = false
                     this.$toast.error('An error occurred:' + res.data.message)
