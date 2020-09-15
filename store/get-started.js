@@ -332,10 +332,11 @@ export const actions = {
             return err
         });
     },
-    async exportSSCEResults(context, year) {
+    
+    async exportSSCEResults(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/ssce-result/export?year='+year,
+            url: 'api/ssce-result/export?year='+payload.year+'&registration_number='+payload.registration_number+'&from_dt='+payload.from_dt+'&to_dt='+payload.to_dt+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&exam_type='+payload.exam_type+'&export='+payload.export,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -508,6 +509,21 @@ export const actions = {
     //         return err
     //     });
     // },
+
+    async getSsceResultReport(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/ssce-result/export?year='+payload.year+'&registration_number='+payload.registration_number+'&from_dt='+payload.from_dt+'&to_dt='+payload.to_dt+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&exam_type='+payload.exam_type+'&export='+payload.export,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            console.log(response)
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getUploadedJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
