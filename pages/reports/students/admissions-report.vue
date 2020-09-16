@@ -105,7 +105,7 @@
                   <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="View Admission Letter">
-                        <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                        <a href="javascript:;" @click="viewAdmissionLetter(student.jamb_reg_no)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                       </span>
                     </div>
                   </td>
@@ -126,6 +126,8 @@
 </template>
 <script>
 import Pagination from '~/components/Pagination'
+import config from '~/store/config.js'
+
 export default {
   layout: 'main',
   components: {
@@ -157,6 +159,10 @@ export default {
     sLoading: false
   }),
   methods: {
+    viewAdmissionLetter(registration_number) {
+      let url = config.backend + 'session/acceptance-letter/print/' + registration_number
+      window.open(url, '_blank')
+    },
     cancelSearch() {
       this.formData.registration_number = ''
       this.formData.faculty_id = ''
@@ -173,6 +179,7 @@ export default {
       this.formData.page = page
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
+          console.log(res)
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data

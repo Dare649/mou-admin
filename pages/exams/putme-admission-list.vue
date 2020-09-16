@@ -119,7 +119,7 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-md-6">
-                                        <label>Overwrite existing marks</label>
+                                        <label>Overwrite existing list</label>
                                         <select class="form-control" required v-model="model.import_overwrite">
                                             <option value="" disabled selected>Select your option</option>
                                             <option value="1">YES</option>
