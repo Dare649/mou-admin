@@ -96,7 +96,7 @@
                                           </div>
                                         </div>
                                       <div class="row p-2">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                           <ValidationProvider rules="required" v-slot="{ errors }">
                                             <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
                                               <label>Acceptance Fee</label>
@@ -105,7 +105,16 @@
                                             </div>
                                           </ValidationProvider>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                          <ValidationProvider rules="required" v-slot="{ errors }">
+                                            <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
+                                              <label>PUTME Registration Fee</label>
+                                              <input type="text" v-model="formData.putme_registration_fee" class="form-control" required>
+                                              <small class="error">{{ errors[0] }}</small>
+                                            </div>
+                                          </ValidationProvider>
+                                        </div>
+                                        <div class="col-md-4">
                                           <ValidationProvider rules="required" v-slot="{ errors }">
                                             <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
                                               <div class="form-input-group">
@@ -373,49 +382,50 @@ export default {
     layout: 'main',
     data() {
         return {
-            config: {
-                toolbar: [
-                    'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'divider',
-                    'bold', 'italic', 'underline', 'strikeThrough', 'links', 'divider', 'subscript', 'superscript',
-                    'divider', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', '|', 'indent', 'outdent',
-                    'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
-                ],
-                fontName: [
-                    {val: 'arial black'},
-                    {val: 'times new roman'},
-                    {val: 'Courier New'}
-                ],
-                fontSize: [
-                    '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px'
-                ],
-            },
-            formData: {
-                de_session_name: '',
-                admin_fees_start_date: '',
-                admin_fees_end_date: '',
-                acceptance_fee: '',
-                last_date_acceptance_fee: '',
-                last_date_depositing_school_fees: '',
-                supplementary_list_date: '',
-                supplementary_list_last_date: '',
-                acceptance_processing_fees: '',
-                late_fees_amount: '',
-                de_late_fees_due: '',
-                late_fees_date: '',
-                late_fees_start_date_returning: '',
-                late_fees_end_date_returning: '',
-                late_fees_amount_returning: '',
-                course_registration_fee: '',
-                de_reg_admin_fees: '',
-                matriculation_year: '',
-                admin_fees_instruction: '',
-                school_fees_instruction: '',
-                acceptance_fees_instruction: '',
-            },
-            adminFeesInstruction: null,
-            acceptanceFeeInstruction: null,
-            schoolFeesInstruction: null,
-            id: 'new',
+          config: {
+            toolbar: [
+              'removeFormat', 'undo', '|', 'elements', 'fontName', 'fontSize', 'foreColor', 'backColor', 'divider',
+              'bold', 'italic', 'underline', 'strikeThrough', 'links', 'divider', 'subscript', 'superscript',
+              'divider', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', '|', 'indent', 'outdent',
+              'insertOrderedList', 'insertUnorderedList', '|', 'picture', 'tables', '|', 'switchView'
+            ],
+            fontName: [
+              {val: 'arial black'},
+              {val: 'times new roman'},
+              {val: 'Courier New'}
+            ],
+            fontSize: [
+              '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px'
+            ],
+          },
+          formData: {
+            de_session_name: '',
+            admin_fees_start_date: '',
+            admin_fees_end_date: '',
+            acceptance_fee: '',
+            putme_registration_fee: '',
+            last_date_acceptance_fee: '',
+            last_date_depositing_school_fees: '',
+            supplementary_list_date: '',
+            supplementary_list_last_date: '',
+            acceptance_processing_fees: '',
+            late_fees_amount: '',
+            de_late_fees_due: '',
+            late_fees_date: '',
+            late_fees_start_date_returning: '',
+            late_fees_end_date_returning: '',
+            late_fees_amount_returning: '',
+            course_registration_fee: '',
+            de_reg_admin_fees: '',
+            matriculation_year: '',
+            admin_fees_instruction: '',
+            school_fees_instruction: '',
+            acceptance_fees_instruction: '',
+          },
+          adminFeesInstruction: null,
+          acceptanceFeeInstruction: null,
+          schoolFeesInstruction: null,
+          id: 'new',
         }
     },
     methods: {
@@ -479,27 +489,28 @@ export default {
             this.$axios.get(`api/de-sessions/${id}`).then(res => {
                 const session = res.data.data;
                 this.formData = {
-                    de_session_name: session.de_session_name,
-                    admin_fees_start_date: this.$moment(session.admin_fees_start_date).format('DD/MM/YYYY'),
-                    admin_fees_end_date: this.$moment(session.admin_fees_end_date).format('DD/MM/YYYY'),
-                    acceptance_fee: session.acceptance_fee,
-                    last_date_acceptance_fee: this.$moment(session.last_date_acceptance_fee).format('DD/MM/YYYY'),
-                    last_date_depositing_school_fees: this.$moment(session.last_date_depositing_school_fees).format('DD/MM/YYYY'),
-                    supplementary_list_date: session.showUpload,
-                    supplementary_list_last_date: this.$moment(session.supplementary_list_last_date).format('DD/MM/YYYY'),
-                    acceptance_processing_fees: session.acceptance_processing_fees,
-                    late_fees_amount: this.$moment(session.late_fee_end_date).format('DD/MM/YYYY'),
-                    de_late_fees_due: session.de_late_fees_due,
-                    late_fees_date: this.$moment(session.late_fees_date).format('DD/MM/YYYY'),
-                    late_fees_start_date_returning: this.$moment(session.late_fees_start_date_returning).format('DD/MM/YYYY'),
-                    late_fees_end_date_returning: this.$moment(session.late_fees_end_date_returning).format('DD/MM/YYYY'),
-                    late_fees_amount_returning: session.late_fees_amount_returning,
-                    course_registration_fee: session.course_registration_fee,
-                    de_reg_admin_fees: session.de_reg_admin_fees,
-                    matriculation_year: session.matriculation_year,
-                    admin_fees_instruction: session.admin_fees_instruction,
-                    school_fees_instruction: session.school_fees_instruction,
-                    acceptance_fee_instructions: session.acceptance_fees_instruction,
+                  de_session_name: session.de_session_name,
+                  admin_fees_start_date: this.$moment(session.admin_fees_start_date).format('DD/MM/YYYY'),
+                  admin_fees_end_date: this.$moment(session.admin_fees_end_date).format('DD/MM/YYYY'),
+                  acceptance_fee: session.acceptance_fee,
+                  last_date_acceptance_fee: this.$moment(session.last_date_acceptance_fee).format('DD/MM/YYYY'),
+                  last_date_depositing_school_fees: this.$moment(session.last_date_depositing_school_fees).format('DD/MM/YYYY'),
+                  supplementary_list_date: this.$moment(session.supplementary_list_date).format('DD/MM/YYY'),
+                  supplementary_list_last_date: this.$moment(session.supplementary_list_last_date).format('DD/MM/YYYY'),
+                  acceptance_processing_fees: session.acceptance_processing_fees,
+                  late_fees_amount: this.$moment(session.late_fee_end_date).format('DD/MM/YYYY'),
+                  de_late_fees_due: session.de_late_fees_due,
+                  putme_registration_fee: session.putme_registration_fee,
+                  late_fees_date: this.$moment(session.late_fees_date).format('DD/MM/YYYY'),
+                  late_fees_start_date_returning: this.$moment(session.late_fees_start_date_returning).format('DD/MM/YYYY'),
+                  late_fees_end_date_returning: this.$moment(session.late_fees_end_date_returning).format('DD/MM/YYYY'),
+                  late_fees_amount_returning: session.late_fees_amount_returning,
+                  course_registration_fee: session.course_registration_fee,
+                  de_reg_admin_fees: session.de_reg_admin_fees,
+                  matriculation_year: session.matriculation_year,
+                  admin_fees_instruction: session.admin_fees_instruction,
+                  school_fees_instruction: session.school_fees_instruction,
+                  acceptance_fee_instructions: session.acceptance_fees_instruction,
                 }
                 this.adminFeeInstruction.setContent(session.admin_fees_instruction);
                 this.acceptanceFeeInstruction.setContent(session.acceptance_fees_instruction);

@@ -49,6 +49,22 @@ export const actions = {
     }).catch(err =>{
       return err
     })
+  },
+  async getAllSchoolFeesReport(context, data) {
+    return await this.$axios.get('api/reports/school-fees?registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export+'&page='+data.page)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getTransactionReport(context, data) {
+    return await this.$axios.get('api/reports/payments?trans_ref='+data.trans_ref+'&jamb_no='+data.jamb_no+'&department='+data.department+'&payment_type='+data.payment_type+'&from_dt='+data.from_dt+'&to_dt='+data.to_dt)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

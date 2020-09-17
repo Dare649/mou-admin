@@ -86,7 +86,7 @@
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Total Score</th>
-                <th style="width:8%">Action</th>
+                <th style="width:10%">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -104,9 +104,9 @@
                   <td>{{student.totalscore}}</td>
                   <td>
                     <div class="btn-group">
-                      <span data-placement="top" data-toggle="tooltip" title="View Admission Letter">
-                        <a href="javascript:;" @click="viewAdmissionLetter(student.jamb_reg_no)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                      </span>
+                      <a href="javascript:;" title="View Admission Letter" @click="viewAdmissionLetter(student.jamb_reg_no)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                      <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                      <button type="button" disabled v-if="student.marked_for_department == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -151,6 +151,9 @@ export default {
       to: '',
       export: false
     },
+    approveData: {
+      registration_number: ''
+    },
     colleges: [],
     departments: [],
     students: [],
@@ -174,6 +177,25 @@ export default {
       this.formData.export = false
       this.getAdmissionList(this.pagination.current_page)
     },
+    markForApproval(reg_num) {
+      if(confirm('Do you want to mark this student okay for departmental approval?')){
+        this.approveData.registration_number = reg_num
+        console.log(this.approveData)
+        this.$toast.info('Processing...please wait', {duration: 6100})
+        this.$store.dispatch('academic-session/markForDepartmentalApproval', this.approveData)
+          .then(res =>{
+            if(res.data.status) {
+              this.$toast.success(res.data.message, {duration: 6100})
+              this.getAdmissionList(this.pagination.current_page)
+              return
+            }
+
+            this.$toast.error(res.data.message, {duration: 6100})
+          }).catch(err =>{
+          this.$toast.error(err, {duration: 6100})
+        })
+      }
+    },
     getAdmissionList(page) {
       this.loading = true
       this.formData.page = page
@@ -183,6 +205,7 @@ export default {
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
+            console.log(this.students)
             this.pagination = res.data.data
           }
         }).catch(err =>{

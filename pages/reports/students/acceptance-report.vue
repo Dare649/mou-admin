@@ -82,7 +82,7 @@
               <thead>
                 <tr>
                   <th>Reg No.</th>
-                  <th>Name</th>
+                  <th style="width:30%">Name</th>
                   <th>Program.</th>
                   <th>Date Accepted.</th>
                   <th style="width:8%">Action</th>

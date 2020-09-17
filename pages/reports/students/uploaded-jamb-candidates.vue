@@ -96,17 +96,21 @@
                 <tr>
                   <th>Full Name</th>
                   <th>Reg No</th>
-                  <!-- <th>Email</th> -->
                   <th>Gender</th>
                   <th>Entry Mode</th>
                   <th style="width:8%">Action</th>
                 </tr>
               </thead>
               <tbody>
+                <tr v-if="Loading">
+                  <td colspan="5">Loading....please wait</td>
+                </tr>
+                <tr v-if="!Loading && candidates.length < 1">
+                  <td colspan="5">No records at the moment</td>
+                </tr>
                 <tr v-for="can in candidates" :key="can.jamb_number">
                   <td>{{can.name}}</td>
                   <td>{{can.jamb_number}}</td>
-                  <!-- <td>chinicerow@yahoo.com</td> -->
                   <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
                   <td>{{can.entry_mode}}</td>
                   <td>
@@ -172,18 +176,8 @@ export default {
 
         document.head.appendChild(script1)
       }
-
-      //if(this.$laravel.hasPermission('View PUTME Result')){
-        this.getFaculties()
-        this.getUploadedJambCandidates(1)
-      //   }else{
-      //     this.$router.push(
-      //           decodeURIComponent(
-      //               this.$route.query.redirect || "/dashboard"
-      //           )
-      //       );
-      //       this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-      // }
+      this.getFaculties()
+      this.getUploadedJambCandidates(1)
 
     },
   methods: {
@@ -235,6 +229,8 @@ export default {
       },
     searchRecord(){
       this.sLoading = true
+      this.Loading = true
+      this.candidates = []
       let payload = {}
       payload.registration_number = this.model.registration_number
       payload.faculty_id = this.model.faculty_id
@@ -249,15 +245,17 @@ export default {
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  this.sLoading = false
-                  this.candidates = res.data.data
-                  this.pagination = res.data
+                this.sLoading = false
+                this.Loading = false
+                this.candidates = res.data.data
+                this.pagination = res.data
               }else{
-                  this.sLoading = false
-                  alert("File Downloaded Unsuccessful")
+                this.sLoading = false
+                alert("File Downloaded Unsuccessful")
               }
           }).catch(err => {
-            this.sLoading = false
+          this.sLoading = false
+          this.Loading = false
         })
     },
     getUploadedJambCandidates(page){
