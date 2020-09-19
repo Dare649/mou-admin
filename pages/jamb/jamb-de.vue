@@ -375,7 +375,6 @@ export default {
           file: ''
         },
         model: {
-          edit_year: "",
           jamb_entry_mode: "",
           export_entry_mode: "",
           search_registration_number: "",
@@ -398,10 +397,10 @@ export default {
           this.model.id = id
       },
       showDetails(jamb){
-          this.show_state_id = jamb.state
-          this.show_lga_id = jamb.lga
+          this.show_state_id = jamb.state.name
+          this.show_lga_id = jamb.lga.name
           this.show_course_name = jamb.course_name
-          this.show_department_id = jamb.department
+          this.show_department_id = jamb.department.name
           this.show_gender = jamb.gender
           this.show_year = jamb.year
           this.show_candidate_name = jamb.candidate_name

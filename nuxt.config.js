@@ -44,7 +44,8 @@ module.exports = {
       {src: "/assets/plugins/classie/classie.js"},
       {src: "/assets/plugins/switchery/js/switchery.min.js"},
       {src: "/assets/plugins/jquery-validation/js/jquery.validate.min.js"},
-      {src: '/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js'}
+      {src: '/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js'},
+      {src: '/pages/js/pages.min.js'}
     ]
   },
 
