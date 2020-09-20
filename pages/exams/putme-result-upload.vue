@@ -82,14 +82,14 @@
                                             <div class="form-group m-b-10">
                                                 <label>Select Faculty</label>
                                                 <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
-                                                    <option value="" selected>Select your option</option>
+                                                    <option value="" selected>All</option>
                                                     <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Department</label>
                                                 <select class="form-control" v-model="model.export_department_id">
-                                                    <option value="" selected>Select your option</option>
+                                                    <option value="" selected>All</option>
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
@@ -113,6 +113,7 @@
                                 </form>
                             </div>
                         </div>
+
                     </div>
                     <div class="col-md-6" v-permission:any="'Upload PUTME result|Download sample csv'">
                         <div class="card card-default">

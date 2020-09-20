@@ -8,7 +8,7 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                        <li class="breadcrumb-item active">PUTME/ DE Student Report</li>
+                        <li class="breadcrumb-item active">PUTME &amp; DE Exam Registration Report</li>
                     </ol>
                 </div>
             </div>
@@ -72,6 +72,16 @@
                                             <option value="Married">Married</option>
                                             <option value="Single">Single</option>
                                             <option value="Divorced">Divorced</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-lg-12 m-b-10">
+                                    <td><label>Gender:</label></td>
+                                    <td>
+                                        <select class="full-width form-control" required="required" v-model="model.edit_gender">
+                                            <option value="" disabled>Select Gender</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -151,8 +161,9 @@
             <div class="container col-md-11 sm-padding-12 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
                     <div class="card-header  separator">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME/ DE Students Report</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME &amp; DE Exam Registration Report</h3>
                         <div class="pull-right sm-pull-reset">
+                            <button type="button" class="btn btn-primary">Completed Registration <span class="badge">80</span></button>
                           <button type="button" class="btn btn-warning btn-sm" data-target="#export_putme_students" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
                         </div>
                         <div class="clearfix"></div>
@@ -160,8 +171,13 @@
                     <div class="card-header">
                         <form @submit.prevent="searchRecord">
                             <div class="input-group col-lg-12" >
-                                <input type="text" class="form-control" v-model="search_registration_number" placeholder="Registration Number">
-                                <input type="text" class="form-control" v-model="search_type" placeholder="Select Type">
+                                <input type="text" class="form-control" v-model="search_registration_number" placeholder="Registration Number (Optional)">
+                                <select class="form-control" v-model="search_type" >
+                                    <option value="" selected>Select Type</option>
+                                    <option value="DE">DE</option>
+                                    <option value="PUTME">PUTME</option>
+                                </select>
+                                <!-- <input type="text" class="form-control" v-model="search_type" placeholder="Select Type"> -->
                                 <input type="text" class="form-control" v-model="search_screening_id" placeholder="Screening Id">
                                 <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
@@ -273,6 +289,10 @@
                           <tr>
                               <th>Marital Status:</th>
                               <td v-if="putmeDetails != null">{{putmeDetails.marital_status}}</td>
+                          </tr>
+                          <tr>
+                              <th>Gender:</th>
+                              <td v-if="putmeDetails != null">Male</td>
                           </tr>
                           <tr>
                               <th>Department:</th>
@@ -424,6 +444,7 @@ export default {
             user_id: 0,
             export_year: "",
             edit_name: "",
+            edit_gender: "",
             edit_screening_id: "",
             edit_state_id: "",
             edit_lga_id: "",
@@ -549,7 +570,6 @@ export default {
             if(res != undefined){
                 if(res.data.status == true){
                   this.putmeDetails = res.data
-                  console.log(this.putmeDetails)
                   this.getDetailsLoading = false
                 }else{
                   this.ErrMsg = "Error Fetching data!"

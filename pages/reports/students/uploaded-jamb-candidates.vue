@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-md-4">
                 <label>Reg Num:</label>
-                <input type="text" class="form-control" v-model="model.registration_number" placeholder="Reg Number" required />
+                <input type="text" class="form-control" v-model="model.registration_number" placeholder="Reg Number (Optional)" />
               </div>
               <div class="col-md-4">
                 <label>From Date:</label>
@@ -38,14 +38,14 @@
               <div class="col-md-3">
                 <label>College:</label>
                 <select class="form-control" v-model="model.faculty_id" @change="populateDepartments($event)">
-                  <option value="" selected>-Select College-</option>
+                  <option value="" selected>All</option>
                   <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label>Department:</label>
                 <select class="form-control" v-model="model.department_id">
-                  <option value="" selected>-Select Department-</option>
+                  <option value="" selected>All</option>
                   <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                 </select>
               </div>
@@ -60,7 +60,7 @@
               <div class="col-md-3">
                 <label>Year:</label>
                 <select class="form-control" v-model="model.year">
-                  <option value="" selected>-Select Year-</option>
+                  <option value="" selected>All</option>
                   <option value="2019">2019</option>
                   <option value="2020">2020</option>
                   <option value="2021">2021</option>
@@ -98,7 +98,7 @@
                   <th>Reg No</th>
                   <th>Gender</th>
                   <th>Entry Mode</th>
-                  <th style="width:8%">Action</th>
+                  <!-- <th style="width:8%">Action</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -113,13 +113,13 @@
                   <td>{{can.jamb_number}}</td>
                   <td>{{can.sex == "F" ? "Female" : "Male"}}</td>
                   <td>{{can.entry_mode}}</td>
-                  <td>
+                  <!-- <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="View Jamb Letter">
                         <a href="#" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                       </span>
                     </div>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>

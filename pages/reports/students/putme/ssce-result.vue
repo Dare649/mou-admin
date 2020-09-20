@@ -23,7 +23,7 @@
                     <div class="row">
                       <div class="col-md-4">
                         <label>Reg Num:</label>
-                        <input type="text" class="form-control" placeholder="Reg Number" v-model="model.registration_number" required />
+                        <input type="text" class="form-control" placeholder="Reg Number (Optional)" v-model="model.registration_number" />
                       </div>
                       <div class="col-md-4">
                         <label>From Date:</label>
@@ -38,21 +38,21 @@
                       <div class="col-md-4">
                         <label>College:</label>
                         <select class="form-control" v-model="model.faculty_id" @change="populateDepartments($event)">
-                          <option value="" selected>-Select-</option>
+                          <option value="" selected>All</option>
                           <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                         </select>
                       </div>
                       <div class="col-md-4">
                         <label>Department:</label>
                         <select class="form-control" v-model="model.department_id">
-                          <option value="" selected>-Select-</option>
+                          <option value="" selected>All</option>
                           <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                         </select>
                       </div>
                       <div class="col-md-4">
                         <label>Exam Type:</label>
                         <select class="form-control" v-model="model.exam_type">
-                          <option value="" selected>-Select-</option>
+                          <option value="" selected>All</option>
                           <option value="waec">WAEC</option>
                           <option value="neco">NECO</option>
                           <option value="nabteb">NABTEB</option>
@@ -63,7 +63,7 @@
                       <div class="col-md-4">
                         <label>Select Year</label>
                         <select class="form-control" required v-model="model.year">
-                          <option value="" selected>Select your option</option>
+                          <option value="" selected>All</option>
                           <option  value="2019">Year --- 2019/2020</option>
                           <option  value="2020">Year --- 2020/2021</option>
                           <option  value="2021">Year --- 2021/2022</option>
