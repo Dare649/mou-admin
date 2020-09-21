@@ -68,7 +68,7 @@
                                 <h3 class="text-primary no-margin p-b-10">Upload UTME Admission List</h3>
                             </div>
                             <div class="card-body">
-                                <form class="p-4">
+                                <form class="p-4" @submit.prevent="uploadPUTMEAdmission">
                                     <div class="row">
                                       <div class="form-group col-md-4">
                                           <label>Select Excel file to upload</label>
@@ -129,11 +129,12 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-md-12">
-                                          <hr/>
-                                          <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadUTMEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
-                                          <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
-                                          <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
-                                          <button type="button" @click="uploadPUTMEAdmission()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
+                                        <hr/>
+                                        <button type="button" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadUTMEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
+                                        <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+
+                                        <button type="submit" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
+                                        <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                       </div>
                                     </div>
                                 </form>
@@ -404,13 +405,6 @@ export default {
         }
     },
    mounted: function() {
-      if (!process.server) {
-        const script1 = document.createElement('script')
-        script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'
-
-        document.head.appendChild(script1)
-      }
       this.getAcademicSessions()
       this.getAdmissionCategories()
       this.getColleges()

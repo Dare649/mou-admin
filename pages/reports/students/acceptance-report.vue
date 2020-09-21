@@ -99,7 +99,7 @@
                   <td>{{ student.reg_number }}</td>
                   <td>{{ student.name }}</td>
                   <td>{{ student.program }}</td>
-                  <td>{{ student.form_acceptance_dt }}</td>
+                  <td>{{ $moment(student.form_acceptance_dt).format('MMMM Do YYYY') }}</td>
                   <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="View Acceptance Letter">
@@ -198,12 +198,14 @@ export default {
       this.$store.dispatch('reports/getAcceptanceStudents', this.searchData)
         .then(res =>{
           if(res.data.status) {
+            console.log(res.data)
             this.students = res.data.data.data
             this.pagination = res.data.data
           }
           this.loading = false
         }).catch(err =>{
-          this.$toast.error(err)
+        this.loading = false
+        this.$toast.error(err)
       })
     },
     getColleges() {

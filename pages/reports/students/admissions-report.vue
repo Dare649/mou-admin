@@ -206,7 +206,8 @@ export default {
             this.pagination = res.data.data
           }
         }).catch(err =>{
-          this.$toast.error(err)
+        this.loading = false
+        this.$toast.error(err)
       })
     },
     exportRecord() {
