@@ -224,7 +224,7 @@
                                                 <a href="#edit_department" @click="populateFields(department)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             </span>
                                             <span v-permission="'Delete department'" data-placement="top" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-trash"></i></a>
                                             </span>
                                         </div>
                                     </td>

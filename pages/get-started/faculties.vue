@@ -129,7 +129,7 @@
                                                 <a href="#edit_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                               </span>
                                               <span v-permission="'Delete faculty'" data-placement="top" @click="setId(faculty.id)" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                <a href="#delete_faculty"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-trash"></i></a>
                                               </span>
                                           </div>
                                       </td>
