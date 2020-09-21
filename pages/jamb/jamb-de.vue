@@ -550,7 +550,7 @@ export default {
             .then(res => {
             if(res != undefined){
                 if(res.success == true)    {
-                    window.location = res.message
+                  window.open(res.message, '_blank')
                     this.downloading = false
                     $('#import_jamb_result').modal('hide').data( 'bs.modal', null )
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
