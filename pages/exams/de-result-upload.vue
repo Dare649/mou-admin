@@ -43,7 +43,7 @@
                 <div class="card card-default">
                     <div class="card-body">
                         <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
-                            <strong>The Following Errors Occurred:</strong> 
+                            <strong>The Following Errors Occurred:</strong>
                             <p>
                                 <ul v-for="item in importResponse.errors" :key="importResponse[item]">
                                     <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
@@ -52,7 +52,7 @@
                             </p>
                         </div>
                         <div class="alert alert-success">
-                            <strong>Audit Trail Performed.</strong> 
+                            <strong>Audit Trail Performed.</strong>
                             <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                     <div class="col-md-6" v-permission="'Download DE result csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Download Prefilled CSV File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Download Prefilled Excel File</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -73,29 +73,28 @@
                                             <div class="form-group m-b-10">
                                                 <label>Select academic session</label>
                                                 <select class="form-control" v-model="model.export_session_id">
-                                                    <option value="" disabled selected>Select your option</option>
+                                                    <option value="" disabled selected>All</option>
                                                     <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Faculty</label>
                                                 <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
-                                                    <option value="" selected>Select your option</option>
+                                                    <option value="" selected>All</option>
                                                     <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Department</label>
                                                 <select class="form-control" v-model="model.export_department_id">
-                                                    <option value="" selected>Select your option</option>
+                                                    <option value="" selected>All</option>
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
                                                 <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
-                                                <!-- <button type="button" class="btn btn-default btn-lg btn-large fs-16 semi-bold">Check Report</button> -->
                                             </div>
                                         </div>
 
@@ -107,7 +106,7 @@
                     <div class="col-md-6" v-permission:any="'Upload DE result|Download DE result sample csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled CSV File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled Excel File</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -140,7 +139,7 @@
                                                 <button v-permission="'Download sample csv'" v-if="!downloading" @click="downloadDEResultsSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
                                                 <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
 
-                                                <button v-permission="'Upload DE result'" type="button" @click="uploadDEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>                                               
+                                                <button v-permission="'Upload DE result'" type="button" @click="uploadDEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
                                                 <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                             </div>
                                         </div>
@@ -168,7 +167,7 @@ export default {
             this.$store
                 .dispatch('get-started/getAllFaculties')
                 .then(res => {
-                if(res != undefined){    
+                if(res != undefined){
                     this.faculties = res
                 }else{
                     this.getloading = false
@@ -184,8 +183,8 @@ export default {
             this.$store
                 .dispatch('get-started/getAllDepartmentsByFacultyId', payload)
                 .then(res => {
-                if(res != undefined){  
-                    this.departments = res   
+                if(res != undefined){
+                    this.departments = res
                 }else{
                     this.ErrMsg = "Error Logging in!"
                 }
@@ -338,7 +337,7 @@ export default {
         script1.src = '/pages/js/pages.min.js'
         document.head.appendChild(script1)
       }
-      
+
       this.checkPagePermission()
     }
 }

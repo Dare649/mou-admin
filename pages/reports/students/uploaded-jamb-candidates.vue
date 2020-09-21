@@ -52,7 +52,7 @@
               <div class="col-md-3">
                 <label>Entry Mode:</label>
                 <select class="form-control" v-model="model.entry_mode">
-                  <option value="" selected>-Select-</option>
+                  <option value="" selected>All</option>
                   <option value="JAMB">PUTME</option>
                   <option value="DE">Direct Entry</option>
                 </select>
@@ -75,7 +75,7 @@
               </div>
               <div class="col-md-2">
                 <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
-                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
               </div>
             </div>
           </form>

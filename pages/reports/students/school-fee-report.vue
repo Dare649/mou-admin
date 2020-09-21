@@ -41,21 +41,21 @@
               <div class="col-md-3">
                 <label>College:</label>
                 <select class="form-control" @change="getDepartmentByCollege($event)" v-model="searchData.faculty_id">
-                  <option value="" selected>-Select-</option>
+                  <option value="" selected>All</option>
                   <option v-for="college in colleges" :value="college.id">{{college.name}}</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label>Department:</label>
                 <select class="form-control" v-model="searchData.department_id">
-                  <option value="" selected>-Select-</option>
+                  <option value="" selected>All</option>
                   <option v-for="department in departments" :value="department.id">{{department.name}}</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label>Entry Mode:</label>
                 <select class="form-control" v-model="searchData.entry_mode">
-                  <option value="" selected>-Select-</option>
+                  <option value="" selected>All</option>
                   <option value="JAMB">PUTME</option>
                   <option value="DE">Direct Entry</option>
                 </select>
@@ -63,7 +63,7 @@
               <div class="col-md-3">
                 <label>Payment For:</label>
                 <select class="form-control" v-model="searchData.payment_type">
-                  <option value="" selected>-Select-</option>
+                  <option value="" selected>All</option>
                   <option value="ACCOMMODATION_FEE">Accommodation Fee</option>
                   <option value="ACCEPTANCE_FEE">Acceptance Fee</option>
                   <option value="SCHOOL_FEE">School Fee</option>
@@ -75,7 +75,7 @@
                 <button type="button" id="submitBtn" class="btn btn-primary btn-block"><i class="fa fa-search" />&nbsp;Search Record</button>
               </div>
               <div class="col-md-2">
-                <button type="submit" id="exportBtn" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o" />&nbsp;Export Record</button>
+                <button type="submit" id="exportBtn" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o" />&nbsp;Export to Excel</button>
               </div>
             </div>
         </div>

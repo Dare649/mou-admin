@@ -152,14 +152,14 @@
                                       <div class="form-group col-md-6">
                                           <label>Select Academic Session</label>
                                            <select class="form-control" v-model="model.export_session_id">
-                                                <option value="" disabled selected>Select your option</option>
+                                                <option value="" disabled selected>All</option>
                                                 <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                             </select>
                                       </div>
                                      <div class="form-group col-md-6">
                                         <label>Select College</label>
                                         <select class="form-control" required @change="populateDownloadDepartment($event)">
-                                            <option value="" disabled selected>Select your option</option>
+                                            <option value="" disabled selected>All</option>
                                             <option v-for="college in colleges" :key="college.id" :value="college.id">
                                               {{college.name}}
                                             </option>
@@ -168,7 +168,7 @@
                                       <div class="form-group col-md-6">
                                           <label>Select Department</label>
                                           <select class="form-control" required v-model="model.export_department_id">
-                                            <option value="" disabled selected>Select your option</option>
+                                            <option value="" disabled selected>All</option>
                                             <option v-for="department in downloadDepartments" :key="department.id" :value="department.id">
                                               {{department.name}}
                                             </option>

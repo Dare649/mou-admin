@@ -71,7 +71,7 @@
                                 <form class="p-4">
                                     <div class="row">
                                       <div class="form-group col-md-4">
-                                          <label>Select CSV file to upload</label>
+                                          <label>Select Excel file to upload</label>
                                           <div class="custom-file">
                                               <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es" required>
                                               <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -159,7 +159,7 @@
                                       <div class="form-group col-md-6">
                                         <label>Select College</label>
                                         <select class="form-control" required @change="populateDownloadDepartment($event)">
-                                            <option value="" disabled selected>Select your option</option>
+                                            <option value="" disabled selected>All</option>
                                             <option v-for="college in colleges" :key="college.id" :value="college.id">
                                               {{college.name}}
                                             </option>
@@ -168,7 +168,7 @@
                                       <div class="form-group col-md-6">
                                           <label>Select Department</label>
                                           <select class="form-control" required v-model="model.export_department_id">
-                                            <option value="" disabled selected>Select your option</option>
+                                            <option value="" disabled selected>All</option>
                                             <option v-for="department in downloadDepartments" :key="department.id" :value="department.id">
                                               {{department.name}}
                                             </option>
@@ -177,7 +177,7 @@
                                       <div class="form-group col-md-6">
                                           <label>Select Category</label>
                                           <select class="form-control" required v-model="model.export_category_id">
-                                              <option value="" selected>Select your option</option>
+                                              <option value="" selected>All</option>
                                               <option v-for="category in admission_categories" :key="category.id" :value="category.id">{{category.name}}</option>
                                           </select>
                                       </div>
@@ -185,7 +185,7 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                         <hr/>
-                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
                                         <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                       </div>
                                     </div>

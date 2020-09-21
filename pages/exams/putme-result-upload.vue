@@ -66,7 +66,7 @@
                     <div class="col-md-6" v-permission="'Download PUTME result csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Download Prefilled CSV File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Download Prefilled Excel File</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -75,7 +75,7 @@
                                             <div class="form-group m-b-10">
                                                 <label>Select academic session</label>
                                                 <select class="form-control" v-model="model.export_session_id">
-                                                    <option value="" disabled selected>Select your option</option>
+                                                    <option value="" disabled selected>All</option>
                                                     <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                                 </select>
                                             </div>
@@ -93,19 +93,10 @@
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
-                                            <!-- <div class="form-group m-b-10">
-                                                <label>Select Exam</label>
-                                                <select class="full-width" data-init-plugin="select2">
-                                                    <option value="" disabled selected>Select your option</option>
-                                                    <option value="M">M</option>
-                                                    <option value="F">F</option>
-                                                </select>
-                                            </div> -->
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get CSV</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
                                                 <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
-                                                <!-- <button type="button" class="btn btn-default btn-lg btn-large fs-16 semi-bold">Check Report</button> -->
                                             </div>
                                         </div>
 
@@ -118,14 +109,14 @@
                     <div class="col-md-6" v-permission:any="'Upload PUTME result|Download sample csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled CSV File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled Excel File</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
-                                                <label>Select CSV file to upload</label>
+                                                <label>Select Excel file to upload</label>
                                                 <div class="custom-file">
                                                     <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                                     <label class="custom-file-label" for="customFileLang">Select File</label>

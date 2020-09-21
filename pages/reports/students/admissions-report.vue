@@ -37,21 +37,21 @@
             <div class="col-md-4">
               <label>College:</label>
               <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.faculty_id">
-                <option value="" selected>-Select-</option>
+                <option value="" selected>All</option>
                 <option v-for="college in colleges" :value="college.id" :key="college.id">{{college.name}}</option>
               </select>
             </div>
             <div class="col-md-4">
               <label>Department:</label>
               <select class="form-control" v-model="formData.department_id">
-                <option value="" selected>-Select-</option>
+                <option value="" selected>All</option>
                 <option v-for="dept in departments" :value="dept.id" :key="dept.id">{{dept.name}}</option>
               </select>
             </div>
             <div class="col-md-4">
               <label>Entry Mode:</label>
               <select class="form-control" v-model="formData.entry_mode">
-                <option value="" selected>-Select-</option>
+                <option value="" selected>All</option>
                 <option value="JAMB">PUTME</option>
                 <option value="DE">Direct Entry</option>
               </select>
@@ -62,7 +62,7 @@
               <button type="button" id="searchbtn" @click="getAdmissionList" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
             <div class="col-md-2">
-              <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export </button>
+              <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
             </div>
           </div>
         </div>
