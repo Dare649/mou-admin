@@ -90,10 +90,10 @@
               </thead>
               <tbody>
                 <tr v-if="loading">
-                  <td colspan="7">Loading......Please wait</td>
+                  <td colspan="5">Loading......Please wait</td>
                 </tr>
                 <tr v-if="!loading && students.length < 1">
-                  <td colspan="7">No records at the moment</td>
+                  <td colspan="5">No records at the moment</td>
                 </tr>
                 <tr v-if="!loading && students.length > 0" v-for="student in students">
                   <td>{{ student.reg_number }}</td>
