@@ -104,7 +104,6 @@
                   <td>{{student.totalscore}}</td>
                   <td>
                     <div class="btn-group">
-                      <a href="javascript:;" title="View Admission Letter" @click="viewAdmissionLetter(student.jamb_reg_no)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                       <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
                       <button type="button" disabled v-if="student.marked_for_department == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
                     </div>
@@ -201,11 +200,9 @@ export default {
       this.formData.page = page
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
-          console.log(res)
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
-            console.log(this.students)
             this.pagination = res.data.data
           }
         }).catch(err =>{

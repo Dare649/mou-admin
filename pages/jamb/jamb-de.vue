@@ -59,7 +59,7 @@
                                 <form class="full-width">
                                     <div class="col-lg-12 m-b-10">
                                         <select class="form-control" v-model="model.export_year" >
-                                            <option value="" selected>Select Jamb Result Year</option>
+                                            <option value="" selected>All</option>
                                             <option value="2010">2010</option>
                                             <option value="2011">2011</option>
                                             <option value="2012">2012</option>
@@ -252,7 +252,7 @@
                               </div>
                               <div class="col-md-5">
                                   <select class="form-control" v-model="model.search_year" >
-                                      <option value="" selected>Select Jamb Result Year</option>
+                                      <option value="" selected>All</option>
                                       <option value="2010">2010</option>
                                       <option value="2011">2011</option>
                                       <option value="2012">2012</option>
