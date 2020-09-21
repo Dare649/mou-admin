@@ -89,7 +89,7 @@
               </div>
               <div class="card card-default">
                   <div class="card-header  separator">
-                      <h3 class="text-primary no-margin p-b-10">List of SSCE/ OLevel students</h3>
+                      <h3 class="text-primary no-margin p-b-10">O-Level Students</h3>
                       <div class="pull-right sm-pull-reset">
                         <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                       </div>

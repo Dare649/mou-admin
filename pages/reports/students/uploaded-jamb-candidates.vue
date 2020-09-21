@@ -270,6 +270,7 @@ export default {
       payload.to_date = ""
       payload.export = this.model.export
       payload.page = page
+      this.candidates = []
       this.$store
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {

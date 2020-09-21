@@ -2,190 +2,100 @@
     <div>
         <!-- START PAGE CONTENT -->
         <div class="content sm-gutter">
-            <!-- START BREADCRUMBS -->
-            <div class="bg-white">
-                <div class="container p-l-5">
-                    <ol class="breadcrumb breadcrumb-alt">
-                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Get Started</a></li>
-                        <li class="breadcrumb-item active">PUTME &amp; DE Exam Registration Report</li>
-                    </ol>
-                </div>
-            </div>
-            <!-- Export JAMB Result Modal -->
-            <div class="modal fade SlideUp" id="export_putme_students" tabindex="-1" role="dialog" aria-hidden="true">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="pg-close"></i>
-                </button>
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="text-left p-b-5"><span class="semi-bold">EXPORT DETAILS</span></h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <form class="full-width">
-                                    <div class="col-lg-12 m-b-10">
-                                      <select class="form-control" v-model="model.export_year" >
-                                          <option value="" selected>Year</option>
-                                          <option value="2010">2010</option>
-                                          <option value="2011">2011</option>
-                                          <option value="2012">2012</option>
-                                          <option value="2013">2013</option>
-                                          <option value="2019">2019</option>
-                                          <option value="2020">2020</option>
-                                          <option value="2021">2021</option>
-                                          <option value="2022">2022</option>
-                                          <option value="2023">2023</option>
-                                      </select>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <button type="button" v-if="!exportLoading"  @click="exportPUTMERegistrations()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
-                                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-             <!-- Edit JAMB Result Modal -->
-        <div class="modal fade SlideUp" id="edit_putme_student" tabindex="-1" role="dialog" aria-hidden="true">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                <i class="pg-close"></i>
-            </button>
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-left p-b-5"><span class="semi-bold">EDIT STUDENT DETAILS</span></h5>
-                    </div>
-                    <div class="modal-body">
-                        <form class="full-width" @submit.prevent="submitEditedPUTMEStudent">
-                            <table>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Marital Status:</label></td>
-                                    <td>
-                                        <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
-                                            <option value="" disabled>Marital Status</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Divorced">Divorced</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Gender:</label></td>
-                                    <td>
-                                        <select class="full-width form-control" required="required" v-model="model.edit_gender">
-                                            <option value="" disabled>Select Gender</option>
-                                            <option value="M">Male</option>
-                                            <option value="F">Female</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Phone Number:</label></td>
-                                    <td>
-                                        <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Email Address:</label></td>
-                                    <td>
-                                        <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Country:</label></td>
-                                    <td>
-                                        <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
-                                            <option value="" selected>Select your option</option>
-                                            <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>State:</label></td>
-                                    <td>
-                                        <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
-                                            <option value="" selected>Select your option</option>
-                                            <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>LGA:</label></td>
-                                    <td>
-                                        <select class="form-control" v-model="model.edit_lga_id">
-                                            <option value="" selected>Select your option</option>
-                                            <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Faculty:</label></td>
-                                    <td>
-                                        <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
-                                            <option value="" selected>Select your option</option>
-                                            <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr class="col-lg-12 m-b-10">
-                                    <td><label>Department:</label></td>
-                                    <td>
-                                        <select class="form-control" v-model="model.edit_department_id">
-                                            <option value="" selected>Select your option</option>
-                                            <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
+          <!-- START BREADCRUMBS -->
+          <div class="bg-white">
+              <div class="container p-l-5">
+                  <ol class="breadcrumb breadcrumb-alt">
+                      <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                      <li class="breadcrumb-item"><a href="#">Get Started</a></li>
+                      <li class="breadcrumb-item active">PUTME &amp; DE Exam Registration Report</li>
+                  </ol>
+              </div>
+          </div>
 
-                            <div class="row">
-                                <div class="col-lg-12 m-t-10">
-                                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
-                                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
             <!-- START CONTAINER FLUID -->
             <div class="container col-md-11 sm-padding-12 p-t-20 p-l-0 p-r-0">
+              <div class="card card-default">
+                <div class="card-header">
+                  <div class="card-title text-primary">Search Options</div>
+                </div>
+                <div class="card-body">
+                  <form style="width: 100%" @submit.prevent="searchRecord">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label>Reg Num:</label>
+                        <input type="text" v-model="searchData.registration_number" class="form-control" placeholder="Reg Number (Optional)"  />
+                      </div>
+                      <div class="col-md-4">
+                        <label>PUTME Reg. No:</label>
+                        <input type="text" class="form-control" v-model="searchData.search_screening_id" placeholder="PUTME registration no.">
+                      </div>
+                      <div class="col-md-4">
+                        <label>From Date:</label>
+                        <input type="date" class="form-control" v-model="searchData.from_date" required />
+                      </div>
+                    </div>
+                    <div class="row m-t-5">
+                      <div class="col-md-4">
+                        <label>To Date:</label>
+                        <input type="date" v-model="searchData.to_date" class="form-control" required />
+                      </div>
+                      <div class="col-md-4">
+                        <label>College:</label>
+                        <select class="form-control" v-model="searchData.faculty_id" @change="populateDepartments($event)">
+                          <option value="" selected>All</option>
+                          <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label>Department:</label>
+                        <select class="form-control" v-model="searchData.department_id">
+                          <option value="" selected>All</option>
+                          <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row m-t-5">
+                      <div class="col-md-4">
+                        <label>Type:</label>
+                        <select class="form-control" v-model="searchData.search_type">
+                          <option value="" selected>All</option>
+                          <option value="DE">DE</option>
+                          <option value="PUTME">PUTME</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label>Select Year</label>
+                        <select class="form-control" v-model="searchData.year">
+                          <option value="" selected>All</option>
+                          <option  value="2019">Year --- 2019/2020</option>
+                          <option  value="2020">Year --- 2020/2021</option>
+                          <option  value="2021">Year --- 2021/2022</option>
+                          <option  value="2022">Year --- 2022/2023</option>
+                          <option  value="2023">Year --- 2023/2014</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 m-t-30">
+                        <button type="button" class="btn btn-primary btn-block">
+                          <i class="fa fa-search" />&nbsp;Search Record
+                        </button>
+                      </div>
+                      <div class="col-md-2 m-t-30">
+                        <button type="button" class="btn btn-danger btn-block">
+                          <i class="fa fa-file-excel-o" />&nbsp;Export to Excel
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
                 <div class="card card-default">
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME &amp; DE Exam Registration Report</h3>
                         <div class="pull-right sm-pull-reset">
-                            <button type="button" class="btn btn-primary">Completed Registration <span class="badge">80</span></button>
-                          <button type="button" class="btn btn-warning btn-sm" data-target="#export_putme_students" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Export Results into CSV</strong></button>
+                          <button type="button" class="btn btn-primary">Completed Registration <span class="badge">80</span></button>
                         </div>
                         <div class="clearfix"></div>
-                    </div>
-                    <div class="card-header">
-                        <form @submit.prevent="searchRecord">
-                            <div class="input-group col-lg-12" >
-                                <input type="text" class="form-control" v-model="search_registration_number" placeholder="Registration Number (Optional)">
-                                <select class="form-control" v-model="search_type">
-                                    <option value="" selected>Select Type</option>
-                                    <option value="DE">DE</option>
-                                    <option value="PUTME">PUTME</option>
-                                </select>
-                                <!-- <input type="text" class="form-control" v-model="search_type" placeholder="Select Type"> -->
-                                <input type="text" class="form-control" v-model="search_screening_id" placeholder="Screening Id">
-                                <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -383,7 +293,151 @@
                 <!-- /.modal-dialog -->
             </div>
             <!-- /.UPLOAD ADMIN USER -->
+      <!-- Export JAMB Result Modal -->
+      <div class="modal fade SlideUp" id="export_putme_students" tabindex="-1" role="dialog" aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="pg-close"></i>
+        </button>
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="text-left p-b-5"><span class="semi-bold">EXPORT DETAILS</span></h5>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <form class="full-width">
+                  <div class="col-lg-12 m-b-10">
+                    <select class="form-control" v-model="model.export_year" >
+                      <option value="" selected>Year</option>
+                      <option value="2010">2010</option>
+                      <option value="2011">2011</option>
+                      <option value="2012">2012</option>
+                      <option value="2013">2013</option>
+                      <option value="2019">2019</option>
+                      <option value="2020">2020</option>
+                      <option value="2021">2021</option>
+                      <option value="2022">2022</option>
+                      <option value="2023">2023</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-12">
+                    <button type="button" v-if="!exportLoading"  @click="exportPUTMERegistrations()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
+                    <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- Edit JAMB Result Modal -->
 
+      <div class="modal fade SlideUp" id="edit_putme_student" tabindex="-1" role="dialog" aria-hidden="true">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="pg-close"></i>
+        </button>
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="text-left p-b-5"><span class="semi-bold">EDIT STUDENT DETAILS</span></h5>
+            </div>
+            <div class="modal-body">
+              <form class="full-width" @submit.prevent="submitEditedPUTMEStudent">
+                <table>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Marital Status:</label></td>
+                    <td>
+                      <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
+                        <option value="" disabled>Marital Status</option>
+                        <option value="Married">Married</option>
+                        <option value="Single">Single</option>
+                        <option value="Divorced">Divorced</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Gender:</label></td>
+                    <td>
+                      <select class="full-width form-control" required="required" v-model="model.edit_gender">
+                        <option value="" disabled>Select Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Phone Number:</label></td>
+                    <td>
+                      <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Email Address:</label></td>
+                    <td>
+                      <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Country:</label></td>
+                    <td>
+                      <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
+                        <option value="" selected>Select your option</option>
+                        <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>State:</label></td>
+                    <td>
+                      <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
+                        <option value="" selected>Select your option</option>
+                        <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>LGA:</label></td>
+                    <td>
+                      <select class="form-control" v-model="model.edit_lga_id">
+                        <option value="" selected>Select your option</option>
+                        <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Faculty:</label></td>
+                    <td>
+                      <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
+                        <option value="" selected>Select your option</option>
+                        <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Department:</label></td>
+                    <td>
+                      <select class="form-control" v-model="model.edit_department_id">
+                        <option value="" selected>Select your option</option>
+                        <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+                <div class="row">
+                  <div class="col-lg-12 m-t-10">
+                    <button type="submit" v-if="!editLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                    <button type="submit" v-if="editLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submitting</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
     </div>
 </template>
 <script>
@@ -428,6 +482,16 @@ export default {
         lgas: [],
         users:[],
         user:{},
+        searchData: {
+          registration_number: '',
+          search_screening_id: '',
+          from_date: '',
+          to_date: '',
+          faculty_id: '',
+          department_id: '',
+          search_type: '',
+          year :''
+        },
         pagination: {
           total: 0,
           per_page: 2,
@@ -615,7 +679,7 @@ export default {
     populateDepartments(event){
         this.departments = []
         if(event.target.value !== ""){
-            this.getDepartmentsByFacultyId(1, event.target.value)
+          this.getDepartmentsByFacultyId(event.target.value)
         }else{
             this.model.export_department_id = ''
             this.departments = []
