@@ -140,7 +140,7 @@
                                             <div class="m-t-30">
                                                 <hr/>
                                                 <button v-permission="'Upload PUTME result'" type="button" @click="uploadPUTMEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
-                                                <button v-permission="'Download sample csv'" v-if="!downloading" @click="downloadPUTMESampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
+                                                <button v-permission="'Download sample csv'" type="button" v-if="!downloading" @click="downloadPUTMESampleFile($event)" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
                                                 <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                                 <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                             </div>
@@ -231,14 +231,15 @@ export default {
                 this.departments = []
             }
         },
-        downloadPUTMESampleFile(){
+        downloadPUTMESampleFile(e){
+          e.preventDefault()
           this.downloading = true
           this.$store
             .dispatch('get-started/downloadPUTMESampleFile')
             .then(res => {
             if(res !== undefined){
                 if(res.success === true)    {
-                    window.location = res.message
+                    window.open(res.message, '_blank')
                     this.downloading = false
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
@@ -246,8 +247,8 @@ export default {
                 this.downloading = false
                 alert("File Downloaded Unsuccessful")
             }
-        }).catch(err => {
-          this.downloading = false
+            }).catch(err => {
+              this.downloading = false
             })
         },
       exportPUTMEs(){
