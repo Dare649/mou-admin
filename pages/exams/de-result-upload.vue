@@ -113,7 +113,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
-                                                <label>Select CSV file to upload</label>
+                                                <label>Select Excel file to upload</label>
                                                 <div class="custom-file">
                                                     <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es" required>
                                                     <label class="custom-file-label" for="customFileLang">Select File</label>

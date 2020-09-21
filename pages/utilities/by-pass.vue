@@ -24,7 +24,7 @@
               <form class="p-4">
                 <div class="row">
                   <div class="form-group col-md-12">
-                    <label>Select CSV file to upload</label>
+                    <label>Select Excel file to upload</label>
                     <div class="custom-file">
                       <input type="file" ref="file" class="custom-file-input" id="customFileLang" lang="es" required>
                       <label class="custom-file-label" for="customFileLang">Select File</label>

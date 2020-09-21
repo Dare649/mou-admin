@@ -172,7 +172,7 @@
                         <form @submit.prevent="searchRecord">
                             <div class="input-group col-lg-12" >
                                 <input type="text" class="form-control" v-model="search_registration_number" placeholder="Registration Number (Optional)">
-                                <select class="form-control" v-model="search_type" >
+                                <select class="form-control" v-model="search_type">
                                     <option value="" selected>Select Type</option>
                                     <option value="DE">DE</option>
                                     <option value="PUTME">PUTME</option>
