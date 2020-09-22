@@ -309,10 +309,10 @@ export const actions = {
             return err
         });
     },
-    async exportOLevel(context, reg_no) {
+    async exportOLevel(context, data) {
         return await this.$axios({
             method: 'get',
-            url: 'api/ssce-result/export?registration_number='+reg_no,
+            url: 'api/ssce-result/export?registration_number='+data.registration_number+'&export='+true,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -322,7 +322,7 @@ export const actions = {
             var fileLink = document.createElement('a');
 
             fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'Putmeregreports.xlsx');
+            fileLink.setAttribute('download', data.jamb_name+'-olevel-result.xlsx');
             document.body.appendChild(fileLink);
 
             fileLink.click();
