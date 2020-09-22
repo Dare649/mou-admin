@@ -101,11 +101,11 @@
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                   <th>REG Number</th>
+                                  <th>Name</th>
                                   <th style="width:22%">Email</th>
-                                  <th>Phone</th>
                                   <th>Entry Mode</th>
-                                  <th style="width:16%">Status</th>
-                                  <th style="width:23%">Action</th>
+                                  <th>Status</th>
+                                  <th style="width:20%">Action</th>
                                 </thead>
                                 <tbody>
                                     <tr v-if="getLoading">
@@ -115,22 +115,22 @@
                                         <td colspan="6">No record at the moment... Please insert new record</td>
                                     </tr>
                                     <tr v-else v-for="user in users" :key="user.id">
-                                        <td>{{user.registration_number}}</td>
-                                        <td>{{user.email}}</td>
-                                        <td>{{user.primary_phone}}</td>
-                                        <td>{{user.type}}</td>
-                                        <td>
-                                          <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Completed</span>
-                                          <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Not Completed</span>
-                                        </td>
-                                        <td>
-                                          <div class="btn-group" v-if="user.status === 1">
-                                            <a href="#edit_putme_student" @click="populateFields(user)" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                            <a href="#view_jamb_result" @click="showDetails(user.registration_number)" title="View Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
-                                            <a href="javascript:;" @click="exportOlevel(user)" title="Download Olevel Result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-download"></i></a>
-                                            <a href="javascript:;" @click="printForm(user.registration_number)" title="View Printable form" class="btn btn-default btn-sm" role="button"><i class="fa fa-print"></i></a>
-                                          </div>
-                                        </td>
+                                      <td>{{user.registration_number}}</td>
+                                      <td>{{user.jamb_name}}</td>
+                                      <td>{{user.email}}</td>
+                                      <td>{{user.type}}</td>
+                                      <td>
+                                        <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="user.status == 1">Completed</span>
+                                        <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="user.status == 0">Not Completed</span>
+                                      </td>
+                                      <td>
+                                        <div class="btn-group" v-if="user.status === 1">
+                                          <a href="#edit_putme_student" @click="populateFields(user)" title="Edit Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+                                          <a href="#view_jamb_result" @click="showDetails(user.registration_number)" title="View Student Info" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                                          <a href="javascript:;" @click="exportOlevel(user)" title="Download Olevel Result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-download"></i></a>
+                                          <a href="javascript:;" @click="printForm(user.registration_number)" title="View Printable form" class="btn btn-default btn-sm" role="button"><i class="fa fa-print"></i></a>
+                                        </div>
+                                      </td>
                                     </tr>
                                 </tbody>
                             </table>
