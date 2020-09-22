@@ -130,7 +130,7 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                         <hr/>
-                                        <button type="button" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadUTMEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
+                                        <button type="button" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadUTMEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample Excel</button>
                                         <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
 
                                         <button type="submit" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>

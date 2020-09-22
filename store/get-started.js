@@ -1042,21 +1042,13 @@ export const actions = {
             return err
         });
     },
-    async updatePUTMEStudent(context, payload) {
-        return await this.$axios({
-            method: 'post',
-            url: 'api/putme/update',
-            data: qs.stringify(payload),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+    async updatePUTMEStudent(context, data) {
+      return await this.$axios.post('api/putme/update', data)
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
         })
-        .then(function (response) {
-            //handle success
-            return response.data
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        });
     },
     async getUserDetails(context) {
         return await this.$axios({

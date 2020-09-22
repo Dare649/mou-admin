@@ -130,7 +130,7 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                           <hr/>
-                                          <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadDEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
+                                          <button class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10" v-if="!downloading" @click="downloadDEAdmissionSampleFile()"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample Excel</button>
                                           <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                           <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                           <button type="button" @click="uploadDEAdmission()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
@@ -185,7 +185,7 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                         <hr/>
-                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
+                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Excel</button>
                                         <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                       </div>
                                     </div>
