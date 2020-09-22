@@ -20,7 +20,6 @@
                   <div class="card-title text-primary">Search Options</div>
                 </div>
                 <div class="card-body">
-                  <form style="width: 100%" @submit.prevent="searchRecord">
                     <div class="row">
                       <div class="col-md-4">
                         <label>Reg Num:</label>
@@ -28,17 +27,17 @@
                       </div>
                       <div class="col-md-4">
                         <label>PUTME Reg. No:</label>
-                        <input type="text" class="form-control" v-model="searchData.search_screening_id" placeholder="PUTME registration no.">
+                        <input type="text" class="form-control" v-model="searchData.screening_id" placeholder="PUTME registration no.">
                       </div>
                       <div class="col-md-4">
                         <label>From Date:</label>
-                        <input type="date" class="form-control" v-model="searchData.from_date" required />
+                        <input type="date" class="form-control" v-model="searchData.from" required />
                       </div>
                     </div>
                     <div class="row m-t-5">
                       <div class="col-md-4">
                         <label>To Date:</label>
-                        <input type="date" v-model="searchData.to_date" class="form-control" required />
+                        <input type="date" v-model="searchData.to" class="form-control" required />
                       </div>
                       <div class="col-md-4">
                         <label>College:</label>
@@ -57,11 +56,11 @@
                     </div>
                     <div class="row m-t-5">
                       <div class="col-md-4">
-                        <label>Type:</label>
-                        <select class="form-control" v-model="searchData.search_type">
+                        <label>Entry Mode:</label>
+                        <select class="form-control" v-model="searchData.entry_mode">
                           <option value="" selected>All</option>
                           <option value="DE">DE</option>
-                          <option value="PUTME">PUTME</option>
+                          <option value="JAMB">JAMB</option>
                         </select>
                       </div>
                       <div class="col-md-4">
@@ -76,23 +75,23 @@
                         </select>
                       </div>
                       <div class="col-md-2 m-t-30">
-                        <button type="button" class="btn btn-primary btn-block">
+                        <button type="button" id="searchBtn" @click="searchRecord(1)" class="btn btn-primary btn-block">
                           <i class="fa fa-search" />&nbsp;Search Record
                         </button>
                       </div>
                       <div class="col-md-2 m-t-30">
-                        <button type="button" class="btn btn-danger btn-block">
-                          <i class="fa fa-file-excel-o" />&nbsp;Export to Excel
+                        <button type="button" id="exportBtn" @click="exportRegisteredPutmeStudents" class="btn btn-danger btn-block">
+                          <i class="fa fa-file-excel-o"></i>&nbsp; Export
                         </button>
                       </div>
                     </div>
-                  </form>
                 </div>
               </div>
                 <div class="card card-default">
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME &amp; DE Exam Registration Report</h3>
                         <div class="pull-right sm-pull-reset">
+                          <button type="button" class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                           <button type="button" class="btn btn-primary">Completed Registration <span class="badge">80</span></button>
                         </div>
                         <div class="clearfix"></div>
@@ -104,7 +103,7 @@
                                   <th>REG Number</th>
                                   <th style="width:22%">Email</th>
                                   <th>Phone</th>
-                                  <th>Type</th>
+                                  <th>Entry Mode</th>
                                   <th style="width:16%">Status</th>
                                   <th style="width:23%">Action</th>
                                 </thead>
@@ -484,13 +483,15 @@ export default {
         user:{},
         searchData: {
           registration_number: '',
-          search_screening_id: '',
-          from_date: '',
-          to_date: '',
+          screening_id: '',
+          from: '',
+          to: '',
+          session_id: '',
           faculty_id: '',
           department_id: '',
-          search_type: '',
-          year :''
+          entry_mode: '',
+          year :'',
+          export: false
         },
         pagination: {
           total: 0,
@@ -581,31 +582,6 @@ export default {
     printForm(registration_number) {
       let url = config.backend + 'forms/registration-print?jamb_reg_no=' + registration_number
       window.open(url, '_blank')
-    },
-    searchRecord(){
-        let payload = {}
-        payload.registration_number = this.search_registration_number
-        payload.type = this.search_type
-        payload.screening_id = this.search_screening_id
-        payload.page = 1
-        this.$store
-            .dispatch('get-started/searchPUTMERegistraton', payload)
-            .then(res => {
-            if(res != undefined){
-                if(res.status == true){
-                    if(res.data == null){
-                        this.users = []
-                    }else{
-                        this.users = res.data.data
-                        this.pagination = res.data
-                    }
-                }else{
-                }
-            }else{
-            }
-        }).catch(err => {
-        this.loading = false
-        })
     },
     exportPUTMERegistrations(){
         this.exportLoading = true
@@ -702,22 +678,77 @@ export default {
                 this.$toast.error('An error occurred please contact the administrator' + err)
         })
     },
+    exportRegisteredPutmeStudents() {
+      $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
+      this.searchData.export = true
+      this.$store.dispatch('reports/exportRegisteredPutmeStudents', this.searchData)
+        .then(res =>{
+          $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
+          let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+          let fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', 'registered-putme-student-report.xlsx');
+          document.body.appendChild(fileLink);
+          fileLink.click();
+          this.exLoading = false
+          this.searchData.export = false
+          this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+        }).catch(err =>{
+        $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
+        this.$toast.error(err)
+      })
+    },
+    refresh() {
+      this.searchData = {
+        registration_number: '',
+        screening_id: '',
+        from: '',
+        to: '',
+        session_id: '',
+        faculty_id: '',
+        department_id: '',
+        entry_mode: '',
+        year :'',
+        export: false
+      }
+      this.getAllUsers(1)
+    },
+    searchRecord() {
+      this.getLoading = true
+      this.users = []
+      this.searchData.page = 1
+      this.searchData.export = false
+      $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
+      this.$store
+        .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
+        .then(res => {
+          $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search" />&nbsp;Search Record');
+          if(res.data.status){
+            this.getLoading = false
+            this.users = res.data.data.data
+            this.pagination = res.data.data
+          }else{
+            this.getLoading = false
+            this.ErrMsg = "Error Fetching data!"
+          }
+        }).catch(err => {
+        $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search" />&nbsp;Search Record');
+        this.getLoading = false
+        this.$toast.error(err)
+      })
+    },
     getAllUsers(page){
-        this.getLoading = true
-        let payload = {}
-        payload.page = page
-        payload.registration_number = ""
-        payload.type = ""
-        payload.screening_id = ""
+      this.getLoading = true
+      this.users = []
+      this.searchData.page = page
         this.$store
-            .dispatch('get-started/getPUTMERegistrations', payload)
+            .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
             .then(res => {
             if(res != undefined){
-                if(res.status == true){
+                if(res.data.status == true){
                     this.getLoading = false
-                    this.users = res.data.data
-                  console.log(this.users)
-                    this.pagination = res.data
+                    this.users = res.data.data.data
+                    this.pagination = res.data.data
                 }else{
                     this.getLoading = false
                     this.ErrMsg = "Error Fetching data!"

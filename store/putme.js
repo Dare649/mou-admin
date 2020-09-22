@@ -17,7 +17,7 @@ export const actions = {
       }).catch(err =>{
         return err
       })
-  }
+  },
 }
 
 export const getters = {

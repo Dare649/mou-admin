@@ -65,6 +65,26 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getRegisteredPutmeStudents(context, data) {
+    return await this.$axios.get('api/putme/export-completed-registrations?registration_number='+data.registration_number+'&screening_id='+data.screening_id+'&session_id='+data.session_id+'&department_id='+data.department_id+'&entry_mode='+data.entry_mode+'&from='+data.from+'&to='+data.to+'&export='+data.export+'&page='+data.page)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async exportRegisteredPutmeStudents(context, data) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/putme/export-completed-registrations?registration_number='+data.registration_number+'&screening_id='+data.screening_id+'&session_id'+data.session_id+'&department_id='+data.department_id+'&entry_mode='+data.entry_mode+'&from='+data.from+'&to='+data.to+'&export='+data.export,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
   }
 }
 
