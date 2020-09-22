@@ -151,6 +151,9 @@ module.exports = {
       {src: '~/plugins/utils.js', ssr: false}
     ]
   },
+  router: {
+    middleware: ['auth']
+  },
 
 
   /*
