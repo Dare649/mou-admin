@@ -188,8 +188,8 @@ export default {
           this.exLoading = false
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
         }).catch(err =>{
-        $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
-        this.$toast.error(err)
+          $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
+          this.$toast.error(err)
       })
     },
     getAcceptanceLetter(page) {

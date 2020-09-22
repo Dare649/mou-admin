@@ -59,12 +59,24 @@ export const actions = {
       })
   },
   async getTransactionReport(context, data) {
-    return await this.$axios.get('api/reports/payments?trans_ref='+data.trans_ref+'&jamb_no='+data.jamb_no+'&department='+data.department+'&payment_type='+data.payment_type+'&from_dt='+data.from_dt+'&to_dt='+data.to_dt)
+    return await this.$axios.get('api/reports/payments?trans_ref='+data.trans_ref+'&jamb_no='+data.jamb_no+'&department='+data.department+'&payment_type='+data.payment_type+'&from_dt='+data.from_dt+'&to_dt='+data.to_dt+'&export='+data.export+'&page='+data.page)
       .then(res =>{
         return res
       }).catch(err =>{
         return err
       })
+  },
+  async exportTransactionReport(context, data) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/reports/payments?trans_ref='+data.trans_ref+'&jamb_no='+data.jamb_no+'&department='+data.department+'&payment_type='+data.payment_type+'&from_dt='+data.from_dt+'&to_dt='+data.to_dt+'&export='+data.export+'&page='+data.page,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
   },
   async getRegisteredPutmeStudents(context, data) {
     return await this.$axios.get('api/putme/export-completed-registrations?registration_number='+data.registration_number+'&screening_id='+data.screening_id+'&session_id='+data.session_id+'&department_id='+data.department_id+'&entry_mode='+data.entry_mode+'&from='+data.from+'&to='+data.to+'&export='+data.export+'&page='+data.page)

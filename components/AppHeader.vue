@@ -68,7 +68,7 @@
                                 <li><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/admissions-report">Admissions Report</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/school-fee-report">School Fee Report</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/uploaded-jamb-candidates">Uploaded Jamb candidate</nuxt-link></li>
                             </ul>
                         </li>
