@@ -92,10 +92,10 @@
                 <tr v-if="loading">
                   <td colspan="5">Loading......Please wait</td>
                 </tr>
-                <tr v-if="!loading && students.length < 1">
+                <tr v-if="!loading && Object.keys(students).length < 1">
                   <td colspan="5">No records at the moment</td>
                 </tr>
-                <tr v-if="!loading && students.length > 0" v-for="student in students">
+                <tr v-if="!loading && Object.keys(students).length > 0" v-for="student in students">
                   <td>{{ student.reg_number }}</td>
                   <td>{{ student.name }}</td>
                   <td>{{ student.program }}</td>
