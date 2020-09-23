@@ -154,6 +154,18 @@ module.exports = {
   router: {
     middleware: ['auth']
   },
+  generate: {
+    routes: function () {
+      let departments = axios.get('http://portal.olsslekki.org/api/departments').then((res) => {
+        return res.data.map((page) => {
+          return '/get-started/departments/' + page.id
+        })
+      })
+      return Promise.all([pages, tipsters]).then(values => {
+        return values.join().split(',');
+      });
+    }
+  },
 
 
   /*
