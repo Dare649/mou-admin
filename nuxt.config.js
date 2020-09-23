@@ -157,14 +157,11 @@ module.exports = {
   },
   generate: {
     routes: function () {
-      let departments = axios.get('https://portal.olsslekki.org/api/departments').then((res) => {
+      return axios.get('https://portal.olsslekki.org/api/departments').then((res) => {
         return res.data.map((page) => {
           return '/get-started/departments/' + page.id
         })
       })
-      return Promise.all([pages, tipsters]).then(values => {
-        return values.join().split(',');
-      });
     }
   },
 
