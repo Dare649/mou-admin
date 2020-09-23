@@ -8,14 +8,14 @@ const dynamicRoutes = async () => {
 
   const routesForDepartments = resForDepartments.data.map((department) => {
     return {
-      route: `/pages/get-started/departments/${department.id}`,
+      route: `/get-started/departments/${department.id}`,
       payload: department
     }
   })
 
   const routesForLgas = resForLgas.data.map((lga) => {
     return {
-      route: `/pages/get-started/lgas/${lga.id}`,
+      route: `/get-started/lgas/${lga.id}`,
       payload: lga
     }
   })
