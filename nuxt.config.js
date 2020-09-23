@@ -1,5 +1,5 @@
 const pkg = require('./package')
-const axios = require("axios");
+import axios from 'axios';
 
 
 module.exports = {
@@ -156,12 +156,16 @@ module.exports = {
     middleware: ['auth']
   },
   generate: {
-    routes: function () {
-      return axios.get('https://portal.olsslekki.org/api/departments').then((res) => {
-        return res.data.map((page) => {
-          return '/get-started/departments/' + page.id
+    routes() {
+      return axios.get('https://portal.olsslekki.org/api/departments')
+        .then((res) => {
+          return res.data.map((department) => {
+            return {
+              route: 'get-started/departments/' + department.id,
+              payload: department
+            }
+          })
         })
-      })
     }
   },
 
