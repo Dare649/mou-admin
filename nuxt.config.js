@@ -156,7 +156,7 @@ module.exports = {
   },
   generate: {
     routes: function () {
-      let departments = axios.get('http://portal.olsslekki.org/api/departments').then((res) => {
+      let departments = axios.get('https://portal.olsslekki.org/api/departments').then((res) => {
         return res.data.map((page) => {
           return '/get-started/departments/' + page.id
         })
