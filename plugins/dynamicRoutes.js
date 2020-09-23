@@ -6,14 +6,14 @@ export const dynamicRoutes = async () => {
   // console.log(resForDepartments);
   const resForLgas = await axios.get('https://portal.olsslekki.org/api/lgas/getAllLgas', {params: {size: 100}});
 
-  const routesForDepartments = resForDepartments.data.data.data.map((department) => {
+  const routesForDepartments = resForDepartments.data.data.map((department) => {
     return {
       route: `/get-started/departments/${department.id}`,
       payload: department
     }
   })
 
-  const routesForLgas = resForLgas.data.data.data.map((lga) => {
+  const routesForLgas = resForLgas.data.data.map((lga) => {
     return {
       route: `/get-started/lgas/${lga.id}`,
       payload: lga
