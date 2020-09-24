@@ -267,23 +267,18 @@ export const actions = {
         return err
       })
     },
-    async exportDEs(context, payload) {
-        return await this.$axios.post('api/de-sessions/admission-list/export', {
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "putmes")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
-    },
+  async exportDeAdmissionList(context, data){
+    return await this.$axios({
+      method: 'get',
+      url: 'api/de-sessions/admission-list/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id + '&category_id=' + data.category_id,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
+  },
     async exportReligions(context) {
         return await this.$axios({
             method: 'get',

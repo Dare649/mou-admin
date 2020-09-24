@@ -151,14 +151,14 @@
                                     <div class="row">
                                       <div class="form-group col-md-6">
                                           <label>Select Academic Session</label>
-                                           <select class="form-control" v-model="model.export_session_id">
+                                           <select class="form-control" v-model="exportData.session_id">
                                                 <option value="" disabled selected>Select your option</option>
                                                 <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                             </select>
                                       </div>
                                       <div class="form-group col-md-6">
                                         <label>Select College</label>
-                                        <select class="form-control" required @change="populateDownloadDepartment($event)">
+                                        <select class="form-control" v-model="exportData.college_id" required @change="populateDownloadDepartment($event)">
                                             <option value="" disabled selected>All</option>
                                             <option v-for="college in colleges" :key="college.id" :value="college.id">
                                               {{college.name}}
@@ -167,7 +167,7 @@
                                       </div>
                                       <div class="form-group col-md-6">
                                           <label>Select Department</label>
-                                          <select class="form-control" required v-model="model.export_department_id">
+                                          <select class="form-control" required v-model="exportData.department_id">
                                             <option value="" disabled selected>All</option>
                                             <option v-for="department in downloadDepartments" :key="department.id" :value="department.id">
                                               {{department.name}}
@@ -176,7 +176,7 @@
                                       </div>
                                       <div class="form-group col-md-6">
                                           <label>Select Category</label>
-                                          <select class="form-control" required v-model="model.export_category_id">
+                                          <select class="form-control" required v-model="exportData.category_id">
                                               <option value="" selected>All</option>
                                               <option v-for="category in admission_categories" :key="category.id" :value="category.id">{{category.name}}</option>
                                           </select>
@@ -185,7 +185,7 @@
                                     <div class="row">
                                       <div class="col-md-12">
                                         <hr/>
-                                        <button type="button" v-if="!exportLoading"  @click="exportDEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Excel</button>
+                                        <button type="button" v-if="!exportLoading"  @click="exportDEAdmissionList()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Excel</button>
                                         <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                       </div>
                                     </div>
@@ -210,6 +210,7 @@ export default {
         exportLoading: false,
         academic_sessions: [],
         departments: [],
+        downloadDepartments: [],
         importResponse: {},
         programs: [],
         file: "",
@@ -219,15 +220,17 @@ export default {
           name: "",
           import_session_id: "",
           import_category_id: "",
-          export_category_id: "",
           overwrite: "",
           import_overwrite: "",
           import_program_id: "",
-          export_department_id: "",
           import_department_id:"",
-          export_faculty_id: "",
-          export_session_id: ""
         },
+        exportData: {
+          session_id: '',
+          department_id: '',
+          college_id: '',
+          category_id: ''
+        }
       }
     },
     methods: {
@@ -239,25 +242,27 @@ export default {
                 this.$toast.error(err)
               })
           },
-        exportDEs(){
-            this.exportLoading = true
-            var payload = new FormData()
-            payload.session_id = this.model.export_session_id
-            payload.department_id = this.model.export_department_id
-            payload.category_id = this.model.export_category_id
-            this.$store
-                .dispatch('get-started/exportDEs', payload)
-                .then(res => {
-                    if(res){
-                        this.exportLoading = false
-                        this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                    }else{
-                        this.exportLoading = false
-                        alert("File Downloaded Unsuccessful")
-                    }
-            }).catch(err => {
-            this.exportLoading = false
-            })
+        exportDEAdmissionList(){
+          this.exportLoading = true
+          this.$store
+              .dispatch('get-started/exportDeAdmissionList', this.exportData)
+              .then(res => {
+                if(res){
+                  this.exportLoading = false
+                  let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                  let fileLink = document.createElement('a');
+                  fileLink.href = fileURL;
+                  fileLink.setAttribute('download', 'de-admission-list-report.xlsx');
+                  document.body.appendChild(fileLink);
+                  fileLink.click();
+                  this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }else{
+                    this.exportLoading = false
+                    alert("File Downloaded Unsuccessful")
+                }
+          }).catch(err => {
+          this.exportLoading = false
+          })
         },
         populateDepartment(e) {
           let id = e.target.value
