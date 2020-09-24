@@ -169,13 +169,6 @@ export default {
     }
   }),
   mounted: function() {
-      if (!process.server) {
-        const script1 = document.createElement('script')
-        script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'
-
-        document.head.appendChild(script1)
-      }
       this.getFaculties()
       this.getUploadedJambCandidates(1)
 
@@ -301,7 +294,6 @@ export default {
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                console.log(res)
                   this.exLoading = false
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                   var fileLink = document.createElement('a');

@@ -92,7 +92,7 @@
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME &amp; DE Exam Registration Report</h3>
                         <div class="pull-right sm-pull-reset">
                           <button type="button" class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                          <button type="button" class="btn btn-primary">Completed Registration <span class="badge">80</span></button>
+                          <button type="button" class="btn btn-primary">Completed Registration <span class="badge">{{count}}</span></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -111,10 +111,10 @@
                                 <tr v-if="getLoading">
                                     <td colspan="6">Loading....Please wait.</td>
                                 </tr>
-                                <tr v-if="!getLoading && users.length < 1">
+                                <tr v-if="!getLoading && Object.keys(users).length < 1">
                                     <td colspan="6">No record at the moment... Please insert new record</td>
                                 </tr>
-                                <tr v-else v-for="user in users" :key="user.id">
+                                <tr v-if="!getLoading && Object.keys(users).length > 0" v-for="user in users" :key="user.id">
                                   <td>
                                     <img v-if="user.photo === '' || user.photo === null" src="/assets/img/avatar.png" width="50px" height="50px" />
                                     <img v-else :src="user.photo" width="50px" height="50px" />
@@ -206,11 +206,20 @@
                           </tr>
                           <tr>
                               <th>Marital Status:</th>
-                              <td v-if="putmeDetails != null">{{putmeDetails.marital_status}}</td>
+                              <td v-if="putmeDetails != null ">
+                                {{putmeDetails.marital_status}}
+                              </td>
                           </tr>
                           <tr>
                               <th>Gender:</th>
-                              <td v-if="putmeDetails != null">Male</td>
+                              <td v-if="putmeDetails != null">
+                                <span v-if="putmeDetails.type === 'DE'">
+                                  {{ (putmeDetails.jambResult.gender === 'M') ? 'Male' : 'Female'}}
+                                </span>
+                                <span v-if="putmeDetails.type === 'JAMB'">
+                                  {{ (putmeDetails.jambResult.sex === 'M') ? 'Male' : 'Female'}}
+                                </span>
+                              </td>
                           </tr>
                           <tr>
                               <th>Department:</th>
@@ -553,7 +562,8 @@ export default {
           edit_phone_number: "",
           edit_secondary_phone: '',
           edit_no_of_sittings: ''
-        }
+        },
+        count: 0
       }
   },
   methods: {
@@ -773,6 +783,7 @@ export default {
         year :'',
         export: false
       }
+      this.countRegisteredPutmeStudents()
       this.getAllUsers(1)
     },
     searchRecord() {
@@ -799,6 +810,13 @@ export default {
         this.$toast.error(err)
       })
     },
+    countRegisteredPutmeStudents() {
+      this.count = 0
+      this.$store.dispatch('utility/countPutmeStudent')
+        .then(res => {
+          this.count = res.data.data
+        })
+    },
     getAllUsers(page){
       this.getLoading = true
       this.users = []
@@ -807,14 +825,15 @@ export default {
             .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
             .then(res => {
             if(res != undefined){
-                if(res.data.status == true){
-                    this.getLoading = false
-                    this.users = res.data.data.data
-                    this.pagination = res.data.data
-                }else{
-                    this.getLoading = false
-                    this.ErrMsg = "Error Fetching data!"
-                }
+              console.log(res)
+              if(res.data.status == true){
+                this.getLoading = false
+                this.users = res.data.data.data
+                this.pagination = res.data.data
+              }else{
+                  this.getLoading = false
+                  this.ErrMsg = "Error Fetching data!"
+              }
             }else{
                 this.getLoading = false
                 this.ErrMsg = "Error Fetching data!"
@@ -896,6 +915,7 @@ export default {
           script1.src = '/pages/js/pages.min.js'
           document.head.appendChild(script1)
       }
+      this.countRegisteredPutmeStudents()
       this.getCountries()
       this.getFaculties()
       this.getAllUsers(this.pagination.current_page)

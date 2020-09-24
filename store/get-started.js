@@ -243,39 +243,29 @@ export const actions = {
             return err
         });
     },
-    async exportPUTMEs(context, payload) {
-      return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
-      }, {
-          responseType: 'blob',
-          data: payload
-      }).then((response) => {
-          const url = URL.createObjectURL(new Blob([response.data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          }))
-          const link = document.createElement('a')
-          link.href = url
-          link.setAttribute('download', "putmes")
-          document.body.appendChild(link)
-          link.click()
-          return true
-      });
+    async exportPUTMEs(context, data) {
+      return await this.$axios({
+        method: 'get',
+        url: 'api/putme-sessions/post-utme-result/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
-    async exportUTMEs(context, payload) {
-      return await this.$axios.post('api/putme-sessions/admissions/export', {
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "des")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
+    async exportAdmissionList(context, data) {
+      return await this.$axios({
+        method: 'get',
+        url: 'api/putme-sessions/admissions/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id + '&category_id=' + data.category_id,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
     async exportDEs(context, payload) {
         return await this.$axios.post('api/de-sessions/admission-list/export', {
@@ -478,15 +468,6 @@ export const actions = {
             responseType: "arraybuffer"
         })
         .then(function (response) {
-            //handle success
-            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-            var fileLink = document.createElement('a');
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'uploaded_jamb_reports.xlsx');
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
             return response.data
         })
         .catch(err => {

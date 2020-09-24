@@ -72,28 +72,28 @@
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
                                                 <label>Select academic session</label>
-                                                <select class="form-control" v-model="model.export_session_id">
+                                                <select class="form-control" v-model="exportData.session_id">
                                                     <option value="" disabled selected>All</option>
                                                     <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.de_session_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Faculty</label>
-                                                <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
+                                                <select class="form-control" v-model="exportData.college_id" @change="populateDepartments($event)">
                                                     <option value="" selected>All</option>
                                                     <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Department</label>
-                                                <select class="form-control" v-model="model.export_department_id">
+                                                <select class="form-control" v-model="exportData.department_id">
                                                     <option value="" selected>All</option>
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportDeResult()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
                                                 <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                             </div>
                                         </div>
@@ -159,8 +159,37 @@ export default {
   name: "Jamb",
   layout: "main",
   middleware: "",
-  components: {
-
+  data() {
+    return {
+      pagination: {
+        total: 0,
+        per_page: 2,
+        from: 1,
+        to: 0,
+        current_page: 1
+      },
+      addloading: false,
+      downloading: false,
+      importResponse: {},
+      loading: false,
+      deleteLoading: false,
+      editLoading: false,
+      exportLoading: false,
+      academic_sessions: [],
+      faculties: [],
+      departments: [],
+      file: "",
+      model: {
+        name: "",
+        session_id: "",
+        overwrite: ""
+      },
+      exportData: {
+        department_id: '',
+        college_id: '',
+        session_id: ''
+      }
+    }
   },
   methods: {
       getFaculties(){
@@ -210,17 +239,20 @@ export default {
           this.downloading = false
         })
       },
-      exportPUTMEs(){
+    exportDeResult(){
           this.exportLoading = true
-          var payload = new FormData()
-          payload.session_id = this.model.export_session_id
-          payload.department_id = this.model.export_department_id
           this.$store
-            .dispatch('de-result-upload/exportDEs', payload)
+            .dispatch('de-result-upload/exportDEResult', this.exportData)
             .then(res => {
                 if(res){
-                    this.exportLoading = false
-                    this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                  this.exportLoading = false
+                  let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                  let fileLink = document.createElement('a');
+                  fileLink.href = fileURL;
+                  fileLink.setAttribute('download', 'de-result-report.xlsx');
+                  document.body.appendChild(fileLink);
+                  fileLink.click();
+                  this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
                     this.exportLoading = false
                     alert("File Downloaded Unsuccessful")
@@ -300,36 +332,6 @@ export default {
         }
       }
   },
-  data() {
-      return {
-        pagination: {
-            total: 0,
-            per_page: 2,
-            from: 1,
-            to: 0,
-            current_page: 1
-        },
-        addloading: false,
-        downloading: false,
-        importResponse: {},
-        loading: false,
-        deleteLoading: false,
-        editLoading: false,
-        exportLoading: false,
-        academic_sessions: [],
-        faculties: [],
-        departments: [],
-        file: "",
-        model: {
-          name: "",
-          session_id: "",
-          overwrite: "",
-          export_department_id: "",
-          export_faculty_id: "",
-          export_session_id: ""
-        },
-      }
-    },
   mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')

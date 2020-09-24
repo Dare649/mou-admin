@@ -74,21 +74,21 @@
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
                                                 <label>Select academic session</label>
-                                                <select class="form-control" v-model="model.export_session_id">
+                                                <select class="form-control" v-model="exportData.session_id">
                                                     <option value="" disabled selected>All</option>
                                                     <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Faculty</label>
-                                                <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
+                                                <select class="form-control" v-model="exportData.college_id" @change="populateDepartments($event)">
                                                     <option value="" selected>All</option>
                                                     <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Department</label>
-                                                <select class="form-control" v-model="model.export_department_id">
+                                                <select class="form-control" v-model="exportData.department_id">
                                                     <option value="" selected>All</option>
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
@@ -187,11 +187,13 @@ export default {
         model: {
           name: "",
           session_id: "",
-          overwrite: "",
-          export_department_id: "",
-          export_faculty_id: "",
-          export_session_id: ""
+          overwrite: ""
         },
+        exportData: {
+          college_id: '',
+          department_id: '',
+          session_id: ''
+        }
       }
    },
   methods: {
@@ -252,20 +254,23 @@ export default {
             })
         },
       exportPUTMEs(){
-          this.exportLoading = true
-          var payload = new FormData()
-          payload.session_id = this.model.export_session_id
-          payload.department_id = this.model.export_department_id
-          this.$store
-            .dispatch('get-started/exportPUTMEs', payload)
-            .then(res => {
-                if(res){
-                    this.exportLoading = false
-                    this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                }else{
-                    this.exportLoading = false
-                    alert("File Downloaded Unsuccessful")
-                }
+        this.exportLoading = true
+        this.$store
+          .dispatch('get-started/exportPUTMEs', this.exportData)
+          .then(res => {
+            if(res){
+              this.exportLoading = false
+              let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              let fileLink = document.createElement('a');
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'post-utme-result-report.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
+              this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            }else{
+              this.exportLoading = false
+              alert("File Downloaded Unsuccessful")
+            }
         }).catch(err => {
           this.exportLoading = false
         })
