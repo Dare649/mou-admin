@@ -95,7 +95,7 @@
                                     <div class="row">
                                       <div class="form-group col-md-6">
                                         <label>Select College</label>
-                                        <select class="form-control" required @change="populateDepartment($event)">
+                                        <select class="form-control" v-model="model.import_faculty_id" required @change="populateDepartment($event)">
                                             <option value="" disabled selected>Select your option</option>
                                             <option v-for="college in colleges" :key="college.id" :value="college.id">
                                               {{college.name}}
@@ -225,6 +225,7 @@ export default {
           import_overwrite: "",
           import_program_id: "",
           import_department_id:"",
+          import_faculty_id: ''
         },
         exportData: {
           session_id: '',
@@ -312,6 +313,7 @@ export default {
             formData.append('session_id', this.model.import_session_id)
             formData.append('department_id', this.model.import_department_id)
             formData.append('program_id', this.model.import_program_id)
+            formData.append('faculty_id', this.model.import_faculty_id)
             formData.append('admission_category', this.model.import_category_id)
             formData.append('overwrite', this.model.import_overwrite)
             this.$store

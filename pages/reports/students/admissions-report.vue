@@ -179,7 +179,6 @@ export default {
     markForApproval(reg_num) {
       if(confirm('Do you want to mark this student okay for departmental approval?')){
         this.approveData.registration_number = reg_num
-        console.log(this.approveData)
         this.$toast.info('Processing...please wait', {duration: 6100})
         this.$store.dispatch('academic-session/markForDepartmentalApproval', this.approveData)
           .then(res =>{
