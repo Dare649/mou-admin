@@ -308,16 +308,16 @@ export default {
         uploadPUTMEAdmission(){
             this.loading = true
             this.file = this.$refs.myFiles.files[0];
-            let formData = new FormData();
-            formData.append('file', this.file);
-            formData.append('session_id', this.model.import_session_id)
-            formData.append('department_id', this.model.import_department_id)
-            formData.append('program_id', this.model.import_program_id)
-            formData.append('faculty_id', this.model.import_faculty_id)
-            formData.append('admission_category', this.model.import_category_id)
-            formData.append('overwrite', this.model.import_overwrite)
+            this.formData = new FormData();
+            this.formData.append('file', this.file);
+            this.formData.append('session_id', this.model.import_session_id)
+            this.formData.append('department_id', this.model.import_department_id)
+            this.formData.append('program_id', this.model.import_program_id)
+            this.formData.append('faculty_id', this.model.import_faculty_id)
+            this.formData.append('admission_category', this.model.import_category_id)
+            this.formData.append('overwrite', this.model.import_overwrite)
             this.$store
-                .dispatch('get-started/uploadPUTMEAdmission', formData)
+                .dispatch('get-started/uploadPUTMEAdmission', this.formData)
                 .then(res => {
 
                 if(res != undefined){
@@ -327,10 +327,12 @@ export default {
                         //this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
+                      this.$toast.error(res.message)
                         alert("File Upload Unsuccessful")
                     }
                 }else{
                     this.loading = false
+                  this.$toast.error(res.message)
                     alert("File Upload Unsuccessful")
                 }
             }).catch(err => {
