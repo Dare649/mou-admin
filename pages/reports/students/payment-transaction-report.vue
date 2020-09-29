@@ -111,15 +111,15 @@
                   <td colspan="6">No records at the moment</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
-                  <td>{{payment.name}}</td>
-                  <td>{{payment.trans_ref}}</td>
-                  <td>{{payment.mode}}</td>
-                  <td>{{payment.paid_for}}</td>
-                  <td>{{payment.trans_dt}}</td>
+                  <td>{{ payment.name }}</td>
+                  <td>{{ payment.trans_ref }}</td>
+                  <td>{{ payment.mode }}</td>
+                  <td>{{ payment.paid_for }}</td>
+                  <td>{{ payment.trans_dt }}</td>
                   <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="View Receipt">
-                        <a href="javascript:;" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
+                        <a href="javascript:;" @click="viewReceipt(payment.trans_ref)" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
                       </span>
                     </div>
                   </td>
@@ -197,6 +197,10 @@ export default {
           this.loading = false
           this.$toast.error(err)
       })
+    },
+    viewReceipt(ref) {
+      let url = config.backend + 'reports/payment-receipt/' + ref
+      window.open(url, '_blank')
     },
     searchRecord() {
       this.formData.page = 1

@@ -58,7 +58,7 @@
                             <div class="row">
                                 <form class="full-width">
                                     <div class="col-lg-12 m-b-10">
-                                        <select class="form-control" v-model="model.export_year" >
+                                        <select class="form-control" v-model="exportData.year" >
                                             <option value="" selected>All</option>
                                             <option value="2010">2010</option>
                                             <option value="2011">2011</option>
@@ -390,6 +390,9 @@ export default {
           edit_department_id: "",
           edit_year: ""
         },
+        exportData: {
+          year: ''
+        }
       }
     },
   methods: {
@@ -566,28 +569,25 @@ export default {
       },
       exportJambResults(){
           this.exportLoading = true
-          let formData = new FormData()
-          formData.year = this.model.export_year
           this.$store
-            .dispatch('jamb-de/exportJambResults', formData)
+            .dispatch('jamb-de/exportJambResults', this.exportData)
             .then(res => {
             if(res != undefined){
-                // this.loading = false
-                // var fileURL = window.URL.createObjectURL(new Blob([res], {type: 'application/json'}));
-                // var fileLink = document.createElement('a');
-                // fileLink.setAttribute("href", fileURL);
-                // fileLink.setAttribute('download', 'jamb-results-'+ this.model.export_year +'.csv');
-                // document.body.appendChild(fileLink);
-
-                // fileLink.click();
-                this.exportLoading = false
-                $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
-                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+              let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              let fileLink = document.createElement('a');
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'de-jamb-results.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
+              this.exportLoading = false
+              $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
+              this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
                 this.exportLoading = false
                 alert("File Downloaded Unsuccessful")
             }
         }).catch(err => {
+          this.$toast.error(err)
           this.exportLoading = false
         })
       },
