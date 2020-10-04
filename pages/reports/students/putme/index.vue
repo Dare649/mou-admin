@@ -91,6 +91,7 @@
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">PUTME &amp; DE Exam Registration Report</h3>
                         <div class="pull-right sm-pull-reset">
+                          <nuxt-link to="/reports/students/putme/register-putme" class="btn btn-warning"><i class="fa fa-plus"></i>&nbsp; Add New Student </nuxt-link>
                           <button type="button" class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
                           <button type="button" class="btn btn-primary">Completed Registration <span class="badge">{{count}}</span></button>
                         </div>
@@ -825,11 +826,10 @@ export default {
             .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
             .then(res => {
             if(res != undefined){
-              console.log(res)
               if(res.data.status == true){
-                this.getLoading = false
                 this.users = res.data.data.data
                 this.pagination = res.data.data
+                this.getLoading = false
               }else{
                   this.getLoading = false
                   this.ErrMsg = "Error Fetching data!"
