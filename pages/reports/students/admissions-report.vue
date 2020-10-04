@@ -195,6 +195,8 @@ export default {
       }
     },
     searchRecord() {
+      this.loading = true
+      this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
