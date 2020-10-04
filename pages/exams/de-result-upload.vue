@@ -19,16 +19,16 @@
                     <div class="inner">
                         <!-- START BREADCRUMB -->
                         <div class="row">
-                            <div class="col-md-10 offset-md-1">
+                            <div class="col-md-12">
                                 <!-- START card -->
                                 <div class="card card-transparent text-center">
                                     <div class="card-header ">
                                         <div class="card-title">Process</div>
                                     </div>
                                     <div class="card-body">
-                                        <h6 class="semi-bold">1. Admin will first Get CSV from "GET CSV" button in "Download Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">2. Import the Jamb Results from "IMPORT" button in "Upload Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">3. Admin can check Report to view scores uploaded from "CHECK REPORT" button in "Download Prefilled CSV File" section.</h6>
+                                      <h6 class="semi-bold">1. To upload DE PUTME Result, first download the sample excel sheet by clicking the "Download Sample" button in the "Upload DE Post UTME Result" section</h6>
+                                      <h6 class="semi-bold">2. Import the result by selecting the file and other fields, then click on the "IMPORT RECORD" button in "Upload DE Post UTME Result" section.</h6>
+                                      <h6 class="semi-bold">3. Admin can download already uploaded results by clicking on the "Download Result" button in  "Download Post UTME Result" section.</h6>
                                     </div>
                                 </div>
                                 <!-- END card -->
@@ -64,7 +64,7 @@
                     <div class="col-md-6" v-permission="'Download DE result csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Download Prefilled Excel File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Download DE Post UTME Result</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -93,7 +93,7 @@
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" v-if="!exportLoading"  @click="exportDeResult()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportDeResult()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Result</button>
                                                 <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                     <div class="col-md-6" v-permission:any="'Upload DE result|Download DE result sample csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled Excel File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Upload DE Post UTME Result</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">

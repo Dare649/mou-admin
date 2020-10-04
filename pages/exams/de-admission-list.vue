@@ -26,9 +26,9 @@
                                         <div class="card-title">DE STUDENTS ONLY UPLOAD</div>
                                     </div>
                                     <div class="card-body">
-                                        <h6 class="semi-bold">1. Admin will first Get CSV from "GET CSV" button in "Download Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">2. Import the Admission List from "IMPORT" button in "Upload Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">3. Download admission list using the "Download Prefilled CSV File" section.</h6>
+                                      <h6 class="semi-bold">1. Admin will get the sample excel file by clicking the "Download Sample Excel" button.</h6>
+                                      <h6 class="semi-bold">2. Fill the excel sheet appropriately, select the necessary options and upload by clicking on the "IMPORT RECORD" button in the "Upload DE Admission List" section.</h6>
+                                      <h6 class="semi-bold">3. Download admission list using the "Download DE Admission List" section.</h6>
                                     </div>
                                 </div>
                                 <!-- END card -->

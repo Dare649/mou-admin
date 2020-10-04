@@ -99,22 +99,24 @@
                 <th>Trans. Ref</th>
                 <th>Payment Mode</th>
                 <th>Payment For</th>
+                <th>Amount</th>
                 <th>Date</th>
                 <th style="width: 8%;">Action</th>
               </tr>
               </thead>
               <tbody>
                 <tr v-if="loading">
-                  <td colspan="6">Loading...please wait</td>
+                  <td colspan="7">Loading...please wait</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length < 1">
-                  <td colspan="6">No records at the moment</td>
+                  <td colspan="7">No records at the moment</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
                   <td>{{ payment.trans_ref }}</td>
                   <td>{{ payment.mode }}</td>
                   <td>{{ payment.paid_for }}</td>
+                  <td>{{ payment.trans_amount }}</td>
                   <td>{{ payment.trans_dt }}</td>
                   <td>
                     <div class="btn-group">
