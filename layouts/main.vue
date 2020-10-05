@@ -1,23 +1,24 @@
 <template>
   <div onload="startTime()" class = "fixed-header horizontal-menu horizontal-app-menu dashboard" id="app">
-    <AppHeader></AppHeader> 
+    <AppHeader></AppHeader>
     <!-- START PAGE-CONTAINER -->
     <div class="page-container ">
         <div class="page-content-wrapper ">
-          <nuxt/> 
-          <AppFooter></AppFooter> 
+          <nuxt/>
+          <AppFooter></AppFooter>
         </div>
-    </div>             
+    </div>
   </div>
 </template>
 
 <script>
 import AppHeader from "../components/AppHeader";
 import AppFooter from "../components/AppFooter";
+
 export default {
   name: "SMP-Dashboard",
   components: {
-    AppHeader,    
+    AppHeader,
     AppFooter
   },
   data(){
@@ -26,9 +27,23 @@ export default {
     }
   },
   mounted: function(){
-    this.setPermissions()
-    this.setRoles()
-    
+
+    this.setPermissions();
+
+    this.setRoles();
+
+    window.onload = function()
+    {
+      // fix for windows 8
+      if (navigator.appVersion.indexOf("Windows NT 6.2") != -1)
+        document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="pages/css/windows.chrome.fix.css" />'
+    }
+    if (!process.server) {
+      const script1 = document.createElement('script')
+      script1.type = 'text/javascript'
+      script1.src = '/pages/js/pages.min.js'
+      document.head.appendChild(script1)
+    }
   },
   methods:{
     setPermissions(){

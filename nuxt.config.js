@@ -1,5 +1,6 @@
-const pkg = require('./package')
+import {dynamicRoutes} from "./plugins/dynamicRoutes";
 
+const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
@@ -44,8 +45,7 @@ module.exports = {
       {src: "/assets/plugins/classie/classie.js"},
       {src: "/assets/plugins/switchery/js/switchery.min.js"},
       {src: "/assets/plugins/jquery-validation/js/jquery.validate.min.js"},
-      {src: '/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js'},
-      {src: '/pages/js/pages.min.js'}
+      {src: '/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js'}
     ]
   },
 
@@ -151,6 +151,12 @@ module.exports = {
       {src: '~/plugins/libs.js', ssr: false},
       {src: '~/plugins/utils.js', ssr: false}
     ]
+  },
+  router: {
+    middleware: ['auth']
+  },
+  generate: {
+    routes: dynamicRoutes
   },
 
 

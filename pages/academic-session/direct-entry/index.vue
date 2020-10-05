@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" v-if="!loading">
+                        <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
                                 <th style="width:30%">Exam Name</th>
@@ -91,6 +91,11 @@
                                             <td colspan="6">No result found</td>
                                         </tr>
                                     </template>
+                                    <template v-if="loading">
+                                      <tr class="text-center">
+                                        <td colspan="6">Loading...Please wait!</td>
+                                      </tr>
+                                    </template>
                                 </tbody>
                             </table>
                             <pagination
@@ -99,7 +104,7 @@
                                 :offset="4">
                             </pagination>
                         </div>
-                        <vcl-table :columns="6" v-if="loading" />
+<!--                        <vcl-table :columns="6" v-if="loading" />-->
                     </div>
                 </div>
             </div>

@@ -19,16 +19,16 @@
                     <div class="inner">
                         <!-- START BREADCRUMB -->
                         <div class="row">
-                            <div class="col-md-10 offset-md-1">
+                            <div class="col-md-12">
                                 <!-- START card -->
                                 <div class="card card-transparent text-center">
                                     <div class="card-header ">
                                         <div class="card-title">Process</div>
                                     </div>
                                     <div class="card-body">
-                                        <h6 class="semi-bold">1. Admin will first Get CSV from "GET CSV" button in "Download Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">2. Import the Jamb Results from "IMPORT" button in "Upload Prefilled CSV File" section.</h6>
-                                        <h6 class="semi-bold">3. Admin can check Report to view scores uploaded from "CHECK REPORT" button in "Download Prefilled CSV File" section.</h6>
+                                        <h6 class="semi-bold">1. To upload PUTME Result, first download the sample excel sheet by clicking the "Download Sample" button in the "Upload PUTME Result" section</h6>
+                                        <h6 class="semi-bold">2. Import the result by selecting the file and other fields, then click on the "IMPORT RECORD" button in "Upload PUTME Result" section.</h6>
+                                        <h6 class="semi-bold">3. Admin can download already uploaded results by clicking on the "Download Result" button in  "Download PUTME Result" section.</h6>
                                     </div>
                                 </div>
                                 <!-- END card -->
@@ -66,7 +66,7 @@
                     <div class="col-md-6" v-permission="'Download PUTME result csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Download Prefilled Excel File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Download PUTME Result</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -74,28 +74,28 @@
                                         <div class="col-lg-12">
                                             <div class="form-group m-b-10">
                                                 <label>Select academic session</label>
-                                                <select class="form-control" v-model="model.export_session_id">
+                                                <select class="form-control" v-model="exportData.session_id">
                                                     <option value="" disabled selected>All</option>
                                                     <option v-for="academic_session in academic_sessions" :key="academic_session.id" :value="academic_session.id">{{academic_session.session_name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Faculty</label>
-                                                <select class="form-control" v-model="model.export_faculty_id" @change="populateDepartments($event)">
+                                                <select class="form-control" v-model="exportData.college_id" @change="populateDepartments($event)">
                                                     <option value="" selected>All</option>
                                                     <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group m-b-10">
                                                 <label>Select Department</label>
-                                                <select class="form-control" v-model="model.export_department_id">
+                                                <select class="form-control" v-model="exportData.department_id">
                                                     <option value="" selected>All</option>
                                                     <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="m-t-30">
                                                 <hr/>
-                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Get Excel</button>
+                                                <button type="button" v-if="!exportLoading"  @click="exportPUTMEs()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Result</button>
                                                 <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
                                             </div>
                                         </div>
@@ -109,7 +109,7 @@
                     <div class="col-md-6" v-permission:any="'Upload PUTME result|Download sample csv'">
                         <div class="card card-default">
                             <div class="card-header  separator">
-                                <h3 class="text-primary no-margin p-b-10">Upload Prefilled Excel File</h3>
+                                <h3 class="text-primary no-margin p-b-10">Upload PUTME Result</h3>
                             </div>
                             <div class="card-body">
                                 <form class="p-4">
@@ -140,7 +140,7 @@
                                             <div class="m-t-30">
                                                 <hr/>
                                                 <button v-permission="'Upload PUTME result'" type="button" @click="uploadPUTMEResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Import Record</button>
-                                                <button v-permission="'Download sample csv'" v-if="!downloading" @click="downloadPUTMESampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
+                                                <button v-permission="'Download sample csv'" type="button" v-if="!downloading" @click="downloadPUTMESampleFile($event)" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample</button>
                                                 <button type="button"  disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                                                 <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
                                             </div>
@@ -187,11 +187,13 @@ export default {
         model: {
           name: "",
           session_id: "",
-          overwrite: "",
-          export_department_id: "",
-          export_faculty_id: "",
-          export_session_id: ""
+          overwrite: ""
         },
+        exportData: {
+          college_id: '',
+          department_id: '',
+          session_id: ''
+        }
       }
    },
   methods: {
@@ -231,14 +233,15 @@ export default {
                 this.departments = []
             }
         },
-        downloadPUTMESampleFile(){
+        downloadPUTMESampleFile(e){
+          e.preventDefault()
           this.downloading = true
           this.$store
             .dispatch('get-started/downloadPUTMESampleFile')
             .then(res => {
             if(res !== undefined){
                 if(res.success === true)    {
-                    window.location = res.message
+                    window.open(res.message, '_blank')
                     this.downloading = false
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
@@ -246,25 +249,28 @@ export default {
                 this.downloading = false
                 alert("File Downloaded Unsuccessful")
             }
-        }).catch(err => {
-          this.downloading = false
+            }).catch(err => {
+              this.downloading = false
             })
         },
       exportPUTMEs(){
-          this.exportLoading = true
-          var payload = new FormData()
-          payload.session_id = this.model.export_session_id
-          payload.department_id = this.model.export_department_id
-          this.$store
-            .dispatch('get-started/exportPUTMEs', payload)
-            .then(res => {
-                if(res){
-                    this.exportLoading = false
-                    this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                }else{
-                    this.exportLoading = false
-                    alert("File Downloaded Unsuccessful")
-                }
+        this.exportLoading = true
+        this.$store
+          .dispatch('get-started/exportPUTMEs', this.exportData)
+          .then(res => {
+            if(res){
+              this.exportLoading = false
+              let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              let fileLink = document.createElement('a');
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'post-utme-result-report.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
+              this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            }else{
+              this.exportLoading = false
+              alert("File Downloaded Unsuccessful")
+            }
         }).catch(err => {
           this.exportLoading = false
         })

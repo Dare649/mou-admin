@@ -243,57 +243,42 @@ export const actions = {
             return err
         });
     },
-    async exportPUTMEs(context, payload) {
-      return await this.$axios.post('api/putme-sessions/post-utme-result/export', {
-      }, {
-          responseType: 'blob',
-          data: payload
-      }).then((response) => {
-          const url = URL.createObjectURL(new Blob([response.data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          }))
-          const link = document.createElement('a')
-          link.href = url
-          link.setAttribute('download', "putmes")
-          document.body.appendChild(link)
-          link.click()
-          return true
-      });
+    async exportPUTMEs(context, data) {
+      return await this.$axios({
+        method: 'get',
+        url: 'api/putme-sessions/post-utme-result/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
-    async exportUTMEs(context, payload) {
-      return await this.$axios.post('api/putme-sessions/admissions/export', {
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "des")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
+    async exportAdmissionList(context, data) {
+      return await this.$axios({
+        method: 'get',
+        url: 'api/putme-sessions/admissions/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id + '&category_id=' + data.category_id,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
-    async exportDEs(context, payload) {
-        return await this.$axios.post('api/de-sessions/admission-list/export', {
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "putmes")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
-    },
+  async exportDeAdmissionList(context, data){
+    return await this.$axios({
+      method: 'get',
+      url: 'api/de-sessions/admission-list/export?session_id=' + data.session_id + '&department_id=' + data.department_id + '&college_id=' + data.college_id + '&category_id=' + data.category_id,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
+  },
     async exportReligions(context) {
         return await this.$axios({
             method: 'get',
@@ -309,10 +294,10 @@ export const actions = {
             return err
         });
     },
-    async exportOLevel(context, reg_no) {
+    async exportOLevel(context, data) {
         return await this.$axios({
             method: 'get',
-            url: 'api/ssce-result/export?registration_number='+reg_no,
+            url: 'api/ssce-result/export?registration_number='+data.registration_number+'&export='+true,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -322,7 +307,7 @@ export const actions = {
             var fileLink = document.createElement('a');
 
             fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'Putmeregreports.xlsx');
+            fileLink.setAttribute('download', data.jamb_name+'-olevel-result.xlsx');
             document.body.appendChild(fileLink);
 
             fileLink.click();
@@ -332,7 +317,7 @@ export const actions = {
             return err
         });
     },
-    
+
     async exportSSCEResults(context, payload) {
         return await this.$axios({
             method: 'get',
@@ -378,37 +363,17 @@ export const actions = {
             return err
         });
     },
-    async exportJambResults(context, requests) {
-        return await this.$axios.post('api/jamb-results/export', {
-
-        }, {
-            responseType: 'blob',
-            data: requests
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "utmes")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
-        // return await this.$axios({
-        //     method: 'post',
-        //     data: requests,
-        //     url: 'api/jamb-results/export',
-        //     headers: {'Content-Type': 'application/json' },
-        //     responseType: "arraybuffer"
-        // })
-        // .then(function (response) {
-        //     //handle success
-        //     return response.data
-        // })
-        // .catch(err => {
-        //     return err
-        // });
+    async exportJambResults(context, data) {
+      return await this.$axios({
+        method: 'get',
+        url: 'api/jamb-results/export?year='+data.year,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
     async exportFaculties(context) {
         return await this.$axios({
@@ -479,46 +444,19 @@ export const actions = {
             responseType: "arraybuffer"
         })
         .then(function (response) {
-            //handle success
-            //console.log(response)
-            // var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-            // var fileLink = document.createElement('a');
-            // fileLink.href = fileURL;
-            // fileLink.setAttribute('download', 'uploaded_jamb_candidates_report.xlsx');
-            // document.body.appendChild(fileLink);
-
-            // fileLink.click();
             return response.data
         })
         .catch(err => {
             return err
         });
     },
-    // async exportUploadedJambCandidates(context, payload) {
-    //     console.log(payload)
-    //     return await this.$axios({
-    //         method: 'get',
-    //         url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
-    //         headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-    //         responseType: "arraybuffer"
-    //     })
-    //     .then(function (response) {
-    //         //handle success
-    //         return response.data
-    //     })
-    //     .catch(err => {
-    //         return err
-    //     });
-    // },
-
     async getSsceResultReport(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/ssce-result/export?year='+payload.year+'&registration_number='+payload.registration_number+'&from_dt='+payload.from_dt+'&to_dt='+payload.to_dt+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&exam_type='+payload.exam_type+'&export='+payload.export,
+            url: 'api/ssce-result/export?year=' + payload.year + '&registration_number=' + payload.registration_number + '&from_dt=' + payload.from_dt + '&to_dt='+payload.to_dt+'&faculty_id=' + payload.faculty_id + '&department_id=' + payload.department_id + '&exam_type=' + payload.exam_type + '&export=' + payload.export + '&page=' +payload.page,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            console.log(response)
             return response.data
         })
         .catch(err => {
@@ -1061,21 +999,13 @@ export const actions = {
             return err
         });
     },
-    async updatePUTMEStudent(context, payload) {
-        return await this.$axios({
-            method: 'post',
-            url: 'api/putme/update',
-            data: qs.stringify(payload),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' }
+    async updatePUTMEStudent(context, data) {
+      return await this.$axios.post('api/putme/update', data)
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
         })
-        .then(function (response) {
-            //handle success
-            return response.data
-        })
-        .catch(err => {
-            console.log(err)
-            return err
-        });
     },
     async getUserDetails(context) {
         return await this.$axios({

@@ -9,25 +9,18 @@ export const mutations = {
 
 }
 
-
 export const actions = {
     async exportJambResults(context, payload) {
-        return await this.$axios.post('api/jamb-results/de/export', {
-
-        }, {
-            responseType: 'blob',
-            data: payload
-        }).then((response) => {
-            const url = URL.createObjectURL(new Blob([response.data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', "des")
-            document.body.appendChild(link)
-            link.click()
-            return true
-        });
+      return await this.$axios({
+        method: 'get',
+        url: 'api/jamb-results/de/export?year='+data.year,
+        headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+        responseType: "arraybuffer"
+      }).then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
     },
     async downloadJambResultSampleFile(context) {
         return await this.$axios({

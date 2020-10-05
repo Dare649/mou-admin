@@ -224,7 +224,7 @@
                                                 <a href="#edit_department" @click="populateFields(department)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             </span>
                                             <span v-permission="'Delete department'" data-placement="top" data-toggle="tooltip" title="Delete Record">
-                                                <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                <a href="#delete_department" @click="setId(department.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-trash"></i></a>
                                             </span>
                                         </div>
                                     </td>
@@ -374,7 +374,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        
+
         this.checkPagePermission()
     },
     methods:{
@@ -457,13 +457,13 @@ export default {
                         this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
                         this.loading = false
-                        alert("File Upload Unsuccessful")
+                      this.$toast.error(res.message)
                         this.ErrMsg = "Error Processing Request!"
                     }
                 }else{
                     this.loading = false
-                    alert("File Upload Unsuccessful")
-                    this.ErrMsg = "Error Processing Request!"
+                  this.$toast.error('Error Processing Request!')
+                  this.ErrMsg = "Error Processing Request!"
                 }
             }).catch(err => {
             this.loading = false
@@ -489,6 +489,7 @@ export default {
                     this.model = {}
                 }else{
                     this.loading = false
+                  this.$toast.error(res.message)
                     this.ErrMsg = "Error Processing Request!"
                 }
             }else{
@@ -496,7 +497,8 @@ export default {
                 this.ErrMsg = "Error Processing Request!"
             }
             }).catch(err => {
-            this.loading = false
+              this.$toast.error(err)
+              this.loading = false
             })
         },
         deleteDepartment(){

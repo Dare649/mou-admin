@@ -52,14 +52,14 @@
               <label>Entry Mode:</label>
               <select class="form-control" v-model="formData.entry_mode">
                 <option value="" selected>All</option>
-                <option value="JAMB">PUTME</option>
-                <option value="DE">Direct Entry</option>
+                <option value="JAMB">JAMB</option>
+                <option value="DE">DIRECT ENTRY</option>
               </select>
             </div>
           </div>
           <div class="row m-t-15">
             <div class="col-md-2">
-              <button type="button" id="searchbtn" @click="getAdmissionList" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+              <button type="button" id="searchBtn" @click="searchRecord()" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
             <div class="col-md-2">
               <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
@@ -179,7 +179,6 @@ export default {
     markForApproval(reg_num) {
       if(confirm('Do you want to mark this student okay for departmental approval?')){
         this.approveData.registration_number = reg_num
-        console.log(this.approveData)
         this.$toast.info('Processing...please wait', {duration: 6100})
         this.$store.dispatch('academic-session/markForDepartmentalApproval', this.approveData)
           .then(res =>{
@@ -195,9 +194,28 @@ export default {
         })
       }
     },
+    searchRecord() {
+      this.loading = true
+      this.students = []
+      $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
+      this.$store.dispatch('reports/getAdmissionList', this.formData)
+        .then(res =>{
+          $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
+          this.loading = false
+          if(res.data.status) {
+            this.students = res.data.data.data
+            this.pagination = res.data.data
+          }
+        }).catch(err =>{
+        $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
+        this.loading = false
+        this.$toast.error(err)
+      })
+    },
     getAdmissionList(page) {
       this.loading = true
       this.formData.page = page
+      this.students = []
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
           this.loading = false
@@ -206,7 +224,8 @@ export default {
             this.pagination = res.data.data
           }
         }).catch(err =>{
-          this.$toast.error(err)
+        this.loading = false
+        this.$toast.error(err)
       })
     },
     exportRecord() {

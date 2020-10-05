@@ -159,7 +159,7 @@
                 <div class="row">
                     <form class="full-width">
                         <div class="col-lg-12 m-b-10">
-                          <select class="form-control" v-model="model.export_year" >
+                          <select class="form-control" v-model="exportData.year" >
                             <option value="" selected>All</option>
                             <option value="2010">2010</option>
                             <option value="2011">2011</option>
@@ -418,7 +418,6 @@ export default {
         show_faculty_id1:"",
         show_faculty_id2:"",
         show_department_id1:"",
-        show_university1:"",
         show_university2:"",
         show_department_id2:"",
         show_subject_id1:"",
@@ -454,7 +453,6 @@ export default {
           edit_faculty_id1:"",
           edit_faculty_id2:"",
           edit_department_id1:"",
-          edit_university1:"",
           edit_university2:"",
           edit_department_id2:"",
           edit_subject_id1:"",
@@ -468,6 +466,9 @@ export default {
           edit_phone_code: "",
           edit_country_id: 0
         },
+        exportData: {
+          year: ''
+        }
       }
     },
   methods: {
@@ -592,6 +593,7 @@ export default {
       search(){
         this.loading = true
         this.getloading = true
+        this.jamb_results = []
         let payload = {}
         payload.year = this.model.search_year
         payload.registration_number = this.model.search_registration_number
@@ -701,15 +703,19 @@ export default {
       },
       exportJambResults(){
           this.exportLoading = true
-          let formData = new FormData();
-          formData.year = this.model.export_year
           this.$store
-            .dispatch('get-started/exportJambResults', formData)
+            .dispatch('get-started/exportJambResults', this.exportData)
             .then(res => {
             if(res != undefined){
-                this.exportLoading = false
-                // $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
-                this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+              let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              let fileLink = document.createElement('a');
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'jamb-utme-results.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
+              this.exportLoading = false
+              // $( '#export_jamb_result' ).modal( 'hide' ).data( 'bs.modal', null )
+              this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{
                 this.exportLoading = false
                 alert("File Downloaded Unsuccessful")

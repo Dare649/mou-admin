@@ -220,8 +220,8 @@
                               <div class="overflow-auto">
                               </div>
                               <div class="table-responsive">
-                                  
-                                  
+
+
                                   <table class="table table-striped table-condensed" id="countryTable">
                                       <thead style="text-align:center;">
                                         <th style="width:15%;">Abbreviation</th>
@@ -450,13 +450,13 @@ export default {
           this.getLoading = true
           this.$store
             .dispatch('get-started/searchCountry', this.searchItem)
-            .then(res => {            
+            .then(res => {
             if(res != undefined){
                 if(res.status == true){
                     this.countries = res.data.data
                     this.getLoading = false
                     this.pagination = res.data
-                    
+
                 }else{
                 }
             }else{
@@ -508,26 +508,27 @@ export default {
       },
       getCountries(page){
         if(this.$laravel.hasPermission('View country')){
-        this.getloading = true
-        this.$store
-        .dispatch('get-started/getCountries', page)
-        .then(res => {
-          if(res != undefined){
-            if(res.status == true){
-            this.getLoading = false
-            this.countries = res.data.data
-            this.pagination = res.data
-            }else{
-              this.getLoading = false
-              this.ErrMsg = "Error Fetching data!"
-            }
-          }else{
-            this.getLoading = false
-            this.ErrMsg = "Error Fetching data!"
-          }
-        }).catch(err => {
-          this.getloading = false
-        })
+          this.getloading = true
+          this.countries= []
+          this.$store
+            .dispatch('get-started/getCountries', page)
+            .then(res => {
+              if(res != undefined){
+                if(res.status == true){
+                this.getLoading = false
+                this.countries = res.data.data
+                this.pagination = res.data
+                }else{
+                  this.getLoading = false
+                  this.ErrMsg = "Error Fetching data!"
+                }
+              }else{
+                this.getLoading = false
+                this.ErrMsg = "Error Fetching data!"
+              }
+            }).catch(err => {
+              this.getloading = false
+          })
         }else{
             this.IsPermitted = false
             this.getLoading = false
