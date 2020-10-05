@@ -297,19 +297,20 @@ export default {
       payload.from = this.model.from_date
       payload.to = this.model.to_date
       payload.export = true
+      //console.log(payload)
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                console.log(res)
-                  this.exLoading = false
-                  var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                  var fileLink = document.createElement('a');
-                  fileLink.href = fileURL;
-                  fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
-                  document.body.appendChild(fileLink);
-                  fileLink.click();
-                  this.exLoading = false
+                // console.log(res)
+                //   this.exLoading = false
+                //   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                //   var fileLink = document.createElement('a');
+                //   fileLink.href = fileURL;
+                //   fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
+                //   document.body.appendChild(fileLink);
+                //   fileLink.click();
+                  //this.exLoading = false
                   this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
               }else{
                   this.exLoading = false

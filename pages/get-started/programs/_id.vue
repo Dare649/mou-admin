@@ -177,11 +177,11 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:28%">Department</th>
-                                    <th style="width:28%">Program</th>
+                                    <th style="width:27%">Department</th>
+                                    <th style="width:27%">Program</th>
                                     <th style="width:10.0%">Duration</th>
                                     <th style="width:12.0%">Status</th>
-                                    <th style="width:15%">Action</th>
+                                    <th style="width:17%">Action</th>
                                 </thead>
                                 <tbody>
                                   <tr v-if="getLoading">
@@ -198,11 +198,16 @@
                                       <td>{{program.name}}</td>
                                       <td>{{program.duration}} years</td>
                                       <td>
+
+                                          
                                           <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="program.status == 1">Active</span>
                                           <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="program.status == 0">Inactive</span>
                                       </td>
                                       <td>
                                           <div class="btn-group">
+                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Course Management">
+                                              <nuxt-link :to="'/get-started/courses/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-book"></i></button></nuxt-link>
+                                            </span>
                                             <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Fee Setup">
                                               <nuxt-link :to="'/get-started/school-fees-setup/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
                                             </span>

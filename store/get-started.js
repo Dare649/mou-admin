@@ -473,20 +473,21 @@ export const actions = {
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&department_id=' + payload.department_id,
+            url: 'api/jamb-results/records?registration_number=&year&from&to&export=true&page=',
+            //url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&page=' + payload.page,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
             //handle success
-            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-            var fileLink = document.createElement('a');
+            //console.log(response)
+            // var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+            // var fileLink = document.createElement('a');
+            // fileLink.href = fileURL;
+            // fileLink.setAttribute('download', 'uploaded_jamb_candidates_report.xlsx');
+            // document.body.appendChild(fileLink);
 
-            fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'uploaded_jamb_reports.xlsx');
-            document.body.appendChild(fileLink);
-
-            fileLink.click();
+            // fileLink.click();
             return response.data
         })
         .catch(err => {
