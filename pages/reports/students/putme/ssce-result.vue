@@ -100,7 +100,6 @@
                         <thead>
                         <tr>
                           <th style="width:20%">Name</th>
-                          <th style="width:20%">Email</th>
                           <th>Reg No.</th>
                           <th>Gender</th>
                           <th>Status</th>
@@ -111,14 +110,13 @@
                         </thead>
                         <tbody>
                           <tr v-if="Loading">
-                            <td colspan="4">Loading....Please wait.</td>
+                            <td colspan="6">Loading....Please wait.</td>
                           </tr>
                           <tr v-if="(!Loading && candidates.length <= 0)">
-                            <td colspan="4">No record at the moment</td>
+                            <td colspan="6">No record at the moment</td>
                           </tr>
                           <tr v-for="can in candidates" :key="can.id">
                             <td>{{can.name}}</td>
-                            <td>{{can.email}}</td>
                             <td>{{can.reg_number}}</td>
                             <td>{{can.gender == 'F' ? 'Female' : 'Male'}}</td>
                             <td>{{can.status == 1 ? 'Verified' : 'Not Verified'}}</td>
