@@ -290,11 +290,11 @@ export default {
       payload.from = this.model.from_date
       payload.to = this.model.to_date
       payload.export = true
+      //console.log(payload)
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                  this.exLoading = false
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                   var fileLink = document.createElement('a');
                   fileLink.href = fileURL;

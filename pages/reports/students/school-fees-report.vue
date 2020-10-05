@@ -42,14 +42,14 @@
                 <label>College:</label>
                 <select class="form-control" @change="getDepartmentByCollege($event)" v-model="searchData.faculty_id">
                   <option value="" selected>All</option>
-                  <option v-for="college in colleges" :value="college.id">{{college.name}}</option>
+                  <option v-for="college in colleges" :key="college.id" :value="college.id">{{college.name}}</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label>Department:</label>
                 <select class="form-control" v-model="searchData.department_id">
                   <option value="" selected>All</option>
-                  <option v-for="department in departments" :value="department.id">{{department.name}}</option>
+                  <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                 </select>
               </div>
               <div class="col-md-3">
