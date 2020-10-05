@@ -90,16 +90,16 @@
               </thead>
               <tbody>
                 <tr v-if="loading">
-                  <td colspan="7">Loading......Please wait</td>
+                  <td colspan="5">Loading......Please wait</td>
                 </tr>
-                <tr v-if="!loading && students.length < 1">
-                  <td colspan="7">No records at the moment</td>
+                <tr v-if="!loading && Object.keys(students).length < 1">
+                  <td colspan="5">No records at the moment</td>
                 </tr>
-                <tr v-if="!loading && students.length > 0" v-for="student in students">
+                <tr v-if="!loading && Object.keys(students).length > 0" v-for="student in students">
                   <td>{{ student.reg_number }}</td>
                   <td>{{ student.name }}</td>
                   <td>{{ student.program }}</td>
-                  <td>{{ student.form_acceptance_dt }}</td>
+                  <td>{{ $moment(student.form_acceptance_dt).format('MMMM Do YYYY') }}</td>
                   <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="View Acceptance Letter">
@@ -188,8 +188,8 @@ export default {
           this.exLoading = false
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
         }).catch(err =>{
-        $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
-        this.$toast.error(err)
+          $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
+          this.$toast.error(err)
       })
     },
     getAcceptanceLetter(page) {
@@ -198,12 +198,14 @@ export default {
       this.$store.dispatch('reports/getAcceptanceStudents', this.searchData)
         .then(res =>{
           if(res.data.status) {
+            console.log(res.data)
             this.students = res.data.data.data
             this.pagination = res.data.data
           }
           this.loading = false
         }).catch(err =>{
-          this.$toast.error(err)
+        this.loading = false
+        this.$toast.error(err)
       })
     },
     getColleges() {

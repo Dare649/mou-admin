@@ -50,6 +50,14 @@ export const actions = {
         return err
       })
   },
+  async countPutmeStudent(){
+    return await this.$axios.get('api/utilities/countPutmeStudents')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  }
 }
 
 export const getters = {

@@ -169,13 +169,6 @@ export default {
     }
   }),
   mounted: function() {
-      if (!process.server) {
-        const script1 = document.createElement('script')
-        script1.type = 'text/javascript'
-        script1.src = '/pages/js/pages.min.js'
-
-        document.head.appendChild(script1)
-      }
       this.getFaculties()
       this.getUploadedJambCandidates(1)
 
@@ -302,15 +295,13 @@ export default {
           .dispatch('get-started/exportUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                // console.log(res)
-                //   this.exLoading = false
-                //   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                //   var fileLink = document.createElement('a');
-                //   fileLink.href = fileURL;
-                //   fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
-                //   document.body.appendChild(fileLink);
-                //   fileLink.click();
-                  //this.exLoading = false
+                  var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                  var fileLink = document.createElement('a');
+                  fileLink.href = fileURL;
+                  fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
+                  document.body.appendChild(fileLink);
+                  fileLink.click();
+                  this.exLoading = false
                   this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
               }else{
                   this.exLoading = false
