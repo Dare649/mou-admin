@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Reports</a></li>
-          <li class="breadcrumb-item active">School Fees Report</li>
+          <li class="breadcrumb-item active">Payment Transaction Report</li>
         </ol>
       </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
       <div class="card card-default">
         <div class="card-header">
-          <div class="card-title text-primary">School Fees Report</div>
+          <div class="card-title text-primary">Payment Transaction Report</div>
         </div>
         <div class="card-body">
             <div class="row">
