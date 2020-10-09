@@ -826,14 +826,12 @@ export default {
             .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
             .then(res => {
             if(res != undefined){
-              if(res.data.status == true){
+              if(res.data.status){
                 this.users = res.data.data.data
                 this.pagination = res.data.data
                 this.getLoading = false
-              }else{
-                  this.getLoading = false
-                  this.ErrMsg = "Error Fetching data!"
               }
+              this.getLoading = false
             }else{
                 this.getLoading = false
                 this.ErrMsg = "Error Fetching data!"

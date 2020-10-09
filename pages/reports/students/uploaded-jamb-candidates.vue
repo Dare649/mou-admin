@@ -268,15 +268,12 @@ export default {
           .dispatch('get-started/getUploadedJambCandidates', payload)
               .then(res => {
               if(res != undefined){
-                this.Loading = false
                 this.candidates = res.data.data
                 this.pagination = res.data
-              }else{
-                  this.Loading = false
-                  alert("File Downloaded Unsuccessful")
               }
+                this.Loading = false
           }).catch(err => {
-            this.exLoading = false
+            this.Loading = false
         })
     },
     exportUploadedJambCandidates(){
