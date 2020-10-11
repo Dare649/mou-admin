@@ -735,7 +735,7 @@ export const actions = {
             url: 'api/utilities/get-departments/'+ payload.facultyId,
             headers: {'Content-Type': 'application/json' }
         })
-        .then(function (response) {
+        .then(function (response) {           
             return response.data
         })
         .catch(err => {
@@ -763,6 +763,20 @@ export const actions = {
         })
         .then(function (response) {
 
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async viewCoursesUnderProgram(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/course/program/'+ payload.programId + '?page=' + payload.page + '&course_name=' + payload.course_name + '&code=' + payload.code + '&semester=' +payload.semester+ '&level=' + payload.level,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            console.log(response)        
             return response.data
         })
         .catch(err => {
@@ -876,6 +890,20 @@ export const actions = {
         return await this.$axios({
             method: 'post',
             url: 'api/programs',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
+    async createCourse(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/course',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -1364,6 +1392,20 @@ export const actions = {
             return err
         });
     },
+    async deleteCourse(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/course/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getCountries(context, page) {
         return await this.$axios({
             method: 'get',
@@ -1377,11 +1419,62 @@ export const actions = {
             return err
         });
     },
+    async getCourse(context, courseId) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/course/'+courseId,
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getAllCountries(context) {
         return await this.$axios({
             method: 'get',
             url: 'api/utilities/get-countries',
 
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getLecturers(context, isPaged) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/course/lecturers?page='+isPaged,
+
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async viewLecturers(context, courseId) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/course/lecturers-assigned/'+courseId,
+        })
+        .then(function (response) {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getLevels(context, isPaged) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/level?page='+ isPaged,
+            headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
             return response.data
