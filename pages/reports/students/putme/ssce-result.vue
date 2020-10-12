@@ -79,9 +79,9 @@
                       </div>
                       <div class="col-md-2 m-t-30">
                         <button type="button" v-if="!exportLoading"  @click="exportStudentSSCEs()" class="btn btn-danger btn-block">
-                          <i class="fa fa-file-excel-o" />&nbsp;Export to csv
+                          <i class="fa fa-file-excel-o" />&nbsp;Export to Excel
                         </button>
-                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-block">Downloading</button>
+                        <button type="button" disabled v-if="exportLoading" class="btn btn-danger btn-block">Exporting...</button>
                       </div>
                     </div>
                   </form>
@@ -184,7 +184,7 @@ export default {
           faculty_id: "",
           department_id: "",
           exam_type: "",
-          export: true
+          export: false
         },
       }
     },
@@ -202,18 +202,9 @@ export default {
       },
       searchRecord(){
         this.sLoading = true
-        let payload = {}
-        payload.year = this.model.year
-        payload.registration_number = this.model.registration_number
-        payload.from_dt = this.model.from_dt
-        payload.to_dt = this.model.to_dt
-        payload.faculty_id = this.model.faculty_id
-        payload.department_id = this.model.department_id
-        payload.exam_type = this.model.exam_type
-        payload.page = 1
-        payload.export = false
+        this.model.export = false
         this.$store
-            .dispatch('get-started/getSsceResultReport', payload)
+            .dispatch('get-started/getSsceResultReport', this.model)
                 .then(res => {
                 if(res != undefined){
                     this.sLoading = false
@@ -227,7 +218,7 @@ export default {
               this.sLoading = false
           })
       },
-      getFaculties(page){
+      getFaculties(){
           this.$store
               .dispatch('get-started/getAllFaculties')
               .then(res => {
@@ -265,18 +256,9 @@ export default {
       },
       getSsceResult(page) {
         this.Loading = true
-        let payload = {}
-        payload.year = ""
-        payload.registration_number = ""
-        payload.from_dt = ""
-        payload.to_dt = ""
-        payload.faculty_id = ""
-        payload.department_id = ""
-        payload.exam_type = ""
-        payload.export = false
-        payload.page = page
+        this.model.page = page
         this.$store
-            .dispatch('get-started/getSsceResultReport', payload)
+            .dispatch('get-started/getSsceResultReport', this.model)
                 .then(res => {
                 if(res != undefined){
                   this.candidates = res.data.data
@@ -289,19 +271,18 @@ export default {
       },
       exportStudentSSCEs(){
         this.exportLoading = true
-        let payload = {}
-        payload.year = this.model.year
-        payload.registration_number = this.model.registration_number
-        payload.from_dt = this.model.from_dt
-        payload.to_dt = this.model.to_dt
-        payload.faculty_id = this.model.faculty_id
-        payload.department_id = this.model.department_id
-        payload.exam_type = this.model.exam_type
-        payload.export = this.model.export
+        this.model.export = true
         this.$store
-          .dispatch('get-started/exportSSCEResults', payload)
+          .dispatch('get-started/exportSSCEResults', this.model)
           .then(res => {
             if(res){
+              var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              var fileLink = document.createElement('a');
+
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'ssce-results-report.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
               this.exportLoading = false
               this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{

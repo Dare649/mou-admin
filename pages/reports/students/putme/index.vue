@@ -103,6 +103,7 @@
                               <thead>
                                 <th>Image</th>
                                 <th>REG Number</th>
+                                <th>Screening ID</th>
                                 <th style="width:20%">Name</th>
                                 <th>Entry Mode</th>
                                 <th>Status</th>
@@ -110,10 +111,10 @@
                               </thead>
                               <tbody>
                                 <tr v-if="getLoading">
-                                    <td colspan="6">Loading....Please wait.</td>
+                                    <td colspan="7">Loading....Please wait.</td>
                                 </tr>
                                 <tr v-if="!getLoading && Object.keys(users).length < 1">
-                                    <td colspan="6">No record at the moment... Please insert new record</td>
+                                    <td colspan="7">No record at the moment... Please insert new record</td>
                                 </tr>
                                 <tr v-if="!getLoading && Object.keys(users).length > 0" v-for="user in users" :key="user.id">
                                   <td>
@@ -121,6 +122,7 @@
                                     <img v-else :src="user.photo" width="50px" height="50px" />
                                   </td>
                                   <td>{{user.registration_number}}</td>
+                                  <td>{{user.screening_id}}</td>
                                   <td>{{user.jamb_name}}</td>
                                   <td>{{user.type}}</td>
                                   <td>
@@ -373,13 +375,13 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Name:</label></td>
                     <td>
-                      <input type="text" v-model="model.name" class="form-control" />
+                      <input type="text" v-model="formData.name" class="form-control" />
                     </td>
                   </tr>
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Marital Status:</label></td>
                     <td>
-                      <select class="full-width form-control" required="required" v-model="model.edit_marital_status">
+                      <select class="full-width form-control" required="required" v-model="formData.marital_status">
                         <option value="" disabled>Marital Status</option>
                         <option value="Married">Married</option>
                         <option value="Single">Single</option>
@@ -390,7 +392,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Gender:</label></td>
                     <td>
-                      <select class="full-width form-control" required="required" v-model="model.edit_gender">
+                      <select class="full-width form-control" required="required" v-model="formData.gender">
                         <option value="" disabled>Select Gender</option>
                         <option value="M">Male</option>
                         <option value="F">Female</option>
@@ -400,25 +402,31 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Phone Number:</label></td>
                     <td>
-                      <input type="number" placeholder="Phone Number" v-model="model.edit_phone_number" class="form-control">
+                      <input type="number" placeholder="Phone Number" v-model="formData.primary_phone" class="form-control">
                     </td>
                   </tr>
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Email Address:</label></td>
                     <td>
-                      <input type="email" placeholder="Email Address" v-model="model.edit_email" class="form-control">
+                      <input type="email" placeholder="Email Address" v-model="formData.email" class="form-control">
+                    </td>
+                  </tr>
+                  <tr class="col-lg-12 m-b-10">
+                    <td><label>Date of birth:</label></td>
+                    <td>
+                      <input type="date" v-model="formData.dob" class="form-control">
                     </td>
                   </tr>
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Address:</label></td>
                     <td>
-                      <input type="text" placeholder="Address" v-model="model.edit_address" class="form-control">
+                      <input type="text" placeholder="Address" v-model="formData.address" class="form-control">
                     </td>
                   </tr>
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Country:</label></td>
                     <td>
-                      <select class="form-control" v-model="model.edit_country_id" @change="populateState($event)">
+                      <select class="form-control" v-model="formData.country_id" @change="populateState($event)">
                         <option value="" selected>Select your option</option>
                         <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
                       </select>
@@ -427,7 +435,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>State:</label></td>
                     <td>
-                      <select class="form-control" v-model="model.edit_state_id" @change="populateLGA($event)">
+                      <select class="form-control" v-model="formData.state_id" @change="populateLGA($event)">
                         <option value="" selected>Select your option</option>
                         <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
                       </select>
@@ -436,7 +444,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>LGA:</label></td>
                     <td>
-                      <select class="form-control" v-model="model.edit_lga_id">
+                      <select class="form-control" v-model="formData.lga_id">
                         <option value="" selected>Select your option</option>
                         <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
                       </select>
@@ -445,7 +453,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Faculty:</label></td>
                     <td>
-                      <select class="form-control" v-model="model.edit_faculty_id" @change="populateDepartments($event)">
+                      <select class="form-control" v-model="formData.faculty_id" @change="populateDepartments($event)">
                         <option value="" selected>Select your option</option>
                         <option v-for="faculty in faculties" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
                       </select>
@@ -454,7 +462,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Department:</label></td>
                     <td>
-                      <select class="form-control" v-model="model.edit_department_id">
+                      <select class="form-control" v-model="formData.department_id">
                         <option value="" selected>Select your option</option>
                         <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                       </select>
@@ -540,6 +548,24 @@ export default {
         approveData: {
           registration_number: ''
         },
+        formData: {
+          screening_id: '',
+          registration_number : '',
+          dob: '',
+          email : '',
+          primary_phone: '',
+          secondary_phone: '',
+          marital_status: '',
+          country_id : '',
+          state_id : '',
+          lga_id : '',
+          address : '',
+          faculty_id : '',
+          department_id : '',
+          gender : '',
+          name : '',
+          no_of_sittings : ''
+        },
         model: {
           name: "",
           id: 0,
@@ -569,47 +595,48 @@ export default {
   },
   methods: {
     populateFields(jamb){
+      console.log(jamb)
       this.getDepartmentsByFacultyId(jamb.faculty_id)
       this.getStatesByCountryID(jamb.country_id)
       this.getLGAsByStateID(jamb.state_id)
-      this.model.edit_screening_id = jamb.screening_id
-      this.model.edit_marital_status = jamb.marital_status
-      this.model.edit_phone_number = jamb.primary_phone
-      this.model.edit_faculty_id = jamb.faculty_id
-      this.model.edit_department_id = jamb.department_id
-      this.model.edit_country_id = jamb.country_id
-      this.model.edit_state_id = jamb.state_id
-      this.model.edit_lga_id = jamb.lga_id
-      this.model.edit_dob = jamb.dob
-      this.model.edit_address = jamb.address
-      this.model.edit_gender = jamb.sex
-      this.model.edit_registration_number = jamb.registration_number
-      this.model.edit_email = jamb.email
-      this.model.edit_photo = jamb.photo
-      this.model.name = jamb.jamb_name
+      this.formData.screening_id = jamb.screening_id
+      this.formData.marital_status = jamb.marital_status
+      this.formData.primary_phone = jamb.primary_phone
+      this.formData.faculty_id = jamb.faculty_id
+      this.formData.department_id = jamb.department_id
+      this.formData.country_id = jamb.country_id
+      this.formData.state_id = jamb.state_id
+      this.formData.lga_id = jamb.lga_id
+      this.formData.dob = jamb.dob
+      this.formData.address = jamb.address
+      this.formData.gender = jamb.sex
+      this.formData.registration_number = jamb.registration_number
+      this.formData.email = jamb.email
+      this.formData.name = jamb.jamb_name
+      this.formData.no_of_sittings = jamb.no_of_sittings
     },
     submitEditedPUTMEStudent(){
       this.editLoading = true
-      this.bodyFormData = new FormData();
-      this.bodyFormData.append('photo', this.$refs.file.files[0])
-      this.bodyFormData.append('screening_id', this.model.edit_screening_id)
-      this.bodyFormData.append('name', this.model.name)
-      this.bodyFormData.append('registration_number', this.model.edit_registration_number)
-      this.bodyFormData.append('dob', this.model.edit_dob)
-      this.bodyFormData.append('email', this.model.edit_email)
-      this.bodyFormData.append('primary_phone', this.model.edit_phone_number)
-      this.bodyFormData.append('secondary_phone', this.model.edit_secondary_phone)
-      this.bodyFormData.append('marital_status', this.model.edit_marital_status)
-      this.bodyFormData.append('country_id', this.model.edit_country_id)
-      this.bodyFormData.append('state_id', this.model.edit_state_id)
-      this.bodyFormData.append('lga_id', this.model.edit_lga_id)
-      this.bodyFormData.append('address', this.model.edit_address)
-      this.bodyFormData.append('faculty_id', this.model.edit_faculty_id)
-      this.bodyFormData.append('department_id', this.model.edit_department_id)
-      this.bodyFormData.append('no_of_sittings', this.model.edit_no_of_sittings)
-      this.bodyFormData.append('gender', this.model.edit_gender)
+      let bodyFormData = new FormData();
+      bodyFormData.append('photo', this.$refs.file.files[0])
+      bodyFormData.append('screening_id', this.formData.screening_id)
+      bodyFormData.append('name', this.formData.name)
+      bodyFormData.append('registration_number', this.formData.registration_number)
+      bodyFormData.append('dob', this.formData.dob)
+      bodyFormData.append('email', this.formData.email)
+      bodyFormData.append('primary_phone', this.formData.primary_phone)
+      bodyFormData.append('secondary_phone', this.formData.secondary_phone)
+      bodyFormData.append('marital_status', this.formData.marital_status)
+      bodyFormData.append('country_id', this.formData.country_id)
+      bodyFormData.append('state_id', this.formData.state_id)
+      bodyFormData.append('lga_id', this.formData.lga_id)
+      bodyFormData.append('address', this.formData.address)
+      bodyFormData.append('faculty_id', this.formData.faculty_id)
+      bodyFormData.append('department_id', this.formData.department_id)
+      bodyFormData.append('no_of_sittings', this.formData.no_of_sittings)
+      bodyFormData.append('gender', this.formData.gender)
 
-      this.$store.dispatch('get-started/updatePUTMEStudent', this.bodyFormData)
+      this.$store.dispatch('get-started/updatePUTMEStudent', bodyFormData)
         .then(res => {
           if(res.data.status){
             this.editLoading = false
@@ -627,28 +654,23 @@ export default {
       })
     },
     clearForm() {
-      this.model = {
-        name: "",
-        id: 0,
-        user_id: 0,
-        export_year: "",
-        edit_name: "",
-        edit_gender: "",
-        edit_screening_id: "",
-        edit_state_id: "",
-        edit_lga_id: "",
-        edit_email:"",
-        edit_dob:"",
-        edit_university1:"",
-        edit_country_id: "",
-        edit_faculty_id:"",
-        edit_faculty_id2:"",
-        edit_department_id:"",
-        edit_university2:"",
-        edit_department_id2:"",
-        edit_phone_number: "",
-        edit_secondary_phone: '',
-        edit_no_of_sittings: ''
+      this.formData = {
+        screening_id: '',
+          registration_number : '',
+          dob: '',
+          email : '',
+          primary_phone: '',
+          secondary_phone: '',
+          marital_status: '',
+          country_id : '',
+          state_id : '',
+          lga_id : '',
+          address : '',
+          faculty_id : '',
+          department_id : '',
+          gender : '',
+          name : '',
+          no_of_sittings : ''
       }
     },
     printForm(registration_number) {
