@@ -438,8 +438,7 @@ export const actions = {
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number=&year&from&to&export=true&page=',
-            //url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&page=' + payload.page,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&page=' + payload.page,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
