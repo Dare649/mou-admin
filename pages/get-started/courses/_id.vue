@@ -5,25 +5,22 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                 <i class="pg-close"></i>
             </button>
-            <div class="modal-dialog modal-lg">
+
+            <div class="modal-dialog modal-lg" >
+
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="text-left p-b-5"><span class="semi-bold">ABF 202 Lecturer(s)</span></h5>
+                    <div style="text-align:center; font-size:24px;" v-if="lecturerLoading">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"  aria-hidden="true"></i>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-header" v-if="!lecturerLoading">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">{{lecturerModalLabel.course_name+ ' (' + lecturerModalLabel.course_code+')'}} Lecturer(s)</span></h5>
+                    </div>
+                    <div class="modal-body" v-if="!lecturerLoading">
                         <table class="table table-striped table-condensed" id="basicTable">
                             <tbody>
-                                <tr>
+                                <tr v-for="lecturer in lecturers" :key="lecturer.id">
                                     <td>Lecturer 1</td>
-                                    <td>Benejamin Chindedu Okeleke</td>
-                                </tr>
-                                <tr>
-                                    <td>Lecturer 2</td>
-                                    <td>Caroline Uche</td>
-                                </tr>
-                                <tr>
-                                    <td>Lecturer 3</td>
-                                    <td>Chinyere Ebirika</td>
+                                    <td>{{lecturer.name}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -92,29 +89,29 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <label>Course Name</label>
-                                            <input type="text" placeholder="Registration Number" class="form-control" id="icon-filter" name="icon-filter">
+                                            <input type="text" placeholder="Registration Number" v-model="model.search_course_name" class="form-control" id="icon-filter" name="icon-filter">
                                         </div>
                                         <div class="col-lg-4">
                                             <label>Semester</label>
-                                            <select class="form-control">
-                                                <option value="BAE">B.Sc. Agricultural Education</option>
-                                                <option value="CND">CEC - National Diploma</option>
-                                                <option value="CPD">CEC - Pre-Degree</option>
+                                            <select class="form-control" v-model="model.search_semester">
+                                                <option value="">Select</option>
+                                                <option value="1">1st Semester</option>
+                                                <option value="2">2nd Semester</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-4">
-                                            <label>Entry Mode</label>
-                                            <select class="form-control">
-                                                <option value="BAE">B.Sc. Agricultural Education</option>
-                                                <option value="CND">CEC - National Diploma</option>
-                                                <option value="CPD">CEC - Pre-Degree</option>
+                                            <label>Level</label>
+                                            <select class="form-control" v-model="model.search_level">
+                                                <option value="">Select Level</option>
+                                                <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="col-lg-2 m-t-30 m-b-10">
-                                    <button type="button" class="btn btn-primary btn-block m-t-15"><i class="fa fa-search"></i> Search Record</button>
+                                    <button type="button" v-if="!searchloading" @click="searchCourse()" class="btn btn-primary btn-block m-t-15"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+                                    <button type="button" v-if="searchloading" disabled class="btn btn-primary btn-block m-t-15"><i class="fa fa-search"></i>&nbsp; Searching</button>
                                 </div>
                             </div>
                         </form>
@@ -123,8 +120,11 @@
                 <div class="card card-default">
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Courses</h3>
+
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link to="/get-started/courses/add_course" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Course</strong></nuxt-link>
+                            <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+                            <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                            <nuxt-link :to="'/get-started/courses/manage/'+ subRouteId" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Course</strong></nuxt-link>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -141,61 +141,70 @@
                                     <th>Action</th>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>AgricBusiness Finance</td>
-                                        <td>ABF 202</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                        <td>Yes</td>
-                                        <td>
-                                            <span class="label label-success">Active</span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default btn-sm" data-target="#view_lecturer" data-toggle="modal"><span data-toggle="tooltip" data-placement="top" title="View Lecturer"><i class="fa fa-eye"></i></span></button>
-                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><span ><i class="fa fa-trash"></i></span></button>
-                                            </div>
-                                        </td>
+                                    <tr v-if="getLoading">
+                                        <td colspan="6">Loading....Please wait.</td>
                                     </tr>
-                                    <tr>
-                                        <td>Crop Science</td>
-                                        <td>CPS 203</td>
-                                        <td>2</td>
-                                        <td>2</td>
-                                        <td>No</td>
+                                    <tr v-if="!getLoading && courses.length < 1">
+                                        <td colspan="6">No record at the moment</td>
+                                    </tr>
+                                    <tr v-for="course in courses" :key="course.id">
+                                        <td>{{course.name}}</td>
+                                        <td>{{course.code}}</td>
+                                        <td>{{course.semester === "1" ? "1st Semester" : "2nd Semester"}}</td>
+                                        <td>{{course.weightage}}</td>
+                                        <td>{{course.isElective == 1 ? "True" : "False"}}</td>
                                         <td>
-                                            <span class="label label-danger">Inactive</span>
+                                            <span v-bind:class="{ 'label':true, 'label-success':(course.status == 1), 'label-failure':(course.status == 0)}">{{course.status == 1 ? "Active" : "Inactive"}}</span>
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-default btn-sm" data-target="#view_lecturer" data-toggle="modal"><span data-toggle="tooltip" data-placement="top" title="View Lecturer"><i class="fa fa-eye"></i></span></button>
-                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></button>
-                                                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Record"><span ><i class="fa fa-trash"></i></span></button>
+                                                <button type="button" @click="viewLecturers(course)" class="btn btn-default btn-sm" data-target="#view_lecturer" data-toggle="modal"><span data-toggle="tooltip" data-placement="top" title="View Lecturer"><i class="fa fa-eye"></i></span></button>
+                                                <nuxt-link type="button" :to="'/get-started/courses/edit/'+ subRouteId+'_'+course.id" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></nuxt-link>
+                                                <span v-permission="'Delete programme'" data-placement="top" data-toggle="tooltip" title="Delete Record">
+                                                    <a href="#delete_course" @click="setId(course.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <ul class="pagination m-t-20">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
+                            <Pagination
+                                v-bind:pagination="pagination"
+                                v-on:click.native="viewCoursesUnderProgram(pagination.current_page)"
+                                :offset="4">
+                            </Pagination>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- END CONTAINER FLUID -->
 
+        </div>
+        <!-- Delete Faculty Modal -->
+        <div class="modal fade SlideUp" id="delete_course" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Delete Course Information</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="full-width" @submit.prevent="deleteCourse">
+                            <div class="row">
+                                <h5 class="text-left p-b-5"><span class="semi-bold">Are you sure you want to delete this record?</span></h5>
+                                <div class="col-lg-12 m-t-10">
+                                    <button type="submit" v-if="!deleteLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                    <button type="submit" v-if="deleteLoading" disabled class="btn btn-primary btn-lg btn-large fs-16 semi-bold"><i class="fa fa-delete"></i>Deleting</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
         </div>
     </div>
 </template>
@@ -212,15 +221,17 @@ export default {
       return {
         getLoading: true,
         loading: false,
+        searchloading: false,
         IsPermitted: true,
-        downloading: false,
-        exportLoading: false,
         deleteLoading: false,
         editLoading: false,
-        programs: [],
+        courses: [],
+        levels: [],
         routeId: 0,
+        lecturers: [],
+        lecturerLoading: false,
+        lecturerModalLabel: {},
         subRouteId: '',
-        file: "",
         pagination: {
           total: 0,
           per_page: 2,
@@ -233,15 +244,9 @@ export default {
           id: 0,
           status: 1,
           abbreviation: "",
-          length_of_study: 4,
-          department_status: "",
-          edit_prefix: "",
-          edit_length_of_study: "",
-          edit_status: "",
-          edit_department_id: "",
-          edit_name: "",
-          edit_program_id: "",
-          edit_faculty_id: ""
+          search_level: "",
+          search_semester: "",
+          search_course_name: ""
         },
       }
     },
@@ -253,7 +258,7 @@ export default {
             document.head.appendChild(script1)
         }
         if(this.$laravel.hasPermission('View programme')){
-            this.getProgramsByDepartmentId(this.pagination.current_page)
+            this.viewCoursesUnderProgram(this.pagination.current_page)
         }else{
             this.IsPermitted = false
             this.getLoading = false
@@ -265,104 +270,30 @@ export default {
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
         this.subRouteId = this.$route.params.id
-        this.routeId = (this.$route.params.id).split("_")[0]
+        this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
+        this.getLevels()
     },
 
     methods:{
+        refresh() {
+            this.model.search_level = ""
+            this.model.search_semester = ""
+            this.model.search_course_name = ""
+            this.viewCoursesUnderProgram(1)
+        },
         setId(id){
             this.model.id = id
         },
-        downloadProgramSampleFile(){
-            this.downloading = true
-            this.$store
-                .dispatch('get-started/downloadProgramSampleFile')
-                .then(res => {
-                if(res != undefined){
-                    if(res.success == true)    {
-                        window.location = res.message
-                        this.downloading = false
-                        $('#upload_o_program').modal('hide').data( 'bs.modal', null )
-                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                    }
-
-                }else{
-                    this.downloading = false
-                    alert("File Download Unsuccessful")
-                }
-            }).catch(err => {
-            this.downloading = false
-            })
-        },
-        uploadPrograms(){
-            this.loading = true
-            this.file = this.$refs.myFiles.files[0];
-            let formData = new FormData();
-            formData.append('file', this.file);
-            this.$store
-                .dispatch('get-started/uploadPrograms', formData)
-                .then(res => {
-                if(res != undefined){
-                    if(res.status == true){
-                        this.loading = false
-                        this.getProgramsByDepartmentId()
-                        $('#upload_o_department').modal('hide').data( 'bs.modal', null )
-                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                    }else{
-                        this.loading = false
-                        alert("File Upload Unsuccessful")
-                        this.ErrMsg = "Error Processing Request!"
-                    }
-                }else{
-                    this.loading = false
-                    alert("File Upload Unsuccessful")
-                    this.ErrMsg = "Error Processing Request!"
-                }
-            }).catch(err => {
-            this.loading = false
-            })
-        },
-        createProgram(){
-            this.loading = true
-            let departmentId = (this.$route.params.id).split('_')[1]
-            let facultyId = (this.$route.params.id).split('_')[0]
-            let bodyFormData = new FormData();
-            bodyFormData.set('department_id', departmentId)
-            //bodyFormData.set('faculty_id', facultyId)
-            bodyFormData.set('name', this.model.name)
-            //bodyFormData.set('prefix', this.model.abbreviation)
-            bodyFormData.set('duration', this.model.length_of_study)
-            bodyFormData.set('status', this.model.status)
-            this.$store
-            .dispatch('get-started/createProgram', bodyFormData)
-            .then(res => {
-            if(res != undefined){
-                if(res.status == true){
-                    this.getProgramsByDepartmentId()
-                    this.loading = false
-                    $('#add_department').modal('hide').data( 'bs.modal', null )
-                    this.model = {}
-                }else{
-                    this.loading = false
-                    this.ErrMsg = "Error Processing Request!"
-                }
-            }else{
-                this.loading = false
-                this.ErrMsg = "Error Processing Request!"
-            }
-            }).catch(err => {
-            this.loading = false
-            })
-        },
-        deleteProgram(){
+        deleteCourse(){
             this.deleteLoading = true
             this.$store
-                .dispatch('get-started/deleteProgram', this.model.id)
+                .dispatch('get-started/deleteCourse', this.model.id)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
                     this.deleteLoading = false
-                    this.getProgramsByDepartmentId()
-                    $( '#delete_department' ).modal( 'hide' ).data( 'bs.modal', null );
+                    this.viewCoursesUnderProgram(1)
+                    $( '#delete_course' ).modal( 'hide' ).data( 'bs.modal', null );
                     this.loading = false
                     }else{
                     this.deleteLoading = false
@@ -378,7 +309,7 @@ export default {
             this.loading = false
             })
         },
-        submitEditedProgram(){
+        submitEditedCourse(){
             this.editLoading = true
             let bodyFormData = new Object();
             let payload = {}
@@ -420,44 +351,91 @@ export default {
         //   this.model.edit_faculty_id = program.faculty_id
           this.model.edit_status = program.status
         },
-        exportPrograms(){
-            this.exportLoading = true
+        getLevels(){
             this.$store
-                .dispatch('get-started/exportPrograms')
+                .dispatch('get-started/getLevels', false)
                 .then(res => {
+                    console.log(res)
                 if(res != undefined){
-                    this.loading = false
-                    var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-                    var fileLink = document.createElement('a');
-
-                    fileLink.href = fileURL;
-                    fileLink.setAttribute('download', 'programs.xlsx');
-                    document.body.appendChild(fileLink);
-
-                    fileLink.click();
-                    this.exportLoading = false
-                    $( '#export_programs' ).modal( 'hide' ).data( 'bs.modal', null )
-                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-                }else{
-                    this.exportLoading = false
-                    alert("File Downloaded Unsuccessful")
+                    if(res.status){
+                        this.levels = res.data
+                    }
                 }
-            }).catch(err => {
-            this.exportLoading = false
+                }).catch(err => {
             })
         },
-        getProgramsByDepartmentId(page) {
-            if(this.$laravel.hasPermission('View programme')){
-            let departmentId = (this.$route.params.id).split("_")[1]
+        searchCourse(){
+            this.searchloading = true
+            let programId = (this.$route.params.id).split('_')[0]
             let payload = {}
-            payload.page = page
-            payload.departmentId = departmentId
+            payload.page = 1
+            payload.programId = programId
+            payload.code = ""
+            payload.course_name = this.model.search_course_name
+            payload.semester = this.model.search_semester
+            payload.level = this.model.search_level
             this.$store
-                .dispatch('get-started/getProgramsByDepartmentId', payload)
+                .dispatch('get-started/viewCoursesUnderProgram', payload)
                 .then(res => {
                 if(res != undefined){
-                    if(res.status == true){
-                        this.programs = res.data.data
+                    if(res.success == true){
+                        this.courses = res.data.data
+                        this.pagination = res.data
+                        this.searchloading = false
+                    }else{
+                        this.searchloading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.searchloading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+                }).catch(err => {
+                    this.searchloading = false
+                })
+        },
+        viewLecturers(payload){
+            this.lecturerModalLabel = {}
+            this.lecturers = []
+            this.lecturerLoading = true
+            this.lecturerModalLabel.course_name = payload.name
+            this.lecturerModalLabel.course_code = payload.code
+            this.$store
+                .dispatch('get-started/viewLecturers', payload.id)
+                .then(res => {
+                if(res != undefined){
+                    if(res.success == true){
+                        this.lecturerLoading = false
+                        this.lecturers = res.data
+                    }else{
+                        this.lecturerLoading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.lecturerLoading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+                }).catch(err => {
+                    this.lecturerLoading = false
+            })
+        },
+        viewCoursesUnderProgram(page) {
+            if(this.$laravel.hasPermission('View programme')){
+            this.getLoading = true
+            let programId = (this.$route.params.id).split('_')[0]
+            let payload = {}
+            payload.page = page
+            payload.programId = programId
+            payload.code = ""
+            payload.course_name = ""
+            payload.semester = ""
+            payload.level = ""
+            this.$store
+                .dispatch('get-started/viewCoursesUnderProgram', payload)
+                .then(res => {
+                if(res != undefined){
+                    if(res.success == true){
+                        this.courses = res.data.data
                         this.pagination = res.data
                         this.getLoading = false
                     }else{
