@@ -198,7 +198,7 @@ export default {
             this.departments = []
         }
     },
-    getFaculties(page){
+    getFaculties(){
           this.$store
               .dispatch('get-started/getAllFaculties')
               .then(res => {
@@ -224,18 +224,8 @@ export default {
       this.sLoading = true
       this.Loading = true
       this.candidates = []
-      let payload = {}
-      payload.registration_number = this.model.registration_number
-      payload.faculty_id = this.model.faculty_id
-      payload.department_id = this.model.department_id
-      payload.entry_mode = this.model.entry_mode
-      payload.year = this.model.year
-      payload.from_date = this.model.from_date
-      payload.to_date = this.model.to_date
-      payload.page = 1
-      payload.export = false
       this.$store
-          .dispatch('get-started/getUploadedJambCandidates', payload)
+          .dispatch('get-started/getUploadedJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
                 this.sLoading = false
@@ -253,46 +243,25 @@ export default {
     },
     getUploadedJambCandidates(page){
       this.Loading = true
-      let payload = {}
-      payload.registration_number = ""
-      payload.faculty_id = ""
-      payload.department_id = ""
-      payload.entry_mode = ""
-      payload.year = ""
-      payload.from_date = ""
-      payload.to_date = ""
-      payload.export = this.model.export
-      payload.page = page
+      this.model.page = page
       this.candidates = []
       this.$store
-          .dispatch('get-started/getUploadedJambCandidates', payload)
+          .dispatch('get-started/getUploadedJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
-                this.Loading = false
                 this.candidates = res.data.data
                 this.pagination = res.data
-              }else{
-                  this.Loading = false
-                  alert("File Downloaded Unsuccessful")
               }
+                this.Loading = false
           }).catch(err => {
-            this.exLoading = false
+            this.Loading = false
         })
     },
     exportUploadedJambCandidates(){
       this.exLoading = true
-      let payload = {}
-      payload.registration_number = this.model.registration_number
-      payload.faculty_id = this.model.faculty_id
-      payload.department_id = this.model.department_id
-      payload.entry_mode = this.model.entry_mode
-      payload.year = this.model.year
-      payload.from = this.model.from_date
-      payload.to = this.model.to_date
-      payload.export = true
-      //console.log(payload)
+      this.model.export = true
       this.$store
-          .dispatch('get-started/exportUploadedJambCandidates', payload)
+          .dispatch('get-started/exportUploadedJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
@@ -308,6 +277,7 @@ export default {
                   alert("File Downloaded Unsuccessful")
               }
           }).catch(err => {
+            this.$toast.error(err)
             this.exLoading = false
         })
     }

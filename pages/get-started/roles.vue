@@ -52,10 +52,10 @@
                                               <!-- <span data-placement="top" @click="setId(role.id)" data-toggle="tooltip" title="Delete Record">
                                                   <a href="#delete_role"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-user-times"></i></a>
                                               </span> -->
-                                              <span data-placement="top" @click="populatePermissionCheckboxes(role)" data-toggle="tooltip" title="Manage Role">
+                                              <span data-placement="top" @click="populatePermissionCheckboxes(role)" data-toggle="tooltip" title="Manage Permissions">
                                                 <a href="#manage_permission" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-cog"></i></a>
                                              </span>
-                                             <span data-placement="top" @click="populateUsersRoleView(role)" data-toggle="tooltip" title="Manage Role">
+                                             <span data-placement="top" @click="populateUsersRoleView(role)" data-toggle="tooltip" title="View Users">
                                                 <a href="#users_role" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-users" aria-hidden="true"></i></a>
                                              </span>
                                           </div>

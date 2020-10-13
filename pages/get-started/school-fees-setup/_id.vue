@@ -22,28 +22,11 @@
                   <option value="DE">Direct Entry</option>
                 </select>
               </div>
-              <!-- <div class="col-lg-6 m-b-10">
-                <select class="form-control" v-model="formData.academic_session">
-                  <option value="" selected>Select Academic Session</option>
-                  <option v-for="session in add_sessions"  :key="session.id" :value="session.id">
-                    {{ (formData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
-                  </option>
-                </select>
-              </div> -->
-              <!-- <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" v-model="formData.name" placeholder="Fee Caption" />
-              </div> -->
               <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.school_fees_amount" placeholder="School Fees Amount" />
               </div>
               <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.returning_school_fees_amount" placeholder="School Fees Amount Returning " />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" v-model="formData.new_hostel_fees" placeholder="New Hostel Fees" />
-              </div>
-              <div class="col-lg-6 m-b-10">
-                <input type="text" class="form-control" v-model="formData.old_hostel_fees" placeholder="Old Hostel Fees" />
               </div>
               <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.extra_year_fees" placeholder="Extra Year Fees" />
@@ -103,26 +86,11 @@
                                     <option value="DE">Direct Entry</option>
                                   </select>
                                 </div>
-                                <!-- <div class="col-lg-6 m-b-10">
-                                  <select class="form-control" v-model="formData.academic_session">
-                                    <option value="" selected>Select Academic Session</option>
-                                    <option v-for="session in add_sessions"  :key="session.id" :value="session.id">
-                                      {{ (formData.edit_entry_mode === 'putme') ? session.session_name : session.de_session_name }}
-                                    </option>
-                                  </select>
-                                </div> -->
-
                                 <div class="col-lg-6 m-b-10">
                                   <input type="text" class="form-control" v-model="formData.edit_school_fees_amount" placeholder="School Fees Amount" />
                                 </div>
                                 <div class="col-lg-6 m-b-10">
                                   <input type="text" class="form-control" v-model="formData.edit_returning_school_fees_amount" placeholder="School Fees Amount Returning " />
-                                </div>
-                                <div class="col-lg-6 m-b-10">
-                                  <input type="text" class="form-control" v-model="formData.edit_new_hostel_fees" placeholder="New Hostel Fees" />
-                                </div>
-                                <div class="col-lg-6 m-b-10">
-                                  <input type="text" class="form-control" v-model="formData.edit_old_hostel_fees" placeholder="Old Hostel Fees" />
                                 </div>
                                 <div class="col-lg-6 m-b-10">
                                   <input type="text" class="form-control" v-model="formData.edit_extra_year_fees" placeholder="Extra Year Fees" />
@@ -186,44 +154,32 @@
                       <div class="modal-header">
                           <h5 class="text-left p-b-5"><span class="semi-bold">VIEW SCHOOL FEE DETAILS</span></h5>
                       </div>
-                      <div class="modal-body jamb_view">                      
+                      <div class="modal-body jamb_view">
                           <table class="table table-striped table-bordered">
-                          <tr>
-                              <th>Caption Name:</th>
-                              <td v-if="feeDetails.fee_caption">{{feeDetails.fee_caption.toUpperCase()}}</td>
-                          </tr>
-                          <tr>
-                              <th>Entry Mode:</th>
-                              <td v-if="feeDetails.entry_mode">{{feeDetails.entry_mode.toUpperCase()}}</td>
-                          </tr>
-                          <tr>
-                              <th>Amount:</th>
-                              <td v-if="feeDetails.amount">&#8358; {{ numberWithCommas(feeDetails.amount) }}</td>
-                          </tr>
-                          <tr>
-                              <th>Returning Amount:</th>
-                              <td v-if="feeDetails.returning_amount">&#8358; {{ numberWithCommas(feeDetails.returning_amount) }}</td>
-                          </tr>
-                          <tr>
-                              <th>New Hostel Fee:</th>
-                              <td v-if="feeDetails.with_new_hostel">&#8358; {{ numberWithCommas(feeDetails.with_new_hostel) }}</td>
-                          </tr>
-                          <tr>
-                              <th>Old Hostel Fee:</th>
-                              <td v-if="feeDetails.with_old_hostel">&#8358; {{ numberWithCommas(feeDetails.with_old_hostel) }}</td>
-                          </tr>
-                          <tr>
-                              <th>Extra Year:</th>
-                              <td v-if="feeDetails.extra_year">&#8358; {{ numberWithCommas(feeDetails.extra_year) }}</td>
-                          </tr>
-                          <tr>
-                              <th>Level:</th>
-                              <td>{{ feeDetails.level }}</td>
-                          </tr>
-                          <tr>
-                              <th>Semester:</th>
-                              <td >{{ (feeDetails.semester == 1) ? "First Semester" :  "Second Semester" }}</td>
-                          </tr>
+                            <tr>
+                                <th>Caption Name:</th>
+                                <td v-if="feeDetails.fee_caption">{{feeDetails.fee_caption.toUpperCase()}}</td>
+                            </tr>
+                            <tr>
+                                <th>Entry Mode:</th>
+                                <td v-if="feeDetails.entry_mode">{{feeDetails.entry_mode.toUpperCase()}}</td>
+                            </tr>
+                            <tr>
+                                <th>Amount:</th>
+                                <td v-if="feeDetails.amount">&#8358; {{ numberWithCommas(feeDetails.amount) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Returning Amount:</th>
+                                <td v-if="feeDetails.returning_amount">&#8358; {{ numberWithCommas(feeDetails.returning_amount) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Extra Year:</th>
+                                <td v-if="feeDetails.extra_year">&#8358; {{ numberWithCommas(feeDetails.extra_year) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Level:</th>
+                                <td>{{ feeDetails.level }}</td>
+                            </tr>
                           </table>
                       </div>
                   </div>
@@ -266,21 +222,6 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <!-- <div class="col-lg-6 m-b-10">
-                <select class="form-control" @change="getSession($event)" v-model="importData.entry_mode">
-                  <option value="" selected>Entry Mode</option>
-                  <option value="putme">PUTME</option>
-                  <option value="direct-entry">Direct Entry</option>
-                </select>
-              </div> -->
-              <!-- <div class="col-lg-6 m-b-10">
-                <select class="form-control" v-model="importData.academic_session">
-                  <option value="" selected>Select Academic Session</option>
-                  <option v-for="session in sessions" :key="session.id" :value="session.id">
-                    {{ (importData.entry_mode === 'putme') ? session.session_name : session.de_session_name }}
-                  </option>
-                </select>
-              </div> -->
               <div class="col-lg-12 m-b-10">
                 <input type="file" class="form-control" ref="myFiles" id="customFileLang" lang="es" />
               </div>
@@ -371,8 +312,6 @@
                     <th>Name</th>
                     <th>Amount(&#8358;) </th>
                     <th>Returning(&#8358;)</th>
-                    <th>New hostel(&#8358;)</th>
-                    <th>Old hostel(&#8358;)</th>
                     <th>Level</th>
                     <th style="width: 17%;">Action</th>
                   </tr>
@@ -389,17 +328,15 @@
                       <td>{{setup.fee_caption}}</td>
                       <td>{{numberWithCommas(setup.amount)}}</td>
                       <td>{{numberWithCommas(setup.returning_amount)}}</td>
-                      <td>{{numberWithCommas(setup.with_new_hostel)}}</td>
-                      <td>{{numberWithCommas(setup.with_old_hostel)}}</td>
                       <td>{{setup.level}}</td>
                       <td>
                         <span @click="setViewDetails(setup)">
                           <a href="#view_school_fee_details" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
                         </span>
                         <span @click="setEditSchoolFee(setup)">
-                          <a href="#edit_school_fee"  class="btn btn-default btn-sm" title="Edit details" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>  
+                          <a href="#edit_school_fee"  class="btn btn-default btn-sm" title="Edit details" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                         </span>
-                        
+
                         <span v-permission="'Delete School Fee'" data-placement="top" data-toggle="tooltip" title="Delete Record">
                           <a href="#delete_details" @click="setId(setup.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
                         </span>
@@ -463,8 +400,6 @@ export default {
         name: '',
         school_fees_amount: '',
         returning_school_fees_amount: '',
-        new_hostel_fees: '',
-        old_hostel_fees: '',
         extra_year_fees: '',
         level: '',
         semester: '',
@@ -474,8 +409,6 @@ export default {
         edit_name: '',
         edit_school_fees_amount: '',
         edit_returning_school_fees_amount: '',
-        edit_new_hostel_fees: '',
-        edit_old_hostel_fees: '',
         edit_extra_year_fees: '',
         edit_level: '',
         edit_semester: '',
@@ -511,7 +444,7 @@ export default {
                 }else{
                     this.getloading = false
                 }
-            }else{              
+            }else{
                 this.getloading = false
             }
         }).catch(err => {
@@ -547,14 +480,14 @@ export default {
             .then(res => {
                 if(res.success === true){
                     this.uLoading = false
-                    this.importResponse = res  
+                    this.importResponse = res
                     $('#import_school_fees').modal('hide').data( 'bs.modal', null )
                 }else{
                     this.uLoading = false
                     alert("File Upload Unsuccessful!")
                     this.ErrMsg = "Error Logging in!"
                 }
-          
+
         }).catch(err => {
           this.uLoading = false
         })
@@ -618,8 +551,6 @@ export default {
       bodyFormData.append('fee_caption', this.formData.edit_name)
       bodyFormData.append('amount', this.formData.edit_school_fees_amount)
       bodyFormData.append('returning_amount', this.formData.edit_returning_school_fees_amount)
-      bodyFormData.append('with_new_hostel', this.formData.edit_new_hostel_fees)
-      bodyFormData.append('with_old_hostel', this.formData.edit_old_hostel_fees)
       bodyFormData.append('extra_year', this.formData.edit_extra_year_fees)
       bodyFormData.append('level', this.formData.edit_level)
       bodyFormData.append('semester', this.formData.edit_semester)
@@ -649,8 +580,6 @@ export default {
       this.formData.edit_name = setup.fee_caption
       this.formData.edit_school_fees_amount = setup.amount
       this.formData.edit_returning_school_fees_amount = setup.returning_amount
-      this.formData.edit_new_hostel_fees = setup.with_new_hostel
-      this.formData.edit_old_hostel_fees = setup.with_old_hostel
       this.formData.edit_extra_year_fees = setup.extra_year
       this.formData.edit_level = setup.level
       this.formData.edit_semester = setup.semester
@@ -701,8 +630,6 @@ export default {
             bodyFormData.set('fee_caption', this.formData.name)
             bodyFormData.set('amount', this.formData.school_fees_amount)
             bodyFormData.set('returning_amount', this.formData.returning_school_fees_amount)
-            bodyFormData.set('with_new_hostel', this.formData.new_hostel_fees)
-            bodyFormData.set('with_old_hostel', this.formData.old_hostel_fees)
             bodyFormData.set('extra_year', this.formData.extra_year_fees)
             bodyFormData.set('level', this.formData.level)
             bodyFormData.set('semester', this.formData.semester)

@@ -198,7 +198,6 @@ export default {
       this.$store.dispatch('reports/getAcceptanceStudents', this.searchData)
         .then(res =>{
           if(res.data.status) {
-            console.log(res.data)
             this.students = res.data.data.data
             this.pagination = res.data.data
           }

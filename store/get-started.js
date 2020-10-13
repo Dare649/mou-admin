@@ -317,7 +317,6 @@ export const actions = {
             return err
         });
     },
-
     async exportSSCEResults(context, payload) {
         return await this.$axios({
             method: 'get',
@@ -327,14 +326,7 @@ export const actions = {
         })
         .then(function (response) {
             //handle success
-            var fileURL = window.URL.createObjectURL(new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-            var fileLink = document.createElement('a');
-
-            fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'ssce-results.xlsx');
-            document.body.appendChild(fileLink);
-            fileLink.click();
-            return true
+            return response.data
         })
         .catch(err => {
 
@@ -438,7 +430,7 @@ export const actions = {
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export + '&page=' + payload.page,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })

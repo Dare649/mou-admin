@@ -79,9 +79,9 @@
                       </div>
                       <div class="col-md-2 m-t-30">
                         <button type="button" v-if="!exportLoading"  @click="exportStudentSSCEs()" class="btn btn-danger btn-block">
-                          <i class="fa fa-file-excel-o" />&nbsp;Export to csv
+                          <i class="fa fa-file-excel-o" />&nbsp;Export to Excel
                         </button>
-                        <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-block">Downloading</button>
+                        <button type="button" disabled v-if="exportLoading" class="btn btn-danger btn-block">Exporting...</button>
                       </div>
                     </div>
                   </form>
@@ -100,7 +100,6 @@
                         <thead>
                         <tr>
                           <th style="width:20%">Name</th>
-                          <th style="width:20%">Email</th>
                           <th>Reg No.</th>
                           <th>Gender</th>
                           <th>Status</th>
@@ -111,14 +110,13 @@
                         </thead>
                         <tbody>
                           <tr v-if="Loading">
-                            <td colspan="4">Loading....Please wait.</td>
+                            <td colspan="6">Loading....Please wait.</td>
                           </tr>
                           <tr v-if="(!Loading && candidates.length <= 0)">
-                            <td colspan="4">No record at the moment</td>
+                            <td colspan="6">No record at the moment</td>
                           </tr>
                           <tr v-for="can in candidates" :key="can.id">
                             <td>{{can.name}}</td>
-                            <td>{{can.email}}</td>
                             <td>{{can.reg_number}}</td>
                             <td>{{can.gender == 'F' ? 'Female' : 'Male'}}</td>
                             <td>{{can.status == 1 ? 'Verified' : 'Not Verified'}}</td>
@@ -186,7 +184,7 @@ export default {
           faculty_id: "",
           department_id: "",
           exam_type: "",
-          export: true
+          export: false
         },
       }
     },
@@ -204,18 +202,9 @@ export default {
       },
       searchRecord(){
         this.sLoading = true
-        let payload = {}
-        payload.year = this.model.year
-        payload.registration_number = this.model.registration_number
-        payload.from_dt = this.model.from_dt
-        payload.to_dt = this.model.to_dt
-        payload.faculty_id = this.model.faculty_id
-        payload.department_id = this.model.department_id
-        payload.exam_type = this.model.exam_type
-        payload.page = 1
-        payload.export = false
+        this.model.export = false
         this.$store
-            .dispatch('get-started/getSsceResultReport', payload)
+            .dispatch('get-started/getSsceResultReport', this.model)
                 .then(res => {
                 if(res != undefined){
                     this.sLoading = false
@@ -229,7 +218,7 @@ export default {
               this.sLoading = false
           })
       },
-      getFaculties(page){
+      getFaculties(){
           this.$store
               .dispatch('get-started/getAllFaculties')
               .then(res => {
@@ -267,46 +256,33 @@ export default {
       },
       getSsceResult(page) {
         this.Loading = true
-        let payload = {}
-        payload.year = ""
-        payload.registration_number = ""
-        payload.from_dt = ""
-        payload.to_dt = ""
-        payload.faculty_id = ""
-        payload.department_id = ""
-        payload.exam_type = ""
-        payload.export = false
-        payload.page = page
+        this.model.page = page
         this.$store
-            .dispatch('get-started/getSsceResultReport', payload)
+            .dispatch('get-started/getSsceResultReport', this.model)
                 .then(res => {
                 if(res != undefined){
-                  this.Loading = false
                   this.candidates = res.data.data
                   this.pagination = res.data
-                }else{
-                    this.Loading = false
-                    alert("File Downloaded Unsuccessful")
                 }
+                this.Loading = false
             }).catch(err => {
-              this.exLoading = false
+              this.Loading = false
           })
       },
       exportStudentSSCEs(){
         this.exportLoading = true
-        let payload = {}
-        payload.year = this.model.year
-        payload.registration_number = this.model.registration_number
-        payload.from_dt = this.model.from_dt
-        payload.to_dt = this.model.to_dt
-        payload.faculty_id = this.model.faculty_id
-        payload.department_id = this.model.department_id
-        payload.exam_type = this.model.exam_type
-        payload.export = this.model.export
+        this.model.export = true
         this.$store
-          .dispatch('get-started/exportSSCEResults', payload)
+          .dispatch('get-started/exportSSCEResults', this.model)
           .then(res => {
             if(res){
+              var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+              var fileLink = document.createElement('a');
+
+              fileLink.href = fileURL;
+              fileLink.setAttribute('download', 'ssce-results-report.xlsx');
+              document.body.appendChild(fileLink);
+              fileLink.click();
               this.exportLoading = false
               this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
             }else{

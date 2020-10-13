@@ -53,3 +53,10 @@
         max-width: 80%;
     }
 }
+
+h3.sub_text{
+  padding: 5px 10px;
+  background: #f7f7f7;
+  border-left: 3px solid #ccc;
+  margin-bottom: 10px;
+}

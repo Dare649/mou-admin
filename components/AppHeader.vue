@@ -53,6 +53,7 @@
                             <ul>
                                 <li><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/accommodation-fee-setup">Accommodation Fee Setup</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
