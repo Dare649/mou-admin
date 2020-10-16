@@ -158,7 +158,7 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <label>Course Name</label>
-                                            <input type="text" placeholder="Registration Number" v-model="model.search_course_name" class="form-control" id="icon-filter" name="icon-filter">
+                                            <input type="text" placeholder="Course Name" v-model="model.search_course_name" class="form-control" id="icon-filter" name="icon-filter">
                                         </div>
                                         <div class="col-lg-4">
                                             <label>Semester</label>
