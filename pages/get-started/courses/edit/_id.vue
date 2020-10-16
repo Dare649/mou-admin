@@ -118,7 +118,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Credits (Weightage)</label>
-                                        <input type="text" class="form-control" v-model="model.weight_age" required>
+                                        <input type="text" class="form-control" v-model="model.weightage" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -156,7 +156,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PGD MASTERS M.A PHIL</label>
-                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.A PHIL" v-model="model.isApplicableToPgMscPhil" required>
+                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.A PHIL" v-model="model.isApplicablePG_MSC_PHIL" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -175,7 +175,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to MSP</label>
-                                        <select class="form-control" data-placeholder="Applicable to MSP" v-model="model.isApplicableToMsp" required>
+                                        <select class="form-control" data-placeholder="Applicable to MSP" v-model="model.isApplicableMSP" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -187,7 +187,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to POST UTME</label>
-                                        <select class="form-control" data-placeholder="Applicable to POST UTME" v-model="model.isApplicableToPutme" required>
+                                        <select class="form-control" data-placeholder="Applicable to POST UTME" v-model="model.isApplicablePUTME" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -197,7 +197,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to DE 2nd Year</label>
-                                        <select class="form-control" data-placeholder="Applicable to DE 2nd Year" v-model="model.isApplicableToDe_2ndYear" required>
+                                        <select class="form-control" data-placeholder="Applicable to DE 2nd Year" v-model="model.isApplicableDE_Y" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -207,7 +207,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to BSC</label>
-                                        <select class="form-control" data-placeholder="Applicable to BSC" v-model="model.isApplicableToBsc" required>
+                                        <select class="form-control" data-placeholder="Applicable to BSC" v-model="model.isApplicableBSC" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -219,7 +219,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to BSC (Direct Entry)</label>
-                                        <select class="form-control" data-placeholder="Applicable to BSC (Direct Entry)" v-model="model.isApplicableToBscDe" required>
+                                        <select class="form-control" data-placeholder="Applicable to BSC (Direct Entry)" v-model="model.isApplicableBSC_DE" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -229,7 +229,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to ND</label>
-                                        <select class="form-control" data-placeholder="Applicable to ND" v-model="model.isApplicableToNd" required>
+                                        <select class="form-control" data-placeholder="Applicable to ND" v-model="model.isApplicableND" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -239,7 +239,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to Pre-Degree</label>
-                                        <select class="form-control" data-placeholder="Applicable to Pre-Degree" v-model="model.isApplicableToPreDegree" required>
+                                        <select class="form-control" data-placeholder="Applicable to Pre-Degree" v-model="model.isApplicablePreDegree" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -251,7 +251,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to MSC</label>
-                                        <select class="form-control" data-placeholder="Applicable to MSC" v-model="model.isApplicableToMsc" required>
+                                        <select class="form-control" data-placeholder="Applicable to MSC" v-model="model.isApplicableMSC" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -261,7 +261,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PHD</label>
-                                        <select class="form-control" data-placeholder="Applicable to PHD" v-model="model.isApplicableToPhd" required>
+                                        <select class="form-control" data-placeholder="Applicable to PHD" v-model="model.isApplicablePHD" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -271,7 +271,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PDG</label>
-                                        <select class="form-control" data-placeholder="Applicable to PGD" v-model="model.isApplicableToPgd" required>
+                                        <select class="form-control" data-placeholder="Applicable to PGD" v-model="model.isApplicablePGD" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -283,7 +283,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PGD MASTERS M.ED</label>
-                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.ED" v-model="model.isApplicableToPgMscEd" required>
+                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.ED" v-model="model.isApplicablePG_MSC_ED" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -293,7 +293,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PGD MASTERS M.ENG</label>
-                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.ENG" v-model="model.isApplicableToPgMscEng" required>
+                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS M.ENG" v-model="model.isApplicablePG_MSC_ENG" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -303,7 +303,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Applicable to PGD MASTERS MBA</label>
-                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS MBA" v-model="model.isApplicableToPgMscMba" required>
+                                        <select class="form-control" data-placeholder="Applicable to PGD MASTERS MBA" v-model="model.isApplicablePG_MSC_MBA" required>
                                             <option value="">Select</option>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
@@ -331,28 +331,28 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="row" v-for="(input,k) in inputs" :key="k">
+                                    <div class="row" v-for="(input,k) in model.lecturers" :key="k">
                                         <div class="col-md-5">
                                             <div class="form-group form-group-default required">
                                                 <label>Lecturer</label>
-                                                <select class="form-control" data-placeholder="Semester" v-model="input.name">
+                                                <select class="form-control" data-placeholder="Semester" v-model="input.user_id">
                                                     <option value="">Select Lecturer</option>
-                                                    <option v-for="lecturer in lecturers" :key="lecturer.id" :value="lecturer.id"> {{lecturer.name}} </option>
+                                                    <option v-for="lecturer in lecturerss" :key="lecturer.id" :value="lecturer.id"> {{lecturer.name}} </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group form-group-default required">
                                                 <label>Participation %age</label>
-                                                <input type="text" v-model="input.party" class="form-control">                                            
+                                                <input type="text" v-model="input.participation_percentage" class="form-control">                                            
                                             </div>
                                         </div>
-                                        <div class="col-md-1" v-show="k || ( !k && inputs.length > 1)">
+                                        <div class="col-md-1" v-show="k || ( !k && model.lecturers.length > 1)">
                                             <span @click="remove(k)">
                                                 <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-minus" ></i></div>                                                
                                             </span>                                                                                                          
                                         </div>
-                                        <div class="col-md-1" v-show="k == inputs.length-1 && ( inputs.length < 3)">
+                                        <div class="col-md-1" v-show="k == model.lecturers.length-1 && ( model.lecturers.length < 3)">
                                             <span @click="add(k)">
                                                 <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>  
                                             </span>  
@@ -374,8 +374,8 @@
                     <div class="card-footer">
                         <div class="float-right">
                             <button type="button" class="btn btn-default btn-lg btn-large fs-16 semi-bold">Cancel</button>
-                            <button type="button" @click="createCourse()" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Add Record</button>
-                            <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Adding</button>
+                            <button type="button" @click="saveCourse()" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Record</button>
+                            <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Updating</button>
                         </div>
                     </div>
                 </div>
@@ -405,10 +405,10 @@ export default {
         editLoading: false,
         programs: [],
         levels: [],
-        routeId: 0,
+        routeId: "",
         subRouteId: '',
         file: "",
-        lecturers: [],
+        lecturerss: [],
         inputs: [{
             name: '',
             party: ''
@@ -428,24 +428,25 @@ export default {
           code: "",
           level_id: 0,
           semester: "",
-          weight_age: "",
+          weightage: "",
           isPrerequisite: "",
           isElective: "",
           electiveGroupId: 0,
           isApplicableToMsp: "",
-          isApplicableToPutme: "",
+          isApplicablePUTME: "",
           isApplicableToDe_2ndYear: "",
           isApplicableToBsc: "",
-          isApplicableToNd: "",
+          isApplicableND: "",
           isApplicableToPreDegree: "",
           isApplicableToMsc: "",
-          isApplicableToPhd: "",
-          isApplicableToPgd: "",
-          isApplicableToPgMscEd: "",
-          isApplicableToPgMscEng: "",
-          isApplicableToPgMscMba: "",
-          isApplicableToPgMscPhil: "",
-          isApplicableToBscDe: ""
+          isApplicablePHD: "",
+          isApplicablePGD: "",
+          isApplicablePG_MSC_ED: "",
+          isApplicablePG_MSC_ENG: "",
+          isApplicablePG_MSC_MBA: "",
+          isApplicablePG_MSC_PHIL: "",
+          isApplicableToBscDe: "",
+          lecturers:[]
         },
       }
     },
@@ -470,33 +471,42 @@ export default {
         // }
         // this.subRouteId = this.$route.params.id
         this.getLecturers()
-        this.routeId = this.$route.params.id
+        this.routeId = (this.$route.params.id).split('_')[0] + '_' + (this.$route.params.id).split('_')[1] + '_' + (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
         this.getLevels()
+        this.getCourse()
     },
 
     methods:{
         add () {
-        this.inputs.push({
-            name: '',
-            party: ''
+        this.model.lecturers.push({
+            user_id: '',
+            participation_percentage: ''
         })
-            console.log(this.inputs)
         },
 
         remove (index) {
-            this.inputs.splice(index, 1)
+            this.model.lecturers.splice(index, 1)
         },
         setId(id){
             this.model.id = id
         },   
-        getCourse(){
-            let courseId = this.$route.params.id
+        getCourse(){    
+            let courseId = this.$route.params.id.split('_')[4]
             this.$store
                 .dispatch('get-started/getCourse', courseId)
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.course = res.data                  
+                        this.model = res.data.course 
+                        // for(i = 0; i < this.model.lecturers.length; i++)
+                        // {
+                        //     console.log(this.model.lecturers) 
+                        //     let input = {}
+                        //     input.name = this.model.lecturers[i].id
+                        //     input.party = this.model.lecturers[i].participation_percentage
+                        //     console.log(input) 
+                        //     this.inputs.push(input)
+                        // }             
                     }
                 }
                 }).catch(err => {
@@ -514,42 +524,43 @@ export default {
                 }).catch(err => {
             })
         },   
-        createCourse(){
+        saveCourse(){
             this.loading = true
             let program_id = (this.$route.params.id).split('_')[0]
+            let courseId = this.$route.params.id.split('_')[4]
             let bodyFormData = new FormData();
             bodyFormData.set('program_id', program_id)
+            bodyFormData.set('course_id', courseId)
             bodyFormData.set('name', this.model.name)
             bodyFormData.set('code', this.model.code)
             bodyFormData.set('level_id', this.model.level_id)
             bodyFormData.set('semester', this.model.semester)
-            bodyFormData.set('weight_age', this.model.weight_age)
+            bodyFormData.set('weight_age', this.model.weightage)
             bodyFormData.set('status', this.model.status)
             bodyFormData.set('isPrerequisite', this.model.isPrerequisite)
             bodyFormData.set('isElective', this.model.isElective)
-            bodyFormData.set('electiveGroupId', this.model.electiveGroupId)
-            bodyFormData.set('isApplicableToMsp', this.model.isApplicableToMsp)
-            bodyFormData.set('isApplicableToPutme', this.model.isApplicableToPutme)
-            bodyFormData.set('isApplicableToDe_2ndYear', this.model.isApplicableToDe_2ndYear)
-            bodyFormData.set('isApplicableToBsc', this.model.isApplicableToBsc)          
-            bodyFormData.set('isApplicableToNd', this.model.isApplicableToNd)
-            bodyFormData.set('isApplicableToPreDegree', this.model.isApplicableToPreDegree)
-            bodyFormData.set('isApplicableToPhd', this.model.isApplicableToPhd)
-            bodyFormData.set('isApplicableToPgMscEd', this.model.isApplicableToPgMscEd)
-            bodyFormData.set('isApplicableToPgMscEng', this.model.isApplicableToPgMscEng)
-            bodyFormData.set('isApplicableToPgMscMba', this.model.isApplicableToPgMscMba)
-            bodyFormData.set('isApplicableToPgMscPhil', this.model.isApplicableToPgMscPhil)
-            bodyFormData.set('isApplicableToBscDe', this.model.isApplicableToBscDe)
-            bodyFormData.set('isApplicableToMsc', this.model.isApplicableToMsc)
-            bodyFormData.set('isApplicableToPgd', this.model.isApplicableToPgd)
-            
+            bodyFormData.set('electiveGroupId', this.model.electiveGroupID)
+            bodyFormData.set('isApplicableToMsp', this.model.isApplicableMSP)
+            bodyFormData.set('isApplicableToPutme', this.model.isApplicablePUTME)
+            bodyFormData.set('isApplicableToDe_2ndYear', this.model.isApplicableDE_Y)
+            bodyFormData.set('isApplicableToBsc', this.model.isApplicableBSC)          
+            bodyFormData.set('isApplicableToNd', this.model.isApplicableND)
+            bodyFormData.set('isApplicableToPreDegree', this.model.isApplicablePreDegree)
+            bodyFormData.set('isApplicableToPhd', this.model.isApplicablePHD)
+            bodyFormData.set('isApplicableToPgMscEd', this.model.isApplicablePG_MSC_ED)
+            bodyFormData.set('isApplicableToPgMscEng', this.model.isApplicablePG_MSC_ENG)
+            bodyFormData.set('isApplicableToPgMscMba', this.model.isApplicablePG_MSC_MBA)
+            bodyFormData.set('isApplicableToPgMscPhil', this.model.isApplicablePG_MSC_PHIL)
+            bodyFormData.set('isApplicableToBscDe', this.model.isApplicableBSC_DE)
+            bodyFormData.set('isApplicableToMsc', this.model.isApplicableMSC)
+            bodyFormData.set('isApplicableToPgd', this.model.isApplicablePGD)
             for(var i = 0; i < this.inputs.length; i++)
             {
-                bodyFormData.set('lecturers['+this.inputs[i].name+']', this.inputs[i].party)
+                bodyFormData.set('lecturers['+this.model.lecturers[i].user_id+']', this.inputs[i].participation_percentage)
             }
             
             this.$store
-            .dispatch('get-started/createCourse', bodyFormData)
+            .dispatch('get-started/updateCourse', bodyFormData)
             .then(res => {
             if(res != undefined){
                 if(res.success == true){
@@ -574,13 +585,14 @@ export default {
         },
 
         getLecturers() {
+            
             //if(this.$laravel.hasPermission('View programme')){
             this.$store
                 .dispatch('get-started/getLecturers', false)
                 .then(res => {
                 if(res != undefined){
                     if(res.success == true){
-                        this.lecturers = res.data.data
+                        this.lecturerss = res.data.data
                     }else{
                         this.getLoading = false
                         this.ErrMsg = "Error Processing Request!"

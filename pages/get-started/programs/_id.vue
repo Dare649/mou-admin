@@ -416,7 +416,7 @@ export default {
                 if(res != undefined){
                     if(res.status == true){
                         this.loading = false
-                        this.getProgramsByDepartmentId()
+                        this.getProgramsByDepartmentId(1)
                         $('#upload_o_department').modal('hide').data( 'bs.modal', null )
                         this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{

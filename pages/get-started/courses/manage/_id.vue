@@ -480,7 +480,6 @@ export default {
             name: '',
             party: ''
         })
-            console.log(this.inputs)
         },
 
         remove (index) {
@@ -493,7 +492,6 @@ export default {
             this.$store
                 .dispatch('get-started/getLevels', false)
                 .then(res => {
-                    console.log(res)
                 if(res != undefined){
                     if(res.status){
                         this.levels = res.data                  
@@ -566,7 +564,6 @@ export default {
             this.$store
                 .dispatch('get-started/getLecturers', false)
                 .then(res => {
-                    console.log(res)
                 if(res != undefined){
                     if(res.success == true){
                         this.lecturers = res.data.data
