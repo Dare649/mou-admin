@@ -218,11 +218,11 @@ export default {
       this.students = []
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
-          this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
             this.pagination = res.data.data
           }
+          this.loading = false
         }).catch(err =>{
         this.loading = false
         this.$toast.error(err)

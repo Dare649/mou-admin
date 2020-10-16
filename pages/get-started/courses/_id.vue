@@ -5,9 +5,9 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                 <i class="pg-close"></i>
             </button>
-            
+
             <div class="modal-dialog modal-lg" >
-                
+
                 <div class="modal-content">
                     <div style="text-align:center; font-size:24px;" v-if="lecturerLoading">
                         <i class="fa fa-spinner fa-spin fa-3x fa-fw"  aria-hidden="true"></i>
@@ -189,7 +189,7 @@
                 <div class="card card-default">
                     <div class="card-header  separator">
                         <h3 class="text-primary no-margin pull-left sm-pull-reset">Courses</h3>
-                        
+
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                             <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
@@ -487,7 +487,7 @@ export default {
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.levels = res.data                  
+                        this.levels = res.data
                     }
                 }
                 }).catch(err => {
@@ -508,7 +508,7 @@ export default {
                 .then(res => {
                 if(res != undefined){
                     if(res.success == true){
-                        this.courses = res.data.data                  
+                        this.courses = res.data.data
                         this.pagination = res.data
                         this.searchloading = false
                     }else{
@@ -535,7 +535,7 @@ export default {
                 if(res != undefined){
                     if(res.success == true){
                         this.lecturerLoading = false
-                        this.lecturers = res.data                   
+                        this.lecturers = res.data
                     }else{
                         this.lecturerLoading = false
                         this.ErrMsg = "Error Processing Request!"
