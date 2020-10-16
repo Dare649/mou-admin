@@ -198,6 +198,21 @@ export const actions = {
             return err
         });
     },
+    async uploadCourses(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/course/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async uploadStates(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -674,6 +689,20 @@ export const actions = {
             return err
         });
     },
+    async downloadCourseSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/course/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async downloadStateSampleFile(context) {
         return await this.$axios({
             method: 'get',
@@ -774,8 +803,7 @@ export const actions = {
             url: 'api/course/program/'+ payload.programId + '?page=' + payload.page + '&course_name=' + payload.course_name + '&code=' + payload.code + '&semester=' +payload.semester+ '&level=' + payload.level,
             headers: {'Content-Type': 'application/json' }
         })
-        .then(function (response) {
-            console.log(response)        
+        .then(function (response) { 
             return response.data
         })
         .catch(err => {
@@ -954,6 +982,14 @@ export const actions = {
         .catch(err => {
             return err
         });
+    },
+    async updateCourse(context, data) {
+        return await this.$axios.post('api/course/edit', data)
+        .then(res =>{
+          return res
+        }).catch(err =>{
+          return err
+        })
     },
     async updateReligion(context, payload) {
         return await this.$axios({
@@ -1462,7 +1498,6 @@ export const actions = {
             url: 'api/course/lecturers-assigned/'+courseId,
         })
         .then(function (response) {
-            console.log(response.data)
             return response.data
         })
         .catch(err => {

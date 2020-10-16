@@ -47,6 +47,75 @@
                 </div>
             </div>
             <!-- END BREADCRUMBS -->
+            <!-- Audit Trail -->
+            <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                            <strong>The Following Errors Occurred:</strong>
+                            <p>
+                                <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                    <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                                </ul>
+                                <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                            </p>
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Audit Trail Performed.</strong>
+                            <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Upload Faculty Modal -->
+            <div class="modal fade SlideUp" id="upload_courses" tabindex="-1" role="dialog" aria-hidden="true">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="pg-close"></i>
+                </button>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="text-left p-b-5"><span class="semi-bold">Upload Courses</span></h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-12 m-b-10">
+                                    <label>Level</label>
+                                    <select class="form-control" v-model="model.import_level">
+                                        <option value="">Select Level</option>
+                                        <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                    </select>
+                                    <span class="alert alert-danger" v-if="err_level_id != ''">{{err_level_id}}</span>
+                                    <span class="alert alert-danger" v-if="err_program_id != ''">{{err_program_id}}</span>
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <div class="custom-file">
+                                        <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
+                                        <label class="custom-file-label" for="customFileLang">Select File</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button type="button" @click="uploadCourses" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                                    <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                                </div>
+                                <div class="col-lg-12 m-t-15">
+                                    <div class="dd-placeholder p-1">
+                                        <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
+                                        <button v-if="!downloading" @click="downloadCourseSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                        <button v-if="downloading" disabled class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Downloading</button>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
             <!-- START JUMBOTRON -->
             <div class="jumbotron" data-pages="parallax" data-scroll-element=".page-container">
                 <div class=" container p-l-0 p-r-0   container-fixed-lg sm-p-l-0 sm-p-r-0">
@@ -124,6 +193,7 @@
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                             <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_courses" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
                             <nuxt-link :to="'/get-started/courses/manage/'+ subRouteId" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Course</strong></nuxt-link>
                         </div>
                         <div class="clearfix"></div>
@@ -224,14 +294,19 @@ export default {
         searchloading: false,
         IsPermitted: true,
         deleteLoading: false,
+        downloading: false,
         editLoading: false,
+        importResponse: {},
         courses: [],
         levels: [],
         routeId: 0,
+        file: "",
         lecturers: [],
         lecturerLoading: false,
         lecturerModalLabel: {},
         subRouteId: '',
+        err_level_id: "",
+        err_program_id: "",
         pagination: {
           total: 0,
           per_page: 2,
@@ -245,6 +320,7 @@ export default {
           status: 1,
           abbreviation: "",
           search_level: "",
+          import_level: "",
           search_semester: "",
           search_course_name: ""
         },
@@ -275,6 +351,60 @@ export default {
     },
 
     methods:{
+        downloadCourseSampleFile(){
+            this.downloading = true
+            this.$store
+                .dispatch('get-started/downloadCourseSampleFile')
+                .then(res => {
+                if(res != undefined){
+                    if(res.success == true)    {
+                        window.location = res.message
+                        this.downloading = false
+                        $('#upload_courses').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }
+
+                }else{
+                    this.downloading = false
+                    alert("File Download Unsuccessful")
+                }
+            }).catch(err => {
+            this.downloading = false
+            })
+        },
+        uploadCourses(){
+            this.loading = true
+            this.file = this.$refs.myFiles.files[0];
+            let programId = (this.$route.params.id).split('_')[0]
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('level_id', this.model.import_level)
+            formData.append('program_id', programId)
+            this.$store
+                .dispatch('get-started/uploadCourses', formData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.success){
+                        this.loading = false
+                        this.importResponse = res
+                        this.viewCoursesUnderProgram(1)
+                        $('#upload_courses').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                    }else{
+                        this.loading = false
+                        this.err_level_id = res.response.data.message.level_id
+                        this.err_program_id = res.response.data.message.program_id
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.loading = false
+                    alert("File Upload Unsuccessful")
+                    this.ErrMsg = "Error Processing Request!"
+                }
+            }).catch(err => {
+            this.loading = false
+            })
+        },
         refresh() {
             this.model.search_level = ""
             this.model.search_semester = ""
@@ -355,7 +485,6 @@ export default {
             this.$store
                 .dispatch('get-started/getLevels', false)
                 .then(res => {
-                    console.log(res)
                 if(res != undefined){
                     if(res.status){
                         this.levels = res.data                  
