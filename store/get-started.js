@@ -978,7 +978,7 @@ export const actions = {
     async updateCourse(context, data) {
         return await this.$axios.post('api/course/edit', data)
         .then(res =>{
-          return res
+          return res.data
         }).catch(err =>{
           return err
         })

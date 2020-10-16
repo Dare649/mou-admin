@@ -554,16 +554,15 @@ export default {
             bodyFormData.set('isApplicableToBscDe', this.model.isApplicableBSC_DE)
             bodyFormData.set('isApplicableToMsc', this.model.isApplicableMSC)
             bodyFormData.set('isApplicableToPgd', this.model.isApplicablePGD)
-            for(var i = 0; i < this.inputs.length; i++)
+            for(var i = 0; i < this.model.lecturers.length; i++)
             {
-                bodyFormData.set('lecturers['+this.model.lecturers[i].user_id+']', this.inputs[i].participation_percentage)
-            }
-            
+                bodyFormData.set('lecturers['+this.model.lecturers[i].user_id+']', this.model.lecturers[i].participation_percentage)
+            }      
             this.$store
             .dispatch('get-started/updateCourse', bodyFormData)
             .then(res => {
             if(res != undefined){
-                if(res.success == true){
+                if(res.success){
                     this.$router.push(
                         decodeURIComponent(
                         this.$route.query.redirect || '/get-started/courses/'+ this.routeId
