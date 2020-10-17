@@ -501,8 +501,8 @@ export default {
       showDetails(jamb){
           this.model.id = jamb.id
           this.show_country_id = jamb.country_id
-          this.show_state_id = jamb.state
-          this.show_lga_id = jamb.lga
+          this.show_state_id = jamb.state.name
+          this.show_lga_id = jamb.lga.name
           this.show_university1 = jamb.university1
           this.show_university2 = jamb.university2
           this.show_faculty_id1 = jamb.faculty1

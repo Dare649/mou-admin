@@ -497,16 +497,13 @@ export default {
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.model = res.data.course 
-                        // for(i = 0; i < this.model.lecturers.length; i++)
-                        // {
-                        //     console.log(this.model.lecturers) 
-                        //     let input = {}
-                        //     input.name = this.model.lecturers[i].id
-                        //     input.party = this.model.lecturers[i].participation_percentage
-                        //     console.log(input) 
-                        //     this.inputs.push(input)
-                        // }             
+                        this.model = res.data.course  
+                        if(this.model.lecturers.length == 0){
+                            let input = {}
+                            input.user_id = 0,
+                            input.participation_percentage = 0
+                            this.model.lecturers.push(input)
+                        }          
                     }
                 }
                 }).catch(err => {
@@ -568,7 +565,7 @@ export default {
                         this.$route.query.redirect || '/get-started/courses/'+ this.routeId
                         )
                     );
-                    this.$toast.success("Record successfully added!", { icon: "times" });
+                    this.$toast.success("Record successfully edited!", { icon: "times" });
                     this.addloading = false
                 }else{
                     this.loading = false

@@ -15,12 +15,118 @@
                     <div class="modal-header" v-if="!lecturerLoading">
                         <h5 class="text-left p-b-5"><span class="semi-bold">{{lecturerModalLabel.course_name+ ' (' + lecturerModalLabel.course_code+')'}} Lecturer(s)</span></h5>
                     </div>
-                    <div class="modal-body" v-if="!lecturerLoading">
-                        <table class="table table-striped table-condensed" id="basicTable">
-                            <tbody>
-                                <tr v-for="lecturer in lecturers" :key="lecturer.id">
-                                    <td>Lecturer 1</td>
-                                    <td>{{lecturer.name}}</td>
+
+                    <div class="modal-body jamb_view" v-if="!lecturerLoading">
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <th>Course Name:</th>
+                                <td>{{course.name}}</td>
+                            </tr>
+                            <tr>
+                                <th>Course Code:</th>
+                                <td>{{course.code}}</td>
+                            </tr>
+                            <tr>
+                                <th>Semester:</th>
+                                <td>{{course.semester == 1 ? "1st Semester" : "2nd Semester"}}</td>
+                            </tr>
+                            </table>
+                            <table class="table table-striped table-bordered">
+                            <tr>
+                                <th>Credit Unit:</th>
+                                <td>{{course.weightage}}</td>
+                            </tr>
+                            <tr>
+                                <th>Elective:</th>
+                                <td>{{course.isElective == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Status:</th>
+                                <td>{{course.status == 1 ? "Active" : "Inactive"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Level:</th>
+                                <td v-if="course.level_id == 1">100</td>
+                                <td v-if="course.level_id == 2">200</td>
+                                <td v-if="course.level_id == 3">300</td>
+                                <td v-if="course.level_id == 4">400</td>
+                                <td v-if="course.level_id == 5">500</td>
+                            </tr>
+                            <tr>
+                                <th>Prerequisite:</th>
+                                <td>{{course.isPrerequisite == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To Msp:</th>
+                                <td>{{course.isApplicableMSP == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PUTME:</th>
+                                <td>{{course.isApplicablePUTME == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To De 2nd Year:</th>
+                                <td>{{course.isApplicableDE_Y == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To B.Sc:</th>
+                                <td>{{course.isApplicableBSC == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To ND:</th>
+                                <td>{{course.isApplicableND == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                             <tr>
+                                <th>Applicable To Pre-Degree:</th>
+                                <td>{{course.isApplicablePreDegree == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                             <tr>
+                                <th>Applicable To M.Sc:</th>
+                                <td>{{course.isApplicableMSC == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PhD:</th>
+                                <td>{{course.isApplicableMSC == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PGD:</th>
+                                <td>{{course.isApplicablePGD == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PG M.Sc Ed:</th>
+                                <td>{{course.isApplicablePG_MSC_ED == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PG M.Sc Eng:</th>
+                                <td>{{course.isApplicablePG_MSC_ENG == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PG M.Sc MBA:</th>
+                                <td>{{course.isApplicablePG_MSC_MBA == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To PG M.Sc Phil.:</th>
+                                <td>{{course.isApplicablePG_MSC_PHIL == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                            <tr>
+                                <th>Applicable To B.Sc DE:</th>
+                                <td>{{course.isApplicableBSC_DE == 1 ? "Yes" : "No"}}</td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>%tage Part.</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="course != null">
+                                <tr v-for="(lecturer, index) in course.lecturers" :key="lecturer.id">
+                                    <td>{{index + 1}}</td>
+                                    <td>{{lecturer.user.name}}</td>
+                                    <td>{{lecturer.participation_percentage}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -228,7 +334,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" @click="viewLecturers(course)" class="btn btn-default btn-sm" data-target="#view_lecturer" data-toggle="modal"><span data-toggle="tooltip" data-placement="top" title="View Lecturer"><i class="fa fa-eye"></i></span></button>
+                                                <button type="button" @click="viewLecturers(course)" class="btn btn-default btn-sm" data-target="#view_lecturer" data-toggle="modal"><span data-toggle="tooltip" data-placement="top" title="View Record Details"><i class="fa fa-eye"></i></span></button>
                                                 <nuxt-link type="button" :to="'/get-started/courses/edit/'+ subRouteId+'_'+course.id" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Edit Record"><i class="fa fa-pencil"></i></nuxt-link>
                                                 <span v-permission="'Delete programme'" data-placement="top" data-toggle="tooltip" title="Delete Record">
                                                     <a href="#delete_course" @click="setId(course.id)"  class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="pg-trash"></i></a>
@@ -297,6 +403,7 @@ export default {
         downloading: false,
         editLoading: false,
         importResponse: {},
+        course: {},
         courses: [],
         levels: [],
         routeId: 0,
@@ -525,17 +632,17 @@ export default {
         },
         viewLecturers(payload){
             this.lecturerModalLabel = {}
-            this.lecturers = []
+            this.course = {}
             this.lecturerLoading = true
             this.lecturerModalLabel.course_name = payload.name
             this.lecturerModalLabel.course_code = payload.code
             this.$store
-                .dispatch('get-started/viewLecturers', payload.id)
+                .dispatch('get-started/getCourse', payload.id)
                 .then(res => {
                 if(res != undefined){
-                    if(res.success == true){
+                    if(res.status){
                         this.lecturerLoading = false
-                        this.lecturers = res.data
+                        this.course = res.data.course
                     }else{
                         this.lecturerLoading = false
                         this.ErrMsg = "Error Processing Request!"
