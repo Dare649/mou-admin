@@ -60,6 +60,7 @@
                             <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
                             <ul class="">
                                 <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
+                                <li><nuxt-link to="/personnel/lecturers">Lecturers</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
