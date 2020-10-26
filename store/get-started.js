@@ -815,6 +815,18 @@ export const actions = {
         .catch(err => {
         });
     },
+    async getSingleLecturer(context, id){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/lecturer/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+            .catch(err => {
+        });
+    },
     async createCountry(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -931,6 +943,37 @@ export const actions = {
             return response.data
         })
         .catch(err => {
+        });
+    },
+    async createLecturer(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/lecturer',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
+    async updateLecturer(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/lecturer/update',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            console.log(response)
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            console.log(response)
         });
     },
     async createSchoolFee(context, requests) {
@@ -1433,6 +1476,20 @@ export const actions = {
             return err
         });
     },
+    async deleteLecturer(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/lecturer/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getCountries(context, page) {
         return await this.$axios({
             method: 'get',
@@ -1446,10 +1503,34 @@ export const actions = {
             return err
         });
     },
+    async getFullLecturers(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/lecturer?page='+payload.page+'&type='+payload.type,
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async getCourse(context, courseId) {
         return await this.$axios({
             method: 'get',
             url: 'api/course/'+courseId,
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async getLecturer(context, id) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/lecturer/'+id,
         })
         .then(function (response) {
             return response.data

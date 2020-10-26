@@ -181,7 +181,7 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-    </div>
+        </div>
         <!-- START PAGE CONTENT -->
         <div class="content sm-gutter">
             <!-- START BREADCRUMBS -->

@@ -44,62 +44,60 @@
             <div class="row row-same-height">
               <ValidationObserver ref="step1" class=" full-width">
                 <form style="width: 100%" class="" role="form" v-if="formData">
-                    <div class="row">
+                  <div class="fs-11">USER DETAILS</div>
+                  <div class="row">
+                    <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>User Type</label>
+                              <select disabled class="form-control" data-placeholder="Semester" v-model="formData.user_type"  required>
+                                  <option value="">Select Type</option>
+                                  <option value="LECTURER">LECTURER</option>
+                              </select>
+                          </div>
+                      </div>
                       <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>User Type</label>
-                                <select class="form-control" data-placeholder="Semester" v-model="formData.user_type"  required>
-                                    <option value="">Select Type</option>
-                                    <option value="1">1st Semester</option>
-                                    <option value="2">2nd Semester</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>User Title</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
-                                    <option value="">Select Title</option>
-                                    <option value="1">Mr</option>
-                                    <option value="2">Mrs</option>
-                                    <option value="3">Master</option>
-                                    <option value="4">Miss</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>User Gender</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
-                                    <option value="">Select Gender</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                        </div>                     
-                    </div>
-
-                    <div class="row">
+                          <div class="form-group form-group-default required">
+                              <label>User Title</label>
+                              <select class="form-control" data-placeholder="Semester" v-model="formData.profile.title"  required>
+                                  <option value="">Select Title</option>
+                                  <option value="Mr">Mr</option>
+                                  <option value="Mrs">Mrs</option>
+                                  <option value="Master">Master</option>
+                                  <option value="Miss">Miss</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>User Gender</label>
+                              <select class="form-control" data-placeholder="Semester" v-model="formData.gender"  required>
+                                  <option value="">Select Gender</option>
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                              </select>
+                          </div>
+                      </div>                     
+                  </div>
+                  <div class="row">
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>User Name</label>
-                              <input type="text" class="form-control" v-model="formData.username" required>
+                              <input type="text" class="form-control" v-model="formData.name" required>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Password</label>
-                              <input type="text" class="form-control" v-model="formData.password" required>
+                              <input type="password" class="form-control" v-model="formData.password" required>
                           </div>
                       </div>
                      <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Confirm Password</label>
-                              <input type="text" class="form-control" v-model="formData.confirm_password" required>
+                              <input type="password" class="form-control" v-model="formData.confirm_password" required>
                           </div>
                       </div>
                   </div>
-
                   <div class="row">
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
@@ -120,125 +118,152 @@
                           </div>
                       </div>
                   </div>
-
                   <div class="row">
                       <div class="col-md-4">
                             <div class="form-group form-group-default required">
                                 <label>College</label>
-                                <select class="form-control" data-placeholder="Semester" v-model="formData.college"  required>
+                                <select class="form-control" @change="getDepartmentByCollege($event)" data-placeholder="Semester" v-model="formData.profile.college_id"  required>
                                     <option value="">Select College</option>
-                                    
+                                    <option v-for="college in colleges" :value="college.id"  :key="college.id">{{college.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group form-group-default required">
                                 <label>Department</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
+                                <select class="form-control" data-placeholder="Semester" v-model="formData.profile.department_id"  required>
                                     <option value="">Select Department</option>
+                                    <option v-for="department in departments" :value="department.id" :key="department.id">{{department.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group form-group-default required">
                                 <label>Marital Status</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
+                                <select class="form-control" data-placeholder="Semester" v-model="formData.marital_status"  required>
                                     <option value="">Select Gender</option>
-                                    <option value="1">Single</option>
-                                    <option value="2">Married</option>
-                                    <option value="3">Divorced</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
                                 </select>
                             </div>
                         </div>                     
-                    </div>
-
-                    <div class="row">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Country</label>
+                              <select class="form-control" data-placeholder="Semester" @change="getStatesByCountry" v-model="formData.profile.country_id"  required>
+                                  <option value="">Select Country</option>
+                                  <option v-for="country in countries" :value="country.id" :key="country.id">{{country.name}}</option>
+                              </select>
+                          </div>
+                      </div>
                       <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>Country</label>
-                                <select class="form-control" data-placeholder="Semester" v-model="formData.country"  required>
-                                    <option value="">Select Country</option>
-                                    
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>State</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
-                                    <option value="">Select State</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-group-default required">
-                                <label>LGA</label>
-                                <select class="form-control" data-placeholder="Semester"  required>
-                                    <option value="">Select LGA</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                        </div>                     
-                    </div>
-
-                    <div class="row">
+                          <div class="form-group form-group-default required">
+                              <label>State</label>
+                              <select class="form-control" data-placeholder="Semester" @change="getLgaByState" v-model="formData.profile.state_id" required>
+                                  <option value="">Select State</option>
+                                  <option v-for="state in states" :value="state.id" :key="state.id">{{state.name}}</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>LGA</label>
+                              <select class="form-control" data-placeholder="Semester" v-model="formData.profile.lga_id"  required>
+                                  <option value="">Select LGA</option>
+                                  <option v-for="lga in lgas" :value="lga.id">{{lga.name}}</option>
+                              </select>
+                          </div>
+                      </div>                     
+                  </div>
+                  <div class="row">
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Geo Political Zone</label>
-                              <input type="text" class="form-control" v-model="formData.geo_political_zone" required>
+                              <input type="text" class="form-control" v-model="formData.profile.geo_political_zone" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Rank</label>
-                              <input type="text" class="form-control" v-model="formData.username" required>
+                              <input type="text" class="form-control" v-model="formData.profile.rank" required>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Email</label>
-                              <input type="text" class="form-control" v-model="formData.password" required>
+                              <input type="email" class="form-control" v-model="formData.email" required>
                           </div>
                       </div>
                      
                   </div>
-
                   <div class="row">
-                      <div class="col-md-4">
-                          <div class="form-group form-group-default required">
-                              <label>Residential Address</label>
-                              <textarea type="text" class="form-control" v-model="formData.res_address" required></textarea>
-                          </div>
-                      </div>  
+                      
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Contact Number</label>
-                              <input type="number" class="form-control" v-model="formData.number" required>
+                              <input type="tel" class="form-control" v-model="formData.phone" required>
                           </div>
                       </div>
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
-                              <label>Email</label>
-                              <input type="text" class="form-control" v-model="formData.password" required>
-                          </div>
-                      </div>
-                     
-                  </div>
-
-                  <div class="row">
-                      <div class="col-md-4">
-                          <div class="form-group form-group-default required">
-                              <label>Residential Address</label>
-                              <input type="date" class="form-control" v-model="formData.res_address" required>
-                          </div>
-                      </div>  
-                      <div class="col-md-4">
-                          <div class="form-group form-group-default required">
-                              <label>Contact Number</label>
-                              <input type="date" class="form-control" v-model="formData.number" required>
+                              <label>Joining Date</label>
+                              <input type="date" class="form-control" v-model="formData.date_employed" required>
                           </div>
                       </div> 
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Date of Birth</label>
+                              <input type="date" class="form-control" v-model="formData.dob" required>
+                          </div>
+                      </div>                     
+                  </div>
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Residential Address</label>
+                              <textarea type="text" class="form-control" v-model="formData.address" required></textarea>
+                          </div>
+                      </div>              
+                      
+                  </div>
+                  <hr class="col-md-12"/>
+                  <div class="fs-11">NEXT OF KIN INFORMATION</div>
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Full Name</label>
+                              <input type="text" class="form-control" v-model="formData.kin.name" required>
+                          </div>
+                      </div>  
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Email Address</label>
+                              <input type="text" class="form-control" v-model="formData.kin.email" required>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Relationship</label>
+                              <input type="text" class="form-control" v-model="formData.kin.relationship" required>
+                          </div>
+                      </div>                     
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Residential Address</label>
+                              <textarea type="text" class="form-control" v-model="formData.kin.address" required></textarea>
+                          </div>
+                      </div>                      
+                      <div class="col-md-4">
+                          <div class="form-group form-group-default required">
+                              <label>Phone Number</label>
+                              <input type="tel" class="form-control" v-model="formData.kin.phone" required>
+                          </div>
+                      </div>  
                   </div>
                 </form>
               </ValidationObserver>
@@ -252,7 +277,7 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Highest Qualification with date <br/> (Format: DegreeName(DD-MM-YYYY) <br/> E.g PhD(21-04-2010))</label>
-                              <input type="text" class="form-control" v-model="input.qualification" required>
+                              <input type="text" class="form-control" v-model="input.highest_qualification" required>
                           </div>
                       </div>  
                       <div class="col-md-3">
@@ -296,14 +321,15 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Organization</label>
-                              <input type="text" class="form-control" v-model="input.organization" required>
+                              <input type="text" class="form-control" v-model="input.organisation" required>
                           </div>
                       </div> 
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
-                                <label>LGA</label>
-                                <select class="form-control" data-placeholder="Semester" v-model="input.country"  required>
+                                <label>Country</label>
+                                <select class="form-control" data-placeholder="Semester" required v-model="input.country">
                                     <option value="">Select Country</option>
+                                    <option v-for="country in countries" :value="country.id" :key="country.id">{{country.name}}</option>
                                 </select>
                             </div>
                       </div> 
@@ -439,7 +465,7 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Present Address</label>
-                              <textarea type="text" class="form-control" v-model="input.present_address" required></textarea>
+                              <textarea type="text" class="form-control" v-model="input.address" required></textarea>
                           </div>
                       </div> 
                       <div class="col-md-1" v-show="k || ( !k && spouses.length > 1)">
@@ -466,7 +492,7 @@
                   <div class="row" v-for="(input,k) in children" :key="k">
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
-                              <label>Spouse Name</label>
+                              <label>Child Name</label>
                               <input type="text" class="form-control" v-model="input.name" required>
                           </div>
                       </div>  
@@ -485,13 +511,13 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Remarks</label>
-                              <input type="text" class="form-control" v-model="input.remarks" required>
+                              <input type="text" class="form-control" v-model="input.remark" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Present Address</label>
-                              <textarea type="text" class="form-control" v-model="input.present_address" required></textarea>
+                              <textarea type="text" class="form-control" v-model="input.address" required></textarea>
                           </div>
                       </div> 
                       <div class="col-md-1" v-show="k || ( !k && children.length > 1)">
@@ -564,23 +590,30 @@ export default {
       ],
     },
     id: '',
-    inputs: [{
-            name: '',
-            party: ''
+    colleges: [],
+    departments: [],
+    countries: [],
+    lecturer: {},
+    states: [],
+    lgas: [],
+    inputs: [{    
+            highest_qualification: '',
+            institution: '',
+            subjects: ''
         }],
     spouses: [{
       name: "",
       birth_place: "",
       birth_date: "",
       occupation: "",
-      present_address: ""
+      address: ""
     }],
     children: [{
       name: "",
       birth_place: "",
       birth_date: "",
-      remarks: "",
-      present_address: ""
+      remark: "",
+      address: ""
     }],
     promotions: [{
       old_position: "",
@@ -594,94 +627,361 @@ export default {
     }],
     employments: [{
       job_title: "",
-      organization: "",
+      organisation: "",
       country: "",
       from_date: "",
       to_date: ""
     }],
     formData: {
-      user_type: "",
-      username: "",
+      user_type: "LECTURER",
+      name: "",
       password: "",
       confirm_password: "",
       first_name: "",
       last_name: "",
       middle_name: "",
-      college: "",
-      country: ""
+      gender: "",
+      phone: "",
+      date_employed: "",
+      dob: "",
+      address: "",
+      marital_status: "",
+      country: "",
+      email: "",
+      kin: {
+        email: "",
+        name: "",
+        phone: "",
+        relationship: "",
+        address: ""
+      },
+      profile: {
+        title: "",
+        college_id: "",
+        department_id: "",
+        country_id: "",
+        state_id: "",
+        lga_id: "",
+        rank: "",
+        geo_political_zone: "Southern"
+      }
     }
   }),
   methods: {
-        add () {
-        this.inputs.push({
-            name: '',
-            party: ''
+    add () {
+    this.inputs.push({
+        highest_qualification: '',
+        institution: '',
+        subjects: ''
+    })
+    },
+    remove (index) {
+          this.inputs.splice(index, 1)
+      },
+    addChild () {
+      this.children.push({
+        name: "",
+        birth_place: "",
+        birth_date: "",
+        remark: "",
+        address: ""
+      })
+    },
+    removeChild (index) {
+        this.children.splice(index, 1)
+    },
+    addSpouse () {
+        this.spouses.push({
+          name: "",
+          birth_place: "",
+          birth_date: "",
+          occupation: "",
+          address: ""
         })
-        },
-        remove (index) {
-            this.inputs.splice(index, 1)
-        },
-        addChild () {
-          this.children.push({
-            name: "",
-            birth_place: "",
-            birth_date: "",
-            remarks: "",
-            present_address: ""
-          })
-        },
-        removeChild (index) {
-            this.children.splice(index, 1)
-        },
-        addSpouse () {
-          this.spouses.push({
-            name: "",
-            birth_place: "",
-            birth_date: "",
-            occupation: "",
-            present_address: ""
-          })
-        },
-        removeSpouse (index) {
-          this.spouses.splice(index, 1)
-        },
-        addPromotion () {
-          this.promotions.push({
-            old_position: "",
-            new_position: "",
-            promotion_date: "",
-            comments: "",
-            first_appointment_date: "",
-            present_appointment_date: "",
-            confirmation_date: "",
-            grade_level: ""
-          })
-        },
-        removePromotion (index) {
-          this.promotions.splice(index, 1)
-        },
-        addEmployment () {
-          this.employments.push({
-              job_title: '',
-              organization: '',
-              country: '',
-              from_date: '',
-              to_date: ''
-          })
-        },
-        removeEmployment (index) {
-          this.employments.splice(index, 1)
-        },
+      },
+    removeSpouse (index) {
+      this.spouses.splice(index, 1)
+    },
+    addPromotion () {
+      this.promotions.push({
+        old_position: "",
+        new_position: "",
+        promotion_date: "",
+        comments: "",
+        first_appointment_date: "",
+        present_appointment_date: "",
+        confirmation_date: "",
+        grade_level: ""
+      })
+    },
+    removePromotion (index) {
+      this.promotions.splice(index, 1)
+    },
+    addEmployment () {
+      this.employments.push({
+          job_title: '',
+          organisation: '',
+          country: '',
+          from_date: '',
+          to_date: ''
+      })
+    },
+    removeEmployment (index) {
+      this.employments.splice(index, 1)
+    },
     submitRecord() {
 
+      },
+    getDepartmentByCollege(e) {
+      let id = e.target.value
+      this.$store.dispatch('utility/getDepartmentByFaculty', id)
+        .then(res =>{
+          this.departments = res.data
+        }).catch(err =>{
+          this.$toast.error(err)
+      })
     },
-    getLecturerDetails(id) {
+    getDepartmentByCollegeID(id) {
+      this.$store.dispatch('utility/getDepartmentByFaculty', id)
+        .then(res =>{
+          this.departments = res.data
+        }).catch(err =>{
+          this.$toast.error(err)
+      })
+    },
+    getColleges() {
+      this.$store.dispatch('utility/getFaculties')
+        .then(res =>{
+          this.colleges = res.data
+      }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getCountries() {
+      this.$store.dispatch('utility/getCountries')
+        .then(res =>{
+          this.countries = res.data
+        }).catch(err =>{
+          this.$toast.error(err)
+      })
+    },
+    getStatesByCountry() {
+      this.$store.dispatch('utility/getStateByCountry', this.formData.profile.country_id)
+        .then(res =>{
+          this.states = res.data
+        }).catch(err =>{
+          this.$toast.error(err)
+      })
+    },
+    submitRecord(){
+      
+            this.loading = true
+            let bodyFormData = new FormData();
+            bodyFormData.set('name', this.formData.name)
+            bodyFormData.set('first_name', this.formData.first_name)
+            bodyFormData.set('last_name', this.formData.last_name)
+            bodyFormData.set('email', this.formData.email)
+            bodyFormData.set('phone', this.formData.phone)
+            bodyFormData.set('address', this.formData.address)
+            bodyFormData.set('marital_status', this.formData.marital_status)
+            bodyFormData.set('gender', this.formData.gender)
+            bodyFormData.set('dob', this.formData.dob)
+            bodyFormData.set('date_employed', this.formData.date_employed)
+            bodyFormData.set('password', this.formData.password)
+            bodyFormData.set('password_confirmation', this.formData.confirm_password)
+            bodyFormData.set('nok_name', this.formData.kin.name)
+            bodyFormData.set('nok_email', this.formData.kin.email)
+            bodyFormData.set('nok_address', this.formData.kin.address)
+            bodyFormData.set('nok_relationship', this.formData.kin.relationship)
+            bodyFormData.set('nok_phone', this.formData.phone)
+            bodyFormData.set('title', this.formData.profile.title)
+            bodyFormData.set('rank', this.formData.profile.rank)
+            bodyFormData.set('college_id', this.formData.profile.college_id)
+            bodyFormData.set('department_id', this.formData.profile.department_id)
+            bodyFormData.set('country_id', this.formData.profile.country_id)
+            bodyFormData.set('state_id', this.formData.profile.state_id)
+            bodyFormData.set('lga_id', this.formData.profile.lga_id)
+            bodyFormData.set('geo_political_zone', this.formData.profile.geo_political_zone)
 
+            for(var i = 0; i < this.inputs.length; i++)
+            {
+              bodyFormData.set('education['+i+']'+'[highest_qualification]', this.inputs[i].highest_qualification)
+              bodyFormData.set('education['+i+']'+'[institution]', this.inputs[i].institution)
+              bodyFormData.set('education['+i+']'+'[subjects]', this.inputs[i].subjects)
+            }
+            
+
+            for(var i = 0; i < this.employments.length; i++)
+            {
+              bodyFormData.set('employment['+i+']'+'[job_title]', this.employments[i].job_title)
+              bodyFormData.set('employment['+i+']'+'[organisation]', this.employments[i].organisation)
+              bodyFormData.set('employment['+i+']'+'[country]', this.employments[i].country)
+              bodyFormData.set('employment['+i+']'+'[from_year]', this.employments[i].from_year)
+              bodyFormData.set('employment['+i+']'+'[to_year]', this.employments[i].to_year)
+            }
+            
+            for(var i = 0; i < this.promotions.length; i++)
+            {
+              bodyFormData.set('promotion['+i+']'+'[old_position]', this.promotions[i].old_position)
+              bodyFormData.set('promotion['+i+']'+'[new_position]', this.promotions[i].new_position)
+              bodyFormData.set('promotion['+i+']'+'[promotion_date]', this.promotions[i].promotion_date)
+              bodyFormData.set('promotion['+i+']'+'[comments]', this.promotions[i].comments)
+              bodyFormData.set('promotion['+i+']'+'[date_of_first_appointment]', this.promotions[i].first_appointment_date)
+              bodyFormData.set('promotion['+i+']'+'[date_of_present_appointment]', this.promotions[i].present_appointment_date)
+              bodyFormData.set('promotion['+i+']'+'[date_of_confirmation]', this.promotions[i].confirmation_date)
+              bodyFormData.set('promotion['+i+']'+'[grade_level]', this.promotions[i].grade_level)
+            }
+            
+            for(var i = 0; i < this.spouses.length; i++)
+            {
+              bodyFormData.set('spouse['+i+']'+'[name]', this.spouses[i].name)
+              bodyFormData.set('spouse['+i+']'+'[birth_place]', this.spouses[i].birth_place)
+              bodyFormData.set('spouse['+i+']'+'[dob]', this.spouses[i].birth_date)
+              bodyFormData.set('spouse['+i+']'+'[occupation]', this.spouses[i].occupation)
+              bodyFormData.set('spouse['+i+']'+'[address]', this.spouses[i].address)
+            }
+        
+            for(var i = 0; i < this.children.length; i++)
+            {
+              bodyFormData.set('children['+i+']'+'[name]', this.children[i].name)
+              bodyFormData.set('children['+i+']'+'[birth_place]', this.children[i].birth_place)
+              bodyFormData.set('children['+i+']'+'[dob]', this.children[i].birth_date)
+              bodyFormData.set('children['+i+']'+'[remark]', this.children[i].remark)
+              bodyFormData.set('children['+i+']'+'[address]', this.children[i].address)
+            }
+            
+            if(this.id === 'new'){
+              this.$store
+                .dispatch('get-started/createLecturer', bodyFormData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status){
+                        this.$router.push(
+                            decodeURIComponent(
+                            this.$route.query.redirect || '/personnel/lecturers'
+                            )
+                        );
+                        this.$toast.success("Record successfully added!", { icon: "times" });
+                        this.addloading = false
+                    }else{
+                        this.loading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.loading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+                }).catch(err => {
+                this.loading = false
+                })
+            }else{
+              console.log(this.id)
+              this.$store
+                .dispatch('get-started/updateLecturer', bodyFormData)
+                .then(res => {
+                if(res != undefined){
+                    if(res.status){
+                        this.$router.push(
+                            decodeURIComponent(
+                            this.$route.query.redirect || '/personnel/lecturers'
+                            )
+                        );
+                        this.$toast.success("Record successfully updated!", { icon: "times" });
+                        this.addloading = false
+                    }else{
+                        this.loading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                }else{
+                    this.loading = false
+                    this.ErrMsg = "Error Processing Request!"
+                }
+                }).catch(err => {
+                this.loading = false
+                })
+            }
+    },
+    getLgaByState() {
+      this.$store.dispatch('utility/getLgaByState', this.formData.profile.state_id)
+        .then(res =>{
+          this.lgas = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    populator(){
+      this.formData = this.lecturer
+      this.getDepartmentByCollegeID(this.lecturer.profile.college_id)
+      this.getStatesByCountry()
+      this.getLgaByState()
+
+      var educational_details = JSON.parse(this.lecturer.profile.educational_details)
+      if(educational_details.length > 0){
+        this.inputs = educational_details
+      }else{
+        this.add()
+        this.remove(1)
+      }
+
+      var employment_details = JSON.parse(this.lecturer.profile.employment_details)
+      if(employment_details.length > 0){
+        this.employments = employment_details
+      }else{
+        this.addEmployment()
+        this.removeEmployment(1)
+      }
+
+      var promotion_details = JSON.parse(this.lecturer.profile.promotion_details)
+      if(promotion_details.length > 0){
+        this.promotions = promotion_details
+      }else{
+        this.addPromotion()
+        this.removePromotion(1)
+      }
+
+      var spouse_details = JSON.parse(this.lecturer.profile.spouse_details)
+      if(spouse_details.length > 0){
+        this.spouses = spouse_details
+      }else{
+        this.addSpouse()
+        this.removeSpouse(1)
+      }
+      
+      var children_details = JSON.parse(this.lecturer.profile.children_details)
+      if(children_details.length > 0){
+        this.children = children_details
+      }else{
+        this.addChild()
+        this.removeChild(1)
+      }
+    },
+    getLecturerDetails(id) {  
+      let numId = id.split('_')[1]  
+      this.$store
+          .dispatch('get-started/getSingleLecturer', numId)
+          .then(res => {
+          if(res != undefined){
+              if(res.status){
+                  this.lecturerLoading = false
+                  this.lecturer = res.data
+                  this.populator()
+              }else{
+                  this.lecturerLoading = false
+                  this.ErrMsg = "Error Processing Request!"
+              }
+          }else{
+              this.lecturerLoading = false
+              this.ErrMsg = "Error Processing Request!"
+          }
+          }).catch(err => {
+              this.lecturerLoading = false
+      })
     }
   },
   mounted() {
     this.id = this.$route.params.id;
-
+    this.getColleges()
+    this.getCountries()
     if (this.id !== 'new') {
       this.getLecturerDetails(this.id);
     }

@@ -387,9 +387,9 @@
 <script>
 import Pagination from '~/components/Pagination'
 export default {
-    name: "Programs",
+    name: "Courses",
     layout: "main",
-    middleware: "",
+    middleware: "auth",
     components: {
         Pagination
     },
