@@ -558,7 +558,6 @@ export default {
             this.loading = false
             })
         },
-
         getLecturers() {
             //if(this.$laravel.hasPermission('View programme')){
             this.$store

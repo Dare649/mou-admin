@@ -1,186 +1,186 @@
 <template>
     <div>
         <!-- Import JAMB Result Modal -->
-<div class="modal fade SlideUp" id="import_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Result - UTME</span></h5>
+        <div class="modal fade SlideUp" id="import_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Import JAMB Result - UTME</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 m-b-10">
+                                <select class="form-control" required v-model="uploadData.session">
+                                <option value="" selected>Select Academic Session</option>
+                                <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.session_name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12 m-b-10">
+                            <div class="custom-file">
+                                <input type="file" ref="myFiles" required class="custom-file-input" id="customFileLang" lang="es">
+                                <label class="custom-file-label" for="customFileLang">Select File</label>
+                            </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                                <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                            </div>
+                            <div class="col-lg-12 m-t-15">
+                                <div class="dd-placeholder p-1">
+                                    <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
+                                    <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
+                                    <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-12 m-b-10">
-                        <select class="form-control" required v-model="uploadData.session">
-                          <option value="" selected>Select Academic Session</option>
-                          <option v-for="session in sessions" :value="session.id" :key="session.id">{{ session.session_name }}</option>
-                        </select>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
                     </div>
-                    <div class="col-lg-12 m-b-10">
-                      <div class="custom-file">
-                          <input type="file" ref="myFiles" required class="custom-file-input" id="customFileLang" lang="es">
-                          <label class="custom-file-label" for="customFileLang">Select File</label>
-                      </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <button type="button" @click="uploadJambResults()" v-if="!loading"  class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                        <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
-                    </div>
-                    <div class="col-lg-12 m-t-15">
-                        <div class="dd-placeholder p-1">
-                            <h5 class="pull-left sm-pull-reset"><i class="fa fa-file-excel-o p-l-10"></i> Sample File</h5>
-                            <button v-if="!downloading" @click="downloadJambResultSampleFile()" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download</button>
-                            <button disabled v-if="downloading" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i>&nbsp; Downloading</button>
+                    <div class="modal-body jamb_view">
+                        <h5>{{show_name}}</h5>
+                        <ul>
+                            <li>
+                                <small>Registration Number</small><br />
+                                <span>{{show_registration_number}}</span>
+                            </li>
+                            <li>
+                                <small>Year</small> <br />
+                                <span>{{show_year}}</span>
+                            </li>
+                            <li>
+                                <small>Gender</small><br />
+                                <span>{{show_sex}}</span>
+                            </li>
+                        <li>
+                            <small>LGA:</small><br />
+                            <span>{{show_lga_id}}</span>
+                        </li>
+                            <li>
+                            <small>State:</small> <br />
+                            <span>{{show_state_id}}</span>
+                            </li>
                             <div class="clearfix"></div>
+                        </ul>
+
+                        <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>1st Choice Institution:</th>
+                            <td>{{show_university1}}</td>
+                        </tr>
+                        <tr>
+                            <th>1st Choice Faculty:</th>
+                            <td>{{show_faculty_id1}}</td>
+                        </tr>
+                        <tr>
+                            <th>1st Choice Department:</th>
+                            <td>{{show_department_id1}}</td>
+                        </tr>
+                        </table>
+                        <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>2nd Choice Institution:</th>
+                            <td>{{show_university2}}</td>
+                        </tr>
+                        <tr>
+                            <th>2nd Choice Faculty:</th>
+                            <td>{{show_faculty_id2}}</td>
+                        </tr>
+                        <tr>
+                            <th>2nd Choice Department:</th>
+                            <td>{{show_department_id2}}</td>
+                        </tr>
+                        </table>
+
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Mark</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{show_subject_id1.name}}</td>
+                                    <td>{{show_mark1}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{show_subject_id2.name}}</td>
+                                    <td>{{show_mark2}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{show_subject_id3.name}}</td>
+                                    <td>{{show_mark3}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{show_subject_id4.name}}</td>
+                                    <td>{{show_mark4}}</td>
+                                </tr>
+                                <tr>
+                                <td><b>TOTAL</b></td>
+                                <td>{{ (show_mark1 + show_mark2 + show_mark3 + show_mark4) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <!-- Export JAMB Result Modal -->
+        <div class="modal fade SlideUp" id="export_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Export JAMB Result</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="full-width">
+                                <div class="col-lg-12 m-b-10">
+                                <select class="form-control" v-model="exportData.year" >
+                                    <option value="" selected>All</option>
+                                    <option value="2010">2010</option>
+                                    <option value="2011">2011</option>
+                                    <option value="2012">2012</option>
+                                    <option value="2013">2013</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
+                                    <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div class="modal fade SlideUp" id="view_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">View JAMB Result</span></h5>
-            </div>
-            <div class="modal-body jamb_view">
-                <h5>{{show_name}}</h5>
-                <ul>
-                    <li>
-                        <small>Registration Number</small><br />
-                        <span>{{show_registration_number}}</span>
-                    </li>
-                    <li>
-                        <small>Year</small> <br />
-                        <span>{{show_year}}</span>
-                    </li>
-                    <li>
-                        <small>Gender</small><br />
-                        <span>{{show_sex}}</span>
-                    </li>
-                   <li>
-                     <small>LGA:</small><br />
-                     <span>{{show_lga_id}}</span>
-                   </li>
-                    <li>
-                      <small>State:</small> <br />
-                      <span>{{show_state_id}}</span>
-                    </li>
-                    <div class="clearfix"></div>
-                </ul>
-
-                <table class="table table-striped table-bordered">
-                  <tr>
-                    <th>1st Choice Institution:</th>
-                    <td>{{show_university1}}</td>
-                  </tr>
-                  <tr>
-                    <th>1st Choice Faculty:</th>
-                    <td>{{show_faculty_id1}}</td>
-                  </tr>
-                  <tr>
-                    <th>1st Choice Department:</th>
-                    <td>{{show_department_id1}}</td>
-                  </tr>
-                </table>
-                <table class="table table-striped table-bordered">
-                  <tr>
-                    <th>2nd Choice Institution:</th>
-                    <td>{{show_university2}}</td>
-                  </tr>
-                  <tr>
-                    <th>2nd Choice Faculty:</th>
-                    <td>{{show_faculty_id2}}</td>
-                  </tr>
-                  <tr>
-                    <th>2nd Choice Department:</th>
-                    <td>{{show_department_id2}}</td>
-                  </tr>
-                </table>
-
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Subject</th>
-                            <th>Mark</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{show_subject_id1.name}}</td>
-                            <td>{{show_mark1}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id2.name}}</td>
-                            <td>{{show_mark2}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id3.name}}</td>
-                            <td>{{show_mark3}}</td>
-                        </tr>
-                        <tr>
-                            <td>{{show_subject_id4.name}}</td>
-                            <td>{{show_mark4}}</td>
-                        </tr>
-                        <tr>
-                          <td><b>TOTAL</b></td>
-                          <td>{{ (show_mark1 + show_mark2 + show_mark3 + show_mark4) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<!-- Export JAMB Result Modal -->
-<div class="modal fade SlideUp" id="export_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-    </button>
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="text-left p-b-5"><span class="semi-bold">Export JAMB Result</span></h5>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form class="full-width">
-                        <div class="col-lg-12 m-b-10">
-                          <select class="form-control" v-model="exportData.year" >
-                            <option value="" selected>All</option>
-                            <option value="2010">2010</option>
-                            <option value="2011">2011</option>
-                            <option value="2012">2012</option>
-                            <option value="2013">2013</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                          </select>
-                        </div>
-                        <div class="col-lg-12">
-                             <button type="button" v-if="!exportLoading"  @click="exportJambResults()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Export Record</button>
-                              <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Exporting...</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
         <!-- Delete Country Modal -->
         <div class="modal fade SlideUp" id="delete_jamb_result" tabindex="-1" role="dialog" aria-hidden="true">
@@ -378,7 +378,6 @@
         </div>
         <!-- END PAGE CONTENT -->
         <!-- START COPYRIGHT -->
-
     </div>
 </template>
 <script>
@@ -386,7 +385,7 @@ import Pagination from '~/components/Pagination'
 export default {
   name: "Jamb-Results",
   layout: "main",
-  middleware: "",
+  middleware: "auth",
   components: {
       Pagination
   },
