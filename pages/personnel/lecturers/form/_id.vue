@@ -547,8 +547,11 @@
                 </button>
               </li>
               <li class="next finish hidden" @click="submitRecord">
-                <button class="btn btn-primary btn-cons btn-animated from-left fa fa-cog pull-right" id="submitForm" type="button">
+                <button v-if="!submitting" class="btn btn-primary btn-cons btn-animated from-left fa fa-cog pull-right" id="submitForm" type="button">
                   <span>Finish</span>
+                </button>
+                <button disabled v-if="submitting" class="btn btn-primary btn-cons btn-animated from-left fa fa-cog pull-right" id="submitForm" type="button">
+                  <span>Submitting</span>
                 </button>
               </li>
               <li class="previous first hidden">
@@ -597,6 +600,7 @@ export default {
     countries: [],
     lecturer: {},
     states: [],
+    submitting: false,
     editLoading: false,
     loading: false,
     lgas: [],
@@ -852,6 +856,7 @@ export default {
             }
             
             if(this.id === 'new'){
+              this.submitting = true
               this.$store
                 .dispatch('get-started/createLecturer', bodyFormData)
                 .then(res => {
@@ -863,19 +868,20 @@ export default {
                             )
                         );
                         this.$toast.success("Record successfully added!", { icon: "times" });
-                        this.addloading = false
+                        this.submitting = false
                     }else{
-                        this.loading = false
+                        this.submitting = false
                         this.ErrMsg = "Error Processing Request!"
                     }
                 }else{
-                    this.loading = false
+                    this.submitting = false
                     this.ErrMsg = "Error Processing Request!"
                 }
                 }).catch(err => {
                 this.loading = false
                 })
             }else{
+              this.submitting = true
               this.$store
                 .dispatch('get-started/updateLecturer', bodyFormData)
                 .then(res => {
@@ -887,17 +893,17 @@ export default {
                             )
                         );
                         this.$toast.success("Record successfully updated!", { icon: "times" });
-                        this.addloading = false
+                        this.submitting = false
                     }else{
-                        this.loading = false
+                        this.submitting = false
                         this.ErrMsg = "Error Processing Request!"
                     }
                 }else{
-                    this.loading = false
+                    this.submitting = false
                     this.ErrMsg = "Error Processing Request!"
                 }
                 }).catch(err => {
-                this.loading = false
+                this.submitting = false
                 })
             }
     },
