@@ -12,10 +12,12 @@
       </div>
     </div>
     <!-- END BREADCRUMBS -->
-
-    <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
-      <h3 class="text-primary m-t-30">{{ (id === 'new') ? 'Add' : 'Edit'}} Lecturer</h3>
+    <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" >
+      <h3  class="text-primary m-t-30">{{ (id === 'new') ? 'Add' : 'Edit'}} Lecturer</h3>
       <hr />
+      <template v-if="loading">     
+        Content Loading... Please Wait
+      </template>
       <div id="rootwizard" class="m-t-20 m-b-20">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-tabs-linetriangle nav-tabs-separator nav-stack-sm" role="tablist" data-init-reponsive-tabs="dropdownfx">
@@ -336,13 +338,13 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>From Date</label>
-                              <input type="date" class="form-control" v-model="input.from_date" required>
+                              <input type="text" class="form-control" v-model="input.from_year" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>To Date</label>
-                              <input type="date" class="form-control" v-model="input.to_date" required>
+                              <input type="text" class="form-control" v-model="input.to_year" required>
                           </div>
                       </div>  
                       <div class="col-md-1" v-show="k || ( !k && employments.length > 1)">
@@ -401,19 +403,19 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>First Appointment Date</label>
-                              <input type="date" class="form-control" v-model="input.first_appointment_date" required>
+                              <input type="date" class="form-control" v-model="input.date_of_first_appointment" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Present Appointment Date</label>
-                              <input type="date" class="form-control" v-model="input.present_appointment_date" required>
+                              <input type="date" class="form-control" v-model="input.date_of_present_appointment" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Confirmation Date</label>
-                              <input type="date" class="form-control" v-model="input.confirmation_date" required>
+                              <input type="date" class="form-control" v-model="input.date_of_confirmation" required>
                           </div>
                       </div>  
                       <div class="col-md-1" v-show="k || ( !k && promotions.length > 1)">
@@ -453,7 +455,7 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Birth Date</label>
-                              <input type="date" class="form-control" v-model="input.birth_date" required>
+                              <input type="date" class="form-control" v-model="input.dob" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
@@ -505,7 +507,7 @@
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>Birth Date</label>
-                              <input type="date" class="form-control" v-model="input.birth_date" required>
+                              <input type="date" class="form-control" v-model="input.dob" required>
                           </div>
                       </div>  
                       <div class="col-md-4">
@@ -595,6 +597,8 @@ export default {
     countries: [],
     lecturer: {},
     states: [],
+    editLoading: false,
+    loading: false,
     lgas: [],
     inputs: [{    
             highest_qualification: '',
@@ -604,14 +608,14 @@ export default {
     spouses: [{
       name: "",
       birth_place: "",
-      birth_date: "",
+      dob: "",
       occupation: "",
       address: ""
     }],
     children: [{
       name: "",
       birth_place: "",
-      birth_date: "",
+      dob: "",
       remark: "",
       address: ""
     }],
@@ -620,17 +624,17 @@ export default {
       new_position: "",
       promotion_date: "",
       comments: "",
-      first_appointment_date: "",
-      present_appointment_date: "",
-      confirmation_date: "",
+      date_of_first_appointment: "",
+      date_of_present_appointment: "",
+      date_of_confirmation: "",
       grade_level: ""
     }],
     employments: [{
       job_title: "",
       organisation: "",
       country: "",
-      from_date: "",
-      to_date: ""
+      from_year: "",
+      to_year: ""
     }],
     formData: {
       user_type: "LECTURER",
@@ -682,7 +686,7 @@ export default {
       this.children.push({
         name: "",
         birth_place: "",
-        birth_date: "",
+        dob: "",
         remark: "",
         address: ""
       })
@@ -694,7 +698,7 @@ export default {
         this.spouses.push({
           name: "",
           birth_place: "",
-          birth_date: "",
+          dob: "",
           occupation: "",
           address: ""
         })
@@ -708,9 +712,9 @@ export default {
         new_position: "",
         promotion_date: "",
         comments: "",
-        first_appointment_date: "",
-        present_appointment_date: "",
-        confirmation_date: "",
+        date_of_first_appointment: "",
+        date_of_present_appointment: "",
+        date_of_confirmation: "",
         grade_level: ""
       })
     },
@@ -722,16 +726,13 @@ export default {
           job_title: '',
           organisation: '',
           country: '',
-          from_date: '',
-          to_date: ''
+          from_year: '',
+          to_year: ''
       })
     },
     removeEmployment (index) {
       this.employments.splice(index, 1)
     },
-    submitRecord() {
-
-      },
     getDepartmentByCollege(e) {
       let id = e.target.value
       this.$store.dispatch('utility/getDepartmentByFaculty', id)
@@ -773,10 +774,10 @@ export default {
           this.$toast.error(err)
       })
     },
-    submitRecord(){
-      
+    submitRecord(){     
             this.loading = true
             let bodyFormData = new FormData();
+            bodyFormData.set('id', this.id.split('_')[1])
             bodyFormData.set('name', this.formData.name)
             bodyFormData.set('first_name', this.formData.first_name)
             bodyFormData.set('last_name', this.formData.last_name)
@@ -826,9 +827,9 @@ export default {
               bodyFormData.set('promotion['+i+']'+'[new_position]', this.promotions[i].new_position)
               bodyFormData.set('promotion['+i+']'+'[promotion_date]', this.promotions[i].promotion_date)
               bodyFormData.set('promotion['+i+']'+'[comments]', this.promotions[i].comments)
-              bodyFormData.set('promotion['+i+']'+'[date_of_first_appointment]', this.promotions[i].first_appointment_date)
-              bodyFormData.set('promotion['+i+']'+'[date_of_present_appointment]', this.promotions[i].present_appointment_date)
-              bodyFormData.set('promotion['+i+']'+'[date_of_confirmation]', this.promotions[i].confirmation_date)
+              bodyFormData.set('promotion['+i+']'+'[date_of_first_appointment]', this.promotions[i].date_of_first_appointment)
+              bodyFormData.set('promotion['+i+']'+'[date_of_present_appointment]', this.promotions[i].date_of_present_appointment)
+              bodyFormData.set('promotion['+i+']'+'[date_of_confirmation]', this.promotions[i].date_of_confirmation)
               bodyFormData.set('promotion['+i+']'+'[grade_level]', this.promotions[i].grade_level)
             }
             
@@ -836,7 +837,7 @@ export default {
             {
               bodyFormData.set('spouse['+i+']'+'[name]', this.spouses[i].name)
               bodyFormData.set('spouse['+i+']'+'[birth_place]', this.spouses[i].birth_place)
-              bodyFormData.set('spouse['+i+']'+'[dob]', this.spouses[i].birth_date)
+              bodyFormData.set('spouse['+i+']'+'[dob]', this.spouses[i].dob)
               bodyFormData.set('spouse['+i+']'+'[occupation]', this.spouses[i].occupation)
               bodyFormData.set('spouse['+i+']'+'[address]', this.spouses[i].address)
             }
@@ -845,7 +846,7 @@ export default {
             {
               bodyFormData.set('children['+i+']'+'[name]', this.children[i].name)
               bodyFormData.set('children['+i+']'+'[birth_place]', this.children[i].birth_place)
-              bodyFormData.set('children['+i+']'+'[dob]', this.children[i].birth_date)
+              bodyFormData.set('children['+i+']'+'[dob]', this.children[i].dob)
               bodyFormData.set('children['+i+']'+'[remark]', this.children[i].remark)
               bodyFormData.set('children['+i+']'+'[address]', this.children[i].address)
             }
@@ -875,7 +876,6 @@ export default {
                 this.loading = false
                 })
             }else{
-              console.log(this.id)
               this.$store
                 .dispatch('get-started/updateLecturer', bodyFormData)
                 .then(res => {
@@ -908,9 +908,21 @@ export default {
         }).catch(err =>{
         this.$toast.error(err)
       })
+    },   
+    propChanger(arrays, value) {
+      for (var i in arrays) {
+        var keys = Object.keys(arrays[i])
+        keys.forEach(element => {    
+          if (element == value) {
+              arrays[i][element] = this.$moment(arrays[i][element]).format('YYYY-MM-DD');
+          }
+        });  
+      }
     },
     populator(){
       this.formData = this.lecturer
+      this.formData.date_employed = this.$moment(this.lecturer.date_employed).format('YYYY-MM-DD')
+      this.formData.dob = this.$moment(this.lecturer.dob).format('YYYY-MM-DD')
       this.getDepartmentByCollegeID(this.lecturer.profile.college_id)
       this.getStatesByCountry()
       this.getLgaByState()
@@ -933,6 +945,10 @@ export default {
 
       var promotion_details = JSON.parse(this.lecturer.profile.promotion_details)
       if(promotion_details.length > 0){
+        this.propChanger(promotion_details, 'promotion_date')
+        this.propChanger(promotion_details, 'date_of_first_appointment')
+        this.propChanger(promotion_details, 'date_of_present_appointment')
+        this.propChanger(promotion_details, 'date_of_confirmation')
         this.promotions = promotion_details
       }else{
         this.addPromotion()
@@ -941,6 +957,7 @@ export default {
 
       var spouse_details = JSON.parse(this.lecturer.profile.spouse_details)
       if(spouse_details.length > 0){
+        this.propChanger(spouse_details, 'dob')
         this.spouses = spouse_details
       }else{
         this.addSpouse()
@@ -949,6 +966,7 @@ export default {
       
       var children_details = JSON.parse(this.lecturer.profile.children_details)
       if(children_details.length > 0){
+        this.propChanger(children_details, 'dob')
         this.children = children_details
       }else{
         this.addChild()
@@ -956,29 +974,36 @@ export default {
       }
     },
     getLecturerDetails(id) {  
+      this.loading = true
       let numId = id.split('_')[1]  
       this.$store
           .dispatch('get-started/getSingleLecturer', numId)
           .then(res => {
           if(res != undefined){
               if(res.status){
-                  this.lecturerLoading = false
                   this.lecturer = res.data
                   this.populator()
+                  this.loading = false
               }else{
-                  this.lecturerLoading = false
+                  this.loading = false
                   this.ErrMsg = "Error Processing Request!"
               }
           }else{
-              this.lecturerLoading = false
+              this.loading = false
               this.ErrMsg = "Error Processing Request!"
           }
           }).catch(err => {
-              this.lecturerLoading = false
+              this.loading = false
       })
     }
   },
   mounted() {
+    if (!process.server) {
+        const script1 = document.createElement('script')
+        script1.type = 'text/javascript'
+        script1.src = '/pages/js/pages.min.js'
+        document.head.appendChild(script1)
+    }
     this.id = this.$route.params.id;
     this.getColleges()
     this.getCountries()

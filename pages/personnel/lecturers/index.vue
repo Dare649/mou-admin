@@ -1,5 +1,33 @@
 <template>
   <div>
+        <!-- Export Countries Modal -->
+        <div class="modal fade SlideUp" id="export_lecturers" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="text-left p-b-5"><span class="semi-bold">Export Faculties</span></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h6 class="text-left p-b-5"><span class="semi-bold">Click confirm to export all the faculties to an excel file.</span></h6>
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="button" v-if="!exportLoading"  @click="exportLecturers()" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Confirm</button>
+                                <button type="button" disabled v-if="exportLoading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Downloading</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
           <!-- Delete Faculty Modal -->
         <div class="modal fade SlideUp" id="delete_lecturer" tabindex="-1" role="dialog" aria-hidden="true">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -246,15 +274,15 @@
               </div>
               <div class="modal-body">
                   <div class="row">
-                      <div class="col-lg-12 m-b-10">
-                          <!-- <label>Level</label>
+                      <!-- <div class="col-lg-12 m-b-10">
+                          <label>Level</label>
                           <select class="form-control" v-model="model.import_level">
                               <option value="">Select Level</option>
                               <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
-                          </select> -->
+                          </select>
                           <span class="alert alert-danger" v-if="err_level_id != ''">{{err_level_id}}</span>
                           <span class="alert alert-danger" v-if="err_program_id != ''">{{err_program_id}}</span>
-                      </div>
+                      </div> -->
                       <div class="col-lg-12 m-b-10">
                           <div class="custom-file">
                               <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -262,8 +290,8 @@
                           </div>
                       </div>
                       <div class="col-lg-12">
-                          <button type="button" @click="uploadLecturers" v-if="!loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
-                          <button type="button" disabled v-if="loading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
+                          <button type="button" @click="uploadLecturers" v-if="!uploading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Upload Record</button>
+                          <button type="button" disabled v-if="uploading" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Uploading</button>
                       </div>
                       <div class="col-lg-12 m-t-15">
                           <div class="dd-placeholder p-1">
@@ -295,17 +323,35 @@
         </div>
       </div>
       <!-- END BREADCRUMBS -->
-
+        <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0" v-if="importResponse.success">
+            <div class="card card-default">
+                <div class="card-body">
+                    <div class="alert alert-danger" v-if="importResponse.errors.length > 0">
+                        <strong>The Following Errors Occurred:</strong>
+                        <p>
+                            <ul v-for="item in importResponse.errors" :key="importResponse[item]">
+                                <li>Row: {{item.row}} ---- <span>Attribute: {{item.attribute}}</span> ---- <span >Messages: {{item.message}}</span></li>
+                            </ul>
+                            <a :href="importResponse.error_file" target="_blank" download>Click here to download error file</a>
+                        </p>
+                    </div>
+                    <div class="alert alert-success">
+                        <strong>Audit Trail Performed.</strong>
+                        <p>File Successfully Imported. {{importResponse.count}} Records Imported</p>
+                    </div>
+                </div>
+            </div>
+        </div>
       <!-- START CONTAINER FLUID -->
       <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
         <div class="card card-default">
           <div class="card-header">
             <h3 class="text-primary no-margin pull-left sm-pull-reset">Lecturers Management</h3>
             <div class="pull-right sm-pull-reset">
-              <button v-permission="'View state'" type="button" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
+              <!-- <button v-permission="'View state'" type="button" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button> -->
               <nuxt-link to="/personnel/lecturers/form/new" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Create New Lecturer</strong></nuxt-link>
               <button v-permission="'Upload subject'" type="button" class="btn btn-warning btn-sm" data-target="#upload_lecturers" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Lecturers</strong></button>
-              <button v-permission="'Export subject'" type="button" class="btn btn-success btn-sm" data-target="#export_subjects" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
+              <button v-permission="'Export subject'" type="button" class="btn btn-success btn-sm" data-target="#export_lecturers" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
             </div>
           </div>
           <div class="card-body">
@@ -376,11 +422,13 @@ export default {
   },
   data: () => ({
     loading: true,
+    uploading: false,
     lecturers: [],
     lecturer: {},
     downloading: false,
     err_level_id: "",
     err_program_id: "",
+    exportLoading: false,
     importResponse: {},
     lecturerLoading: false,
     deleteLoading: false,
@@ -428,6 +476,33 @@ export default {
                     this.lecturerLoading = false
             })
         },
+        exportLecturers(){
+            this.exportLoading = true
+            this.$store
+                .dispatch('get-started/exportLecturers', 'LECTURER')
+                .then(res => {
+                if(res != undefined){
+                    this.loading = false
+                    var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                    var fileLink = document.createElement('a');
+
+                    fileLink.href = fileURL;
+                    fileLink.setAttribute('download', 'lecturers.xlsx');
+                    document.body.appendChild(fileLink);
+
+                    fileLink.click();
+                    this.exportLoading = false
+                    $( '#export_lecturers' ).modal( 'hide' ).data( 'bs.modal', null )
+                    this.getLecturers(1)
+                    this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                }else{
+                    this.exportLoading = false
+                    alert("File Downloaded Unsuccessful")
+                }
+            }).catch(err => {
+            this.exportLoading = false
+            })
+        },
     downloadLecturerSampleFile(){
         this.downloading = true
         this.$store
@@ -437,7 +512,7 @@ export default {
                 if(res.success == true)    {
                     window.location = res.message
                     this.downloading = false
-                    $('#upload_courses').modal('hide').data( 'bs.modal', null )
+                    $('#upload_lecturers').modal('hide').data( 'bs.modal', null )
                     this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }
 
@@ -446,39 +521,37 @@ export default {
                 alert("File Download Unsuccessful")
             }
         }).catch(err => {
-        this.downloading = false
+            this.downloading = false
         })
     },
     uploadLecturers(){
-        this.loading = true
+        this.uploading = true
         this.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
         formData.append('file', this.file);
-        formData.append('level_id', this.model.import_level)
-        formData.append('program_id', programId)
         this.$store
             .dispatch('get-started/uploadLecturers', formData)
             .then(res => {
             if(res != undefined){
                 if(res.success){
-                    this.loading = false
+                    this.uploading = false
                     this.importResponse = res
                     this.getLecturers(1)
-                    $('#upload_courses').modal('hide').data( 'bs.modal', null )
+                    $('#upload_lecturers').modal('hide').data( 'bs.modal', null )
                     this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                 }else{
-                    this.loading = false
+                    this.uploading = false
                     this.err_level_id = res.response.data.message.level_id
                     this.err_program_id = res.response.data.message.program_id
                     this.ErrMsg = "Error Processing Request!"
                 }
             }else{
-                this.loading = false
+                this.uploading = false
                 alert("File Upload Unsuccessful")
                 this.ErrMsg = "Error Processing Request!"
             }
         }).catch(err => {
-        this.loading = false
+        this.uploading = false
         })
     },
     deleteLecturer(){
@@ -516,7 +589,6 @@ export default {
           this.$store
             .dispatch('get-started/getFullLecturers', payload)
             .then(res => {
-              console.log(res)
               if(res != undefined){
                 if(res.status){ 
                 this.loading = true
