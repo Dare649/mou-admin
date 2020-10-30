@@ -213,6 +213,21 @@ export const actions = {
             return err
         });
     },
+    async uploadLecturers(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/users/import',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            
+        });
+    },
     async uploadStates(context, requests) {
         return await this.$axios({
             method: 'post',
@@ -381,6 +396,21 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+    },
+    async exportLecturers(context, type) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/users/export?type='+type,
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
     },
     async exportFaculties(context) {
         return await this.$axios({
@@ -552,7 +582,21 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            return err
+            
+        });
+    },
+    async downloadLecturerSampleFile(context) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/users/download-sample',
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            
         });
     },
     async downloadPUTMESampleFile(context) {
@@ -968,12 +1012,10 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            console.log(response)
             //handle success
             return response.data
         })
         .catch(err => {
-            console.log(response)
         });
     },
     async createSchoolFee(context, requests) {
@@ -1038,8 +1080,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateJambResult(context, requests) {
@@ -1061,8 +1101,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateFaculty(context, payload) {
@@ -1077,8 +1115,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateSubject(context, payload) {
@@ -1093,8 +1129,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updatePUTMEStudent(context, data) {
@@ -1116,8 +1150,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateDepartment(context, payload) {
@@ -1132,8 +1164,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateProgram(context, payload) {
@@ -1148,8 +1178,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateSchoolFee(context, payload) {
@@ -1164,8 +1192,6 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            console.log(err)
-            return err
         });
     },
     async updateState(context, requests) {
