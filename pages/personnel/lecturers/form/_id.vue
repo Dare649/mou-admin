@@ -51,9 +51,10 @@
                     <div class="col-md-4">
                           <div class="form-group form-group-default required">
                               <label>User Type</label>
-                              <select disabled class="form-control" data-placeholder="Semester" v-model="formData.user_type"  required>
+                              <select class="form-control" data-placeholder="Semester" v-model="formData.role"  required>
                                   <option value="">Select Type</option>
-                                  <option value="LECTURER">LECTURER</option>
+                                  <option value="LECTURER">Academic</option>
+                                  <option value="LECTURER">Non-academic</option>
                               </select>
                           </div>
                       </div>
@@ -183,8 +184,11 @@
                   <div class="row">
                       <div class="col-md-4">
                           <div class="form-group form-group-default required">
-                              <label>Geo Political Zone</label>
-                              <input type="text" class="form-control" v-model="formData.profile.geo_political_zone" required>
+                              <label>geo political zones</label>
+                              <select class="form-control" data-placeholder="Semester" v-model="formData.profile.geo_political_zone"  required>
+                                  <option value="">Select Zone</option>
+                                  <option v-for="zone in geo_political_zones" :value="zone.id" :key="zone.id">{{zone.name}}</option>
+                              </select>
                           </div>
                       </div>  
                       <div class="col-md-4">
@@ -599,6 +603,14 @@ export default {
     departments: [],
     countries: [],
     lecturer: {},
+    geo_political_zones:[
+      {id: "North Central", name: "North Central"}, 
+      {id: "North East", name: "North East"}, 
+      {id: "North West", name: "North West"}, 
+      {id: "South East", name: "South East"}, 
+      {id: "South South", name: "South South"},
+      {id: "South West", name: "South West"} 
+    ],
     states: [],
     submitting: false,
     editLoading: false,
@@ -641,7 +653,7 @@ export default {
       to_year: ""
     }],
     formData: {
-      user_type: "LECTURER",
+      role: "LECTURER",
       name: "",
       password: "",
       confirm_password: "",
@@ -671,7 +683,7 @@ export default {
         state_id: "",
         lga_id: "",
         rank: "",
-        geo_political_zone: "Southern"
+        geo_political_zone: ""
       }
     }
   }),
@@ -785,7 +797,9 @@ export default {
             bodyFormData.set('name', this.formData.name)
             bodyFormData.set('first_name', this.formData.first_name)
             bodyFormData.set('last_name', this.formData.last_name)
+            bodyFormData.set('middle_name', this.formData.middle_name)
             bodyFormData.set('email', this.formData.email)
+            bodyFormData.set('role', this.formData.role)
             bodyFormData.set('phone', this.formData.phone)
             bodyFormData.set('address', this.formData.address)
             bodyFormData.set('marital_status', this.formData.marital_status)
