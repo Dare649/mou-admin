@@ -321,7 +321,15 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-default required">
+                                        <label>Program's Specialization</label>
+                                        <select class="form-control" v-model="model.level_id">
+                                            <option value= 0>Select Program's Specialization</option>
+                                            <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-4"></div>
                             </div>
                             <div class="row">
