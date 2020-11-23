@@ -8,8 +8,9 @@
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
                         <li class="breadcrumb-item">Get Started</li>
-                        <li class="breadcrumb-item"><nuxt-link :to="'/get-started/departments/' + routeId" >Departments</nuxt-link></li>
-                        <li class="breadcrumb-item active">Programs</li>
+                        <li class="breadcrumb-item"><nuxt-link v-if="routeId != ''" :to="'/get-started/departments/' + routeId.split('_')[0]" >Departments</nuxt-link></li>
+                        <li class="breadcrumb-item "><nuxt-link :to="'/get-started/programs/' + routeId" >Programs</nuxt-link></li>
+                        <li class="breadcrumb-item active">Specializations</li>
                     </ol>
                 </div>
             </div>
@@ -33,12 +34,7 @@
                           <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="Abbreviation" v-model="model.abbreviation" class="form-control input-lg" id="icon-filter1" name="icon-filter">
                           </div>
-                          <div class="col-lg-12 m-b-10">
-                            <select required class="form-control" v-model="model.specialization_level_id">
-                                <option value="">Select Specialization Level</option>
-                                <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
-                            </select>
-                          </div>
+                          
                           <div class="col-lg-12 m-b-10">
                               <input type="number" placeholder="Length of Study" v-model="model.length_of_study" class="form-control input-lg" id="icon-filter2" name="icon-filter">
                           </div>
@@ -122,8 +118,10 @@
                                         <div class="card-title">Getting started</div>
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="semi-bold">
-                                            You can manage the school Programs existing in the university.
+                                        <h5 class="semi-bold" v-if="subRouteId != ''">
+                                            You can manage the school Program's Specializations existing in the university. 
+                                            <br/>
+                                            Program Name: {{subRouteId.split('_')[1]}}
                                         </h5>
                                     </div>
                                 </div>
@@ -169,11 +167,11 @@
             <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Program Management</h3>
+                        <h3 class="text-primary no-margin pull-left sm-pull-reset">Program's Specialization Management</h3>
                         <div class="pull-right sm-pull-reset">
-                            <nuxt-link :to="'/get-started/departments/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
-                            <button v-permission="'Add programme'" type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Program</strong></button>
-                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_programs" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
+                            <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
+                            <button v-permission="'Add programme'" type="button" class="btn btn-primary btn-sm" data-target="#add_department" data-toggle="modal"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Specialization</strong></button>
+                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_programs" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Specialization</strong></button>
                             <button v-permission="'Export programme'" type="button" class="btn btn-success btn-sm" data-target="#export_programs" data-toggle="modal"><i class="fa fa-file-excel-o"></i> &nbsp; <strong>Export to Excel</strong></button>
                         </div>
                         <div class="clearfix"></div>
@@ -183,8 +181,8 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:27%">Department</th>
                                     <th style="width:27%">Program</th>
+                                    <th style="width:27%">Specialization</th>
                                     <th style="width:10.0%">Duration</th>
                                     <th style="width:12.0%">Status</th>
                                     <th style="width:17%">Action</th>
@@ -338,6 +336,8 @@ export default {
         exportLoading: false,
         deleteLoading: false,
         editLoading: false,
+        err_level_id: "",
+        err_program_id: "",
         programs: [],
         levels: [],
         routeId: 0,
@@ -354,12 +354,12 @@ export default {
           name: "",
           id: 0,
           status: 1,
+          specialization_level_id: "",
           abbreviation: "",
           length_of_study: 4,
           department_status: "",
           edit_prefix: "",
           edit_length_of_study: "",
-          specialization_level_id: "",
           edit_status: "",
           edit_department_id: "",
           edit_name: "",
@@ -388,11 +388,14 @@ export default {
             this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
         }
         this.subRouteId = this.$route.params.id
-        this.routeId = (this.$route.params.id).split("_")[0]
+        this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
         this.getLevels()
     },
 
     methods:{
+        setId(id){
+            this.model.id = id
+        },
         getLevels(){
             this.$store
                 .dispatch('get-started/getLevels', false)
@@ -404,9 +407,6 @@ export default {
                 }
                 }).catch(err => {
             })
-        },
-        setId(id){
-            this.model.id = id
         },
         downloadProgramSampleFile(){
             this.downloading = true

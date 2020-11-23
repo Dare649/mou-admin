@@ -997,11 +997,12 @@ export const actions = {
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
-            
             //handle success
             return response.data
         })
         .catch(err => {
+            console.log(err.response.data.address)
+            alert(err.response.data)
         });
     },
     async updateLecturer(context, requests) {

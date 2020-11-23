@@ -195,6 +195,13 @@
                                     <span class="alert alert-danger" v-if="err_program_id != ''">{{err_program_id}}</span>
                                 </div>
                                 <div class="col-lg-12 m-b-10">
+                                    <label>Program's Specialization</label>
+                                    <select class="form-control" v-model="model.import_level">
+                                        <option value="">Select Program's Specialization</option>
+                                        <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 m-b-10">
                                     <div class="custom-file">
                                         <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
                                         <label class="custom-file-label" for="customFileLang">Select File</label>
@@ -299,7 +306,7 @@
                         <div class="pull-right sm-pull-reset">
                             <nuxt-link :to="'/get-started/programs/' + routeId" > <button type="button" class="btn btn-primary btn-sm"> <i class="fa fa-step-backward" aria-hidden="true"></i></button>&nbsp;&nbsp;</nuxt-link>
                             <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
-                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_courses" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Programs</strong></button>
+                            <button v-permission="'Upload programme'" type="button" class="btn btn-warning btn-sm" data-target="#upload_courses" data-toggle="modal"><i class="fa fa-arrow-up"></i> &nbsp; <strong>Upload Courses</strong></button>
                             <nuxt-link :to="'/get-started/courses/manage/'+ subRouteId" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> &nbsp; <strong>Add New Course</strong></nuxt-link>
                         </div>
                         <div class="clearfix"></div>
