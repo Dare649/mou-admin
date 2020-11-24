@@ -30,6 +30,10 @@
                                 <th>Semester:</th>
                                 <td>{{course.semester == 1 ? "1st Semester" : "2nd Semester"}}</td>
                             </tr>
+                            <tr>
+                                <th>Specialization:</th>
+                                <td>{{course.semester == 1 ? "1st Semester" : "2nd Semester"}}</td>
+                            </tr>
                             </table>
                             <table class="table table-striped table-bordered">
                             <tr>
@@ -194,13 +198,13 @@
                                     <span class="alert alert-danger" v-if="err_level_id != ''">{{err_level_id}}</span>
                                     <span class="alert alert-danger" v-if="err_program_id != ''">{{err_program_id}}</span>
                                 </div>
-                                <div class="col-lg-12 m-b-10">
+                                <!-- <div class="col-lg-12 m-b-10">
                                     <label>Program's Specialization</label>
-                                    <select class="form-control" v-model="model.import_level">
+                                    <select class="form-control" v-model="model.spec">
                                         <option value="">Select Program's Specialization</option>
-                                        <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                        <option :value="spec.id" v-for="spec in specs" :key="spec.id">{{spec.name}}</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="col-lg-12 m-b-10">
                                     <div class="custom-file">
                                         <input type="file" ref="myFiles" class="custom-file-input" id="customFileLang" lang="es">
@@ -413,6 +417,7 @@ export default {
         course: {},
         courses: [],
         levels: [],
+        specs: [],
         routeId: 0,
         file: "",
         lecturers: [],
@@ -432,6 +437,7 @@ export default {
           name: "",
           id: 0,
           status: 1,
+          spec: "",
           abbreviation: "",
           search_level: "",
           import_level: "",
@@ -558,7 +564,6 @@ export default {
             let bodyFormData = new Object();
             let payload = {}
             bodyFormData.name = this.model.edit_name
-            // bodyFormData.prefix = this.model.edit_prefix
             bodyFormData.status = this.model.edit_status
             bodyFormData.department_id = this.model.edit_department_id
             bodyFormData.duration = this.model.edit_length_of_study

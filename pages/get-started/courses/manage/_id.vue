@@ -324,9 +324,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Program's Specialization</label>
-                                        <select class="form-control" v-model="model.level_id">
-                                            <option value= 0>Select Program's Specialization</option>
-                                            <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                        <select class="form-control" v-model="model.spec">
+                                            <option value = "">Select Program's Specialization</option>
+                                            <option :value="spec.id" v-for="spec in specs" :key="spec.id">{{spec.name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -411,6 +411,7 @@ export default {
         exportLoading: false,
         deleteLoading: false,
         editLoading: false,
+        specs: [],
         programs: [],
         levels: [],
         routeId: 0,
@@ -434,6 +435,7 @@ export default {
           status: '',
           program_id: 0,
           code: "",
+          spec: "",
           level_id: 0,
           semester: "",
           weight_age: "",
@@ -464,32 +466,48 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        // if(this.$laravel.hasPermission('View programme')){
-        //     this.getProgramsByDepartmentId(this.pagination.current_page)
-        // }else{
-        //     this.IsPermitted = false
-        //     this.getLoading = false
-        //     this.$router.push(
-        //         decodeURIComponent(
-        //           this.$route.query.redirect || "/dashboard"
-        //         )
-        //     );
-        //     this.$toast.error("Not Permitted to access this page! Contact the admin.", { icon: "times" });
-        // }
-        // this.subRouteId = this.$route.params.id
+        
         this.getLecturers()
         this.routeId = this.$route.params.id
         this.getLevels()
+        this.getSpecByProgramId()
     },
 
     methods:{
+         getSpecByProgramId(page) {
+            if(this.$laravel.hasPermission('View programme')){
+                let programId = (this.$route.params.id).split("_")[0]
+                let payload = {}
+                payload.isPaged = false
+                payload.programId = programId
+                this.$store
+                    .dispatch('get-started/getSpecByProgramId', payload)
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.status){
+                            this.specs = res.data              
+                        }else{
+                            this.getLoading = false
+                            this.ErrMsg = "Error Processing Request!"
+                        }
+                    }else{
+                        this.getLoading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                    }).catch(err => {
+                        this.getLoading = false
+                    })
+                    }else{
+                        this.IsPermitted = false
+                        this.getLoading = false
+                    }
+            },
         add () {
         this.inputs.push({
             name: '',
             party: ''
         })
         },
-
         remove (index) {
             this.inputs.splice(index, 1)
         },
@@ -516,6 +534,7 @@ export default {
             bodyFormData.set('name', this.model.name)
             bodyFormData.set('code', this.model.code)
             bodyFormData.set('level_id', this.model.level_id)
+            bodyFormData.set('specialization_id', this.model.spec)
             bodyFormData.set('semester', this.model.semester)
             bodyFormData.set('weight_age', this.model.weight_age)
             bodyFormData.set('status', this.model.status)

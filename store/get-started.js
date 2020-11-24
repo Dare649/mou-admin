@@ -833,6 +833,20 @@ export const actions = {
             return err
         });
     },
+    async getSpecByProgramId(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/programs/specialization/list/'+ payload.programId + '?paginate=' + payload.isPaged ,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async viewCoursesUnderProgram(context, payload){
         return await this.$axios({
             method: 'get',
@@ -965,6 +979,34 @@ export const actions = {
         return await this.$axios({
             method: 'post',
             url: 'api/programs',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
+    async updateSpec(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/programs/specialization/update',
+            data: requests,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+        });
+    },
+    async createSpec(context, requests) {
+        return await this.$axios({
+            method: 'post',
+            url: 'api/programs/specialization/create',
             data: requests,
             headers: {'Content-Type': 'application/json' }
         })
@@ -1479,6 +1521,20 @@ export const actions = {
         return await this.$axios({
             method: 'delete',
             url: 'api/programs/'+ id,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            //handle success
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async deleteSpec(context, id){
+        return await this.$axios({
+            method: 'delete',
+            url: 'api/programs/specialization/'+ id,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

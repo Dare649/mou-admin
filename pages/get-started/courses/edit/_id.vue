@@ -324,9 +324,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group form-group-default required">
                                         <label>Program's Specialization</label>
-                                        <select class="form-control" v-model="model.level_id">
-                                            <option value= 0>Select Program's Specialization</option>
-                                            <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                        <select class="form-control" v-model="model.specialization_id">
+                                            <option value="">Select Program's Specialization</option>
+                                            <option :value="level.id" v-for="level in specs" :key="level.id">{{level.name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -412,6 +412,7 @@ export default {
         deleteLoading: false,
         editLoading: false,
         programs: [],
+        specs: [],
         levels: [],
         routeId: "",
         subRouteId: '',
@@ -453,6 +454,7 @@ export default {
           isApplicablePG_MSC_ENG: "",
           isApplicablePG_MSC_MBA: "",
           isApplicablePG_MSC_PHIL: "",
+          specialization_id: "",
           isApplicableToBscDe: "",
           lecturers:[]
         },
@@ -482,9 +484,38 @@ export default {
         this.routeId = (this.$route.params.id).split('_')[0] + '_' + (this.$route.params.id).split('_')[1] + '_' + (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
         this.getLevels()
         this.getCourse()
+        this.getSpecByProgramId()
     },
 
     methods:{
+        getSpecByProgramId(page) {
+            if(this.$laravel.hasPermission('View programme')){
+                let programId = (this.$route.params.id).split("_")[0]
+                let payload = {}
+                payload.isPaged = false
+                payload.programId = programId
+                this.$store
+                    .dispatch('get-started/getSpecByProgramId', payload)
+                    .then(res => {
+                    if(res != undefined){
+                        if(res.status){
+                            this.specs = res.data              
+                        }else{
+                            this.getLoading = false
+                            this.ErrMsg = "Error Processing Request!"
+                        }
+                    }else{
+                        this.getLoading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
+                    }).catch(err => {
+                        this.getLoading = false
+                    })
+                    }else{
+                        this.IsPermitted = false
+                        this.getLoading = false
+                    }
+            },
         add () {
         this.model.lecturers.push({
             user_id: '',
@@ -539,6 +570,7 @@ export default {
             bodyFormData.set('name', this.model.name)
             bodyFormData.set('code', this.model.code)
             bodyFormData.set('level_id', this.model.level_id)
+            bodyFormData.set('specialization_id', this.model.specialization_id)
             bodyFormData.set('semester', this.model.semester)
             bodyFormData.set('weight_age', this.model.weightage)
             bodyFormData.set('status', this.model.status)
