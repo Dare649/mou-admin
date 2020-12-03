@@ -183,11 +183,12 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
-                                    <th style="width:27%">Department</th>
-                                    <th style="width:27%">Program</th>
-                                    <th style="width:10.0%">Duration</th>
-                                    <th style="width:12.0%">Status</th>
-                                    <th style="width:17%">Action</th>
+                                    <th style="width:25%">Department</th>
+                                    <th style="width:25%">Program</th>
+                                    <th style="width:8.0%">Duration</th>
+                                    <th style="width:10.0%">Spec Level</th>
+                                    <th style="width:9.0%">Status</th>
+                                    <th style="width:23%">Action</th>
                                 </thead>
                                 <tbody>
                                   <tr v-if="getLoading">
@@ -203,9 +204,15 @@
                                       <td>{{program.department.name}}</td>
                                       <td>{{program.name}}</td>
                                       <td>{{program.duration}} years</td>
-                                      <td>
-
-                                          
+                                      
+                                      <td >
+                                            <span v-if="program.specialization_level_id == 1"> {{100}} </span> 
+                                            <span v-if="program.specialization_level_id == 2"> {{200}} </span> 
+                                            <span v-if="program.specialization_level_id == 3"> {{300}} </span> 
+                                            <span v-if="program.specialization_level_id == 4"> {{400}} </span> 
+                                            <span v-if="program.specialization_level_id == 5"> {{500}} </span> 
+                                      </td>
+                                      <td>                                          
                                           <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="program.status == 1">Active</span>
                                           <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="program.status == 0">Inactive</span>
                                       </td>
@@ -257,6 +264,12 @@
                             <div class="row">
                                 <div class="col-lg-12 m-b-10">
                                     <input type="text" v-model="model.edit_name" placeholder="Name" class="form-control">
+                                </div>
+                                <div class="col-lg-12 m-b-10">
+                                    <select required class="form-control" v-model="model.edit_specialization_level_id">
+                                        <option value="">Select Specialization Level</option>
+                                        <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
+                                    </select>
                                 </div>
                                 <!-- <div class="col-lg-12 m-b-10">
                                     <input type="text" placeholder="Prefix" v-model="model.edit_prefix" class="form-control">
@@ -354,12 +367,14 @@ export default {
           name: "",
           id: 0,
           status: 1,
+          specialization_level_id: "",
           abbreviation: "",
           length_of_study: 4,
           department_status: "",
           edit_prefix: "",
           edit_length_of_study: "",
           specialization_level_id: "",
+          edit_specialization_level_id: "",
           edit_status: "",
           edit_department_id: "",
           edit_name: "",
@@ -463,9 +478,8 @@ export default {
             let facultyId = (this.$route.params.id).split('_')[0]
             let bodyFormData = new FormData();
             bodyFormData.set('department_id', departmentId)
-            //bodyFormData.set('faculty_id', facultyId)
             bodyFormData.set('name', this.model.name)
-            //bodyFormData.set('prefix', this.model.abbreviation)
+            bodyFormData.set('specialization_level_id', this.model.specialization_level_id)
             bodyFormData.set('duration', this.model.length_of_study)
             bodyFormData.set('status', this.model.status)
             this.$store
@@ -519,30 +533,31 @@ export default {
             let bodyFormData = new Object();
             let payload = {}
             bodyFormData.name = this.model.edit_name
-            // bodyFormData.prefix = this.model.edit_prefix
             bodyFormData.status = this.model.edit_status
             bodyFormData.department_id = this.model.edit_department_id
             bodyFormData.duration = this.model.edit_length_of_study
+            bodyFormData.specialization_level_id = this.model.edit_specialization_level_id
             payload.id = this.model.edit_program_id
             payload.bodyFormData = bodyFormData
+
             this.$store
             .dispatch('get-started/updateProgram', payload)
             .then(res => {
-            if(res != undefined){
-                if(res.status == true){
-                    this.editLoading = false
-                    this.getProgramsByDepartmentId()
-                    $('#edit_program').modal('hide').data( 'bs.modal', null )
-                    this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+                if(res != undefined){
+                    if(res.status == true){
+                        this.editLoading = false
+                        this.getProgramsByDepartmentId()
+                        $('#edit_program').modal('hide').data( 'bs.modal', null )
+                        this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
+                    }else{
+                        this.editLoading = false
+                        this.ErrMsg = "Error Processing Request!"
+                    }
                 }else{
-                this.editLoading = false
-                this.ErrMsg = "Error Processing Request!"
+                    this.loading = false
+                    this.ErrMsg = "Error Processing Request!"
                 }
-            }else{
-                this.loading = false
-                this.ErrMsg = "Error Processing Request!"
-            }
             }).catch(err => {
                 this.loading = false
             })

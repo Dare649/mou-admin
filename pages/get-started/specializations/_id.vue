@@ -31,13 +31,13 @@
                           <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="Name" v-model="model.name" class="form-control input-lg" id="icon-filter" name="icon-filter">
                           </div>
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="text" placeholder="Abbreviation" v-model="model.abbreviation" class="form-control input-lg" id="icon-filter1" name="icon-filter">
-                          </div>
+                          </div> -->
                           
-                          <div class="col-lg-12 m-b-10">
+                          <!-- <div class="col-lg-12 m-b-10">
                               <input type="number" placeholder="Length of Study" v-model="model.length_of_study" class="form-control input-lg" id="icon-filter2" name="icon-filter">
-                          </div>
+                          </div> -->
                           <div class="col-lg-12 m-b-10">
                             <input v-model="model.status" type="radio" name="exampleRadios" id="programRadioA" value="1" checked>
                             <label for="programRadioA">
@@ -181,9 +181,9 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                                 <thead>
+                                    <th style="width:27%">Department</th>
                                     <th style="width:27%">Program</th>
                                     <th style="width:27%">Specialization</th>
-                                    <th style="width:10.0%">Duration</th>
                                     <th style="width:12.0%">Status</th>
                                     <th style="width:17%">Action</th>
                                 </thead>
@@ -198,26 +198,16 @@
                                     <td colspan="4" style="color: red; font-size:18px;"><i class="fa fa-warning"></i>&nbsp; Not Permitted to view this records!</td>
                                   </tr>
                                   <tr v-for="program in programs" :key="program.id">
-                                      <td>{{program.department.name}}</td>
+                                      <td>{{program.program.department.name}}</td>
+                                      <td>{{program.program.name}}</td>
                                       <td>{{program.name}}</td>
-                                      <td>{{program.duration}} years</td>
-                                      <td>
 
-                                          
+                                      <td>            
                                           <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="program.status == 1">Active</span>
                                           <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="program.status == 0">Inactive</span>
                                       </td>
                                       <td>
                                           <div class="btn-group">
-                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Program Specialization">
-                                              <nuxt-link :to="'/get-started/specializations/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-file-o"></i></button></nuxt-link>
-                                            </span>
-                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Course Management">
-                                              <nuxt-link :to="'/get-started/courses/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-book"></i></button></nuxt-link>
-                                            </span>
-                                            <span v-permission="'View departments'" data-placement="top" data-toggle="tooltip" title="Link to Fee Setup">
-                                              <nuxt-link :to="'/get-started/school-fees-setup/' + program.id + '_' + program.name + '_' + subRouteId" ><button type="button" class="btn btn-default btn-sm"><i class="fa fa-link"></i></button></nuxt-link>
-                                            </span>
                                             <span v-permission="'Edit programme'" data-placement="top"  data-toggle="tooltip" title="Edit Record">
                                               <a href="#edit_program" @click="populateFields(program)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-pencil"></i></a>
                                             </span>
@@ -231,7 +221,7 @@
                             </table>
                             <Pagination
                                 v-bind:pagination="pagination"
-                                v-on:click.native="getProgramsByDepartmentId(pagination.current_page)"
+                                v-on:click.native="getSpecByProgramId(pagination.current_page)"
                                 :offset="4">
                             </Pagination>
                         </div>
@@ -259,9 +249,7 @@
                                 <!-- <div class="col-lg-12 m-b-10">
                                     <input type="text" placeholder="Prefix" v-model="model.edit_prefix" class="form-control">
                                 </div> -->
-                                <div class="col-lg-12 m-b-10">
-                                    <input type="number" placeholder="Duration" v-model="model.edit_length_of_study" class="form-control">
-                                </div>
+                                
                                 <div class="col-lg-12 m-b-10">
                                     <input v-model="model.edit_status" type="radio" name="exampleRadios" id="exampleRadios1" value="1" checked>
                                     <label for="exampleRadios1">
@@ -376,7 +364,7 @@ export default {
             document.head.appendChild(script1)
         }
         if(this.$laravel.hasPermission('View programme')){
-            this.getProgramsByDepartmentId(this.pagination.current_page)
+            this.getSpecByProgramId(this.pagination.current_page)
         }else{
             this.IsPermitted = false
             this.getLoading = false
@@ -389,25 +377,25 @@ export default {
         }
         this.subRouteId = this.$route.params.id
         this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
-        this.getLevels()
+        ///this.getLevels()
     },
 
     methods:{
         setId(id){
             this.model.id = id
         },
-        getLevels(){
-            this.$store
-                .dispatch('get-started/getLevels', false)
-                .then(res => {
-                if(res != undefined){
-                    if(res.status){
-                        this.levels = res.data
-                    }
-                }
-                }).catch(err => {
-            })
-        },
+        // getLevels(){
+        //     this.$store
+        //         .dispatch('get-started/getLevels', false)
+        //         .then(res => {
+        //         if(res != undefined){
+        //             if(res.status){
+        //                 this.levels = res.data
+        //             }
+        //         }
+        //         }).catch(err => {
+        //     })
+        // },
         downloadProgramSampleFile(){
             this.downloading = true
             this.$store
@@ -440,7 +428,7 @@ export default {
                 if(res != undefined){
                     if(res.status == true){
                         this.loading = false
-                        this.getProgramsByDepartmentId(1)
+                        this.getSpecByProgramId(1)
                         $('#upload_o_department').modal('hide').data( 'bs.modal', null )
                         this.$toast.success(res.message, {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
                     }else{
@@ -459,21 +447,20 @@ export default {
         },
         createProgram(){
             this.loading = true
-            let departmentId = (this.$route.params.id).split('_')[1]
-            let facultyId = (this.$route.params.id).split('_')[0]
+            let programId = (this.$route.params.id).split('_')[0]
             let bodyFormData = new FormData();
-            bodyFormData.set('department_id', departmentId)
+            bodyFormData.set('program_id', programId)
             //bodyFormData.set('faculty_id', facultyId)
             bodyFormData.set('name', this.model.name)
             //bodyFormData.set('prefix', this.model.abbreviation)
-            bodyFormData.set('duration', this.model.length_of_study)
+            //bodyFormData.set('duration', this.model.length_of_study)
             bodyFormData.set('status', this.model.status)
             this.$store
-            .dispatch('get-started/createProgram', bodyFormData)
+            .dispatch('get-started/createSpec', bodyFormData)
             .then(res => {
             if(res != undefined){
                 if(res.status == true){
-                    this.getProgramsByDepartmentId()
+                    this.getSpecByProgramId()
                     this.loading = false
                     $('#add_department').modal('hide').data( 'bs.modal', null )
                     this.model = {}
@@ -492,12 +479,12 @@ export default {
         deleteProgram(){
             this.deleteLoading = true
             this.$store
-                .dispatch('get-started/deleteProgram', this.model.id)
+                .dispatch('get-started/deleteSpec', this.model.id)
                 .then(res => {
                 if(res != undefined){
                     if(res.status == true){
                     this.deleteLoading = false
-                    this.getProgramsByDepartmentId()
+                    this.getSpecByProgramId()
                     $( '#delete_department' ).modal( 'hide' ).data( 'bs.modal', null );
                     this.loading = false
                     }else{
@@ -516,22 +503,20 @@ export default {
         },
         submitEditedProgram(){
             this.editLoading = true
-            let bodyFormData = new Object();
-            let payload = {}
-            bodyFormData.name = this.model.edit_name
-            // bodyFormData.prefix = this.model.edit_prefix
-            bodyFormData.status = this.model.edit_status
-            bodyFormData.department_id = this.model.edit_department_id
-            bodyFormData.duration = this.model.edit_length_of_study
-            payload.id = this.model.edit_program_id
-            payload.bodyFormData = bodyFormData
+            let programId = (this.$route.params.id).split('_')[0]
+            let bodyFormData = new FormData();
+            bodyFormData.set('program_id', programId)
+            bodyFormData.set('id', this.model.id)
+            bodyFormData.set('name', this.model.edit_name)
+            bodyFormData.set('status', this.model.edit_status)
+
             this.$store
-            .dispatch('get-started/updateProgram', payload)
+            .dispatch('get-started/updateSpec', bodyFormData)
             .then(res => {
             if(res != undefined){
-                if(res.status == true){
+                if(res.status){
                     this.editLoading = false
-                    this.getProgramsByDepartmentId()
+                    this.getSpecByProgramId()
                     $('#edit_program').modal('hide').data( 'bs.modal', null )
                     this.$toast.success('Record Edited Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
 
@@ -548,12 +533,9 @@ export default {
             })
         },
         populateFields(program){
-          this.model.edit_department_id = program.department_id
-          this.model.edit_program_id = program.id
+          this.model.edit_program_id = program.program_id
           this.model.edit_name = program.name
-        //   this.model.edit_prefix = program.prefix
-          this.model.edit_length_of_study = program.duration
-        //   this.model.edit_faculty_id = program.faculty_id
+          this.model.id = program.id
           this.model.edit_status = program.status
         },
         exportPrograms(){
@@ -582,17 +564,17 @@ export default {
             this.exportLoading = false
             })
         },
-        getProgramsByDepartmentId(page) {
+        getSpecByProgramId(page) {
             if(this.$laravel.hasPermission('View programme')){
-            let departmentId = (this.$route.params.id).split("_")[1]
+            let programId = (this.$route.params.id).split("_")[0]
             let payload = {}
-            payload.page = page
-            payload.departmentId = departmentId
+            payload.isPaged = true
+            payload.programId = programId
             this.$store
-                .dispatch('get-started/getProgramsByDepartmentId', payload)
+                .dispatch('get-started/getSpecByProgramId', payload)
                 .then(res => {
                 if(res != undefined){
-                    if(res.status == true){
+                    if(res.status){
                         this.programs = res.data.data
                         this.pagination = res.data
                         this.getLoading = false
