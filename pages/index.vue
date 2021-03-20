@@ -140,7 +140,7 @@
             await this.$auth.loginWith("local", {
               data: bodyFormData
             });
-            this.$router.push(
+            await this.$router.push(
                 decodeURIComponent(
                   this.$route.query.redirect || "/dashboard"
                 )
@@ -149,7 +149,6 @@
           } catch (e) {
             this.authloading = false;
             this.$toast.error('Invalid token supplied.')
-            console.log(e)
           }
 
       }

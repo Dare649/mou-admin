@@ -15,6 +15,14 @@ export const actions = {
         return err
       })
   },
+  async getSession(context) {
+    return await this.$axios.get('/api/accommodation/session')
+      .then(res => {
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
   async getSessionByEntryMode(context, data) {
     return await this.$axios.get('/api/accommodation/getSessionByEntryMode?entry_mode=' + data)
       .then(res =>{
@@ -33,6 +41,14 @@ export const actions = {
   },
   async updateAccommodationRecord(context, data) {
     return await this.$axios.post('/api/accommodation/update/' + data.id, data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async deleteRecord(context, data) {
+    return await this.$axios.delete('/api/accommodation/' + data.id)
       .then(res =>{
         return res
       }).catch(err =>{

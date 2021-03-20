@@ -18,6 +18,14 @@ export const actions = {
         return err
       })
   },
+  async importRegisteredPUTME(context, data) {
+    return await this.$axios.post('/api/putme/import-putme', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  }
 }
 
 export const getters = {

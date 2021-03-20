@@ -53,6 +53,7 @@
                             <ul>
                                 <li><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/student-acad-session">Regular Students</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/accommodation-fee-setup">Accommodation Fee Setup</nuxt-link></li>
                             </ul>
                         </li>
@@ -95,6 +96,7 @@
                         <ul class="">
                           <li class=""><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
+                          <li class=""><nuxt-link to="/utilities/import-putme">Import Registered PUTME Students</nuxt-link></li>
                         </ul>
                       </li>
                       <li><a href="#"><span class="title">CMS</span></a></li>

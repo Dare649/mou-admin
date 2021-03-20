@@ -26,18 +26,18 @@
             <form @submit.prevent="submitData">
               <div class="row">
                 <div class="col-lg-6 m-b-10">
-                  <select class="form-control" @change="getSession($event)" v-model="formData.entry_mode">
-                    <option value="" selected>Select Entry Mode</option>
-                    <option value="PUTME">PUTME</option>
-                    <option value="DE">DE</option>
-                  </select>
-                </div>
-                <div class="col-lg-6 m-b-10">
                   <select class="form-control" v-model="formData.academic_session">
                     <option value="" selected>Select Academic Session</option>
                     <option v-for="session in sessions" :value="session.id">
-                      {{ (formData.entry_mode === 'PUTME') ? session.session_name : session.de_session_name }}
+                      {{ session.session_name }}
                     </option>
+                  </select>
+                </div>
+                <div class="col-lg-6 m-b-10">
+                  <select class="form-control" v-model="formData.status">
+                    <option value="" selected>Select Status</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
                   </select>
                 </div>
               </div>
@@ -85,10 +85,10 @@
           <div class="table-responsive">
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
-                <th>Entry Mode</th>
                 <th>Session</th>
                 <th>Hostel Name</th>
                 <th>Amount</th>
+                <th>Status</th>
                 <th>Action</th>
               </thead>
               <tbody>
@@ -99,17 +99,17 @@
                   <td colspan="5">No record at the moment</td>
                 </tr>
                 <tr v-if="!loading && accommodations.length > 0" v-for="accommodation in accommodations">
-                  <td>{{accommodation.entry_mode}}</td>
-                  <td v-if="accommodation.entry_mode === 'PUTME'">{{accommodation.session.session_name}}</td>
-                  <td v-if="accommodation.entry_mode === 'DE'">{{accommodation.session.de_session_name}}</td>
-                  <td>{{accommodation.hostel_name}}</td>
-                  <td>{{accommodation.amount}}</td>
+                  <td>{{ accommodation.session.session_name }}</td>
+                  <td>{{ accommodation.hostel_name }}</td>
+                  <td>{{ accommodation.amount }}</td>
+                  <td v-if="accommodation.status === 1">Active</td>
+                  <td v-if="accommodation.status === 0">Inactive</td>
                   <td>
                     <span data-placement="top" data-toggle="tooltip" title="Edit Record">
                       <button type="button" @click="editRecord(accommodation)" class="btn btn-default btn-sm" role="button"><i class="fa fa-pencil"></i></button>
                     </span>
                     <span data-placement="top" data-toggle="tooltip" title="Delete Record">
-                      <button type="button" class="btn btn-default btn-sm" role="button"><i class="fa fa-trash"></i></button>
+                      <button type="button" @click="deleteRecord(accommodation)" class="btn btn-default btn-sm" role="button"><i class="fa fa-trash"></i></button>
                     </span>
                   </td>
                 </tr>
@@ -150,7 +150,7 @@ export default {
       academic_session: '',
       hostel_name: '',
       amount: '',
-      status: 1,
+      status: '',
       id: ''
     }
   }),
@@ -179,11 +179,10 @@ export default {
     },
     editRecord(data) {
       this.resetRecord()
-      this.formData.entry_mode = data.entry_mode
-      this.getSession()
       this.formData.hostel_name = data.hostel_name
       this.formData.amount = data.amount
       this.formData.id = data.id
+      this.formData.status = data.status
       this.formData.academic_session = data.academic_session_id
       $('#title').html('Edit Accommodation Record')
       $('#submitBtn').html('<i class="fa fa-save" /> &nbsp;&nbsp; Update Record')
@@ -196,13 +195,13 @@ export default {
         this.updateRecord()
       }
     },
-    getSession() {
-      this.$store.dispatch('accommodation/getSessionByEntryMode', this.formData.entry_mode)
+    getAcademicSession() {
+      this.$store.dispatch('accommodation/getSession')
         .then(res =>{
           this.sessions = res.data.data
         }).catch(err =>{
-          this.$toast.error(err)
-      })
+          console.log(err)
+        })
     },
     addNewRecord() {
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner" /> &nbsp;&nbsp; Saving');
@@ -225,11 +224,10 @@ export default {
     },
     resetRecord() {
       this.formData = {
-        entry_mode: '',
         academic_session: '',
         hostel_name: '',
         amount: '',
-        status: 1,
+        status: '',
         id: ''
       }
     },
@@ -251,10 +249,30 @@ export default {
         $('#submitBtn').attr('disabled', false).html('<i class="fa fa-save" /> &nbsp;&nbsp; Update Record');
         this.$toast.error(err)
       })
+    },
+    deleteRecord(accommodation) {
+      let deleteData = {
+        id: accommodation.id
+      }
+      if(confirm('Are you sure you want to delete this record?')) {
+        this.$store.dispatch('accommodation/deleteRecord', deleteData)
+          .then(res =>{
+            if(res.data.status) {
+              this.$toast.success(res.data.message)
+              this.getAccommodationFee(1)
+              return
+            }
+
+            this.$toast.error('An error occurred')
+          }).catch(err =>{
+            this.$toast.error('An error occurred')
+          })
+      }
     }
   },
   mounted() {
     this.getAccommodationFee(1)
+    this.getAcademicSession()
   }
 }
 </script>
