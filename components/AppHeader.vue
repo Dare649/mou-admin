@@ -97,6 +97,7 @@
                           <li class=""><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-putme">Import Registered PUTME Students</nuxt-link></li>
+                          <li class=""><nuxt-link to="/utilities/import-putme-results">Import PUTME Results</nuxt-link></li>
                         </ul>
                       </li>
                       <li><a href="#"><span class="title">CMS</span></a></li>

@@ -25,6 +25,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importUtilityPutmeResults(context, data) {
+    return await this.$axios.post('/api/import-ssce-results', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
           <li class="breadcrumb-item"><a href="#">Utilities</a></li>
-          <li class="breadcrumb-item active">PUTME Student Upload</li>
+          <li class="breadcrumb-item active">PUTME results upload</li>
         </ol>
       </div>
     </div>
@@ -38,10 +38,10 @@
         <div class="col-md-12">
           <div class="card card-default">
             <div class="card-header  separator">
-              <h3 class="text-primary no-margin p-b-10">Registered PUTME Students Upload</h3>
+              <h3 class="text-primary no-margin p-b-10">PUTME results Upload</h3>
             </div>
             <div class="card-body">
-              <form class="p-4" @submit.prevent="importRecord">
+              <form class="p-4" @submit.prevent="importDetails">
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Select Session</label>
@@ -68,6 +68,24 @@
                       <label class="custom-file-label" for="customFileLang">Select File</label>
                     </div>
                   </div>
+                  <div class="form-group col-md-6">
+                    <label>College</label>
+                    <select required id="college" @change="getDepartments" class="form-control" v-model="formData.college_id">
+                      <option value="" disabled selected>Select your option</option>
+                      <option v-for="college in colleges" :value="college.id" :key="college.id">
+                        {{ college.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Department</label>
+                    <select id="department" required class="form-control" v-model="formData.department_id">
+                      <option value="" disabled selected>Select your option</option>
+                      <option v-for="dept in departments" :value="dept.id" :key="dept.id">
+                        {{ dept.name }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
@@ -91,18 +109,23 @@ export default {
   data: () => ({
     loading: false,
     formData: {
-      academic_session_name: ''
+      academic_session_name: '',
+      college_id: '',
+      department_id: ''
     },
+    colleges: [],
+    departments: [],
     response: {},
   }),
   methods: {
-    importRecord() {
+    importDetails() {
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Uploading')
       this.loading = true
       let data = new FormData()
       data.append('file', this.$refs.file.files[0])
       data.append('academic_session_name', this.formData.academic_session_name)
-      this.$store.dispatch('putme/importRegisteredPUTME', data)
+      data.append('department_id', this.formData.department_id)
+      this.$store.dispatch('putme/importUtilityPutmeResults', data)
         .then(res =>{
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Upload')
           if(res.data.success) {
@@ -113,14 +136,37 @@ export default {
 
           this.$toast.error('An error occurred')
         }).catch(err =>{
-          $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Upload')
-          this.$toast.error(err)
-          this.loading = false
+        $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Upload')
+        this.$toast.error(err)
+        this.loading = false
+      })
+    },
+    getColleges() {
+      $('#college').attr('disabled', true)
+      this.$store.dispatch('faculties/getAllFacultiesWithoutPagination')
+        .then(res =>{
+          this.colleges = res.data.data
+          $('#college').attr('disabled', false)
+        }).catch(err =>{
+          console.log(err)
+          $('#college').attr('disabled', false)
+        })
+    },
+    getDepartments() {
+      $('#department').attr('disabled', true)
+      let id = this.formData.college_id
+      this.$store.dispatch('departments/getDeptByColledId', id)
+        .then(res =>{
+          this.departments = res.data.data
+          $('#department').attr('disabled', false)
+        }).catch(err =>{
+          $('#department').attr('disabled', false)
+          console.log(err)
         })
     }
   },
   mounted() {
-
+    this.getColleges()
   }
 }
 </script>
