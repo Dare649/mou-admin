@@ -96,6 +96,7 @@
 </template>
 <script>
 export default {
+  layout: 'main',
   data: () => ({
     loading: false,
     categories: [],
