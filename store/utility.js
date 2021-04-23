@@ -57,6 +57,22 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getAdmissionCategory() {
+    return await this.$axios.get('api/utilities/admission-category')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async importUtilityAdmissionList(context, data) {
+    return await this.$axios.post('/api/putme-sessions/admissions/import-utility', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
