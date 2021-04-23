@@ -65,6 +65,7 @@
                 <label>Payment For:</label>
                 <select class="form-control" v-model="formData.payment_type">
                   <option value="" selected>All</option>
+                  <option value="DEVELOPMENT_LEVY">DEVELOPMENT LEVY</option>
                   <option value="ACCOMMODATION_FEE">ACCOMMODATION FEE</option>
                   <option value="ACCEPTANCE_FEE">ACCEPTANCE FEE</option>
                   <option value="SCHOOL_FEE">SCHOOL FEES</option>
@@ -101,15 +102,16 @@
                 <th>Payment For</th>
                 <th>Amount</th>
                 <th>Date</th>
+                <th>Status</th>
                 <th style="width: 8%;">Action</th>
               </tr>
               </thead>
               <tbody>
                 <tr v-if="loading">
-                  <td colspan="7">Loading...please wait</td>
+                  <td colspan="8">Loading...please wait</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length < 1">
-                  <td colspan="7">No records at the moment</td>
+                  <td colspan="8">No records at the moment</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
@@ -118,8 +120,11 @@
                   <td>{{ payment.paid_for }}</td>
                   <td>{{ payment.trans_amount }}</td>
                   <td>{{ payment.trans_dt }}</td>
+                  <td v-if="payment.status === '1'">Successful</td>
+                  <td v-if="payment.status === '2'">Pending</td>
+                  <td v-if="payment.status === '3'">Failed</td>
                   <td>
-                    <div class="btn-group">
+                    <div class="btn-group" v-if="payment.status === '1'">
                       <span data-placement="top" data-toggle="tooltip" title="View Receipt">
                         <a href="javascript:;" @click="viewReceipt(payment.trans_ref)" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
                       </span>
@@ -193,6 +198,7 @@ export default {
       this.$store.dispatch('reports/getTransactionReport', this.formData)
         .then(res =>{
           this.payments = res.data.data.data
+          console.log(this.payments)
           this.pagination = res.data.data
           this.loading = false
         }).catch(err =>{
