@@ -33,6 +33,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importUtilityDEResults(context, data) {
+    return await this.$axios.post('/api/import-de-results', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

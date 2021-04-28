@@ -198,7 +198,6 @@ export default {
       this.$store.dispatch('reports/getTransactionReport', this.formData)
         .then(res =>{
           this.payments = res.data.data.data
-          console.log(this.payments)
           this.pagination = res.data.data
           this.loading = false
         }).catch(err =>{
