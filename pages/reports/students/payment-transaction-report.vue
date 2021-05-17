@@ -57,9 +57,9 @@
                 <label>Status:</label>
                 <select class="form-control" v-model="formData.status">
                   <option value="" selected>All</option>
-                  <option value="0">PENDING</option>
+                  <option value="2">PENDING</option>
                   <option value="1">SUCCESS</option>
-                  <option value="2">FAILED</option>
+                  <option value="3">FAILED</option>
                 </select>
 <!--                <select class="form-control" v-model="formData.entry_mode">-->
 <!--                  <option value="" selected>All</option>-->
