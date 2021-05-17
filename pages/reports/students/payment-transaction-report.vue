@@ -25,8 +25,8 @@
                 <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg Number" required />
               </div>
               <div class="col-md-3">
-                <label>Transaction Reference:</label>
-                <input type="text" v-model="formData.trans_ref" class="form-control" placeholder="Reg Number" required />
+                <label>RRR Code:</label>
+                <input type="text" v-model="formData.trans_ref" class="form-control" placeholder="RRR Code" required />
               </div>
               <div class="col-md-3">
                 <label>From Date:</label>
@@ -115,11 +115,11 @@
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
-                  <td>{{ payment.trans_ref }}</td>
-                  <td>{{ payment.mode }}</td>
-                  <td>{{ payment.paid_for }}</td>
-                  <td>{{ payment.trans_amount }}</td>
-                  <td>{{ payment.trans_dt }}</td>
+                  <td>{{ payment.transaction_reference }}</td>
+                  <td>{{ payment.mop }}</td>
+                  <td>{{ payment.description }}</td>
+                  <td>{{ payment.amount }}</td>
+                  <td>{{ $moment(payment.created_at).format('Y-m-d') }}</td>
                   <td v-if="payment.status === '1'">Successful</td>
                   <td v-if="payment.status === '2'">Pending</td>
                   <td v-if="payment.status === '3'">Failed</td>
