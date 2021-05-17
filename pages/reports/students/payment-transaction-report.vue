@@ -124,7 +124,7 @@
                   <td>
                     <div class="btn-group" v-if="payment.status === '1'">
                       <span data-placement="top" data-toggle="tooltip" title="View Receipt">
-                        <a href="javascript:;" @click="viewReceipt(payment.trans_ref)" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
+                        <a href="javascript:;" @click="viewReceipt(payment.transaction_reference)" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
                       </span>
                     </div>
                   </td>
