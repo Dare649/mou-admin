@@ -259,6 +259,7 @@ export default {
         payment_type: '',
         from_dt: '',
         to_dt: '',
+        status: '',
         entry_mode: '',
         faculty_id: '',
         export: false
