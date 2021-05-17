@@ -54,7 +54,7 @@
                 </select>
               </div>
               <div class="col-md-3">
-                <label>Entry Mode:</label>
+                <label>Status:</label>
                 <select class="form-control" v-model="formData.status">
                   <option value="" selected>All</option>
                   <option value="0">PENDING</option>
@@ -167,6 +167,7 @@ export default {
         department_id: '',
         payment_type: '',
         year: '',
+        status: '',
         from: '',
         entry_mode: '',
         to: '',
