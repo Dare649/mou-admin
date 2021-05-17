@@ -225,7 +225,7 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            
+
         });
     },
     async uploadStates(context, requests) {
@@ -512,6 +512,19 @@ export const actions = {
             return err
         });
     },
+  async getUploadedDEJambCandidates(context, payload){
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page,
+            headers: {'Content-Type': 'application/json' }
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
     async exportSchoolFee(context) {
         return await this.$axios({
             method: 'post',
@@ -582,7 +595,7 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            
+
         });
     },
     async downloadLecturerSampleFile(context) {
@@ -596,7 +609,7 @@ export const actions = {
             return response.data
         })
         .catch(err => {
-            
+
         });
     },
     async downloadPUTMESampleFile(context) {
@@ -799,7 +812,7 @@ export const actions = {
             url: 'api/utilities/get-departments/'+ payload.facultyId,
             headers: {'Content-Type': 'application/json' }
         })
-        .then(function (response) {           
+        .then(function (response) {
             return response.data
         })
         .catch(err => {
@@ -853,7 +866,7 @@ export const actions = {
             url: 'api/course/program/'+ payload.programId + '?page=' + payload.page + '&course_name=' + payload.course_name + '&code=' + payload.code + '&semester=' +payload.semester+ '&level=' + payload.level,
             headers: {'Content-Type': 'application/json' }
         })
-        .then(function (response) { 
+        .then(function (response) {
             return response.data
         })
         .catch(err => {

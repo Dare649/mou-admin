@@ -72,7 +72,8 @@
                                 <li><nuxt-link to="/reports/students/admissions-report">Admissions Report</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/uploaded-jamb-candidates">Uploaded Jamb candidate</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/uploaded-de-candidates">DE Jamb candidate</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">

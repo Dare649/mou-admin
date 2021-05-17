@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Reports</a></li>
-          <li class="breadcrumb-item active">Uploaded JAMB Students</li>
+          <li class="breadcrumb-item active">Uploaded DE JAMB Students</li>
         </ol>
       </div>
     </div>
@@ -83,7 +83,7 @@
       </div>
       <div class="card card-default">
         <div class="card-header separator">
-          <h3 class="text-primary no-margin pull-left sm-pull-reset">Uploaded Jamb Result</h3>
+          <h3 class="text-primary no-margin pull-left sm-pull-reset">Uploaded DE Jamb Result</h3>
           <div class="pull-right sm-pull-reset">
             <button type="button" class="btn btn-success btn-sm" @click="refresh()"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
           </div>
@@ -97,7 +97,6 @@
                   <th>Full Name</th>
                   <th>Reg No</th>
                   <th>Gender</th>
-                  <th>Jamb Score</th>
                   <th>Year</th>
                   <!-- <th style="width:8%">Action</th> -->
                 </tr>
@@ -110,10 +109,9 @@
                   <td colspan="5">No records at the moment</td>
                 </tr>
                 <tr v-for="can in candidates" :key="can.jamb_number">
-                  <td>{{ can.name }}</td>
+                  <td>{{ can.candidate_name }}</td>
                   <td>{{ can.registration_number }}</td>
                   <td>{{ can.sex == "F" ? "Female" : "Male" }}</td>
-                  <td>{{ calculateJambScore(can) }}</td>
                   <td>{{ can.year }}</td>
                   <!-- <td>
                     <div class="btn-group">
@@ -230,7 +228,7 @@ export default {
       this.Loading = true
       this.candidates = []
       this.$store
-          .dispatch('get-started/getUploadedJambCandidates', this.model)
+          .dispatch('get-started/getUploadedDEJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
                 this.sLoading = false
@@ -251,7 +249,7 @@ export default {
       this.model.page = page
       this.candidates = []
       this.$store
-          .dispatch('get-started/getUploadedJambCandidates', this.model)
+          .dispatch('get-started/getUploadedDEJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
                 this.candidates = res.data.data
