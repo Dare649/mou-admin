@@ -55,11 +55,17 @@
               </div>
               <div class="col-md-3">
                 <label>Entry Mode:</label>
-                <select class="form-control" v-model="formData.entry_mode">
+                <select class="form-control" v-model="formData.status">
                   <option value="" selected>All</option>
-                  <option value="JAMB">JAMB</option>
-                  <option value="DE">DIRECT ENTRY</option>
+                  <option value="0">PENDING</option>
+                  <option value="1">SUCCESS</option>
+                  <option value="2">FAILED</option>
                 </select>
+<!--                <select class="form-control" v-model="formData.entry_mode">-->
+<!--                  <option value="" selected>All</option>-->
+<!--                  <option value="JAMB">JAMB</option>-->
+<!--                  <option value="DE">DIRECT ENTRY</option>-->
+<!--                </select>-->
               </div>
               <div class="col-md-3">
                 <label>Payment For:</label>
@@ -173,6 +179,7 @@ export default {
         payment_type: '',
         from_dt : '',
         to_dt: '',
+        status: '',
         entry_mode: '',
         faculty_id: '',
         export: false
