@@ -73,6 +73,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importUtilityDeAdmissionList(context, data) {
+    return await this.$axios.post('/api/de-sessions/admission-list/import-utility', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
