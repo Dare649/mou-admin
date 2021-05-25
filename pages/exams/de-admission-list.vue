@@ -1,5 +1,4 @@
 <template>
-
         <div class="content sm-gutter">
         <!-- START BREADCRUMBS -->
             <div class="bg-white">

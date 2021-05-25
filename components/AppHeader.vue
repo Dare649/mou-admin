@@ -91,6 +91,7 @@
                               <li><nuxt-link to="/exams/putme-admission-list">UTME Admission List</nuxt-link></li>
                               <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Result</nuxt-link></li>
                               <li><nuxt-link to="/exams/de-admission-list">DE Admission List</nuxt-link></li>
+                              <li><nuxt-link to="/exams/cec-admission-list">CEC Admission List</nuxt-link></li>
                           </ul>
                         </li>
                       <li>

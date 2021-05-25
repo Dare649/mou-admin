@@ -81,6 +81,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getProgramByDept(context, id) {
+    return await this.$axios.get('/api/utilities/get-programs/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
