@@ -109,7 +109,7 @@
                       <ValidationProvider rules="required" v-slot="{ errors }">
                         <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
                           <label>CEC Registration Fee</label>
-                          <input type="text" v-model="formData.putme_registration_fee" class="form-control" required>
+                          <input type="text" v-model="formData.cec_registration_fee" class="form-control" required>
                           <small class="error">{{ errors[0] }}</small>
                         </div>
                       </ValidationProvider>

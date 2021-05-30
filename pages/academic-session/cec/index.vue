@@ -66,7 +66,7 @@
                   <template v-if="sessions.length && !loading">
                     <tr v-for="(session, index) in sessions" :key="index">
                       <td>{{ session.cec_session_name }}</td>
-                      <td>{{ numberFormat(session.putme_registration_fee) }}</td>
+                      <td>{{ numberFormat(session.cec_registration_fee) }}</td>
                       <td>Admin</td>
                       <td>{{ parseDate(session.createdAt, 'DD/MM/YYYY HH:mm:ss') }}</td>
                       <td>
