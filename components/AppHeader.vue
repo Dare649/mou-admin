@@ -33,7 +33,7 @@
         </div>
         <div class="bg-white">
             <div class="container p-l-0">
-                <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="0">
+                <div class="menu-bar header-sm-height" data-pages-init='horizontal-menu' data-hide-extra-li="-1">
                     <a href="#" class="btn-link toggle-sidebar d-lg-none pg pg-close" data-toggle="horizontal-menu">
                     </a>
                     <ul>
@@ -115,7 +115,15 @@
                           <li class=""><nuxt-link to="/application/cec">CEC Applications</nuxt-link></li>
                         </ul>
                       </li>
-                      <li><a href="#"><span class="title">Misc</span></a></li>
+                      <li>
+                        <a href="javascript:;">
+                          <span class="title">CMS</span>
+                          <span class=" arrow"></span>
+                        </a>
+                        <ul class="">
+                          <li class=""><nuxt-link to="/cms/news">News</nuxt-link></li>
+                        </ul>
+                      </li>
                       <li><a href="#"><span class="title">Transaction Logs</span></a></li>
                       <li><a href="#"><span class="title">Scripts</span></a></li>
                       <li>
