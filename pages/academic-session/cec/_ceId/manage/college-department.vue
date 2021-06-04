@@ -114,7 +114,7 @@ export default {
   }),
   methods: {
     saveSelection() {
-      if(this.formData.program < 1) {
+      if(this.formData.program.length < 1) {
         this.$toast.error('Please select at least one program')
         return
       }
