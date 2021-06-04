@@ -49,6 +49,30 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getFaculties() {
+    return await this.$axios.get('/api/cec-sessions/college-dept/get-faculty')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getDepartmentByFaculty(context, id) {
+    return await this.$axios.get('/api/cec-sessions/college-dept/get-department/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async saveSelection(context, data) {
+    return await this.$axios.post('/api/cec-sessions/college-dept/save-selection', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

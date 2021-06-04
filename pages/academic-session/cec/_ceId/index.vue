@@ -55,6 +55,13 @@
                 Student union dues
               </nuxt-link>
             </div>
+            <div class="col-lg-3">
+              <nuxt-link :to="`/academic-session/cec/${id}/manage/college-department`" class="btn btn-default btn-cons m-b-10 btn-block p-t-10 p-b-10">
+                <i class="fa fa-university fa-3x m-b-0"></i>
+                <h6 class="text-uppercase semi-bold m-b-0">Step 4</h6>
+                Manage Programs
+              </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
