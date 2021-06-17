@@ -38,7 +38,21 @@
               <ValidationObserver ref="step1" class=" full-width">
                 <form style="width: 100%" class="" role="form" v-if="formData">
                   <div class="row p-2">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                      <ValidationProvider rules="required" v-slot="{ errors }">
+                        <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
+                          <label>CEC Entry Mode</label>
+                          <select class="form-control" v-model="formData.cec_entry_mode_id" required>
+                            <option value="">Select</option>
+                            <option v-for="mode in modes" :key="mode.id" :value="mode.id">
+                              {{ mode.name }}
+                            </option>
+                          </select>
+                          <small class="error">{{ errors[0] }}</small>
+                        </div>
+                      </ValidationProvider>
+                    </div>
+                    <div class="col-md-4">
                       <ValidationProvider rules="required" v-slot="{ errors }">
                         <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
                           <label>CEC Exam Name</label>
@@ -47,7 +61,7 @@
                         </div>
                       </ValidationProvider>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <ValidationProvider rules="required" v-slot="{ errors }">
                         <div class="form-group form-group-default required" :class="{'has-error' : errors.length}">
                           <label>Acceptance Processing Fee</label>
@@ -399,6 +413,7 @@ export default {
         ],
       },
       formData: {
+        cec_entry_mode_id: '',
         cec_session_name: '',
         admin_fees_start_date: '',
         admin_fees_end_date: '',
@@ -426,6 +441,7 @@ export default {
       acceptanceFeeInstruction: null,
       schoolFeesInstruction: null,
       id: 'new',
+      modes: []
     }
   },
   methods: {
@@ -489,6 +505,7 @@ export default {
       this.$axios.get(`api/cec-sessions/${id}`).then(res => {
         const session = res.data.data;
         this.formData = {
+          cec_entry_mode_id: session.cec_entry_mode_id,
           cec_session_name: session.cec_session_name,
           admin_fees_start_date: this.$moment(session.admin_fees_start_date).format('DD/MM/YYYY'),
           admin_fees_end_date: this.$moment(session.admin_fees_end_date).format('DD/MM/YYYY'),
@@ -516,6 +533,14 @@ export default {
         this.acceptanceFeeInstruction.setContent(session.acceptance_fees_instruction);
         this.schoolFeesInstruction.setContent(session.school_fees_instruction)
       })
+    },
+    getCecEntryMode() {
+      this.$store.dispatch('cec/getEntryMode')
+        .then(res =>{
+          this.modes = res.data.data
+        }).catch(err =>{
+          this.$toast.error('An error occurred retrieving CEC entry mode')
+      })
     }
   },
   mounted() {
@@ -529,6 +554,7 @@ export default {
       this.schoolFeesInstruction    = createEditor('#school_fees_instruction', this.config)
       this.acceptanceFeeInstruction = createEditor('#acceptance-fee', this.config)
     }
+    this.getCecEntryMode()
 
     const vm = this;
     $(document).ready(function() {

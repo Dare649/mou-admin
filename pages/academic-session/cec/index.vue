@@ -56,8 +56,8 @@
               <table class="table table-striped table-condensed" id="basicTable">
                 <thead>
                 <th style="width:30%">Exam Name</th>
+                <th style="width:30%">Entry mode</th>
                 <th style="width:25%">Registration Fee</th>
-                <th style="width:15%">Added By</th>
                 <th style="width:20%">Added On</th>
                 <th style="width:20%">Status</th>
                 <th style="width:10%">Action</th>
@@ -66,15 +66,15 @@
                   <template v-if="sessions.length && !loading">
                     <tr v-for="(session, index) in sessions" :key="index">
                       <td>{{ session.cec_session_name }}</td>
+                      <td>{{ session.entry_mode.name }}</td>
                       <td>{{ numberFormat(session.cec_registration_fee) }}</td>
-                      <td>Admin</td>
-                      <td>{{ parseDate(session.createdAt, 'DD/MM/YYYY HH:mm:ss') }}</td>
+                      <td>{{ parseDate(session.createdAt, 'DD/MM/YYYY') }}</td>
                       <td>
                         <span v-if="session.status === 0">
-                            <strong>Not Current</strong> - <a href="javascript:;" @click="updateStatus(session, index, 1)"><small>MAKE</small></a>
+                            <strong>Inactive</strong> - <a href="javascript:;" @click="updateStatus(session, index, 1)"><small>MAKE</small></a>
                         </span>
                         <span v-if="session.status === 1">
-                            <strong>Current</strong> - <a href="javascript:;" @click="updateStatus(session, index, 0)"><small>REMOVE</small></a>
+                            <strong>Active</strong> - <a href="javascript:;" @click="updateStatus(session, index, 0)"><small>REMOVE</small></a>
                         </span>
                       </td>
                       <td>

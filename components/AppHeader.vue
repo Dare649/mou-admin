@@ -104,6 +104,7 @@
                           <li class=""><nuxt-link to="/utilities/import-de-results">Import DE Results</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-admission-list">Import Admissions List</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-de-admission-list">Import DE Admissions List</nuxt-link></li>
+                          <li class=""><nuxt-link to="/utilities/import-putme-images">Import PUTME Images</nuxt-link></li>
                         </ul>
                       </li>
                       <li>

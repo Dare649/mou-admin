@@ -595,7 +595,6 @@ export default {
   },
   methods: {
     populateFields(jamb){
-      console.log(jamb)
       this.getDepartmentsByFacultyId(jamb.faculty_id)
       this.getStatesByCountryID(jamb.country_id)
       this.getLGAsByStateID(jamb.state_id)

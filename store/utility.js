@@ -89,6 +89,18 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importPutmeImages(context, data) {
+    return await this.$axios.post('/api/utilities/upload-putme-images', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
