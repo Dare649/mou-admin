@@ -442,7 +442,7 @@ export default {
                 if(res.status == true){
                     this.getRoles()
                     this.loading = false
-                    $('#add_role').modal('hide').data( 'bs.modal', null )
+                    $('#add_role').modal('hide')
                     this.model = {}
                 }else{
                     this.loading = false

@@ -352,31 +352,31 @@
                                         <div class="col-md-5">
                                             <div class="form-group form-group-default required">
                                                 <label>Participation %age</label>
-                                                <input type="text" v-model="input.party" class="form-control">                                            
+                                                <input type="text" v-model="input.party" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-1" v-show="k || ( !k && inputs.length > 1)">
                                             <span @click="remove(k)">
-                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-minus" ></i></div>                                                
-                                            </span>                                                                                                          
+                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-minus" ></i></div>
+                                            </span>
                                         </div>
                                         <div class="col-md-1" v-show="k == inputs.length-1 && ( inputs.length < 3)">
                                             <span @click="add(k)">
-                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>  
-                                            </span>  
+                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>
+                                            </span>
                                         </div>
                                     </div>
-                                    
-                                   
+
+
                                 </div>
                                 <!-- <div class="col-md-1">
                                     <span >
                                         <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>
-                                    </span>                                    
-                                    
+                                    </span>
+
                                 </div> -->
                             </div>
-                            
+
                         </form>
                     </div>
                     <div class="card-footer">
@@ -466,7 +466,7 @@ export default {
             script1.src = '/pages/js/pages.min.js'
             document.head.appendChild(script1)
         }
-        
+
         this.getLecturers()
         this.routeId = this.$route.params.id
         this.getLevels()
@@ -485,7 +485,7 @@ export default {
                     .then(res => {
                     if(res != undefined){
                         if(res.status){
-                            this.specs = res.data              
+                            this.specs = res.data
                         }else{
                             this.getLoading = false
                             this.ErrMsg = "Error Processing Request!"
@@ -513,19 +513,19 @@ export default {
         },
         setId(id){
             this.model.id = id
-        },    
+        },
         getLevels(){
             this.$store
                 .dispatch('get-started/getLevels', false)
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.levels = res.data                  
+                        this.levels = res.data
                     }
                 }
                 }).catch(err => {
             })
-        },   
+        },
         createCourse(){
             this.loading = true
             let program_id = (this.$route.params.id).split('_')[0]
@@ -544,7 +544,7 @@ export default {
             bodyFormData.set('isApplicableToMsp', this.model.isApplicableToMsp)
             bodyFormData.set('isApplicableToPutme', this.model.isApplicableToPutme)
             bodyFormData.set('isApplicableToDe_2ndYear', this.model.isApplicableToDe_2ndYear)
-            bodyFormData.set('isApplicableToBsc', this.model.isApplicableToBsc)          
+            bodyFormData.set('isApplicableToBsc', this.model.isApplicableToBsc)
             bodyFormData.set('isApplicableToNd', this.model.isApplicableToNd)
             bodyFormData.set('isApplicableToPreDegree', this.model.isApplicableToPreDegree)
             bodyFormData.set('isApplicableToPhd', this.model.isApplicableToPhd)
@@ -555,34 +555,36 @@ export default {
             bodyFormData.set('isApplicableToBscDe', this.model.isApplicableToBscDe)
             bodyFormData.set('isApplicableToMsc', this.model.isApplicableToMsc)
             bodyFormData.set('isApplicableToPgd', this.model.isApplicableToPgd)
-            
+
             for(var i = 0; i < this.inputs.length; i++)
             {
                 bodyFormData.set('lecturers['+this.inputs[i].name+']', this.inputs[i].party)
             }
-            
+
             this.$store
             .dispatch('get-started/createCourse', bodyFormData)
             .then(res => {
-            if(res != undefined){
-                if(res.success == true){
-                    this.$router.push(
-                        decodeURIComponent(
-                        this.$route.query.redirect || '/get-started/courses/'+ this.routeId
-                        )
-                    );
+              if(res != undefined){
+                  if(res.success == true){
                     this.$toast.success("Record successfully added!", { icon: "times" });
-                    this.addloading = false
-                }else{
+                      this.$router.push(
+                          decodeURIComponent(
+                          this.$route.query.redirect || '/get-started/courses/'+ this.routeId
+                          )
+                      );
+                      this.addloading = false
+                  }else{
                     this.loading = false
-                    this.ErrMsg = "Error Processing Request!"
-                }
-            }else{
+                    this.$toast.error(res.message)
+                    this.ErrMsg = "Error Processing Request! " + res.message
+                  }
+              }else{
                 this.loading = false
+                this.$toast.error(res.message)
                 this.ErrMsg = "Error Processing Request!"
-            }
+              }
             }).catch(err => {
-            this.loading = false
+              this.loading = false
             })
         },
         getLecturers() {
