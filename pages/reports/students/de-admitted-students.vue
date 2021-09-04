@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Reports</a></li>
-          <li class="breadcrumb-item active">Admissions Report</li>
+          <li class="breadcrumb-item active">DE Admissions Report</li>
         </ol>
       </div>
     </div>
@@ -69,7 +69,7 @@
       </div>
       <div class="card card-default">
         <div class="card-header separator">
-          <h3 class="text-primary no-margin pull-left sm-pull-reset">Admissions List Report</h3>
+          <h3 class="text-primary no-margin pull-left sm-pull-reset">DE Admissions List Report</h3>
           <div class="pull-right sm-pull-reset">
             <button type="button" @click="cancelSearch" class="btn btn-default btn-sm"><i class="fa fa-stop"></i>&nbsp; Cancel Search </button>
             <button type="button" @click="refreshData" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
@@ -90,25 +90,25 @@
               </tr>
               </thead>
               <tbody>
-                <tr v-if="loading">
-                  <td colspan="6">Loading...Please wait</td>
-                </tr>
-                <tr v-if="!loading && students.length < 1">
-                  <td colspan="6">No record at the moment</td>
-                </tr>
-                <tr v-if="!loading" v-for="student in students">
-                  <td>{{student.putme.screening_id}}</td>
-                  <td>{{student.jamb_reg_no}}</td>
-                  <td>{{ student.name }}</td>
-                  <td>{{ (student.sex === 'F') ? 'Female' : 'Male'}}</td>
-                  <td>{{student.totalscore}}</td>
-                  <td>
-                    <div class="btn-group">
-                      <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                      <button type="button" disabled v-if="student.marked_for_department == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                    </div>
-                  </td>
-                </tr>
+              <tr v-if="loading">
+                <td colspan="6">Loading...Please wait</td>
+              </tr>
+              <tr v-if="!loading && students.length < 1">
+                <td colspan="6">No record at the moment</td>
+              </tr>
+              <tr v-if="!loading" v-for="student in students">
+                <td>{{student.putme.screening_id}}</td>
+                <td>{{student.jamb_reg_no}}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ (student.sex === 'F') ? 'Female' : 'Male'}}</td>
+                <td>{{student.totalscore}}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                    <button type="button" disabled v-if="student.marked_for_department == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </table>
             <Pagination
@@ -198,7 +198,7 @@ export default {
       this.loading = true
       this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
-      this.$store.dispatch('reports/getAdmissionList', this.formData)
+      this.$store.dispatch('reports/getDeAdmissionList', this.formData)
         .then(res =>{
           $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
           this.loading = false
@@ -217,7 +217,7 @@ export default {
       this.loading = true
       this.formData.page = page
       this.students = []
-      this.$store.dispatch('reports/getAdmissionList', this.formData)
+      this.$store.dispatch('reports/getDeAdmissionList', this.formData)
         .then(res =>{
           if(res.data.status) {
             this.students = res.data.data.data

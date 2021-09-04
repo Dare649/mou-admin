@@ -574,14 +574,12 @@ export default {
                       );
                       this.addloading = false
                   }else{
-                    this.loading = false
-                    this.$toast.error(res.message)
-                    this.ErrMsg = "Error Processing Request! " + res.message
+                      this.loading = false
+                      this.ErrMsg = "Error Processing Request! " + res.message
                   }
               }else{
-                this.loading = false
-                this.$toast.error(res.message)
-                this.ErrMsg = "Error Processing Request!"
+                  this.loading = false
+                  this.ErrMsg = "Error Processing Request!"
               }
             }).catch(err => {
               this.loading = false

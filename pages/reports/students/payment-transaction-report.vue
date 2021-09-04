@@ -234,7 +234,7 @@ export default {
     },
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
-      this.searchData.export = true
+      this.formData.export = true
       this.$store.dispatch('reports/exportTransactionReport', this.formData)
         .then(res =>{
           $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
