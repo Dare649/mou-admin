@@ -204,15 +204,15 @@
                                       <td>{{program.department.name}}</td>
                                       <td>{{program.name}}</td>
                                       <td>{{program.duration}} years</td>
-                                      
+
                                       <td >
-                                            <span v-if="program.specialization_level_id == 1"> {{100}} </span> 
-                                            <span v-if="program.specialization_level_id == 2"> {{200}} </span> 
-                                            <span v-if="program.specialization_level_id == 3"> {{300}} </span> 
-                                            <span v-if="program.specialization_level_id == 4"> {{400}} </span> 
-                                            <span v-if="program.specialization_level_id == 5"> {{500}} </span> 
+                                            <span v-if="program.specialization_level_id == 1"> {{100}} </span>
+                                            <span v-if="program.specialization_level_id == 2"> {{200}} </span>
+                                            <span v-if="program.specialization_level_id == 3"> {{300}} </span>
+                                            <span v-if="program.specialization_level_id == 4"> {{400}} </span>
+                                            <span v-if="program.specialization_level_id == 5"> {{500}} </span>
                                       </td>
-                                      <td>                                          
+                                      <td>
                                           <span style="background-color: green; color: white; margin: 5px; padding: 4px;" v-if="program.status == 1">Active</span>
                                           <span style="background-color: red; color: white; margin: 5px; padding: 4px;" v-if="program.status == 0">Inactive</span>
                                       </td>
@@ -266,7 +266,7 @@
                                     <input type="text" v-model="model.edit_name" placeholder="Name" class="form-control">
                                 </div>
                                 <div class="col-lg-12 m-b-10">
-                                    <select required class="form-control" v-model="model.edit_specialization_level_id">
+                                    <select class="form-control" v-model="model.edit_specialization_level_id">
                                         <option value="">Select Specialization Level</option>
                                         <option :value="level.id" v-for="level in levels" :key="level.id">{{level.name}}</option>
                                     </select>
