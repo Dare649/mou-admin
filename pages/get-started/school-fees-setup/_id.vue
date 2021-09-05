@@ -38,6 +38,8 @@
                   <option value="200">200</option>
                   <option value="300">300</option>
                   <option value="400">400</option>
+                  <option value="500">500</option>
+                  <option value="600">500</option>
                 </select>
               </div>
               <div class="col-lg-6 m-b-10">
@@ -313,15 +315,16 @@
                     <th>Amount(&#8358;) </th>
                     <th>Returning(&#8358;)</th>
                     <th>Level</th>
-                    <th style="width: 17%;">Action</th>
+                    <th>Semester</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-if="loading">
-                    <td colspan="7">Loading....please wait</td>
+                    <td colspan="5">Loading....please wait</td>
                   </tr>
                   <tr v-if="!loading && setups.length <= 0">
-                    <td colspan="7">No record at the moment</td>
+                    <td colspan="5">No record at the moment</td>
                   </tr>
                   <template v-if="!loading && setups.length > 0">
                     <tr v-for="setup in setups" :key="setup.id">
@@ -329,6 +332,7 @@
                       <td>{{numberWithCommas(setup.amount)}}</td>
                       <td>{{numberWithCommas(setup.returning_amount)}}</td>
                       <td>{{setup.level}}</td>
+                      <td>{{setup.semester}}</td>
                       <td>
                         <span @click="setViewDetails(setup)">
                           <a href="#view_school_fee_details" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
@@ -598,12 +602,12 @@ export default {
           .dispatch('get-started/getSchoolFeeByProgramId', payload)
           .then(res => {
               if(res.status == true){
-                  this.setups = res.data.data
-                  this.pagination = res.data
-                  this.loading = false
+                this.setups = res.data.data
+                this.pagination = res.data
+                this.loading = false
               }else{
-                  this.loading = false
-                  this.ErrMsg = "Error Processing Request!"
+                this.loading = false
+                this.ErrMsg = "Error Processing Request!"
               }
         }).catch(err => {
             this.loading = false
