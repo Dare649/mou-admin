@@ -54,6 +54,7 @@
                                 <li><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/cec">CEC</nuxt-link></li>
+                                <li><nuxt-link to="/academic-session/pg">PG</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/student-acad-session">Regular Students</nuxt-link></li>
                                 <li><nuxt-link to="/academic-session/accommodation-fee-setup">Accommodation Fee Setup</nuxt-link></li>
                             </ul>
