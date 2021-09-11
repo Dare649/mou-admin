@@ -99,6 +99,7 @@
                       <li>
                         <a href="javascript:;"><span class="title">Utilities</span><span class=" arrow"></span></a>
                         <ul class="">
+                          <li class=""><nuxt-link to="/utilities/search-rrr">Search RRR</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-putme">Import Registered PUTME Students</nuxt-link></li>

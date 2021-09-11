@@ -101,6 +101,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async searchRRR(context, data) {
+    return await this.$axios.post('/api/utilities/search-rrr', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
