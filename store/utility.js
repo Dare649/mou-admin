@@ -109,6 +109,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async importReturningStudents(context, data) {
+    return await this.$axios.post('/api/student/import-returning', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 

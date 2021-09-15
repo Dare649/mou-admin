@@ -59,8 +59,8 @@
                 <tr v-if="loading"><td colspan="7">Loading...Please wait</td></tr>
                 <tr v-if="!loading && students.length < 1"><td colspan="7">No records at the moment</td></tr>
                 <tr v-if="!loading && students.length > 0" v-for="student in students">
-                  <td v-if="student.photo === null"><img src="/assets/img/avatar.png" width="50px" height="50px"/></td>
-                  <td v-if="student.photo !== null"><img :src="student.photo" width="50px" height="50px" /></td>
+                  <td v-if="student.photo === null || student.photo === ''"><img src="/assets/img/avatar.png" width="50px" height="50px"/></td>
+                  <td v-else><img :src="student.photo" width="50px" height="50px" /></td>
                   <td>{{student.matriculation_number}}</td>
                   <td>{{student.jamb_number}}</td>
                   <td>{{student.firstname}} {{student.lastname}}</td>
