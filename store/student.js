@@ -25,6 +25,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async changeDePlacementLevel(context, data) {
+    return await this.$axios.post('api/de-sessions/change-level', data)
+      .then((res) => {
+        return res
+      }).catch((err) => {
+        return err
+      })
   }
 }
 
