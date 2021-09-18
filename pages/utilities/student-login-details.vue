@@ -59,8 +59,12 @@
                 <tr v-if="loading"><td colspan="7">Loading...Please wait</td></tr>
                 <tr v-if="!loading && students.length < 1"><td colspan="7">No records at the moment</td></tr>
                 <tr v-if="!loading && students.length > 0" v-for="student in students">
-                  <td v-if="student.photo === null || student.photo === ''"><img src="/assets/img/avatar.png" width="50px" height="50px"/></td>
-                  <td v-else><img :src="student.photo" width="50px" height="50px" /></td>
+                  <td v-if="student.photo === null || student.photo === ''">
+                    <img src="/assets/img/avatar.png" width="50px" height="50px"/>
+                  </td>
+                  <td v-else>
+                    <img :src="student.photo" width="50px" height="50px" />
+                  </td>
                   <td>{{student.matriculation_number}}</td>
                   <td>{{student.jamb_number}}</td>
                   <td>{{student.firstname}} {{student.lastname}}</td>
@@ -203,6 +207,31 @@
               </div>
               <div class="row m-t-5">
                 <div class="col-md-6">
+                  <label>College:</label>
+                  <select class="form-control" @change="getDepartments" v-model="bioData.faculty_id">
+                    <option value="" selected>Select</option>
+                    <option v-for="college in colleges" :value="college.id">{{college.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Department:</label>
+                  <select class="form-control" @change="getPrograms" v-model="bioData.department_id">
+                    <option value="" selected>Select</option>
+                    <option v-for="department in departments" :value="department.id">{{department.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row m-t-5">
+                <div class="col-md-12">
+                  <label>Program:</label>
+                  <select class="form-control" v-model="bioData.program_id">
+                    <option value="" selected>Select</option>
+                    <option v-for="program in programs" :value="program.id">{{program.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row m-t-5">
+                <div class="col-md-6">
                   <label>Email:</label>
                   <input type="email" v-model="bioData.email" class="form-control" />
                 </div>
@@ -327,7 +356,10 @@ export default {
         phone2: '',
         photo: '',
         state_id: '',
-        username: ''
+        username: '',
+        faculty_id: '',
+        department_id: '',
+        program_id: ''
       },
       pagination: {
         total: 0,
@@ -339,7 +371,10 @@ export default {
       students: [],
       countries: [],
       states: [],
-      lgas: []
+      lgas: [],
+      colleges: [],
+      departments: [],
+      programs: []
     }
   },
   methods: {
@@ -372,6 +407,9 @@ export default {
         this.data.append('phone2', this.bioData.phone2)
         this.data.append('state_id', this.bioData.state_id)
         this.data.append('username', this.bioData.username)
+        this.data.append('faculty_id', this.bioData.faculty_id)
+        this.data.append('department_id', this.bioData.department_id)
+        this.data.append('program_id', this.bioData.program_id)
 
         this.$store.dispatch('student/updateBioData', this.data)
           .then(res => {
@@ -416,7 +454,10 @@ export default {
         phone1: '',
         phone2: '',
         state_id: '',
-        username: ''
+        username: '',
+        faculty_id: '',
+        department_id: '',
+        program_id: ''
       }
     },
     getAllStudents(page) {
@@ -442,14 +483,15 @@ export default {
       $("#view_login_details").modal()
     },
     bioDataForm(student) {
+      this.bioData.country_id = student.country_id
+      this.bioData.state_id = student.state_id
+      this.bioData.lga_id = student.lga_id
       this.bioData.matriculation_number = student.matriculation_number
       this.bioData.firstname = student.firstname
       this.bioData.lastname = student.lastname
       this.bioData.middlename = student.middlename
       this.bioData.jamb_number = student.jamb_number
-      this.bioData.country_id = student.country_id
       this.bioData.state_id = student.state_id
-      this.bioData.lga_id = student.lga_id
       this.bioData.gender = student.gender
       this.bioData.marital_status = student.marital_status
       this.bioData.username = student.username
@@ -461,8 +503,13 @@ export default {
       this.bioData.address = student.address
       this.bioData.dob = student.dob
       this.bioData.email = student.email
-      this.getStatesByCountry()
+      this.bioData.faculty_id = student.faculty_id
+      this.bioData.department_id = student.department_id
+      this.bioData.program_id = student.program_id
+      this.getDepartments()
+      this.getPrograms()
       this.getLgaByState()
+      this.getStatesByCountry()
 
       $('#edit_bio_data').modal()
     },
@@ -494,10 +541,35 @@ export default {
         }).catch(err =>{
         this.$toast.error(err)
       })
+    },
+    getColleges() {
+      this.$store.dispatch('utility/getFaculties')
+        .then(res =>{
+          this.colleges = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getDepartments() {
+      this.$store.dispatch('utility/getDepartmentByFaculty', this.bioData.faculty_id)
+        .then(res =>{
+          this.departments = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getPrograms() {
+      this.$store.dispatch('utility/getProgramByDept', this.bioData.department_id)
+        .then(res =>{
+          this.programs = res.data.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
     }
   },
   mounted() {
     this.getCountries()
+    this.getColleges()
     this.getAllStudents(this.pagination.current_page)
   }
 }
