@@ -21,7 +21,7 @@
               <h3 class="text-primary no-margin p-b-10">Bypass Utility</h3>
             </div>
             <div class="card-body">
-              <form class="p-4">
+              <form class="p-4" @submit="importUtility">
                 <div class="row">
                   <div class="form-group col-md-12">
                     <label>Select Excel file to upload</label>
