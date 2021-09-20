@@ -212,6 +212,7 @@ export default {
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-save" /> &nbsp;&nbsp; Updating...')
       this.$store.dispatch('student-acad-session/updateSession', this.formData)
         .then(res =>{
+          $('#submitBtn').attr('disabled', false).html('<i class="fa fa-save" /> &nbsp;&nbsp; Update Record')
           if(res.data.status) {
             this.closeModal()
             this.getAcademicSession(1)
@@ -242,7 +243,7 @@ export default {
     },
     openModal() {
       $('#title').html('Create new session')
-      $('#submitBtn').attr('disabled', true).html('<i class="fa fa-save" /> &nbsp;&nbsp; Save Record')
+      $('#submitBtn').attr('disabled', false).html('<i class="fa fa-save" /> &nbsp;&nbsp; Save Record')
       $('#session-modal').modal()
     },
     closeModal() {
