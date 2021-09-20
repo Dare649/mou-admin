@@ -198,7 +198,7 @@ export default {
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-save" /> &nbsp;&nbsp; Save Record')
           if(res.data.status) {
             this.closeModal()
-            this.getAcademicSession(1)
+            this.refresh()
             this.$toast.success(res.data.message)
             return
           }
@@ -215,7 +215,7 @@ export default {
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-save" /> &nbsp;&nbsp; Update Record')
           if(res.data.status) {
             this.closeModal()
-            this.getAcademicSession(1)
+            this.refresh()
             this.$toast.success(res.data.message)
             return
           }
