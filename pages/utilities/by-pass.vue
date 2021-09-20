@@ -67,7 +67,7 @@
                   <div class="col-md-12">
                     <hr/>
                     <button id="downloadBtn" @click="downloadSampleCSV" class="pull-right sm-pull-reset btn btn-default m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download Sample CSV</button>
-                    <button id="submitBtn" type="button" class="btn btn-primary m-t-5 m-r-10"><i class="fa fa-upload"></i> &nbsp; Upload</button>
+                    <button id="submitBtn" type="submit" class="btn btn-primary m-t-5 m-r-10"><i class="fa fa-upload"></i> &nbsp; Upload</button>
                   </div>
                 </div>
               </form>
