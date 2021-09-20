@@ -21,7 +21,7 @@
               <h3 class="text-primary no-margin p-b-10">Bypass Utility</h3>
             </div>
             <div class="card-body">
-              <form class="p-4" @submit="importUtility">
+              <form class="p-4" @submit.prevent="importUtility">
                 <div class="row">
                   <div class="form-group col-md-12">
                     <label>Select Excel file to upload</label>
@@ -32,21 +32,21 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>College</label>
-                    <select class="form-control" required @change="getDepartmentByCollege($event)" v-model="formData.college">
+                    <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.college">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="college in colleges" :value="college.id" :key="college.id">{{ college.name }}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Department</label>
-                    <select class="form-control" required v-model="formData.department">
+                    <select class="form-control" v-model="formData.department">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="department in departments" :value="department.id" :key="department.id">
                         {{department.name}}
                       </option>
                     </select>
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-4">
                     <label>Registration Step</label>
                     <select class="form-control" required v-model="formData.registration_step">
                       <option value="" disabled selected>Select your option</option>
@@ -54,12 +54,19 @@
                       <option value="acceptance-fee">Acceptance Fee</option>
                     </select>
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-4">
                     <label>Entry Mode</label>
-                    <select class="form-control" required v-model="formData.entry_mode">
+                    <select class="form-control" @change="getSession" required v-model="formData.entry_mode">
                       <option value="" disabled selected>Select your option</option>
                       <option value="PUTME">PUTME</option>
                       <option value="DE">Direct Entry</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Session</label>
+                    <select class="form-control" required v-model="formData.session_id">
+                      <option value="" disabled selected>Select your option</option>
+                      <option v-for="session in sessions" :value="session.id">{{ (formData.entry_mode === 'DE') ? session.de_session_name : session.session_name }}</option>
                     </select>
                   </div>
                 </div>
@@ -90,25 +97,28 @@ export default {
         college: '',
         department: '',
         registration_step: '',
-        entry_mode: ''
+        entry_mode: '',
+        session_id: ''
       },
       colleges: [],
-      departments: []
+      departments: [],
+      sessions: []
     }
   },
   methods: {
     importUtility() {
       if(confirm('Are you sure want to bypass the selected file?')) {
-        $('#submitBtn').attr('disabled', false).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Uploading...');
+        $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Uploading...');
         this.data = new FormData()
         this.data.append('file', this.$refs.file.files[0])
         this.data.append('college_id', this.formData.college)
         this.data.append('department_id', this.formData.department)
         this.data.append('registration_step', this.formData.registration_step)
         this.data.append('entry_mode', this.formData.entry_mode)
+        this.data.append('session_id', this.formData.session_id)
         this.$store.dispatch('byPassUtility/uploadByPassUtility', this.data)
           .then(res =>{
-            $('#submitBtn').attr('disabled', false).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Uploading...');
+            $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Upload');
             if(res.data.status) {
               this.$toast.success(res.data.message)
               return
@@ -157,6 +167,14 @@ export default {
       this.$store.dispatch('utility/getDepartmentByFaculty', id)
         .then(res =>{
           this.departments = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getSession () {
+      this.$store.dispatch('utility/getSessionByEntryModeMode', this.formData)
+        .then(res =>{
+          this.sessions = res.data.data
         }).catch(err =>{
         this.$toast.error(err)
       })

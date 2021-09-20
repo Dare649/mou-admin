@@ -117,6 +117,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getSessionByEntryModeMode(context, data) {
+    return await this.$axios.post('/api/utilities/get-session-by-mode', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
