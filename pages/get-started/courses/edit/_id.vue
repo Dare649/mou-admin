@@ -352,31 +352,31 @@
                                         <div class="col-md-5">
                                             <div class="form-group form-group-default required">
                                                 <label>Participation %age</label>
-                                                <input type="text" v-model="input.participation_percentage" class="form-control">                                            
+                                                <input type="text" v-model="input.participation_percentage" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-1" v-show="k || ( !k && model.lecturers.length > 1)">
                                             <span @click="remove(k)">
-                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-minus" ></i></div>                                                
-                                            </span>                                                                                                          
+                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-minus" ></i></div>
+                                            </span>
                                         </div>
                                         <div class="col-md-1" v-show="k == model.lecturers.length-1 && ( model.lecturers.length < 3)">
                                             <span @click="add(k)">
-                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>  
-                                            </span>  
+                                                <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>
+                                            </span>
                                         </div>
                                     </div>
-                                    
-                                   
+
+
                                 </div>
                                 <!-- <div class="col-md-1">
                                     <span >
                                         <div class="btn btn-info btn-lg btn-large fs-16 semi-bold btn-block" ><i class="fa fa-plus"></i></div>
-                                    </span>                                    
-                                    
+                                    </span>
+
                                 </div> -->
                             </div>
-                            
+
                         </form>
                     </div>
                     <div class="card-footer">
@@ -499,7 +499,7 @@ export default {
                     .then(res => {
                     if(res != undefined){
                         if(res.status){
-                            this.specs = res.data              
+                            this.specs = res.data
                         }else{
                             this.getLoading = false
                             this.ErrMsg = "Error Processing Request!"
@@ -528,38 +528,38 @@ export default {
         },
         setId(id){
             this.model.id = id
-        },   
-        getCourse(){    
+        },
+        getCourse(){
             let courseId = this.$route.params.id.split('_')[4]
             this.$store
                 .dispatch('get-started/getCourse', courseId)
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.model = res.data.course  
+                        this.model = res.data.course
                         if(this.model.lecturers.length == 0){
                             let input = {}
                             input.user_id = 0,
                             input.participation_percentage = 0
                             this.model.lecturers.push(input)
-                        }          
+                        }
                     }
                 }
                 }).catch(err => {
             })
-        },  
+        },
         getLevels(){
             this.$store
                 .dispatch('get-started/getLevels', false)
                 .then(res => {
                 if(res != undefined){
                     if(res.status){
-                        this.levels = res.data                  
+                        this.levels = res.data
                     }
                 }
                 }).catch(err => {
             })
-        },   
+        },
         saveCourse(){
             this.loading = true
             let program_id = (this.$route.params.id).split('_')[0]
@@ -580,7 +580,7 @@ export default {
             bodyFormData.set('isApplicableToMsp', this.model.isApplicableMSP)
             bodyFormData.set('isApplicableToPutme', this.model.isApplicablePUTME)
             bodyFormData.set('isApplicableToDe_2ndYear', this.model.isApplicableDE_Y)
-            bodyFormData.set('isApplicableToBsc', this.model.isApplicableBSC)          
+            bodyFormData.set('isApplicableToBsc', this.model.isApplicableBSC)
             bodyFormData.set('isApplicableToNd', this.model.isApplicableND)
             bodyFormData.set('isApplicableToPreDegree', this.model.isApplicablePreDegree)
             bodyFormData.set('isApplicableToPhd', this.model.isApplicablePHD)
@@ -591,37 +591,39 @@ export default {
             bodyFormData.set('isApplicableToBscDe', this.model.isApplicableBSC_DE)
             bodyFormData.set('isApplicableToMsc', this.model.isApplicableMSC)
             bodyFormData.set('isApplicableToPgd', this.model.isApplicablePGD)
-            for(var i = 0; i < this.model.lecturers.length; i++)
+            for(let i = 0; i < this.model.lecturers.length; i++)
             {
                 bodyFormData.set('lecturers['+this.model.lecturers[i].user_id+']', this.model.lecturers[i].participation_percentage)
-            }      
+            }
             this.$store
             .dispatch('get-started/updateCourse', bodyFormData)
             .then(res => {
-            if(res != undefined){
-                if(res.success){
-                    this.$router.push(
-                        decodeURIComponent(
-                        this.$route.query.redirect || '/get-started/courses/'+ this.routeId
-                        )
-                    );
-                    this.$toast.success("Record successfully edited!", { icon: "times" });
-                    this.addloading = false
-                }else{
+              if(res != undefined){
+                  if(res.success){
+                      this.$router.push(
+                          decodeURIComponent(
+                          this.$route.query.redirect || '/get-started/courses/'+ this.routeId
+                          )
+                      );
+                      this.$toast.success("Record successfully edited!", { icon: "times" });
+                      this.addloading = false
+                  }else{
+                    this.$toast.error(res.message)
                     this.loading = false
                     this.ErrMsg = "Error Processing Request!"
-                }
-            }else{
-                this.loading = false
-                this.ErrMsg = "Error Processing Request!"
-            }
+                  }
+              }else{
+                  this.loading = false
+                  this.ErrMsg = "Error Processing Request!"
+              }
             }).catch(err => {
-            this.loading = false
+              this.$toast.error('An error occurred')
+              this.loading = false
             })
         },
 
         getLecturers() {
-            
+
             //if(this.$laravel.hasPermission('View programme')){
             this.$store
                 .dispatch('get-started/getLecturers', false)

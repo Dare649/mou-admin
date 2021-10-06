@@ -134,9 +134,11 @@ module.exports = {
             propertyName: 'data'
           }
         },
-        tokenRequired: true,
-        tokenType: 'bearer',
-        globalToken: true,
+        token: {
+          property: 'bearer',
+          global: true,
+          maxAge: 10
+        },
         autoFetchUser: true
 			}
 		},

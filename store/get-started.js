@@ -19,8 +19,8 @@ export const actions = {
         .then(function (response) {
             //handle success
             return response.data
-        })
-        .catch(err => {
+        }).catch(err => {
+
         });
     },
     async uploadJambResults(context, requests) {

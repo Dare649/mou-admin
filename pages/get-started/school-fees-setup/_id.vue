@@ -316,6 +316,7 @@
                     <th>Returning(&#8358;)</th>
                     <th>Level</th>
                     <th>Semester</th>
+                    <th>Mode</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -333,6 +334,7 @@
                       <td>{{numberWithCommas(setup.returning_amount)}}</td>
                       <td>{{setup.level}}</td>
                       <td>{{setup.semester}}</td>
+                      <td>{{setup.entry_mode}}</td>
                       <td>
                         <span @click="setViewDetails(setup)">
                           <a href="#view_school_fee_details" class="btn btn-default btn-sm" title="View details" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
