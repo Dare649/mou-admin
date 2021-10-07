@@ -322,10 +322,10 @@
                 </thead>
                 <tbody>
                   <tr v-if="loading">
-                    <td colspan="5">Loading....please wait</td>
+                    <td colspan="7">Loading....please wait</td>
                   </tr>
                   <tr v-if="!loading && setups.length <= 0">
-                    <td colspan="5">No record at the moment</td>
+                    <td colspan="7">No record at the moment</td>
                   </tr>
                   <template v-if="!loading && setups.length > 0">
                     <tr v-for="setup in setups" :key="setup.id">
@@ -378,6 +378,7 @@ export default {
       setups: [],
       loading: false,
       routeId:0,
+      program_id: 0,
       getloading: false,
       aLoading: false,
       eLoading: false,
@@ -481,13 +482,15 @@ export default {
         this.file = this.$refs.myFiles.files[0];
         let formData = new FormData();
         formData.append('file', this.file);
+        formData.append('program_id', this.program_id);
           this.$store
             .dispatch('get-started/uploadSchoolFees', formData)
             .then(res => {
                 if(res.success === true){
-                    this.uLoading = false
-                    this.importResponse = res
-                    $('#import_school_fees').modal('hide').data( 'bs.modal', null )
+                  this.uLoading = false
+                  this.importResponse = res
+                  this.getSchoolFeesById(this.pagination.current_page)
+                  $('#import_school_fees').modal('hide').data( 'bs.modal', null )
                 }else{
                     this.uLoading = false
                     alert("File Upload Unsuccessful!")
@@ -682,6 +685,8 @@ export default {
       document.head.appendChild(script1)
     }
     this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
+    this.program_id = (this.$route.params.id).split('_')[0];
+    console.log(this.program_id)
     this.setProgramName()
     this.getSchoolFeesById(1)
   }
