@@ -110,6 +110,13 @@
                                                         </div>
                                                     </div>
                                                 </ValidationProvider>
+                                              <ValidationProvider rules="required" v-slot="{ errors }">
+                                                <div class="form-group  form-group-default required" :class="{'has-error' : errors.length}">
+                                                  <label>Development Levy</label>
+                                                  <input type="text" v-model="formData.development_levy" class="form-control"  required>
+                                                  <small class="error">{{ errors[0] }}</small>
+                                                </div>
+                                              </ValidationProvider>
                                             </div>
                                             <div class="col-md-6">
                                                 <ValidationProvider rules="required" v-slot="{ errors }">
@@ -174,6 +181,17 @@
                                                         <small class="error">{{ errors[0] }}</small>
                                                     </div>
                                                 </ValidationProvider>
+                                              <ValidationProvider rules="required" v-slot="{ errors }">
+                                                <div class="form-group  form-group-default required" :class="{'has-error' : errors.length}">
+                                                  <label>Last Date for Development Levy</label>
+                                                  <date-picker v-model="formData.last_date_for_development_levy" format="DD/MM/YYYY" value-type="format" type="date" input-class="form-control" placeholder="Pick a date">
+                                                    <template v-slot:icon-calendar>
+                                                      <div></div>
+                                                    </template>
+                                                  </date-picker>
+                                                  <small class="error">{{ errors[0] }}</small>
+                                                </div>
+                                              </ValidationProvider>
                                             </div>
                                         </div>
                                     </form>
@@ -452,6 +470,8 @@ export default {
                 late_fees_amount: '',
                 course_registration_fee: '',
                 putme_registration_fee: '',
+                last_date_for_development_levy: '',
+                development_levy: '',
                 matriculation_year: '',
                 ume_instruction: '',
                 exam_venue: '',
@@ -542,6 +562,8 @@ export default {
                     supplementary_fees: session.supplementary_fees,
                     supp_list_publish_date: this.$moment(session.supplementary_list_publish_date).format('DD/MM/YYYY'),
                     supp_fee_late_date: this.$moment(session.supplementary_fee_late_date).format('DD/MM/YYYY'),
+                    last_date_for_development_levy : this.$moment(session.last_date_for_development_levy).format('DD/MM/YYYY'),
+                    development_levy : session.development_levy,
                     acceptance_processing_fee: session.acceptance_fee,
                     date_validating_old_students: this.$moment(session.date_validating_old_students).format('DD/MM/YYYY'),
                     late_fee_returning_stud: session.late_fee_for_returning_students,

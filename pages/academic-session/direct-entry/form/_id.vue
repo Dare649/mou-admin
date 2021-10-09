@@ -171,6 +171,37 @@
                                           </ValidationProvider>
                                         </div>
                                       </div>
+                                      <div class="row p-2">
+                                        <div class="col-md-6">
+                                          <ValidationProvider rules="required" v-slot="{ errors }">
+                                            <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
+                                              <div class="form-input-group">
+                                                <label>Development Levy</label>
+                                                <input type="text" placeholder="Development levy" v-model="formData.development_levy" class="form-control" required>
+                                                <small class="ml-2 error">{{ errors[0] }}</small>
+                                              </div>
+                                            </div>
+                                          </ValidationProvider>
+                                        </div>
+                                        <div class="col-md-6">
+                                          <ValidationProvider rules="required" v-slot="{ errors }">
+                                            <div class="form-group form-group-default input-group required" :class="{'has-error' : errors.length}">
+                                              <div class="form-input-group">
+                                                <label>Last Date for Development Fee</label>
+                                                <date-picker v-model="formData.last_date_for_development_levy" format="DD/MM/YYYY" value-type="format" type="date" input-class="form-control" placeholder="Pick a date">
+                                                  <template v-slot:icon-calendar>
+                                                    <div></div>
+                                                  </template>
+                                                </date-picker>
+                                                <small class="ml-2 error">{{ errors[0] }}</small>
+                                              </div>
+                                              <div class="input-group-append ">
+                                                <span class="input-group-text"><i class="pg-calender"></i></span>
+                                              </div>
+                                            </div>
+                                          </ValidationProvider>
+                                        </div>
+                                      </div>
                                     </form>
                                 </ValidationObserver>
                             </div>
@@ -412,6 +443,8 @@ export default {
             late_fees_amount: '',
             de_late_fees_due: '',
             late_fees_date: '',
+            last_date_for_development_levy: '',
+            development_levy: '',
             late_fees_start_date_returning: '',
             late_fees_end_date_returning: '',
             late_fees_amount_returning: '',
@@ -501,9 +534,11 @@ export default {
                   late_fees_amount: this.$moment(session.late_fee_end_date).format('DD/MM/YYYY'),
                   de_late_fees_due: session.de_late_fees_due,
                   putme_registration_fee: session.putme_registration_fee,
+                  development_levy: session.development_levy,
                   late_fees_date: this.$moment(session.late_fees_date).format('DD/MM/YYYY'),
                   late_fees_start_date_returning: this.$moment(session.late_fees_start_date_returning).format('DD/MM/YYYY'),
                   late_fees_end_date_returning: this.$moment(session.late_fees_end_date_returning).format('DD/MM/YYYY'),
+                  last_date_for_development_levy: this.$moment(session.last_date_for_development_levy).format('DD/MM/YYYY'),
                   late_fees_amount_returning: session.late_fees_amount_returning,
                   course_registration_fee: session.course_registration_fee,
                   de_reg_admin_fees: session.de_reg_admin_fees,
