@@ -489,7 +489,7 @@ export default {
     },
     methods: {
         async submitForm() {
-            $('#submitForm').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Processing...');
+            $('#submitForm').attr('disabled', true).html('Finish');
 
             let form1Status = await this.$refs.step1.validate();
             let form2Status = await this.$refs.step2.validate();
