@@ -475,7 +475,7 @@ export default {
 
 
             if(!form1Status || !form2Status || !form3Status) {
-                $('#submitForm').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Processing...');
+                $('#submitForm').attr('disabled', false).html('Finish');
                 this.$toast.error('Incomplete form. Please make sure all required fields have been filled.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
                 return;
             }
