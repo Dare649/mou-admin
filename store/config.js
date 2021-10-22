@@ -1,4 +1,5 @@
 export default {
-  backend: 'https://portal.olsslekki.org/api/',
-  hostname: 'https://admin.olsslekki.org/api/'
+  backend: 'https://api.backend.mouau.edu.ng/api/',
+  testBackend: 'https://127.0.0.1:8000/api/',
+  hostname: 'https://portaladmin.mouau.edu.ng/api/'
 }

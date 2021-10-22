@@ -77,6 +77,7 @@
                                 <li><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
                                 <li><nuxt-link to="/reports/students/uploaded-de-candidates">DE Jamb candidate</nuxt-link></li>
+                                <li><nuxt-link to="/reports/students/course-download-report">Course Download Report</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">

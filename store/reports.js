@@ -105,6 +105,19 @@ export const actions = {
     }).catch(err =>{
       return err
     })
+  },
+  async exportCourseDownloadReport(context, data) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/reports/course-download-report?course_id=' + data.course_id + '&level_id=' + data.level_id + '&session_id=' + data.session_id,
+      responseType: 'arraybuffer',
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+    })
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
