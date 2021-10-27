@@ -77,6 +77,9 @@
                       <span data-placement="top" data-toggle="tooltip" title="Edit Bio Data Form">
                         <a href="javascript:;" @click="bioDataForm(student)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-edit"></i></a>
                       </span>
+                      <span data-placement="top" data-toggle="tooltip" title="Change Level">
+                        <a href="javascript:;" @click="changeLevel(student)" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-address-book-o"></i></a>
+                      </span>
                     </div>
                   </td>
                 </tr>
@@ -311,6 +314,63 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade SlideUp" id="student-level" tabindex="-1" role="dialog" aria-hidden="true">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+      </button>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="text-left p-b-5"><span class="semi-bold">STUDENT LEVEL CHANGE</span></h5>
+          </div>
+          <div class="modal-body jamb_view">
+            <h5 >{{ levelData.name }}</h5>
+            <ul class="info">
+              <li>
+                <small>Matric. Number:</small> <br />
+                <span>{{ levelData.matriculation_number }}</span>
+              </li>
+              <li>
+                <small>Jamb Reg. No:</small> <br />
+                <span>{{ levelData.jamb_number }}</span>
+              </li>
+              <li>
+                <small>Current Level:</small> <br />
+                <span>{{ levelData.level }}</span>
+              </li>
+              <div class="clearfix"></div>
+            </ul>
+            <br />
+            <form class="full-width" @submit.prevent="changeStudentLevel">
+              <div class="row">
+                <div class="col-md-12">
+                  <label>New Level:</label>
+                  <select class="form-control" required v-model="levelData.level_id">
+                    <option value="" selected>Select</option>
+                    <option value="1">100</option>
+                    <option value="2">200</option>
+                    <option value="3">300</option>
+                    <option value="4">400</option>
+                    <option value="5">500</option>
+                    <option value="6">600</option>
+                  </select>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-lg-12 m-t-10">
+                  <button type="submit" id="changeLevelBtn" class="btn btn-primary btn-sm">Save Changes</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
   </div>
 </template>
 <script>
@@ -323,6 +383,14 @@ export default {
   data() {
     return {
       loading: true,
+      levelData: {
+        name: '',
+        matriculation_number: '',
+        jamb_number: '',
+        level: '',
+        level_id: '',
+        student_id: ''
+      },
       formData: {
         matric_number: '',
         jamb_number: ''
@@ -512,6 +580,35 @@ export default {
       this.getStatesByCountry()
 
       $('#edit_bio_data').modal()
+    },
+    changeLevel(student) {
+      this.levelData = {
+        name: student.firstname + ' ' + student.lastname + ' ' + student.middlename,
+        matriculation_number: student.matriculation_number,
+        level: student.level.name,
+        jamb_number: student.jamb_number,
+        level_id: '',
+        student_id: student.id
+      }
+      $('#student-level').modal()
+    },
+    changeStudentLevel () {
+      $('#changeLevelBtn').attr('disabled', true).html('Changing..please wait')
+      this.$store.dispatch('student/changeStudentLevel', this.levelData)
+        .then(res =>{
+          $('#changeLevelBtn').attr('disabled', false).html('Save Changes')
+          if(res.data.success) {
+            this.$toast.success(res.data.message)
+            $('#student-level').modal('hide')
+            this.getAllStudents(this.pagination.current_page)
+            return
+          }
+
+          this.$toast.error(res.data.message)
+        }).catch(err =>{
+          $('#changeLevelBtn').attr('disabled', false).html('Save Changes')
+          this.$toast.error('An error occurred')
+        })
     },
     refreshStudents() {
       this.formData.matric_number = ''
