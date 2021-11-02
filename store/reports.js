@@ -67,6 +67,7 @@ export const actions = {
       })
   },
   async getTransactionReport(context, data) {
+    console.log(data)
     return await this.$axios.get('api/reports/payments?trans_ref='+data.trans_ref+'&jamb_no='+data.jamb_no+'&department='+data.department+'&payment_type='+data.payment_type+'&from_dt='+data.from_dt+'&to_dt='+data.to_dt+'&export='+data.export+'&page='+data.page+'&status='+data.status)
       .then(res =>{
         return res

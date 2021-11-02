@@ -71,6 +71,7 @@
                 <label>Payment For:</label>
                 <select class="form-control" v-model="formData.payment_type">
                   <option value="" selected>All</option>
+                  <option value="PUTME_FEE">PUTME FEE</option>
                   <option value="DEVELOPMENT_LEVY">DEVELOPMENT LEVY</option>
                   <option value="ACCOMMODATION_FEE">ACCOMMODATION FEE</option>
                   <option value="ACCEPTANCE_FEE">ACCEPTANCE FEE</option>
