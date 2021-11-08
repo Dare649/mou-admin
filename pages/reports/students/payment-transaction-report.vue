@@ -21,8 +21,8 @@
         <div class="card-body">
             <div class="row">
               <div class="col-md-3">
-                <label>Registration Number:</label>
-                <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg Number" required />
+                <label>Registration/ Matriculation Number:</label>
+                <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg/ Matric Number" required />
               </div>
               <div class="col-md-3">
                 <label>RRR Code:</label>
@@ -61,11 +61,6 @@
                   <option value="1">SUCCESS</option>
                   <option value="3">FAILED</option>
                 </select>
-<!--                <select class="form-control" v-model="formData.entry_mode">-->
-<!--                  <option value="" selected>All</option>-->
-<!--                  <option value="JAMB">JAMB</option>-->
-<!--                  <option value="DE">DIRECT ENTRY</option>-->
-<!--                </select>-->
               </div>
               <div class="col-md-3">
                 <label>Payment For:</label>
