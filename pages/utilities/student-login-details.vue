@@ -585,7 +585,7 @@ export default {
       this.levelData = {
         name: student.firstname + ' ' + student.lastname + ' ' + student.middlename,
         matriculation_number: student.matriculation_number,
-        level: student.level.name,
+        level: (student.level) ? student.level.name : '',
         jamb_number: student.jamb_number,
         level_id: '',
         student_id: student.id
