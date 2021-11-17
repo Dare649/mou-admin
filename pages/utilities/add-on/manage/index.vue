@@ -478,7 +478,7 @@ export default {
 
             this.$toast.error('An error occurred while searching course. Operation was terminated')
           }).catch(err =>{
-            $('#saveCourse').attr('disabled', false).html('Save Course')y
+            $('#saveCourse').attr('disabled', false).html('Save Course')
             this.$toast.error('An error occurred while searching course. Operation was terminated')
           })
       }
