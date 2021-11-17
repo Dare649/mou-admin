@@ -41,6 +41,14 @@ export const actions = {
       }).catch((err) =>{
         return err
       })
+  },
+  async getStudentByMatNo(context, data) {
+    return await this.$axios.get('api/student/get-by-mat-no?matriculation_number=' + data.matriculation_number)
+      .then((res) =>{
+        return res
+      }).catch((err) =>{
+        return err
+      })
   }
 }
 
