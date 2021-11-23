@@ -445,8 +445,8 @@ export default {
       this.view = true
     },
     removeCourse(index) {
-      this.dataView.splice(index)
-      this.dataSave.splice(index)
+      this.dataView.splice(index, 1)
+      this.dataSave.splice(index, 1)
       this.$toast.success('Course was successfully removed')
     },
     saveAddedCourses() {
