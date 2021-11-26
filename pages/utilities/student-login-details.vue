@@ -225,11 +225,18 @@
                 </div>
               </div>
               <div class="row m-t-5">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <label>Program:</label>
-                  <select class="form-control" v-model="bioData.program_id">
+                  <select class="form-control" @change="getSpecialization" v-model="bioData.program_id">
                     <option value="" selected>Select</option>
                     <option v-for="program in programs" :value="program.id">{{program.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Specialization:</label>
+                  <select class="form-control" v-model="bioData.specialization_id">
+                    <option value="" selected>Select</option>
+                    <option v-for="spec in specializations" :value="spec.id">{{spec.name}}</option>
                   </select>
                 </div>
               </div>
@@ -427,7 +434,8 @@ export default {
         username: '',
         faculty_id: '',
         department_id: '',
-        program_id: ''
+        program_id: '',
+        specialization_id: ''
       },
       pagination: {
         total: 0,
@@ -442,7 +450,8 @@ export default {
       lgas: [],
       colleges: [],
       departments: [],
-      programs: []
+      programs: [],
+      specializations: []
     }
   },
   methods: {
@@ -478,6 +487,7 @@ export default {
         this.data.append('faculty_id', this.bioData.faculty_id)
         this.data.append('department_id', this.bioData.department_id)
         this.data.append('program_id', this.bioData.program_id)
+        this.data.append('specialization_id', this.bioData.specialization_id)
 
         this.$store.dispatch('student/updateBioData', this.data)
           .then(res => {
@@ -525,7 +535,8 @@ export default {
         username: '',
         faculty_id: '',
         department_id: '',
-        program_id: ''
+        program_id: '',
+        specialization_id: ''
       }
     },
     getAllStudents(page) {
@@ -574,10 +585,12 @@ export default {
       this.bioData.faculty_id = student.faculty_id
       this.bioData.department_id = student.department_id
       this.bioData.program_id = student.program_id
+      this.bioData.specialization_id = student.specialization_id
       this.getDepartments()
       this.getPrograms()
       this.getLgaByState()
       this.getStatesByCountry()
+      this.getSpecialization()
 
       $('#edit_bio_data').modal()
     },
@@ -662,6 +675,14 @@ export default {
         }).catch(err =>{
         this.$toast.error(err)
       })
+    },
+    getSpecialization () {
+      this.$store.dispatch('utility/getSpecializationByProgram', this.bioData.program_id)
+        .then(res =>{
+          this.specializations = res.data.data
+        }).catch(err =>{
+          this.$toast.error(err)
+        })
     }
   },
   mounted() {

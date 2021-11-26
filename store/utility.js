@@ -90,6 +90,14 @@ export const actions = {
         return err
       })
   },
+  async getSpecializationByProgram(context, id) {
+    return await this.$axios.get('/api/utilities/get-specialization/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
   async importPutmeImages(context, data) {
     return await this.$axios.post('/api/utilities/upload-putme-images', data, {
       headers: {
