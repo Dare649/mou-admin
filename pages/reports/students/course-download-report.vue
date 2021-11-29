@@ -43,7 +43,7 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label>Select Programme</label>
-                    <select class="form-control" id="program" required v-model="formData.program_id">
+                    <select class="form-control" id="program" @change="getCourse" required v-model="formData.program_id">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="program in programs" :value="program.id" :key="program.id">
                         {{ program.name }}
@@ -54,7 +54,7 @@
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label>Select Level</label>
-                    <select class="form-control" @change="getCourse" required v-model="formData.level_id">
+                    <select class="form-control" @change="getCourse" v-model="formData.level_id">
                       <option value="" disabled selected>Select your option</option>
                       <option value="1">100</option>
                       <option value="2">200</option>
@@ -75,7 +75,7 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label>Select Academic Session</label>
-                    <select class="form-control" id="session" v-model="formData.session_id">
+                    <select class="form-control" id="session" required v-model="formData.session_id">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="session in sessions" :value="session.id" :key="session.id">
                         {{ session.session_name }}
@@ -87,6 +87,7 @@
                   <div class="col-md-12">
                     <hr/>
                     <button type="submit" id="submitBtn" class="sm-pull-reset btn btn-primary m-t-5 m-r-10"><i class="fa fa-arrow-down"></i> &nbsp; Download To Excel</button>
+                    <button @click="refresh" type="button" id="refreshBtn" class="sm-pull-reset btn btn-warning m-t-5 m-r-10"><i class="fa fa-refresh"></i> &nbsp; Refresh</button>
                  </div>
                 </div>
               </form>
@@ -118,6 +119,13 @@ export default {
     sessions: []
   }),
   methods: {
+    validateSelection(selection) {
+      this.selected = selection;
+      console.log(selection.name + " has been selected");
+    },
+    getDropdownValues(keyword) {
+      console.log("You could refresh options by querying the API with " + keyword);
+    },
     downloadReport(object) {
       console.log(this.formData)
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Downloading')
@@ -136,6 +144,18 @@ export default {
           $('#submitBtn').attr('disabled', true).html('<i class="fa fa-arrow-down"></i> &nbsp; Download To Excel')
           this.$toast.error('An error occurred')
         })
+    },
+    refresh() {
+      $('#refreshBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Refreshing')
+      this.formData = {
+        college_id: '',
+        department_id: '',
+        program_id: '',
+        course_id: '',
+        level_id: '',
+        session_id: ''
+      }
+      $('#refreshBtn').attr('disabled', false).html('<i class="fa fa-refresh"></i> &nbsp; Refresh')
     },
     getActiveSession() {
       $('#session').attr('disabled', true)

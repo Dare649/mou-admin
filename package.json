@@ -30,6 +30,7 @@
     "v-select2-component": "^0.4.3",
     "vee-validate": "^3.3.0",
     "vue-content-loading": "^1.6.0",
+    "vue-simple-search-dropdown": "^1.0.1",
     "vue-sweetalert2": "^3.0.5",
     "vue2-datepicker": "^3.5.0",
     "vueditor": "^0.3.1"
