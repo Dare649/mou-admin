@@ -86,6 +86,7 @@
                                     <option value="" selected>Entry Mode</option>
                                     <option value="PUTME">PUTME</option>
                                     <option value="DE">Direct Entry</option>
+                                    <option value="CEC">CEC</option>
                                   </select>
                                 </div>
                                 <div class="col-lg-6 m-b-10">
@@ -224,6 +225,14 @@
           </div>
           <div class="modal-body">
             <div class="row">
+              <div class="col-lg-12 m-b-10">
+                <select class="form-control" v-model="session_id">
+                  <option value="">-Select Session-</option>
+                  <option v-for="session in acad_sessions" :value="session.id" :key="session.id">
+                    {{ session.session_name }}
+                  </option>
+                </select>
+              </div>
               <div class="col-lg-12 m-b-10">
                 <input type="file" class="form-control" ref="myFiles" id="customFileLang" lang="es" />
               </div>
@@ -379,6 +388,7 @@ export default {
       loading: false,
       routeId:0,
       program_id: 0,
+      session_id: '',
       getloading: false,
       aLoading: false,
       eLoading: false,
@@ -391,6 +401,7 @@ export default {
       feeDetails: {},
       sessions: [],
       file:'',
+      acad_sessions: [],
       pagination: {
         total: 0,
         per_page: 2,
@@ -483,6 +494,7 @@ export default {
         let formData = new FormData();
         formData.append('file', this.file);
         formData.append('program_id', this.program_id);
+        formData.append('session_id', this.session_id);
           this.$store
             .dispatch('get-started/uploadSchoolFees', formData)
             .then(res => {
@@ -675,6 +687,14 @@ export default {
         }).catch(err =>{
         this.$toast.error(err)
       })
+    },
+    getAllSessions() {
+      this.$store.dispatch('student-acad-session/getAllSession')
+        .then(res =>{
+          this.acad_sessions = res.data.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
     }
   },
   mounted() {
@@ -686,7 +706,7 @@ export default {
     }
     this.routeId = (this.$route.params.id).split('_')[2] + '_' + (this.$route.params.id).split('_')[3]
     this.program_id = (this.$route.params.id).split('_')[0];
-    console.log(this.program_id)
+    this.getAllSessions()
     this.setProgramName()
     this.getSchoolFeesById(1)
   }

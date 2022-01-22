@@ -15,6 +15,14 @@ export const actions = {
         return err
       })
   },
+  async getAllSession() {
+    return await this.$axios.get('/api/student-acad-session/get-session')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
   async saveSession(context, data) {
     return await this.$axios.post('/api/student-acad-session', data)
       .then(res =>{
