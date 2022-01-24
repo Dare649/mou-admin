@@ -73,7 +73,15 @@ export const actions = {
       }).catch(err =>{
         return err
       })
-  }
+  },
+  async importCecSug(context, data) {
+    return await this.$axios.post('api/cec-sessions/student-union-dues/import', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
 }
 
 export const getters = {

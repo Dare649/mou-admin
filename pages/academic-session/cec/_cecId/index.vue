@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$route.params.ceId
+    this.id = this.$route.params.cecId
   },
 }
 </script>

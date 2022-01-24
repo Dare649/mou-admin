@@ -6,8 +6,8 @@
       <div class="container p-l-5">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
-          <li class="breadcrumb-item"><nuxt-link to="/academic-session/utme">Academic Session</nuxt-link></li>
-          <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/utme/${id}`">PUTME Options</nuxt-link></li>
+          <li class="breadcrumb-item"><nuxt-link to="/academic-session/cec">Academic Session</nuxt-link></li>
+          <li class="breadcrumb-item"><nuxt-link :to="`/academic-session/cec/${id}`">CEC Options</nuxt-link></li>
           <li class="breadcrumb-item active">Student Union Dues</li>
         </ol>
       </div>
@@ -56,6 +56,7 @@
               <thead>
               <th>Slip Number</th>
               <th>Type</th>
+              <th>Entry mode</th>
               <th>Used</th>
               <th>Action</th>
               </thead>
@@ -65,6 +66,7 @@
                 <tr v-for="slip in slips" :key="slip.id">
                   <td>{{ slip.slip_number }}</td>
                   <td>{{ slip.type.name }} students</td>
+                  <td>{{ slip.mode.name }}</td>
                   <td>{{ (slip.status === 0) ? 'No' : 'Yes'}}</td>
                   <td>
                     <div class="btn-group">
@@ -100,16 +102,16 @@
       </div>
     </div>
     <!-- END CONTAINER FLUID -->
-    <add-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
-    <auto-generate-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
-    <import-slip-modal :feeTypes="feeTypes" queryType="putme-sessions" />
+    <add-slip-modal :feeTypes="feeTypes" queryType="cec-sessions" :entryModes="entryModes" :sessions="sessions" />
+    <auto-generate-slip-modal :feeTypes="feeTypes" queryType="cec-sessions" :entryModes="entryModes" :sessions="sessions" />
+    <import-slip-modal :feeTypes="feeTypes" queryType="cec-sessions" :entryModes="entryModes" :sessions="sessions" />
   </div>
   <!-- END PAGE CONTENT -->
 </template>
 <script>
-  import AddSlipModal from '~/components/Modals/AddSlipModal'
-  import AutoGenerateSlipModal from '~/components/Modals/AutoGenerateSlipModal'
-  import ImportSlipModal from '~/components/Modals/ImportSlipModal'
+  import AddSlipModal from '~/components/Modals/CecAddSlipModal'
+  import AutoGenerateSlipModal from '~/components/Modals/CecAutoGenerateSlipModal'
+  import ImportSlipModal from '~/components/Modals/CecImportSlipModal'
   export default {
     layout: 'main',
     components: {
@@ -135,6 +137,8 @@
       },
       feeType: 'new',
       feeTypes: [],
+      entryModes: [],
+      sessions: [],
       route: ''
     }),
     methods: {
@@ -142,7 +146,7 @@
         this.searchLoading = true
         this.loading = true
         $('#searchBtn').attr('disabled', true).html('Searching...');
-        this.$axios.get('api/putme-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type).then(res => {
+        this.$axios.get('api/cec-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type).then(res => {
           $('#searchBtn').attr('disabled', false).html('Search');
           this.searchLoading = false
           this.loading = false
@@ -151,14 +155,14 @@
         })
       },
       downloadSampleCSV() {
-        this.$axios.get('api/putme-sessions/student-union-dues/sample').then(res => {
+        this.$axios.get('api/cec-sessions/student-union-dues/sample').then(res => {
           if (res.data.success) {
             window.location.href = res.data.message;
           }
         })
       },
       getSlips(page) {
-        this.$axios.get(`api/putme-sessions/student-union-dues?session_id=${this.id}`).then(res => {
+        this.$axios.get(`api/cec-sessions/student-union-dues?session_id=${this.id}`).then(res => {
           this.loading = false
           this.searchLoading = false
           this.slips = res.data.data.data;
@@ -177,6 +181,28 @@
           }
         })
       },
+      getEntryMode() {
+        this.$store.dispatch('cec/getEntryMode')
+          .then(res =>{
+            res.data.data.map(type => {
+              this.entryModes.push({
+                id: type.id,
+                text: type.name
+              })
+            });
+          })
+      },
+      getAcademicSession() {
+        this.$store.dispatch('student-acad-session/getAllSession')
+          .then(res =>{
+            res.data.data.map(type => {
+              this.sessions.push({
+                id: type.id,
+                text: type.session_name
+              })
+            });
+          })
+      },
       deleteRecord(e, id) {
         const vm = this;
         this.$swal({
@@ -189,7 +215,7 @@
           confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
           if (result.value) {
-            this.$axios.delete(`api/putme-sessions/student-union-dues/${id}`).then(res => {
+            this.$axios.delete(`api/cec-sessions/student-union-dues/${id}`).then(res => {
               if (res.data.status) {
                 $(e.target).closest('tr').remove();
                 this.$swal({
@@ -219,10 +245,12 @@
       }
     },
     mounted() {
-      this.id = this.$route.params.putmeId;
+      this.id = this.$route.params.cecId;
       this.route = this.$route.fullPath
       this.getSlips(1);
       this.getFeeTypes()
+      this.getEntryMode()
+      this.getAcademicSession()
     }
   }
 </script>
