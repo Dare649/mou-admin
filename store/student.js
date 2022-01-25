@@ -11,7 +11,7 @@ export const mutations = {
 
 export const actions = {
   async getAllStudents(context, data) {
-    return await this.$axios.get('/api/student?matric_number=' + data.matric_number + '&jamb_number=' + data.jamb_number + '&page=' + data.page)
+    return await this.$axios.get('/api/student/search?matric_number=' + data.matric_number + '&jamb_number=' + data.jamb_number + '&page=' + data.page)
       .then(res =>{
         return res
       }).catch(err =>{

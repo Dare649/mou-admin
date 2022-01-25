@@ -58,7 +58,7 @@
               <tbody>
                 <tr v-if="loading"><td colspan="7">Loading...Please wait</td></tr>
                 <tr v-if="!loading && students.length < 1"><td colspan="7">No records at the moment</td></tr>
-                <tr v-if="!loading && students.length > 0" v-for="student in students">
+                <tr v-if="!loading && students.length > 0" v-for="student in students" :key="student.id">
                   <td v-if="student.photo === null || student.photo === ''">
                     <img src="/assets/img/avatar.png" width="50px" height="50px"/>
                   </td>
