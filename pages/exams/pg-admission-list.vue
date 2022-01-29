@@ -7,7 +7,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Exams</a></li>
-          <li class="breadcrumb-item active">CEC Admission List</li>
+          <li class="breadcrumb-item active">PG Admission List</li>
         </ol>
       </div>
     </div>
@@ -23,12 +23,12 @@
               <!-- START card -->
               <div class="card card-transparent text-center">
                 <div class="card-header ">
-                  <div class="card-title">CEC STUDENTS ONLY UPLOAD</div>
+                  <div class="card-title">PG STUDENTS ONLY UPLOAD</div>
                 </div>
                 <div class="card-body">
                   <h6 class="semi-bold">1. Admin will get the sample excel file by clicking the "Download Sample Excel" button.</h6>
-                  <h6 class="semi-bold">2. Fill the excel sheet appropriately, select the necessary options and upload by clicking on the "IMPORT RECORD" button in the "Upload CEC Admission List" section.</h6>
-                  <h6 class="semi-bold">3. Download admission list using the "Download CEC Admission List" section.</h6>
+                  <h6 class="semi-bold">2. Fill the excel sheet appropriately, select the necessary options and upload by clicking on the "IMPORT RECORD" button in the "Upload PG Admission List" section.</h6>
+                  <h6 class="semi-bold">3. Download admission list using the "Download PG Admission List" section.</h6>
                 </div>
               </div>
               <!-- END card -->
@@ -65,7 +65,7 @@
         <div class="col-md-12">
           <div class="card card-default">
             <div class="card-header  separator">
-              <h3 class="text-primary no-margin p-b-10">Upload CEC Admission List</h3>
+              <h3 class="text-primary no-margin p-b-10">Upload PG Admission List</h3>
             </div>
             <div class="card-body">
               <form class="p-4" @submit.prevent="importFile">
@@ -82,7 +82,7 @@
                     <select class="form-control" id="session" v-model="formData.session_id">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="session in sessions" :key="session.id" :value="session.id">
-                        {{ session.cec_session_name }}
+                        {{ session.pg_session_name }}
                       </option>
                     </select>
                   </div>
@@ -139,7 +139,7 @@
         <div class="col-md-12">
           <div class="card card-default">
             <div class="card-header  separator">
-              <h3 class="text-primary no-margin p-b-10">Download CEC Admission List</h3>
+              <h3 class="text-primary no-margin p-b-10">Download PG Admission List</h3>
             </div>
             <div class="card-body">
               <form class="p-4">
@@ -210,7 +210,7 @@ export default {
       data.append('department_id', this.formData.department_id)
       data.append('program_id', this.formData.program_id)
       data.append('faculty_id', this.formData.college_id)
-      this.$store.dispatch('cec/importCecAdmissionList', data)
+      this.$store.dispatch('pg/importPgAdmissionList', data)
         .then(res =>{
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Import')
           if(res.data.success) {
@@ -227,7 +227,7 @@ export default {
     },
     downloadSampleFile() {
       $('#downloadBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Downloading')
-      this.$store.dispatch('cec/downloadSampleFile')
+      this.$store.dispatch('pg/downloadSampleFile')
         .then(res =>{
           $('#downloadBtn').attr('disabled', false).html('<i class="fa fa-arrow-down"></i> &nbsp Download Sample Excel')
           if(res.data.success) {
@@ -241,10 +241,11 @@ export default {
     },
     getAcademicSession() {
       $('#session').attr('disabled', true)
-      this.$store.dispatch('cec/CecAcademicSession')
+      this.$store.dispatch('pg/PgAcademicSession')
         .then(res =>{
           $('#session').attr('disabled', false)
           this.sessions = res.data.data
+          console.log(this.sessions)
         }).catch(err =>{
           $('#session').attr('disabled', false)
           this.$toast.error('An error occured')
