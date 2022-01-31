@@ -233,7 +233,7 @@ export default {
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'admission-list-report.xlsx');
+          fileLink.setAttribute('download', 'cec-admission-list-report.xlsx');
           document.body.appendChild(fileLink);
           fileLink.click();
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
