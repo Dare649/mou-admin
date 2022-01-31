@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Reports</a></li>
-          <li class="breadcrumb-item active">DE Admissions Report</li>
+          <li class="breadcrumb-item active">CEC Admissions Report</li>
         </ol>
       </div>
     </div>
@@ -69,7 +69,7 @@
       </div>
       <div class="card card-default">
         <div class="card-header separator">
-          <h3 class="text-primary no-margin pull-left sm-pull-reset">DE Admissions List Report</h3>
+          <h3 class="text-primary no-margin pull-left sm-pull-reset">CEC Admissions List Report</h3>
           <div class="pull-right sm-pull-reset">
             <button type="button" @click="cancelSearch" class="btn btn-default btn-sm"><i class="fa fa-stop"></i>&nbsp; Cancel Search </button>
             <button type="button" @click="refreshData" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
@@ -81,39 +81,32 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th style="width: 25%;">PUTME No.</th>
-                <th>Reg No.</th>
+                <th style="width: 25%;">CAN</th>
                 <th>Name</th>
                 <th>Gender</th>
-                <th>Total Score</th>
-                <th>Placement Level</th>
+                <th>Program</th>
                 <th style="width:10%">Action</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-if="loading">
-                <td colspan="7">Loading...Please wait</td>
-              </tr>
-              <tr v-if="!loading && students.length < 1">
-                <td colspan="7">No record at the moment</td>
-              </tr>
-              <tr v-if="!loading" v-for="student in students" :key="student.id">
-                <td>{{student.putme.screening_id}}</td>
-                <td>{{student.jamb_reg_no}}</td>
-                <td>{{ student.name }}</td>
-                <td>{{ (student.sex === 'F') ? 'Female' : 'Male'}}</td>
-                <td>{{student.totalscore}}</td>
-                <td>{{student.placement_level}}</td>
-                <td>
-                  <div class="btn-group">
-                    <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                    <button type="button" disabled v-if="student.marked_for_department == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                    <button type="button" @click="changePlacementLevel(student)" title="Change placement level" class="btn btn-default btn-sm" role="button">
-                      <i class="fa fa-external-link"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                <tr v-if="loading">
+                  <td colspan="5">Loading...Please wait</td>
+                </tr>
+                <tr v-if="!loading && students.length < 1">
+                  <td colspan="5">No record at the moment</td>
+                </tr>
+                <tr v-if="!loading" v-for="student in students" :key="student.id">
+                  <td>{{ student.cec_application_number }}</td>
+                  <td>{{ student.cec_application.applicant_name }}</td>
+                  <td>{{ student.cec_application.gender }}</td>
+                  <td>{{ student.cec_application.program.name }}</td>
+                  <td>
+                    <div class="btn-group">
+                      <button type="button" @click="markForApproval(student.cec_application_number)" v-if="student.marked_for_dept_clearance == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                      <button type="button" disabled v-if="student.marked_for_dept_clearance == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <Pagination
@@ -124,55 +117,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="modal fade SlideUp" id="placement-level" tabindex="-1" role="dialog" aria-hidden="true">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-        <i class="pg-close"></i>
-      </button>
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">CHANGE PLACEMENT LEVEL</span></h5>
-          </div>
-          <div class="modal-body jamb_view">
-            <h5 >Student Name: {{ studentData.name }}</h5>
-            <table class="table table-striped table-bordered">
-              <tr>
-                <th>JAMB REG NUMBER:</th>
-                <td>{{studentData.jamb_number}}</td>
-              </tr>
-              <tr>
-                <th>PLACED LEVEL:</th>
-                <td>{{ studentData.placed_level }}</td>
-              </tr>
-            </table>
-            <div class="mt-3">
-              <form class="full-width" @submit.prevent="submitPlacementLevel">
-                <div class="col-lg-12 m-b-10">
-                  <label><b>Select new placement level</b></label>
-                  <select class="form-control" required v-model="studentData.placement_level">
-                    <option value="">Select</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="400">400</option>
-                    <option value="500">500</option>
-                    <option value="600">600</option>
-                  </select>
-                </div>
-                <div class="col-lg-12 m-t-10">
-                  <button type="submit" id="submitLevelBtn" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">
-                    Change Level
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
     </div>
     <!-- END CONTAINER FLUID -->
   </div>
@@ -212,13 +156,7 @@ export default {
     students: [],
     loading: true,
     exLoading: false,
-    sLoading: false,
-    studentData: {
-      name: '',
-      jamb_number: '',
-      placed_level: '',
-      placement_level: ''
-    }
+    sLoading: false
   }),
   methods: {
     viewAdmissionLetter(registration_number) {
@@ -236,42 +174,9 @@ export default {
       this.formData.export = false
       this.getAdmissionList(this.pagination.current_page)
     },
-    changePlacementLevel(student) {
-      this.studentData.name = student.name
-      this.studentData.jamb_number = student.jamb_reg_no
-      this.studentData.placed_level = student.placement_level
-      $("#placement-level").modal()
-    },
-    clearPlacementLevel() {
-      this.studentData = {
-        name: '',
-        jamb_number: '',
-        placed_level: ''
-      }
-    },
-    submitPlacementLevel() {
-      $('#submitLevelBtn').attr('disabled', true).html('Changing Levels...Please wait')
-      this.$store.dispatch('student/changeDePlacementLevel', this.studentData)
-        .then((response) => {
-          $('#submitLevelBtn').attr('disabled', false).html('Change Level')
-
-          if(response.data.status) {
-            this.clearPlacementLevel()
-            this.$toast.success(response.data.message)
-            $("#placement-level").modal('hide')
-            this.getAdmissionList(this.pagination.current_page)
-            return
-          }
-
-          this.toast.error(response.data.message)
-        }).catch((error) => {
-          $('#submitLevelBtn').attr('disabled', false).html('Change Level')
-          this.$toast.error(error)
-        })
-    },
-    markForApproval(reg_num) {
+    markForApproval(can) {
       if(confirm('Do you want to mark this student okay for departmental approval?')){
-        this.approveData.registration_number = reg_num
+        this.approveData.registration_number = can
         this.$toast.info('Processing...please wait', {duration: 6100})
         this.$store.dispatch('academic-session/markForDepartmentalApproval', this.approveData)
           .then(res =>{
@@ -291,12 +196,13 @@ export default {
       this.loading = true
       this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
-      this.$store.dispatch('reports/getDeAdmissionList', this.formData)
+      this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
           $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
+            console.log(this.students)
             this.pagination = res.data.data
           }
         }).catch(err =>{
@@ -309,10 +215,11 @@ export default {
       this.loading = true
       this.formData.page = page
       this.students = []
-      this.$store.dispatch('reports/getDeAdmissionList', this.formData)
+      this.$store.dispatch('reports/getCecAdmissionList', this.formData)
         .then(res =>{
           if(res.data.status) {
             this.students = res.data.data.data
+            console.log(this.students)
             this.pagination = res.data.data
           }
           this.loading = false

@@ -96,7 +96,7 @@
                 <tr v-if="!loading && students.length < 1">
                   <td colspan="6">No record at the moment</td>
                 </tr>
-                <tr v-if="!loading" v-for="student in students">
+                <tr v-if="!loading" v-for="student in students" :key="student.id">
                   <td>{{student.putme.screening_id}}</td>
                   <td>{{student.jamb_reg_no}}</td>
                   <td>{{ student.name }}</td>
