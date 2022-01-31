@@ -21,8 +21,8 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-4">
-              <label>Reg Num:</label>
-              <input type="text" v-model="formData.registration_number" class="form-control" placeholder="Reg Number" />
+              <label>CAN:</label>
+              <input type="text" v-model="formData.registration_number" class="form-control" placeholder="CAN" />
             </div>
             <div class="col-md-4">
               <label>From Date:</label>
@@ -52,8 +52,6 @@
               <label>Entry Mode:</label>
               <select class="form-control" v-model="formData.entry_mode">
                 <option value="" selected>All</option>
-                <option value="JAMB">JAMB</option>
-                <option value="DE">DIRECT ENTRY</option>
               </select>
             </div>
           </div>
@@ -196,13 +194,12 @@ export default {
       this.loading = true
       this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
-      this.$store.dispatch('reports/getAdmissionList', this.formData)
+      this.$store.dispatch('reports/getCecAdmissionList', this.formData)
         .then(res =>{
           $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
-            console.log(this.students)
             this.pagination = res.data.data
           }
         }).catch(err =>{
@@ -219,7 +216,6 @@ export default {
         .then(res =>{
           if(res.data.status) {
             this.students = res.data.data.data
-            console.log(this.students)
             this.pagination = res.data.data
           }
           this.loading = false
@@ -231,7 +227,7 @@ export default {
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.formData.export = true
-      this.$store.dispatch('reports/exportAdmissionList', this.formData)
+      this.$store.dispatch('reports/exportCecAdmissionList', this.formData)
         .then(res =>{
           $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));

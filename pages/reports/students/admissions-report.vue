@@ -204,7 +204,6 @@ export default {
           this.loading = false
           if(res.data.status) {
             this.students = res.data.data.data
-            console.log(this.students)
             this.pagination = res.data.data
           }
         }).catch(err =>{
@@ -221,7 +220,6 @@ export default {
         .then(res =>{
           if(res.data.status) {
             this.students = res.data.data.data
-            console.log(this.students)
             this.pagination = res.data.data
           }
           this.loading = false
