@@ -108,12 +108,21 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>Select Programme</label>
-                    <select class="form-control" id="program" v-model="formData.program_id" required>
+                    <select class="form-control" id="program" @change="getSpecialization" v-model="formData.program_id" required>
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="program in programs" :key="program.id" :value="program.id">
                         {{ program.name }}
                       </option>
                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Select Specialization</label>
+                    <select class="form-control" id="specialization" required v-model="formData.specialization_id">
+                      <option value="" disabled selected>Select your option</option>
+                      <option v-for="specialization in specializations" :value="specialization.id" :key="specialization.id">
+                        {{ specialization.name }}
+                      </option>
+                    </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label>Overwrite existing lists</label>
@@ -194,11 +203,13 @@ export default {
     colleges: [],
     departments: [],
     programs: [],
+    specializations: [],
     formData: {
       session_id: '',
       college_id: '',
       department_id: '',
-      program_id: ''
+      program_id: '',
+      specialization_id: ''
     }
   }),
   methods: {
@@ -210,6 +221,7 @@ export default {
       data.append('department_id', this.formData.department_id)
       data.append('program_id', this.formData.program_id)
       data.append('faculty_id', this.formData.college_id)
+      data.append('specialization_id', this.formData.specialization_id)
       this.$store.dispatch('pg/importPgAdmissionList', data)
         .then(res =>{
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Import')
@@ -281,6 +293,17 @@ export default {
           this.programs = res.data.data
         }).catch(err =>{
         $('#program').attr('disabled', false)
+        this.$toast.error(err)
+      })
+    },
+    getSpecialization() {
+      $('#specialization').attr('disabled', true)
+      this.$store.dispatch('utility/getSpecializationByProgram', this.formData.program_id)
+        .then(res =>{
+          $('#specialization').attr('disabled', false)
+          this.specializations = res.data.data
+        }).catch(err =>{
+        $('#specialization').attr('disabled', false)
         this.$toast.error(err)
       })
     }
