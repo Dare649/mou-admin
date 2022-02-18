@@ -117,7 +117,7 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label>Select Specialization</label>
-                    <select class="form-control" id="specialization" required v-model="formData.specialization_id">
+                    <select class="form-control" id="specialization" v-model="formData.specialization_id">
                       <option value="" disabled selected>Select your option</option>
                       <option v-for="specialization in specializations" :value="specialization.id" :key="specialization.id">
                         {{ specialization.name }}
