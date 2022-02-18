@@ -66,7 +66,7 @@
                     <label>Session</label>
                     <select class="form-control" required v-model="formData.session_id">
                       <option value="" disabled selected>Select your option</option>
-                      <option v-for="session in sessions" :value="session.id">{{ (formData.entry_mode === 'DE') ? session.de_session_name : session.session_name }}</option>
+                      <option v-for="session in sessions" :value="session.id" :key="session.id">{{ (formData.entry_mode === 'DE') ? session.de_session_name : session.session_name }}</option>
                     </select>
                   </div>
                 </div>
