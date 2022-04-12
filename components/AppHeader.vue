@@ -115,6 +115,7 @@
                           <li class=""><nuxt-link to="/utilities/import-admission-list">Import Admissions List</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-de-admission-list">Import DE Admissions List</nuxt-link></li>
                           <li class=""><nuxt-link to="/utilities/import-putme-images">Import PUTME Images</nuxt-link></li>
+                          <li class=""><nuxt-link to="/utilities/import-old-transactions">Import Previous Transactions</nuxt-link></li>
                         </ul>
                       </li>
                       <li>
@@ -137,18 +138,6 @@
                       </li>
                       <li><a href="#"><span class="title">Transaction Logs</span></a></li>
                       <li><a href="#"><span class="title">Scripts</span></a></li>
-                      <li>
-                          <a href="javascript:;"><span class="title">Results</span>
-                              <span class=" arrow"></span></a>
-                          <ul class="">
-                              <li class="">
-                                <nuxt-link to="/">Basic Tables</nuxt-link>
-                              </li>
-                              <li class="">
-                                  <a href="#">Data Tables</a>
-                              </li>
-                          </ul>
-                      </li>
                     </ul>
                 </div>
             </div>
