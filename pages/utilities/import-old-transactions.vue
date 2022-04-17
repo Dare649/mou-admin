@@ -51,10 +51,17 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <hr/>
-                    <button id="submitBtn" type="submit" class="btn btn-primary m-t-5 m-r-10"><i class="fa fa-upload"></i> &nbsp; Upload</button>
+                <hr/>
+                <div class="row col-md-12">
+                  <div class="col-md-6">
+                    <button id="submitBtn" type="submit" class="btn btn-primary m-t-5 m-r-10">
+                      <i class="fa fa-upload pull-left"></i> &nbsp; Upload
+                    </button>
+                  </div>
+                  <div class="col-md-6">
+                    <button id="downloadSample" @click="downloadSample" type="button" class="btn btn-secondary m-t-5 m-r-10 pull-right">
+                      <i class="fa fa-download"></i> &nbsp; Download Sample
+                    </button>
                   </div>
                 </div>
               </form>
@@ -97,6 +104,22 @@ export default {
           this.$toast.error(err)
           this.loading = false
       })
+    },
+    downloadSample() {
+      $('#downloadSample').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Downloading');
+      this.$store
+        .dispatch('old-transactions/downloadSampleFile')
+        .then(res => {
+          $('#downloadSample').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Download Sample')
+            if(res.success == true)    {
+              window.location = res.message
+              this.downloading = false
+              this.$toast.success('Download Successful!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+            }
+        }).catch(err => {
+          $('#downloadSample').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Download Sample')
+          this.$toast.error('An error occurred please contact the administrator' + err)
+        })
     }
   }
 }

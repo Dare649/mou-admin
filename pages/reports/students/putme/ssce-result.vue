@@ -105,30 +105,32 @@
                           <th>Status</th>
                           <th>Verified on</th>
                           <th>Type</th>
-                          <!-- <th style="width:10%">Action</th> -->
+                          <th style="width:10%">Action</th>
                         </tr>
                         </thead>
                         <tbody>
                           <tr v-if="Loading">
-                            <td colspan="6">Loading....Please wait.</td>
+                            <td colspan="7">Loading....Please wait.</td>
                           </tr>
                           <tr v-if="(!Loading && candidates.length <= 0)">
-                            <td colspan="6">No record at the moment</td>
+                            <td colspan="7">No record at the moment</td>
                           </tr>
                           <tr v-for="can in candidates" :key="can.id">
-                            <td>{{can.name}}</td>
-                            <td>{{can.reg_number}}</td>
-                            <td>{{can.gender == 'F' ? 'Female' : 'Male'}}</td>
-                            <td>{{can.status == 1 ? 'Verified' : 'Not Verified'}}</td>
-                            <td>{{can.verified_on}}</td>
-                            <td v-if="can.type != null">{{can.type.toUpperCase()}}</td>
-                            <!-- <td>
+                            <td>{{ (can.jamb_result.name) ? can.jamb_result.name : can.jamb_result.candidate_name }}</td>
+                            <td>{{ can.jamb_registration_number }}</td>
+                            <td>{{ can.jamb_result.sex == 'F' ? 'Female' : 'Male' }}</td>
+                            <td>{{ can.status == 1 ? 'Verified' : 'Not Verified' }}</td>
+                            <td>{{ $moment(can.updated_at).format('DD-MM-YYYY') }}</td>
+                            <td v-if="can.exam_type != null">{{ can.type.toUpperCase() }}</td>
+                            <td>
                               <div class="btn-group">
                                 <span data-placement="top" data-toggle="tooltip" title="View WAEC Details">
-                                  <a href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal"><i class="fa fa-eye"></i></a>
+                                  <a @click="viewResult(can.content)" href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal">
+                                    <i class="fa fa-eye"></i>
+                                  </a>
                                 </span>
                               </div>
-                            </td> -->
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -198,6 +200,7 @@ export default {
         this.model.faculty_id = ""
         this.model.department_id = ""
         this.model.exam_type = ""
+        this.model.export = false
         this.getSsceResult(1)
       },
       searchRecord(){
@@ -269,7 +272,12 @@ export default {
               this.Loading = false
           })
       },
-      exportStudentSSCEs(){
+      exportStudentSSCEs() {
+        this.model.export = 'true';
+        const url = 'http://127.0.0.1:8000/api/ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
+        window.open(url, '_blank');
+      },
+      exportStudentSSCEsOld(){
         this.exportLoading = true
         this.model.export = true
         this.$store
@@ -293,6 +301,9 @@ export default {
           this.exportLoading = false
           alert("File Downloaded Unsuccessful")
         })
+      },
+      viewResult(content) {
+        console.table(content)
       }
     },
    mounted: function() {

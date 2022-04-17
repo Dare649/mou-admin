@@ -17,6 +17,20 @@ export const actions = {
         return err
       })
   },
+  async downloadSampleFile() {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/old-fees/download-sample',
+      headers: {'Content-Type': 'application/json' }
+    })
+      .then(function (response) {
+        //handle success
+        return response.data
+      })
+      .catch(err => {
+        return err
+      });
+  }
 }
 
 export const getters = {

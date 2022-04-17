@@ -781,7 +781,8 @@ export default {
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'putme-registration-report.xlsx');
+          let date = new Date();
+          fileLink.setAttribute('download', 'putme-registration-report-'+ date.getTime() + '.xlsx');
           document.body.appendChild(fileLink);
           fileLink.click();
           this.exLoading = false
