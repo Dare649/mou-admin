@@ -170,11 +170,6 @@ export default {
       current_page: 1
     }
   }),
-  mounted: function() {
-      this.getFaculties()
-      this.getUploadedJambCandidates(1)
-
-    },
   methods: {
     calculateJambScore(can) {
       return +can.mark1 + +can.mark2 + +can.mark3 + +can.mark4
@@ -264,7 +259,7 @@ export default {
     },
     exportUploadedJambCandidates(){
       this.exLoading = true
-      this.model.export = true
+      this.model.export = 'true'
       this.$store
           .dispatch('get-started/exportUploadedJambCandidates', this.model)
               .then(res => {
@@ -286,6 +281,10 @@ export default {
             this.exLoading = false
         })
     }
+  },
+  mounted: function() {
+    this.getFaculties()
+    this.getUploadedJambCandidates(1)
   }
 }
 </script>

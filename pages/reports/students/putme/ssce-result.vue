@@ -125,7 +125,7 @@
                             <td>
                               <div class="btn-group">
                                 <span data-placement="top" data-toggle="tooltip" title="View WAEC Details">
-                                  <a @click="viewResult(can.content)" href="#view_jamb_result" class="btn btn-default btn-sm" role="button" data-toggle="modal">
+                                  <a @click="viewResult(can.content)" class="btn btn-default btn-sm" role="button" data-toggle="modal">
                                     <i class="fa fa-eye"></i>
                                   </a>
                                 </span>
@@ -144,11 +144,50 @@
               </div>
             </div>
             <!-- END CONTAINER FLUID -->
-        </div>
 
+          <div class="modal fade SlideUp" id="display_result" tabindex="-1" role="dialog" aria-hidden="true">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              <i class="pg-close"></i>
+            </button>
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="text-left p-b-5">
+                    <span class="semi-bold"><span id="studentName"></span> (O-LEVEL RESULT)</span>
+                  </h5>
+                </div>
+                <div class="modal-body">
+                  <hr />
+                  <table class="table table-condensed">
+                    <thead>
+                      <tr>
+                        <th>SUBJECT</th>
+                        <th>GRADE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(result, index) in results" :key="index">
+                        <td>{{ result.subject }}</td>
+                        <td>{{ result.grade }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                    <hr />
+                    <button type="button" @click="closeResultModal" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
 </template>
 <script>
 import Pagination from '~/components/Pagination'
+import config from "../../../../store/config";
 
 export default {
   layout: 'main',
@@ -188,6 +227,7 @@ export default {
           exam_type: "",
           export: false
         },
+        results: []
       }
     },
     methods: {
@@ -274,7 +314,7 @@ export default {
       },
       exportStudentSSCEs() {
         this.model.export = 'true';
-        const url = 'http://127.0.0.1:8000/api/ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
+        const url = config.backend+'/api/ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
         window.open(url, '_blank');
       },
       exportStudentSSCEsOld(){
@@ -303,7 +343,16 @@ export default {
         })
       },
       viewResult(content) {
-        console.table(content)
+        this.results = [];
+        const res = JSON.parse(content);
+        this.results = res.result;
+        $('#studentName').html(res.user_info.name.toUpperCase());
+        $('#display_result').modal();
+      },
+      closeResultModal() {
+        this.results = [];
+        $('#studentName').html('');
+        $('#display_result').modal('hide');
       }
     },
    mounted: function() {

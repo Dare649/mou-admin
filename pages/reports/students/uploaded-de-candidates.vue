@@ -111,7 +111,7 @@
                 <tr v-for="can in candidates" :key="can.jamb_number">
                   <td>{{ can.candidate_name }}</td>
                   <td>{{ can.registration_number }}</td>
-                  <td>{{ can.sex == "F" ? "Female" : "Male" }}</td>
+                  <td>{{ can.gender === "F" ? "Female" : "Male" }}</td>
                   <td>{{ can.year }}</td>
                   <!-- <td>
                     <div class="btn-group">
@@ -262,9 +262,9 @@ export default {
     },
     exportUploadedJambCandidates(){
       this.exLoading = true
-      this.model.export = true
+      this.model.export = 'true'
       this.$store
-          .dispatch('get-started/exportUploadedJambCandidates', this.model)
+          .dispatch('get-started/exportUploadedDeJambCandidates', this.model)
               .then(res => {
               if(res != undefined){
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));

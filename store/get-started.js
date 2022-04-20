@@ -475,7 +475,21 @@ export const actions = {
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
+            headers: {'Content-Type': 'application/json' },
+            responseType: "arraybuffer"
+        })
+        .then(function (response) {
+            return response.data
+        })
+        .catch(err => {
+            return err
+        });
+    },
+    async exportUploadedDeJambCandidates(context, payload) {
+        return await this.$axios({
+            method: 'get',
+            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -502,7 +516,7 @@ export const actions = {
     async getUploadedJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page,
+            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -515,7 +529,7 @@ export const actions = {
   async getUploadedDEJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page,
+            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
