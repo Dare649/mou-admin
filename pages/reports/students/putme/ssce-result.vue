@@ -314,7 +314,7 @@ export default {
       },
       exportStudentSSCEs() {
         this.model.export = 'true';
-        const url = config.backend+'/api/ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
+        const url = config.backend+'ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
         window.open(url, '_blank');
       },
       exportStudentSSCEsOld(){
