@@ -45,40 +45,40 @@
                                 <li v-permission="'View subject'"><nuxt-link to="/get-started/subjects">Subject</nuxt-link></li>
                                 <li v-permission="'View country'"><nuxt-link to="/get-started/countries">Countries</nuxt-link></li>
                                 <li v-permission="'View religion'"><nuxt-link to="/get-started/religion-management">Religions</nuxt-link></li>
-                                <li><nuxt-link to="/get-started/roles">Roles</nuxt-link></li>
+                                <li v-permission="'View Roles'"><nuxt-link to="/get-started/roles">Roles</nuxt-link></li>
                             </ul>
                         </li>
                         <li>
                             <a href="javascript:;"><span class="title">Academic Session</span><span class=" arrow"></span></a>
                             <ul>
-                                <li><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/cec">CEC</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/pg">PG</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/student-acad-session">Regular Students</nuxt-link></li>
-                                <li><nuxt-link to="/academic-session/accommodation-fee-setup">Accommodation Fee Setup</nuxt-link></li>
+                                <li v-permission="'View UTME'"><nuxt-link to="/academic-session/utme">UTME</nuxt-link></li>
+                                <li v-permission="'View Direct Entry'"><nuxt-link to="/academic-session/direct-entry">Direct Entry</nuxt-link></li>
+                                <li v-permission="'View Cec'"><nuxt-link to="/academic-session/cec">CEC</nuxt-link></li>
+                                <li v-permission="'View Pg'"><nuxt-link to="/academic-session/pg">PG</nuxt-link></li>
+                                <li v-permission="'View Regular Student'"><nuxt-link to="/academic-session/student-acad-session">Regular Students</nuxt-link></li>
+                                <li v-permission="'View Accommodation Fee'"><nuxt-link to="/academic-session/accommodation-fee-setup">Accommodation Fee Setup</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
                             <a href="javascript:;"><span class="title">Personnel</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
-                                <li><nuxt-link to="/personnel/lecturers">Lecturers</nuxt-link></li>
+                                <li v-permission="'View Admin Users'"><nuxt-link to="/personnel/admin">Admin Users</nuxt-link></li>
+                                <li v-permission="'View Lecturers'"><nuxt-link to="/personnel/lecturers">Lecturers</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
                             <a href="javascript:;"><span class="title">Reports</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li><nuxt-link to="/reports/students/putme">PUTME/ DE Exam Reg. Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/admissions-report">Admissions Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/de-admitted-students">DE Admissions Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/cec-admission-report">CEC Admissions Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/uploaded-de-candidates">DE Jamb candidate</nuxt-link></li>
-                                <li><nuxt-link to="/reports/students/course-download-report">Course Download Report</nuxt-link></li>
+                                <li v-permission="'View Putme De Reports'"><nuxt-link to="/reports/students/putme">PUTME/ DE Exam Reg. Report</nuxt-link></li>
+                                <li v-permission="'View Download O Level'"><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
+                                <li v-permission="'View Admission Report'"><nuxt-link to="/reports/students/admissions-report">Admissions Report</nuxt-link></li>
+                                <li v-permission="'View DE Admission'"><nuxt-link to="/reports/students/de-admitted-students">DE Admissions Report</nuxt-link></li>
+                                <li v-permission="'View CEC Admission'"><nuxt-link to="/reports/students/cec-admission-report">CEC Admissions Report</nuxt-link></li>
+                                <li v-permission="'View Acceptance Letter'"><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
+                                <li v-permission="'View Payment Transaction'"><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
+                                <li v-permission="'View Jamb Candidate'"><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
+                                <li v-permission="'View De Jamb Candidate'"><nuxt-link to="/reports/students/uploaded-de-candidates">DE Jamb candidate</nuxt-link></li>
+                                <li v-permission="'View Course Download'"><nuxt-link to="/reports/students/course-download-report">Course Download Report</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
@@ -93,10 +93,10 @@
                           <ul class="">
                               <li v-permission="'View PUTME Result'"><nuxt-link to="/exams/putme-result-upload">UTME Result</nuxt-link></li>
                               <li v-permission="'View DE Result'"><nuxt-link to="/exams/de-result-upload">DE Result</nuxt-link></li>
-                              <li><nuxt-link to="/exams/putme-admission-list">UTME Admission List</nuxt-link></li>
-                              <li><nuxt-link to="/exams/de-admission-list">DE Admission List</nuxt-link></li>
-                              <li><nuxt-link to="/exams/cec-admission-list">CEC Admission List</nuxt-link></li>
-                              <li><nuxt-link to="/exams/pg-admission-list">PG Admission List</nuxt-link></li>
+                              <li v-permission="'View Utme Admission'"><nuxt-link to="/exams/putme-admission-list">UTME Admission List</nuxt-link></li>
+                              <li v-permission="'View De Admission'"><nuxt-link to="/exams/de-admission-list">DE Admission List</nuxt-link></li>
+                              <li v-permission="'View Cec Admission'"><nuxt-link to="/exams/cec-admission-list">CEC Admission List</nuxt-link></li>
+                              <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/pg-admission-list">PG Admission List</nuxt-link></li>
                           </ul>
                         </li>
                       <li>
@@ -104,18 +104,18 @@
                           <span class="title">Utilities</span><span class=" arrow"></span>
                         </a>
                         <ul class="">
-                          <li class=""><nuxt-link to="/utilities/search-rrr">Search RRR</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-returning">Import returning students</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/add-drop-utility">Add/ Drop Utilities</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-putme">Import Registered PUTME Students</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-putme-results">Import PUTME Results</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-de-results">Import DE Results</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-admission-list">Import Admissions List</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-de-admission-list">Import DE Admissions List</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-putme-images">Import PUTME Images</nuxt-link></li>
-                          <li class=""><nuxt-link to="/utilities/import-old-transactions">Import Previous Transactions</nuxt-link></li>
+                          <li class="" v-permission="'View Search RRR'"><nuxt-link to="/utilities/search-rrr">Search RRR</nuxt-link></li>
+                          <li class="" v-permission="'View Import Returning Students'"><nuxt-link to="/utilities/import-returning">Import returning students</nuxt-link></li>
+                          <li class="" v-permission="'View ByPass Utility'"><nuxt-link to="/utilities/by-pass">Bypass Utilities</nuxt-link></li>
+                          <li class="" v-permission="'View Students Utility'"><nuxt-link to="/utilities/student-login-details">Student Utilities</nuxt-link></li>
+                          <li class="" v-permission="'View Add Drop Utility'"><nuxt-link to="/utilities/add-drop-utility">Add/ Drop Utilities</nuxt-link></li>
+                          <li class="" v-permission="'View Import Registered Putme'"><nuxt-link to="/utilities/import-putme">Import Registered PUTME Students</nuxt-link></li>
+                          <li class="" v-permission="'View Import Putme Result'"><nuxt-link to="/utilities/import-putme-results">Import PUTME Results</nuxt-link></li>
+                          <li class="" v-permission="'View Import De Result'"><nuxt-link to="/utilities/import-de-results">Import DE Results</nuxt-link></li>
+                          <li class="" v-permission="'View Import Admission List'"><nuxt-link to="/utilities/import-admission-list">Import Admissions List</nuxt-link></li>
+                          <li class="" v-permission="'View Import De Admission List'"><nuxt-link to="/utilities/import-de-admission-list">Import DE Admissions List</nuxt-link></li>
+                          <li class="" v-permission="'View Import Putme Images'"><nuxt-link to="/utilities/import-putme-images">Import PUTME Images</nuxt-link></li>
+                          <li class="" v-permission="'View Import Previous Transactions'"><nuxt-link to="/utilities/import-old-transactions">Import Previous Transactions</nuxt-link></li>
                         </ul>
                       </li>
                       <li>
@@ -124,7 +124,7 @@
                           <span class=" arrow"></span>
                         </a>
                         <ul class="">
-                          <li class=""><nuxt-link to="/application/cec">CEC Applications</nuxt-link></li>
+                          <li class="" v-permission="'View Cec Applications'"><nuxt-link to="/application/cec">CEC Applications</nuxt-link></li>
                         </ul>
                       </li>
                       <li>
