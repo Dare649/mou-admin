@@ -69,7 +69,7 @@
                         <li class="">
                             <a href="javascript:;"><span class="title">Reports</span><span class=" arrow"></span></a>
                             <ul class="">
-                                <li v-permission="'View Putme De Reports'"><nuxt-link to="/reports/students/putme">PUTME/ DE Exam Reg. Report</nuxt-link></li>
+                                <li v-permission="'View Putme De Report'"><nuxt-link to="/reports/students/putme">PUTME/ DE Exam Reg. Report</nuxt-link></li>
                                 <li v-permission="'View Download O Level'"><nuxt-link to="/reports/students/putme/ssce-result">Download O-Level</nuxt-link></li>
                                 <li v-permission="'View Admission Report'"><nuxt-link to="/reports/students/admissions-report">Admissions Report</nuxt-link></li>
                                 <li v-permission="'View DE Admission'"><nuxt-link to="/reports/students/de-admitted-students">DE Admissions Report</nuxt-link></li>
