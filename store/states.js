@@ -72,11 +72,9 @@ export const actions = {
             method: 'get',
             url: 'api/utilities/get-state/'+ payload.countryId,
             headers: {'Content-Type': 'application/json' }
-        })
-        .then(function (response) {
+        }).then(function (response) {
             return response.data
-        })
-        .catch(err => {
+        }).catch(err => {
             return err
         });
     },

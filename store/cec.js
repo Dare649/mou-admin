@@ -66,6 +66,40 @@ export const actions = {
         return err
       })
   },
+
+  async getActiveSession() {
+    return await this.$axios.get('api/cec/get-active-session')
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getCecColleges(context, id) {
+    return await this.$axios.get('api/utilities/cec-faculty/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getCecDepartments(context, id) {
+    return await this.$axios.get('api/utilities/cec-department/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async getCecPrograms(context, id) {
+    return await this.$axios.get('api/utilities/cec-program/' + id)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+
   async saveSelection(context, data) {
     return await this.$axios.post('/api/cec-sessions/college-dept/save-selection', data)
       .then(res =>{
@@ -76,6 +110,14 @@ export const actions = {
   },
   async importCecSug(context, data) {
     return await this.$axios.post('api/cec-sessions/student-union-dues/import', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async submitEditApplication(context, data) {
+    return await this.$axios.post('api/cec/edit', data)
       .then(res =>{
         return res
       }).catch(err =>{

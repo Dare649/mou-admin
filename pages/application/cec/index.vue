@@ -125,7 +125,7 @@
                   <td>
                     <div class="btn-group">
                       <span data-placement="top" data-toggle="tooltip" title="Edit">
-                        <a href="javascript:;" class="btn btn-default btn-sm" role="button"><i class="fa fa-edit"></i></a>
+                        <a href="javascript:;" @click="edit(app)" class="btn btn-default btn-sm" role="button"><i class="fa fa-edit"></i></a>
                       </span>
                       <span v-if="app.is_paid === 1" data-placement="top" data-toggle="tooltip" title="View Payment">
                         <a href="javascript:;" class="btn btn-default btn-sm" role="button"><i class="fa fa-eye"></i></a>
@@ -145,6 +145,165 @@
       </div>
     </div>
     <!-- END CONTAINER FLUID -->
+
+
+    <div class="modal fade SlideUp" id="edit_cec_application" tabindex="-1" role="dialog" aria-hidden="true">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+      </button>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="text-left p-b-5"><span class="semi-bold">EDIT CEC APPLICATION DETAILS</span></h5>
+          </div>
+          <div class="modal-body">
+            <form class="full-width" @submit.prevent="submitCecEdit">
+              <table>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>CEC Entry Mode:</label></td>
+                  <td>
+                    <select id="mode" v-model="editData.entry_mode" class="form-control">
+                      <option value="" selected>All</option>
+                      <option v-for="mode in modes" :value="mode.id">{{mode.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>CAN:</label></td>
+                  <td>
+                    <input type="text" v-model="editData.can" readonly class="form-control" />
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Name:</label></td>
+                  <td>
+                    <input type="text" v-model="editData.name" class="form-control" />
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Marital Status:</label></td>
+                  <td>
+                    <select class="full-width form-control" v-model="editData.marital_status" required="required">
+                      <option value="" disabled>Marital Status</option>
+                      <option value="Married">Married</option>
+                      <option value="Single">Single</option>
+                      <option value="Divorced">Divorced</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Gender:</label></td>
+                  <td>
+                    <select class="full-width form-control" v-model="editData.gender" required="required">
+                      <option value="" disabled>Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Phone Number:</label></td>
+                  <td>
+                    <input type="text" v-model="editData.phone" placeholder="Phone Number" class="form-control">
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Email Address:</label></td>
+                  <td>
+                    <input type="email" v-model="editData.email" placeholder="Email Address" class="form-control">
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Date of birth:</label></td>
+                  <td>
+                    <input type="date" v-model="editData.dob" class="form-control">
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Address:</label></td>
+                  <td>
+                    <input type="text" v-model="editData.address" placeholder="Address" class="form-control">
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Country:</label></td>
+                  <td>
+                    <select class="form-control" @change="getStatesByCountryID" v-model="editData.country">
+                      <option value="" selected>Select your option</option>
+                      <option v-for="country in countries" :key="country.id" :value="country.id">{{country.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>State:</label></td>
+                  <td>
+                    <select class="form-control" @change="getLGAsByStateID" v-model="editData.state">
+                      <option value="" selected>Select your option</option>
+                      <option v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>LGA:</label></td>
+                  <td>
+                    <select class="form-control" v-model="editData.lga">
+                      <option value="" selected>Select your option</option>
+                      <option v-for="lga in lgas" :key="lga.id" :value="lga.id">{{lga.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Faculty:</label></td>
+                  <td>
+                    <select class="form-control" @change="getDepartmentByCollegeEdit" v-model="editData.faculty">
+                      <option value="" selected>Select your option</option>
+                      <option v-for="faculty in colleges" :key="faculty.id" :value="faculty.id">{{faculty.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Department:</label></td>
+                  <td>
+                    <select class="form-control" v-model="editData.department">
+                      <option value="" selected>Select your option</option>
+                      <option v-for="department in department_edits" :key="department.id" :value="department.id">{{department.name}}</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Entry Qualification:</label></td>
+                  <td>
+                    <select required v-model="editData.entry_qualification" class="form-control">
+                      <option value="" selected>Select</option>
+                      <option value="WAEC/NECO/NABTEB with 5 credits and above in a sitting">
+                        WAEC/NECO/NABTEB with 5 credits and above in a sitting
+                      </option>
+                      <option value="WAEC/NECO/NABTEB with 5 credits and above in 2 sittings">
+                        WAEC/NECO/NABTEB with 5 credits and above in 2 sittings
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr class="col-lg-12 m-b-10">
+                  <td><label>Institution attended:</label></td>
+                  <td>
+                    <input type="text" placeholder="Institution attended" v-model="editData.institution_attended" class="form-control">
+                  </td>
+                </tr>
+              </table>
+              <div class="row">
+                <div class="col-lg-12 m-t-10">
+                  <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Save Changes</button>
+                  <button type="button" @click="cancelCec" class="btn btn-warning btn-lg btn-large fs-16 semi-bold">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
   </div>
 </template>
 <script>
@@ -159,10 +318,32 @@ export default {
     loading: true,
     colleges: [],
     departments: [],
+    department_edits: [],
     programs: [],
     sessions: [],
     modes: [],
+    lgas: [],
+    countries: [],
+    states: [],
     applications: [],
+    editData: {
+      entry_mode: '',
+      can: '',
+      name: '',
+      marital_status: '',
+      gender: '',
+      phone: '',
+      email: '',
+      dob: '',
+      address: '',
+      country: '',
+      state: '',
+      lga: '',
+      faculty: '',
+      department: '',
+      entry_qualification: '',
+      institution_attended: ''
+    },
     formData: {
       faculty: '',
       department: '',
@@ -183,6 +364,76 @@ export default {
     },
   }),
   methods: {
+    submitCecEdit() {
+      $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Submitting');
+      this.$store.dispatch('cec/submitEditApplication', this.editData)
+        .then((res) => {
+          $('#submitBtn').attr('disabled', false).html('Save Changes')
+          if(res.data.status) {
+            this.$toast.success(res.data.message)
+            this.getApplications(this.pagination.current_page)
+            $('#edit_cec_application').modal('hide')
+            return
+          }
+
+          this.$toast.error('An error occurred')
+        }).catch((err) => {
+          $('#submitBtn').attr('disabled', false).html('Save Changes')
+          this.$toast.error(err)
+          this.loading = false
+        })
+    },
+    edit(app) {
+      this.editData.faculty = app.faculty_id
+      this.getDepartmentByCollegeEdit()
+
+      this.editData.country = 161
+      this.getStatesByCountryID()
+
+      this.editData.state = app.state_id
+      this.getLGAsByStateID()
+
+      this.editData = {
+        entry_mode: app.cec_entry_mode_id,
+        can: app.cec_application_number,
+        name: app.applicant_name,
+        marital_status: app.marital_status,
+        gender: app.gender,
+        phone: app.contact_number_1,
+        email: app.email_address,
+        dob: app.dob,
+        address: app.applicant_address,
+        country: 161,
+        state: app.state_id,
+        lga: app.lga_id,
+        faculty: app.faculty_id,
+        department: app.department_id,
+        entry_qualification: app.entry_level_qualification,
+        institution_attended: app.institution_attended
+      }
+      $('#edit_cec_application').modal()
+    },
+    cancelCec() {
+      this.editData = {
+        entry_mode: '',
+        can: '',
+        name: '',
+        marital_status: '',
+        gender: '',
+        phone: '',
+        email: '',
+        dob: '',
+        address: '',
+        country: '',
+        state: '',
+        lga: '',
+        faculty: '',
+        department: '',
+        entry_qualification: '',
+        institution_attended: ''
+      }
+      $('#edit_cec_application').modal('hide')
+    },
     getApplications(page, action, name) {
       $('#'+action).attr('disabled', true).html('<i class="fa fa-spin fa-spinner" />&nbsp;Searching')
       this.formData.page = page
@@ -219,6 +470,43 @@ export default {
           $('#department').attr('disabled', false)
         }).catch(err =>{
         this.$toast.error(err)
+      })
+    },
+    getDepartmentByCollegeEdit() {
+      $('#department').attr('disabled', true)
+      this.$store.dispatch('utility/getDepartmentByFaculty', this.editData.faculty)
+        .then(res =>{
+          this.department_edits = res.data
+          $('#department').attr('disabled', false)
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getCountries(){
+      this.getloading = true
+      this.$store
+        .dispatch('get-started/getAllCountries')
+        .then(res => {
+          this.countries = res
+        }).catch(err => {})
+    },
+    getStatesByCountryID(){
+      let payload = {}
+      payload.countryId = this.editData.country
+      this.$store
+        .dispatch('states/getAllStatesByCountryId', payload)
+        .then(res => {
+          this.states = res
+        }).catch(err => {})
+    },
+    getLGAsByStateID() {
+      let payload = {}
+      payload.stateId = this.editData.state
+      this.$store
+        .dispatch('lgas/getAllLGAsByStateId', payload)
+        .then(res => {
+          this.lgas = res
+        }).catch(err => {
       })
     },
     getProgramByDeptId() {
@@ -271,6 +559,7 @@ export default {
     this.getColleges()
     this.getCecAcademicSession()
     this.getCecEntryMode()
+    this.getCountries()
   }
 }
 </script>
