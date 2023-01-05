@@ -119,6 +119,7 @@ export default {
         return
       }
       $('#submitBtn').attr('disabled', true).html('Saving...')
+      console.log(this.formData)
       this.$store.dispatch('cec/saveSelection', this.formData)
         .then(res =>{
           $('#submitBtn').attr('disabled', false).html('Save Record')
@@ -161,7 +162,8 @@ export default {
     }
   },
   mounted() {
-    this.formData.session_id = this.$route.params.ceId;
+    this.formData.session_id = this.$route.params.cecId;
+    console.log(this.formData)
     this.getColleges()
     this.getCecEntryMode()
   }
