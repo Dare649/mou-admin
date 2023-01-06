@@ -12,8 +12,16 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-lg-12 m-b-10">
+              <div class="col-lg-6 m-b-10">
                 <input type="text" class="form-control" v-model="formData.name" placeholder="Fee Caption" />
+              </div>
+              <div class="col-lg-6 m-b-10">
+                <select class="form-control" v-model="formData.session_id">
+                  <option value="" selected>Select Session</option>
+                  <option v-for="session in acad_sessions" :value="session.id" :key="session.id">
+                    {{ session.session_name }}
+                  </option>
+                </select>
               </div>
               <div class="col-lg-6 m-b-10">
                 <select class="form-control" v-model="formData.entry_mode">
@@ -421,6 +429,7 @@ export default {
         extra_year_fees: '',
         level: '',
         semester: '',
+        session_id: '',
         edit_id: 0,
         edit_entry_mode: '',
         edit_academic_session: '',
@@ -656,6 +665,7 @@ export default {
             bodyFormData.set('semester', this.formData.semester)
             bodyFormData.set('entry_mode', this.formData.entry_mode)
             bodyFormData.set('pg_mode', null)
+            bodyFormData.set('session_id', this.formData.session_id)
             this.$store
               .dispatch('get-started/createSchoolFee', bodyFormData)
               .then(res => {
