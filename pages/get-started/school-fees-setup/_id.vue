@@ -86,8 +86,16 @@
                     <div class="modal-body">
                         <form class="full-width" @submit.prevent="submitEditedSchoolFee">
                             <div class="row">
-                                <div class="col-lg-12 m-b-10">
+                                <div class="col-lg-6 m-b-10">
                                   <input type="text" class="form-control" v-model="formData.edit_name" placeholder="Fee Caption" />
+                                </div>
+                                <div class="col-lg-6 m-b-10">
+                                  <select class="form-control" v-model="formData.edit_session_id">
+                                    <option value="" selected>Select Session</option>
+                                    <option v-for="session in acad_sessions" :value="session.id" :key="session.id">
+                                      {{ session.session_name }}
+                                    </option>
+                                  </select>
                                 </div>
                                 <div class="col-lg-6 m-b-10">
                                   <select class="form-control" v-model="formData.edit_entry_mode">
@@ -439,6 +447,7 @@ export default {
         edit_extra_year_fees: '',
         edit_level: '',
         edit_semester: '',
+        edit_session_id: '',
         search_fee_caption: '',
         search_entry_mode:''
       },
@@ -585,6 +594,7 @@ export default {
       bodyFormData.append('level', this.formData.edit_level)
       bodyFormData.append('semester', this.formData.edit_semester)
       bodyFormData.append('entry_mode', this.formData.edit_entry_mode)
+      bodyFormData.append('session_id', this.formData.edit_session_id)
       bodyFormData.append('pg_mode', null)
       payload.id = this.formData.edit_id
       payload.bodyFormData = bodyFormData
@@ -614,6 +624,7 @@ export default {
       this.formData.edit_level = setup.level
       this.formData.edit_semester = setup.semester
       this.formData.edit_id = setup.id
+      this.formData.edit_session_id = setup.session_id
     },
     setProgramName(){
       this.programName = (this.$route.params.id).split('_')[1]
