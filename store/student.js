@@ -49,6 +49,14 @@ export const actions = {
       }).catch((err) =>{
         return err
       })
+  },
+  async changeAllStudentLevels(context) {
+    return await this.$axios.get('api/student/change-all-student-levels')
+      .then((res) =>{
+        return res
+      }).catch((err) => {
+        return err
+      })
   }
 }
 
