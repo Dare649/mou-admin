@@ -37,19 +37,52 @@
     </div>
     <!-- END JUMBOTRON -->
 
+    <div class="modal fade SlideUp" id="changeLevels" tabindex="-1" role="dialog" aria-hidden="true">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <i class="pg-close"></i>
+      </button>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="text-left p-b-5"><span class="semi-bold">SELECT</span></h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <form class="full-width" @submit.prevent="submit">
+                <div class="col-lg-12 m-b-10">
+                  <select class="form-control" v-model="formData.program">
+                    <option value="" selected>All</option>
+                    <option value="REGULAR">REGULAR</option>
+                    <option value="CEC">CEC</option>
+                    <option value="PG">PG</option>
+                  </select>
+                </div>
+                <div class="col-lg-12">
+                  <button type="submit" id="submitBtn" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
     <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
       <div class="card card-default">
         <div class="card-header">
           <div class="card-title text-primary">Change levels</div>
         </div>
         <div class="card-body">
-          <form @submit.prevent="submit" style="width: 100%">
-            <div class="row">
-              <div class="col-md-12">
-                <button  type="submit" id="submitBtn" class="btn btn-primary btn-block">Change All Levels</button>
-              </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="button" @click="openModal" id="changeBtn" class="btn btn-primary btn-block">Change All Levels</button>
             </div>
-          </form>
+            <div class="col-md-6">
+              <button type="button" @click="revertAllChanges" id="revertBtn" class="btn btn-danger btn-block">Revert All Levels</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -64,16 +97,24 @@ export default {
 
   },
   data() {
-    return {}
+    return {
+      formData: {
+        program: ''
+      }
+    }
   },
   methods: {
+    openModal() {
+      $('#changeLevels').modal()
+    },
     submit() {
       if(confirm('Are you sure you want to change the level of all students?')) {
         $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Changing....please wait')
-        this.$store.dispatch('student/changeAllStudentLevels')
+        this.$store.dispatch('student/changeAllStudentLevels', this.formData)
           .then(res =>{
             $('#submitBtn').attr('disabled', false).html('Change All Levels')
             if(res.data.status) {
+              $('#changeLevels').modal('hide')
               this.$toast.success(res.data.message)
               return
             }
@@ -82,6 +123,24 @@ export default {
           }).catch(err =>{
             this.$toast.error(err)
             $('#submitBtn').attr('disabled', false).html('Change All Levels')
+        })
+      }
+    },
+    revertAllChanges() {
+      if(confirm('Are you sure you want to revert recent changes?')) {
+        $('#revertBtn').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Reverting....please wait')
+        this.$store.dispatch('student/revertChanges')
+          .then(res =>{
+            $('#revertBtn').attr('disabled', false).html('Revert All Levels')
+            if(res.data.status) {
+              this.$toast.success(res.data.message)
+              return
+            }
+
+            this.$toast.error(res.data.message)
+          }).catch(err =>{
+          this.$toast.error(err)
+          $('#revertBtn').attr('disabled', false).html('Revert All Levels')
         })
       }
     }

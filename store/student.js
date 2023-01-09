@@ -50,8 +50,16 @@ export const actions = {
         return err
       })
   },
-  async changeAllStudentLevels(context) {
-    return await this.$axios.get('api/student/change-all-student-levels')
+  async changeAllStudentLevels(context, data) {
+    return await this.$axios.get('api/student/change-all-student-levels?program=' + data.program)
+      .then((res) =>{
+        return res
+      }).catch((err) => {
+        return err
+      })
+  },
+  async revertChanges(context) {
+    return await this.$axios.get('api/student/revert-all-student-levels')
       .then((res) =>{
         return res
       }).catch((err) => {
