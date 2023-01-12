@@ -457,7 +457,7 @@ export default {
             this.$refs.step3.reset();
             // show notification
             this.$toast.success(res.data.message)
-            this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/direct-entry"))
+            this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/pg"))
           } else {
             this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
           }
@@ -475,7 +475,7 @@ export default {
             this.$refs.step3.reset();
             // show notification
             this.$toast.success(res.data.message)
-            this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/direct-entry"))
+            this.$router.push(decodeURIComponent(this.$route.query.redirect || "/academic-session/pg"))
           } else {
             this.$toast.error('Oops! Something went wrong. Please try again.', {position: 'top-center', fullWidth: false, theme: 'bubble'});
           }
