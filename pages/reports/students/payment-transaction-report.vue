@@ -76,11 +76,12 @@
               </div>
             </div>
             <div class="row m-t-20">
-              <div class="col-md-2">
-                <button type="button" @click="searchRecord" id="submitBtn" class="btn btn-primary btn-block"><i class="fa fa-search" />&nbsp;Search Record</button>
+
+              <div class="col-md-6">
+                <button type="submit" @click="exportRecord" id="exportBtn" class="btn btn-danger"><i class="fa fa-file-excel-o" />&nbsp;Export to Excel</button>
               </div>
-              <div class="col-md-2">
-                <button type="submit" @click="exportRecord" id="exportBtn" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o" />&nbsp;Export to Excel</button>
+              <div class="col-md-6 text-right">
+                <button type="button" @click="searchRecord" id="submitBtn" class="btn btn-primary"><i class="fa fa-search" />&nbsp;Search Record</button>
               </div>
             </div>
         </div>
@@ -98,11 +99,11 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th style="width: 20%;">Name</th>
-                <th>Trans. Ref</th>
-                <th>Payment For</th>
+                <th style="width: 25%;">Name</th>
+                <th>Session</th>
+                <th style="width: 20%;">Payment For</th>
                 <th>Amount</th>
-                <th>Date</th>
+                <th >Date</th>
                 <th>Status</th>
                 <th style="width: 8%;">Action</th>
               </tr>
@@ -116,7 +117,7 @@
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
-                  <td>{{ payment.transaction_reference }}</td>
+                  <td>{{ (payment.session) ? payment.session.session_name : 'N/A' }}</td>
                   <td>{{ payment.description }}</td>
                   <td>{{ payment.amount }}</td>
                   <td>{{ $moment(payment.created_at).format('DD-MM-YYYY') }}</td>
@@ -213,8 +214,12 @@ export default {
     },
     searchRecord() {
       this.formData.page = 1
+      this.formData.export = false;
+
       this.loading = true
-      this.payments = []
+      this.payments = [];
+      if(this.formData.from != '' && this.formData.to == '') this.formData.to = this.formData.from;
+
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> &nbsp; Searching...');
       this.$store.dispatch('reports/getTransactionReport', this.formData)
         .then(res =>{
@@ -229,8 +234,19 @@ export default {
       })
     },
     exportRecord() {
+      if(this.formData.from_dt != '' && this.formData.to_dt == '') this.formData.to_dt = this.formData.from_dt;
+
+      if (this.formData.from != '' && !this.validateDateInterval(this.formData.from_dt, this.formData.to_dt)) {
+        this.$swal({
+            icon: 'error',
+            title: 'Date interval cannot be more than 31 days',
+            showConfirmButton: true,
+          })
+        return false;
+      }
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
-      this.formData.export = true
+      this.formData.export = true;
+
       this.$store.dispatch('reports/exportTransactionReport', this.formData)
         .then(res =>{
           $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
@@ -270,14 +286,28 @@ export default {
         this.$toast.error(err)
       })
     },
+    validateDateInterval(from, to) {
+      const a = this.$moment(to);
+      const b = this.$moment(from);
+      const diff = a.diff(b, 'days');
+      if(diff > 31) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     getDepartmentByCollege(e) {
       let id = e.target.value
-      this.$store.dispatch('utility/getDepartmentByFaculty', id)
-        .then(res =>{
-          this.departments = res.data
-        }).catch(err =>{
-        this.$toast.error(err)
-      })
+      if (id) {
+        this.$store.dispatch('utility/getDepartmentByFaculty', id)
+          .then(res =>{
+            this.departments = res.data
+          }).catch(err =>{
+          this.$toast.error(err)
+        })
+      } else {
+        this.formData.department = '';
+      }
     }
   },
   mounted() {

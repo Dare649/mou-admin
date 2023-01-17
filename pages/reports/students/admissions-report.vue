@@ -58,11 +58,12 @@
             </div>
           </div>
           <div class="row m-t-15">
-            <div class="col-md-2">
-              <button type="button" id="searchBtn" @click="searchRecord()" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+
+            <div class="col-md-6">
+              <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
             </div>
-            <div class="col-md-2">
-              <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
+            <div class="col-md-6 text-right">
+              <button type="button" id="searchBtn" @click="searchRecord()" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
           </div>
         </div>
@@ -81,9 +82,10 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th style="width: 25%;">PUTME No.</th>
-                <th>Reg No.</th>
-                <th>Name</th>
+                <th style="width: 15%;"> Session</th>
+                <th style="width: 20%;">PUTME No.</th>
+                <th style="width: 12%;">Reg No.</th>
+                <th style="width: 25%;">Name</th>
                 <th>Gender</th>
                 <th>Total Score</th>
                 <th style="width:10%">Action</th>
@@ -97,6 +99,7 @@
                   <td colspan="6">No record at the moment</td>
                 </tr>
                 <tr v-if="!loading" v-for="student in students" :key="student.id">
+                  <td>{{student.session.session_name}}</td>
                   <td>{{student.putme.screening_id}}</td>
                   <td>{{student.jamb_reg_no}}</td>
                   <td>{{ student.name }}</td>
@@ -196,7 +199,8 @@ export default {
     },
     searchRecord() {
       this.loading = true
-      this.students = []
+      this.students = [];
+      if(this.formData.from != '' && this.formData.to == '') this.formData.to = this.formData.from;
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
