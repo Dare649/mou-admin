@@ -7,8 +7,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async getEmailRequest(context, page) {
-    return await this.$axios.get('api/student-email-request?page=' + page)
+  async getEmailRequest(context, data) {
+    return await this.$axios.get('api/student-email-request?page=' + data.page + '&registration_number=' + data.reg_num)
       .then(res =>{
         return res
       }).catch(err =>{

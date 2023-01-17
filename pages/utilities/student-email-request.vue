@@ -79,10 +79,10 @@
             <form style="width: 100%">
               <div class="row">
                 <div class="col-md-10">
-                  <input type="text" class="form-control" placeholder="Enter Registration Number" required>
+                  <input type="text" class="form-control" v-model="sData.reg_num" placeholder="Enter Registration Number" required>
                 </div>
                 <div class="col-md-2">
-                  <button type="button" class="btn btn-primary btn-block">Search Record</button>
+                  <button type="button" id="searchBtn" @click="getEmailRequest(1)" class="btn btn-primary btn-block">Search Record</button>
                 </div>
               </div>
             </form>
@@ -90,7 +90,7 @@
         </div>
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="text-primary no-margin pull-left sm-pull-reset">UTME JAMB Result</h3>
+            <h3 class="text-primary no-margin pull-left sm-pull-reset">MOUAU Student Email</h3>
             <div class="pull-right sm-pull-reset">
               <button type="button" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
               <button type="button" class="btn btn-primary btn-sm" @click="displayImportModal" data-toggle="modal"><i class="fa fa-arrow-down"></i> &nbsp; <strong>Import Results from CSV</strong></button>
@@ -113,6 +113,9 @@
                 <tbody>
                   <tr v-if="loading">
                     <td colspan="7">Loading.....please wait</td>
+                  </tr>
+                  <tr v-if="!loading && requests.length < 1">
+                    <td colspan="7">No record found</td>
                   </tr>
                   <tr v-if="!loading && requests.length > 0" v-for="request in requests" :key="request.id">
                     <td>{{ request.matriculation_number }}</td>
@@ -161,6 +164,10 @@ export default {
     formData: {
       file: ''
     },
+    sData: {
+      page: '',
+      reg_num: ''
+    },
     importResponse: {},
     requests: [],
     loading: true
@@ -186,7 +193,9 @@ export default {
       })
     },
     async getEmailRequest(page) {
-      this.$store.dispatch('email-requests/getEmailRequest', page)
+      this.loading = true
+      this.sData.page = page
+      this.$store.dispatch('email-requests/getEmailRequest', this.sData)
         .then(res =>{
           this.pagination = res.data.data
           this.requests = res.data.data.data
