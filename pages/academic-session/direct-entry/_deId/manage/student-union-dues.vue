@@ -22,7 +22,7 @@
           <div class="card-title text-primary">Search Slip Number</div>
         </div>
         <div class="card-body">
-          <form class="row" @submit.prevent="search" style="width: 100%">
+          <form class="row" @submit.prevent="getSlips(1)" style="width: 100%">
             <div class="col-md-5">
               <input type="text" v-model="searchData.slip_number" class="form-control" placeholder="Slip Number">
             </div>
@@ -154,7 +154,7 @@
         })
       },
       getSlips(page) {
-        this.$axios.get(`api/de-sessions/student-union-dues?session_id=${this.id}`).then(res => {
+        this.$axios.get('api/de-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type + '&session_id=' + this.id + '&page=' + page).then(res => {
           this.loading = false
           this.slips = res.data.data.data;
           this.pagination = res.data.data;

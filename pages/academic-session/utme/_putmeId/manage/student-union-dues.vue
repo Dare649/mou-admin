@@ -22,7 +22,7 @@
           <div class="card-title text-primary">Search Slip Number</div>
         </div>
         <div class="card-body">
-          <form class="row" @submit.prevent="search" style="width: 100%">
+          <form class="row" @submit.prevent="getSlips(1)" style="width: 100%">
             <div class="col-md-5">
               <input type="text" v-model="searchData.slip_number" class="form-control" placeholder="Slip Number">
             </div>
@@ -142,7 +142,7 @@
         this.searchLoading = true
         this.loading = true
         $('#searchBtn').attr('disabled', true).html('Searching...');
-        this.$axios.get('api/putme-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type).then(res => {
+        this.$axios.get('api/putme-sessions/student-union-dues/search?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type + '&session_id=' + this.id).then(res => {
           $('#searchBtn').attr('disabled', false).html('Search');
           this.searchLoading = false
           this.loading = false
@@ -158,7 +158,7 @@
         })
       },
       getSlips(page) {
-        this.$axios.get(`api/putme-sessions/student-union-dues?session_id=${this.id}`).then(res => {
+        this.$axios.get('api/putme-sessions/student-union-dues?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type + '&session_id=' + this.id + '&page=' + page).then(res => {
           this.loading = false
           this.searchLoading = false
           this.slips = res.data.data.data;

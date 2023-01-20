@@ -162,7 +162,7 @@
         })
       },
       getSlips(page) {
-        this.$axios.get(`api/cec-sessions/student-union-dues?session_id=${this.id}`).then(res => {
+        this.$axios.get('api/cec-sessions/student-union-dues?slip_number=' + this.searchData.slip_number + '&type=' + this.searchData.type + '&session_id=' + this.id + '&page=' + page).then(res => {
           this.loading = false
           this.searchLoading = false
           this.slips = res.data.data.data;
