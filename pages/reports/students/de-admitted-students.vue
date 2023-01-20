@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col-md-4">
               <label>Acadmic Session</label>
-              <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.session_id">
+              <select class="form-control" v-model="formData.session_id">
                 <option value="" selected>Select</option>
                 <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
               </select>
@@ -102,7 +102,7 @@
                 <td colspan="7">Loading...Please wait</td>
               </tr>
               <tr v-if="!loading && students.length < 1">
-                <td colspan="7">No record at the moment</td>
+                <td colspan="7">No record at the moment. Change the search criteria above and click "Search Record" button </td>
               </tr>
               <tr v-if="!loading" v-for="student in students" :key="student.id">
                 <td>{{student.putme.screening_id}}</td>
@@ -125,7 +125,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getAdmissionList(pagination.current_page)"
+              v-on:click.native="searchRecord(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -218,7 +218,7 @@ export default {
     colleges: [],
     departments: [],
     students: [],
-    loading: true,
+    loading: false,
     exLoading: false,
     sLoading: false,
     studentData: {
@@ -243,7 +243,7 @@ export default {
       this.formData.entry_mode = ''
       this.formData.to = ''
       this.formData.export = false
-      this.getAdmissionList(this.pagination.current_page)
+      this.searchRecord(this.pagination.current_page)
     },
     changePlacementLevel(student) {
       this.studentData.name = student.name
@@ -268,7 +268,7 @@ export default {
             this.clearPlacementLevel()
             this.$toast.success(response.data.message)
             $("#placement-level").modal('hide')
-            this.getAdmissionList(this.pagination.current_page)
+            this.searchRecord(this.pagination.current_page)
             return
           }
 
@@ -286,7 +286,7 @@ export default {
           .then(res =>{
             if(res.data.status) {
               this.$toast.success(res.data.message, {duration: 6100})
-              this.getAdmissionList(this.pagination.current_page)
+              this.searchRecord(this.pagination.current_page)
               return
             }
 
@@ -296,8 +296,9 @@ export default {
         })
       }
     },
-    searchRecord() {
-      this.loading = true
+    searchRecord(page) {
+      this.loading = true;
+      this.formData.page = page
       this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store.dispatch('reports/getDeAdmissionList', this.formData)
@@ -310,22 +311,6 @@ export default {
           }
         }).catch(err =>{
         $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
-        this.loading = false
-        this.$toast.error(err)
-      })
-    },
-    getAdmissionList(page) {
-      this.loading = true
-      this.formData.page = page
-      this.students = []
-      this.$store.dispatch('reports/getDeAdmissionList', this.formData)
-        .then(res =>{
-          if(res.data.status) {
-            this.students = res.data.data.data
-            this.pagination = res.data.data
-          }
-          this.loading = false
-        }).catch(err =>{
         this.loading = false
         this.$toast.error(err)
       })
@@ -359,7 +344,7 @@ export default {
         to: '',
         export: false
       }
-      this.getAdmissionList(this.pagination.current_page)
+      this.searchRecord(this.pagination.current_page)
     },
     getColleges() {
       this.$store.dispatch('utility/getFaculties')
@@ -391,7 +376,6 @@ export default {
   mounted() {
     this.getSessions();
     this.getColleges()
-    this.getAdmissionList(this.pagination.current_page)
   }
 }
 </script>

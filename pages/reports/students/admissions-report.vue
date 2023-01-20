@@ -22,7 +22,7 @@
           <div class="row">
             <div class="col-md-4">
               <label>Acadmic Session</label>
-              <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.session_id">
+              <select class="form-control" v-model="formData.session_id">
                 <option value="" selected>Select</option>
                 <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
               </select>
@@ -70,7 +70,7 @@
               <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
             </div>
             <div class="col-md-6 text-right">
-              <button type="button" id="searchBtn" @click="searchRecord()" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+              <button type="button" id="searchBtn" @click="searchRecord(1)" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
                   <td colspan="6">Loading...Please wait</td>
                 </tr>
                 <tr v-if="!loading && students.length < 1">
-                  <td colspan="6">No record at the moment</td>
+                  <td colspan="6">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                 </tr>
                 <tr v-if="!loading" v-for="student in students" :key="student.id">
                   <td>{{student.session.session_name}}</td>
@@ -123,7 +123,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getAdmissionList(pagination.current_page)"
+              v-on:click.native="searchRecord(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -168,7 +168,7 @@ export default {
     sessions: [],
     departments: [],
     students: [],
-    loading: true,
+    loading: false,
     exLoading: false,
     sLoading: false
   }),
@@ -187,7 +187,7 @@ export default {
       this.formData.entry_mode = ''
       this.formData.to = ''
       this.formData.export = false
-      this.getAdmissionList(this.pagination.current_page)
+      this.searchRecord(this.pagination.current_page)
     },
     markForApproval(reg_num) {
       if(confirm('Do you want to mark this student okay for departmental approval?')){
@@ -197,7 +197,7 @@ export default {
           .then(res =>{
             if(res.data.status) {
               this.$toast.success(res.data.message, {duration: 6100})
-              this.getAdmissionList(this.pagination.current_page)
+              this.searchRecord(this.pagination.current_page)
               return
             }
 
@@ -207,9 +207,10 @@ export default {
         })
       }
     },
-    searchRecord() {
+    searchRecord(page) {
       this.loading = true
       this.students = [];
+      this.formData.page = page
       if(this.formData.from != '' && this.formData.to == '') this.formData.to = this.formData.from;
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store.dispatch('reports/getAdmissionList', this.formData)
@@ -222,23 +223,6 @@ export default {
           }
         }).catch(err =>{
         $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
-        this.loading = false
-        this.$toast.error(err)
-      })
-    },
-    getAdmissionList(page) {
-      this.loading = true
-      this.formData.page = page
-      this.students = [];
-      console.log(this.formData);
-      this.$store.dispatch('reports/getAdmissionList', this.formData)
-        .then(res =>{
-          if(res.data.status) {
-            this.students = res.data.data.data
-            this.pagination = res.data.data
-          }
-          this.loading = false
-        }).catch(err =>{
         this.loading = false
         this.$toast.error(err)
       })
@@ -273,7 +257,7 @@ export default {
         to: '',
         export: false
       }
-      this.getAdmissionList(this.pagination.current_page)
+      this.searchRecord(this.pagination.current_page)
     },
     getColleges() {
       this.$store.dispatch('utility/getFaculties')
@@ -305,7 +289,6 @@ export default {
   mounted() {
     this.getColleges();
     this.getSessions();
-    this.getAdmissionList(this.pagination.current_page)
   }
 }
 </script>

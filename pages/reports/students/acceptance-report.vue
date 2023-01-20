@@ -59,7 +59,7 @@
           </div>
           <div class="row m-t-15">
             <div class="col-md-2">
-              <button type="button" @click="getAcceptanceLetter" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+              <button type="button" @click="getAcceptanceLetter(1)" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
             <div class="col-md-2">
               <button type="button" id="exportBtn" @click="exportData" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel </button>
@@ -227,7 +227,6 @@ export default {
   },
   mounted() {
     this.getColleges()
-    this.getAcceptanceLetter(this.pagination.current_page)
   }
 }
 </script>
