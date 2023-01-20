@@ -137,7 +137,7 @@ export const actions = {
   async getAllSession() {
     return await this.$axios.get('/api/get-all-sessions')
       .then(res =>{
-        return res
+        return res.data
       }).catch(err =>{
         return err
       })

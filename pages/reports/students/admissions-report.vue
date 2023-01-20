@@ -21,14 +21,21 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-4">
+              <label>Acadmic Session</label>
+              <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.session_id">
+                <option value="" selected>Select</option>
+                <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
+              </select>
+            </div>
+            <div class="col-md-4">
               <label>Reg Num:</label>
               <input type="text" v-model="formData.registration_number" class="form-control" placeholder="Reg Number" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <label>From Date:</label>
               <input type="date" v-model="formData.from" class="form-control" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <label>To Date:</label>
               <input type="date" v-model="formData.to" class="form-control" />
             </div>
@@ -145,6 +152,7 @@ export default {
     },
     formData: {
       registration_number: '',
+      session_id: '',
       faculty_id: '',
       department_id: '',
       year: '',
@@ -157,6 +165,7 @@ export default {
       registration_number: ''
     },
     colleges: [],
+    sessions: [],
     departments: [],
     students: [],
     loading: true,
@@ -170,6 +179,7 @@ export default {
     },
     cancelSearch() {
       this.formData.registration_number = ''
+      this.formData.session_id = ''
       this.formData.faculty_id = ''
       this.formData.department_id = ''
       this.formData.year = ''
@@ -219,7 +229,8 @@ export default {
     getAdmissionList(page) {
       this.loading = true
       this.formData.page = page
-      this.students = []
+      this.students = [];
+      console.log(this.formData);
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
           if(res.data.status) {
@@ -254,6 +265,7 @@ export default {
       this.formData = {
         registration_number: '',
         faculty_id: '',
+        session_id: '',
         department_id: '',
         year: '',
         from: '',
@@ -271,6 +283,15 @@ export default {
         this.$toast.error(err)
       })
     },
+    getSessions() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+          this.formData.session_id = this.sessions[0].id;
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
     getDepartmentByCollege(e) {
       let id = e.target.value
       this.$store.dispatch('utility/getDepartmentByFaculty', id)
@@ -282,7 +303,8 @@ export default {
     }
   },
   mounted() {
-    this.getColleges()
+    this.getColleges();
+    this.getSessions();
     this.getAdmissionList(this.pagination.current_page)
   }
 }

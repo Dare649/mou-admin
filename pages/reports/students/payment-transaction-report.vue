@@ -21,20 +21,35 @@
         <div class="card-body">
             <div class="row">
               <div class="col-md-3">
+                <label>Report Group:</label>
+                <select class="form-control" v-model="formData.model_type">
+                  <option value="" selected>All</option>
+                  <option value="0">PUTME</option>
+                  <option value="1">Regular Students</option>
+                  <option value="2">Admissions</option>
+                  <option value="3">DE Admissions</option>
+                  <option value="4">CEC Admissions</option>
+                  <option value="5">PG Admissions</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+              <label>Acadmic Session</label>
+              <select class="form-control" @change="getDepartmentByCollege($event)" v-model="formData.session_id">
+                <option value="" selected>Select</option>
+                <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
+              </select>
+            </div>
+              <div class="col-md-3">
                 <label>Registration/ Matriculation Number:</label>
                 <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg/ Matric Number" required />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label>RRR Code:</label>
                 <input type="text" v-model="formData.trans_ref" class="form-control" placeholder="RRR Code" required />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label>From Date:</label>
                 <input type="date" v-model="formData.from_dt" class="form-control" required />
-              </div>
-              <div class="col-md-3">
-                <label>To Date:</label>
-                <input type="date" v-model="formData.to_dt" class="form-control" required />
               </div>
 
             </div>
@@ -53,16 +68,8 @@
                   <option v-for="department in departments" :value="department.id">{{department.name}}</option>
                 </select>
               </div>
-              <div class="col-md-3">
-                <label>Status:</label>
-                <select class="form-control" v-model="formData.status">
-                  <option value="" selected>All</option>
-                  <option value="2">PENDING</option>
-                  <option value="1">SUCCESS</option>
-                  <option value="3">FAILED</option>
-                </select>
-              </div>
-              <div class="col-md-3">
+
+              <div class="col-md-2">
                 <label>Payment For:</label>
                 <select class="form-control" v-model="formData.payment_type">
                   <option value="" selected>All</option>
@@ -73,6 +80,19 @@
                   <option value="SCHOOL_FEE">SCHOOL FEES</option>
                   <option value="SUG_FEE">SUG DUES</option>
                 </select>
+              </div>
+              <div class="col-md-2">
+                <label>Status:</label>
+                <select class="form-control" v-model="formData.status">
+                  <option value="" selected>All</option>
+                  <option value="2">PENDING</option>
+                  <option value="1">SUCCESS</option>
+                  <option value="3">FAILED</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label>To Date:</label>
+                <input type="date" v-model="formData.to_dt" class="form-control" required />
               </div>
             </div>
             <div class="row m-t-20">
@@ -158,19 +178,8 @@ export default {
   data() {
     return {
       loading: true,
-      searchData: {
-        registration_number: '',
-        faculty_id: '',
-        department_id: '',
-        payment_type: '',
-        year: '',
-        status: '',
-        from: '',
-        entry_mode: '',
-        to: '',
-        export: false
-      },
       formData: {
+        model_type: 1,
         trans_ref: '',
         jamb_no: '',
         department: '',
@@ -180,6 +189,7 @@ export default {
         status: '',
         entry_mode: '',
         faculty_id: '',
+        session_id: '',
         export: false
       },
       pagination: {
@@ -189,6 +199,7 @@ export default {
         to: 0,
         current_page: 1
       },
+      sessions: [],
       payments: [],
       colleges: [],
       departments: []
@@ -265,6 +276,7 @@ export default {
     },
     refresh() {
       this.formData = {
+        model_type: 1,
         trans_ref: '',
         jamb_no: '',
         department: '',
@@ -274,6 +286,7 @@ export default {
         status: '',
         entry_mode: '',
         faculty_id: '',
+        session_id: '',
         export: false
       }
       this.getAllTransaction(1)
@@ -282,6 +295,15 @@ export default {
       this.$store.dispatch('utility/getFaculties')
         .then(res =>{
           this.colleges = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getSessions() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+          this.formData.session_id = this.sessions[0].id;
         }).catch(err =>{
         this.$toast.error(err)
       })
@@ -311,6 +333,7 @@ export default {
     }
   },
   mounted() {
+    this.getSessions()
     this.getColleges()
     this.getAllTransaction(1)
   }
