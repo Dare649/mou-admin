@@ -21,20 +21,35 @@
         <div class="card-body">
             <div class="row">
               <div class="col-md-3">
+                <label>Payment Type:</label>
+                <select class="form-control" v-model="formData.model_type">
+                  <option value="" selected>All</option>
+                  <option value="0">PUTME</option>
+                  <option value="1">Regular Students</option>
+                  <option value="2">Admissions</option>
+                  <option value="3">DE Admissions</option>
+                  <option value="4">CEC Admissions</option>
+                  <option value="5">PG Admissions</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label>Acadmic Session</label>
+                <select class="form-control" v-model="formData.session_id">
+                  <option value="" selected>Select</option>
+                  <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
+                </select>
+              </div>
+              <div class="col-md-3">
                 <label>Registration/ Matriculation Number:</label>
                 <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg/ Matric Number" required />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label>RRR Code:</label>
                 <input type="text" v-model="formData.trans_ref" class="form-control" placeholder="RRR Code" required />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label>From Date:</label>
                 <input type="date" v-model="formData.from_dt" class="form-control" required />
-              </div>
-              <div class="col-md-3">
-                <label>To Date:</label>
-                <input type="date" v-model="formData.to_dt" class="form-control" required />
               </div>
 
             </div>
@@ -53,16 +68,8 @@
                   <option v-for="department in departments" :value="department.id">{{department.name}}</option>
                 </select>
               </div>
-              <div class="col-md-3">
-                <label>Status:</label>
-                <select class="form-control" v-model="formData.status">
-                  <option value="" selected>All</option>
-                  <option value="2">PENDING</option>
-                  <option value="1">SUCCESS</option>
-                  <option value="3">FAILED</option>
-                </select>
-              </div>
-              <div class="col-md-3">
+
+              <div class="col-md-2">
                 <label>Payment For:</label>
                 <select class="form-control" v-model="formData.payment_type">
                   <option value="" selected>All</option>
@@ -74,6 +81,19 @@
                   <option value="SUG_FEE">SUG DUES</option>
                 </select>
               </div>
+              <div class="col-md-2">
+                <label>Status:</label>
+                <select class="form-control" v-model="formData.status">
+                  <option value="" selected>All</option>
+                  <option value="2">PENDING</option>
+                  <option value="1">SUCCESS</option>
+                  <option value="3">FAILED</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label>To Date:</label>
+                <input type="date" v-model="formData.to_dt" class="form-control" required />
+              </div>
             </div>
             <div class="row m-t-20">
 
@@ -81,7 +101,7 @@
                 <button type="submit" @click="exportRecord" id="exportBtn" class="btn btn-danger"><i class="fa fa-file-excel-o" />&nbsp;Export to Excel</button>
               </div>
               <div class="col-md-6 text-right">
-                <button type="button" @click="searchRecord" id="submitBtn" class="btn btn-primary"><i class="fa fa-search" />&nbsp;Search Record</button>
+                <button type="button" @click="searchRecord(1)" id="submitBtn" class="btn btn-primary"><i class="fa fa-search" />&nbsp;Search Record</button>
               </div>
             </div>
         </div>
@@ -113,7 +133,7 @@
                   <td colspan="7">Loading...please wait</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length < 1">
-                  <td colspan="7">No records at the moment</td>
+                  <td colspan="7">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
@@ -136,7 +156,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getAllTransaction(pagination.current_page)"
+              v-on:click.native="searchRecord(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -157,20 +177,9 @@ export default {
   },
   data() {
     return {
-      loading: true,
-      searchData: {
-        registration_number: '',
-        faculty_id: '',
-        department_id: '',
-        payment_type: '',
-        year: '',
-        status: '',
-        from: '',
-        entry_mode: '',
-        to: '',
-        export: false
-      },
+      loading: false,
       formData: {
+        model_type: 1,
         trans_ref: '',
         jamb_no: '',
         department: '',
@@ -180,6 +189,7 @@ export default {
         status: '',
         entry_mode: '',
         faculty_id: '',
+        session_id: '',
         export: false
       },
       pagination: {
@@ -189,31 +199,19 @@ export default {
         to: 0,
         current_page: 1
       },
+      sessions: [],
       payments: [],
       colleges: [],
       departments: []
     }
   },
   methods: {
-    getAllTransaction(page) {
-      this.formData.page = page
-      this.payments = []
-      this.$store.dispatch('reports/getTransactionReport', this.formData)
-        .then(res =>{
-          this.payments = res.data.data.data
-          this.pagination = res.data.data
-          this.loading = false
-        }).catch(err =>{
-          this.loading = false
-          this.$toast.error(err)
-      })
-    },
     viewReceipt(ref) {
       let url = config.backend + 'reports/payment-receipt/' + ref
       window.open(url, '_blank')
     },
-    searchRecord() {
-      this.formData.page = 1
+    searchRecord(page) {
+      this.formData.page = page
       this.formData.export = false;
 
       this.loading = true
@@ -236,14 +234,14 @@ export default {
     exportRecord() {
       if(this.formData.from_dt != '' && this.formData.to_dt == '') this.formData.to_dt = this.formData.from_dt;
 
-      if (this.formData.from != '' && !this.validateDateInterval(this.formData.from_dt, this.formData.to_dt)) {
-        this.$swal({
-            icon: 'error',
-            title: 'Date interval cannot be more than 31 days',
-            showConfirmButton: true,
-          })
-        return false;
-      }
+      // if (this.formData.from != '' && !this.validateDateInterval(this.formData.from_dt, this.formData.to_dt)) {
+      //   this.$swal({
+      //       icon: 'error',
+      //       title: 'Date interval cannot be more than 31 days',
+      //       showConfirmButton: true,
+      //     })
+      //   return false;
+      // }
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.formData.export = true;
 
@@ -265,6 +263,7 @@ export default {
     },
     refresh() {
       this.formData = {
+        model_type: 1,
         trans_ref: '',
         jamb_no: '',
         department: '',
@@ -274,14 +273,24 @@ export default {
         status: '',
         entry_mode: '',
         faculty_id: '',
+        session_id: '',
         export: false
       }
-      this.getAllTransaction(1)
+      this.searchRecord(1)
     },
     getColleges() {
       this.$store.dispatch('utility/getFaculties')
         .then(res =>{
           this.colleges = res.data
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
+    getSessions() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+          this.formData.session_id = this.sessions[0].id;
         }).catch(err =>{
         this.$toast.error(err)
       })
@@ -311,8 +320,8 @@ export default {
     }
   },
   mounted() {
+    this.getSessions()
     this.getColleges()
-    this.getAllTransaction(1)
   }
 }
 </script>

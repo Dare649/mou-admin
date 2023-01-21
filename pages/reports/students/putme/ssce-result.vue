@@ -34,7 +34,7 @@
                         <input type="date" class="form-control" required v-model="model.to_dt" />
                       </div>
                     </div>
-                    <div class="row m-t-5">
+                    <!-- <div class="row m-t-5">
                       <div class="col-md-4">
                         <label>College:</label>
                         <select class="form-control" v-model="model.faculty_id" @change="populateDepartments($event)">
@@ -49,6 +49,9 @@
                           <option v-for="department in departments" :key="department.id" :value="department.id">{{department.name}}</option>
                         </select>
                       </div>
+
+                    </div> -->
+                    <div class="row m-t-5">
                       <div class="col-md-4">
                         <label>Exam Type:</label>
                         <select class="form-control" v-model="model.exam_type">
@@ -58,18 +61,9 @@
                           <option value="nabteb">NABTEB</option>
                         </select>
                       </div>
-                    </div>
-                    <div class="row m-t-5">
                       <div class="col-md-4">
-                        <label>Select Year</label>
-                        <select class="form-control" required v-model="model.year">
-                          <option value="" selected>All</option>
-                          <option  value="2019">Year --- 2019/2020</option>
-                          <option  value="2020">Year --- 2020/2021</option>
-                          <option  value="2021">Year --- 2021/2022</option>
-                          <option  value="2022">Year --- 2022/2023</option>
-                          <option  value="2023">Year --- 2023/2014</option>
-                        </select>
+                        <label>Enter Year</label>
+                        <input type="text" id="year" class="form-control" placeholder="E.g 2021" v-model="model.year" />
                       </div>
                       <div class="col-md-2 m-t-30">
                         <button type="button" @click="searchRecord()" v-if="!sLoading" class="btn btn-primary btn-block">
@@ -187,7 +181,6 @@
 </template>
 <script>
 import Pagination from '~/components/Pagination'
-import config from "../../../../store/config";
 
 export default {
   layout: 'main',
@@ -211,14 +204,13 @@ export default {
         departments: [],
         importResponse: {},
         sLoading: false,
+        error: false,
         programs: [],
         file: "",
-        colleges: [],
         candidates: [],
         admission_categories: [],
-        faculties: [],
         model: {
-          year:"",
+          year: this.$moment().format('YYYY'),
           registration_number: "",
           from_dt: "",
           to_dt: "",
@@ -244,9 +236,21 @@ export default {
         this.getSsceResult(1)
       },
       searchRecord(){
-        this.sLoading = true
-        this.model.export = false
-        this.$store
+
+        if(this.model.year === '') {
+          // this.$swal({
+          //   position: 'top-center',
+          //   icon: 'error',
+          //   title: 'You have not entered a result year',
+          //   showConfirmButton: true,
+          // })
+          this.$toast.error('You have not entered a result year');
+          this.error = true;
+          $('#year').focus();
+        } else {
+          this.sLoading = true
+          this.model.export = false;
+          this.$store
             .dispatch('get-started/getSsceResultReport', this.model)
                 .then(res => {
                 if(res != undefined){
@@ -260,42 +264,7 @@ export default {
             }).catch(err => {
               this.sLoading = false
           })
-      },
-      getFaculties(){
-          this.$store
-              .dispatch('get-started/getAllFaculties')
-              .then(res => {
-              if(res !== undefined){
-                  this.faculties = res
-              }else{
-                  this.ErrMsg = "Error Fetching data!"
-              }
-          }).catch(err => {
-          })
-      },
-      populateDepartments(event){
-          this.model.export_department_id = ""
-          this.departments = []
-          if(event.target.value !== ""){
-              this.getDepartmentsByFacultyId(event.target.value)
-          }else{
-              this.model.export_department_id = ""
-              this.departments = []
-          }
-      },
-      getDepartmentsByFacultyId(facultyId) {
-          let payload = {}
-          payload.facultyId = facultyId
-          this.$store
-              .dispatch('get-started/getAllDepartmentsByFacultyId', payload)
-              .then(res => {
-              if(res !== undefined){
-                  this.departments = res
-              }else{
-                  this.ErrMsg = "Error Logging in!"
-              }
-          }).catch(err => {
-          })
+        }
       },
       getSsceResult(page) {
         this.Loading = true
@@ -312,35 +281,42 @@ export default {
               this.Loading = false
           })
       },
-      exportStudentSSCEs() {
-        this.model.export = 'true';
-        const url = config.backend+'ssce-result/export?year='+this.model.year+'&registration_number='+this.model.registration_number+'&from_dt='+this.model.from_dt+'&to_dt='+this.model.to_dt+'&faculty_id='+this.model.faculty_id+'&department_id='+this.model.department_id+'&exam_type='+this.model.exam_type+'&export='+this.model.export
-        window.open(url, '_blank');
-      },
-      exportStudentSSCEsOld(){
-        this.exportLoading = true
-        this.model.export = true
-        this.$store
-          .dispatch('get-started/exportSSCEResults', this.model)
-          .then(res => {
-            if(res){
-              var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
-              var fileLink = document.createElement('a');
+      exportStudentSSCEs(){
+        if(this.model.year === '') {
+          // this.$swal({
+          //   position: 'top-center',
+          //   icon: 'error',
+          //   title: 'You have not entered a result year',
+          //   showConfirmButton: true,
+          // })
+          this.$toast.error('You have not entered a result year');
+          this.error = true;
+          $('#year').focus();
+        } else {
+          this.exportLoading = true
+          this.model.export  = true
+          this.$store
+            .dispatch('get-started/exportSSCEResults', this.model)
+            .then(res => {
+              if (res) {
+                var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+                var fileLink = document.createElement('a');
 
-              fileLink.href = fileURL;
-              fileLink.setAttribute('download', 'ssce-results-report.xlsx');
-              document.body.appendChild(fileLink);
-              fileLink.click();
-              this.exportLoading = false
-              this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-            }else{
-              this.exportLoading = false
-              alert("File Downloaded Unsuccessful")
-            }
-        }).catch(err => {
-          this.exportLoading = false
-          alert("File Downloaded Unsuccessful")
-        })
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'ssce-results-report.xlsx');
+                document.body.appendChild(fileLink);
+                fileLink.click();
+                this.exportLoading = false
+                this.$toast.success('Records exported to excel successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+              } else {
+                this.exportLoading = false
+                alert("File Downloaded Unsuccessful")
+              }
+          }).catch(err => {
+            this.exportLoading = false
+            alert("File Downloaded Unsuccessful")
+          })
+        }
       },
       viewResult(content) {
         this.results = [];
@@ -355,7 +331,7 @@ export default {
         $('#display_result').modal('hide');
       }
     },
-   mounted: function() {
+    mounted: function() {
       if (!process.server) {
         const script1 = document.createElement('script')
         script1.type = 'text/javascript'
@@ -363,7 +339,6 @@ export default {
 
         document.head.appendChild(script1)
       }
-      this.getFaculties()
       this.getSsceResult(1)
     }
 }

@@ -26,18 +26,18 @@
                         <input type="text" v-model="searchData.registration_number" class="form-control" placeholder="Reg Number (Optional)"  />
                       </div>
                       <div class="col-md-4">
-                        <label>PUTME Reg. No:</label>
-                        <input type="text" class="form-control" v-model="searchData.screening_id" placeholder="PUTME registration no.">
-                      </div>
-                      <div class="col-md-4">
                         <label>From Date:</label>
                         <input type="date" class="form-control" v-model="searchData.from" required />
+                      </div>
+                      <div class="col-md-4">
+                        <label>To Date:</label>
+                        <input type="date" v-model="searchData.to" class="form-control" required />
                       </div>
                     </div>
                     <div class="row m-t-5">
                       <div class="col-md-4">
-                        <label>To Date:</label>
-                        <input type="date" v-model="searchData.to" class="form-control" required />
+                        <label>PUTME Reg. No:</label>
+                        <input type="text" class="form-control" v-model="searchData.screening_id" placeholder="PUTME registration no.">
                       </div>
                       <div class="col-md-4">
                         <label>College:</label>
@@ -64,14 +64,10 @@
                         </select>
                       </div>
                       <div class="col-md-4">
-                        <label>Select Year</label>
-                        <select class="form-control" v-model="searchData.year">
-                          <option value="" selected>All</option>
-                          <option  value="2019">Year --- 2019/2020</option>
-                          <option  value="2020">Year --- 2020/2021</option>
-                          <option  value="2021">Year --- 2021/2022</option>
-                          <option  value="2022">Year --- 2022/2023</option>
-                          <option  value="2023">Year --- 2023/2024</option>
+                        <label>Acadmic Session</label>
+                        <select class="form-control" v-model="searchData.session_id">
+                          <option value="" selected>Select</option>
+                          <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
                         </select>
                       </div>
                       <div class="col-md-2 m-t-30">
@@ -114,7 +110,7 @@
                                     <td colspan="7">Loading....Please wait.</td>
                                 </tr>
                                 <tr v-if="!getLoading && Object.keys(users).length < 1">
-                                    <td colspan="7">No record at the moment... Please insert new record</td>
+                                  <td colspan="7">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                                 </tr>
                                 <tr v-if="!getLoading && Object.keys(users).length > 0" v-for="user in users" :key="user.id">
                                   <td>
@@ -142,7 +138,7 @@
                             </table>
                             <Pagination
                               v-bind:pagination="pagination"
-                              v-on:click.native="getAllUsers(pagination.current_page)"
+                              v-on:click.native="searchRecord(pagination.current_page)"
                               :offset="4">
                             </Pagination>
                         </div>
@@ -501,6 +497,7 @@ export default {
       return {
         putmeDetails: {},
         subjects: [],
+        sessions: [],
         update: false,
         currentUserSelected: "",
         updateLoading: false,
@@ -535,7 +532,7 @@ export default {
           faculty_id: '',
           department_id: '',
           entry_mode: '',
-          year :'',
+          session_id :'',
           export: false
         },
         pagination: {
@@ -642,7 +639,7 @@ export default {
             this.clearForm()
             $('#edit_putme_student').modal('hide').data( 'bs.modal', null )
             this.$toast.success('Student details was successfully updated')
-            this.getAllUsers(1)
+            this.searchRecord(1)
           }else{
             this.editLoading = false
             this.$toast.error(res.data.message)
@@ -760,16 +757,16 @@ export default {
         this.$store
             .dispatch('get-started/exportOLevel', user)
             .then(res => {
-        if(res != undefined){
-            this.exportLoading = false
-            this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-        }else{
-            this.exportLoading = false
-            alert("File Downloaded Unsuccessful")
-        }
-            }).catch(err => {
-                this.exportLoading = false
-                this.$toast.error('An error occurred please contact the administrator' + err)
+          if(res != undefined){
+              this.exportLoading = false
+              this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+          }else{
+              this.exportLoading = false
+              alert("File Downloaded Unsuccessful")
+          }
+        }).catch(err => {
+          this.exportLoading = false
+          this.$toast.error('An error occurred please contact the administrator' + err)
         })
     },
     exportRegisteredPutmeStudents() {
@@ -804,15 +801,16 @@ export default {
         department_id: '',
         entry_mode: '',
         year :'',
+        session_id: this.sessions[0].id,
         export: false
       }
       this.countRegisteredPutmeStudents()
-      this.getAllUsers(1)
+      this.searchRecord(1)
     },
-    searchRecord() {
+    searchRecord(page) {
       this.getLoading = true
       this.users = []
-      this.searchData.page = 1
+      this.searchData.page = page
       this.searchData.export = false
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store
@@ -838,28 +836,6 @@ export default {
       this.$store.dispatch('utility/countPutmeStudent')
         .then(res => {
           this.count = res.data.data
-        })
-    },
-    getAllUsers(page){
-      this.getLoading = true
-      this.users = []
-      this.searchData.page = page
-        this.$store
-            .dispatch('reports/getRegisteredPutmeStudents', this.searchData)
-            .then(res => {
-            if(res != undefined){
-              if(res.data.status){
-                this.users = res.data.data.data
-                this.pagination = res.data.data
-                this.getLoading = false
-              }
-              this.getLoading = false
-            }else{
-                this.getLoading = false
-                this.ErrMsg = "Error Fetching data!"
-            }
-        }).catch(err => {
-            this.getLoading = false
         })
     },
     getCountries(){
@@ -918,6 +894,15 @@ export default {
             this.lgas = []
         }
     },
+    getSessions() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+          this.searchData.session_id = this.sessions[0].id;
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
     populateState(event){
         this.states = []
         if(event.target.value !== ""){
@@ -929,16 +914,16 @@ export default {
     }
   },
   mounted: function() {
-      if (!process.server) {
-          const script1 = document.createElement('script')
-          script1.type = 'text/javascript'
-          script1.src = '/pages/js/pages.min.js'
-          document.head.appendChild(script1)
-      }
-      this.countRegisteredPutmeStudents()
-      this.getCountries()
-      this.getFaculties()
-      this.getAllUsers(this.pagination.current_page)
+    if (!process.server) {
+        const script1 = document.createElement('script')
+        script1.type = 'text/javascript'
+        script1.src = '/pages/js/pages.min.js'
+        document.head.appendChild(script1)
+    }
+    this.countRegisteredPutmeStudents()
+    this.getCountries();
+    this.getFaculties();
+    this.getSessions();
   }
 }
 </script>

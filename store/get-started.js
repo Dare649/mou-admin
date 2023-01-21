@@ -351,7 +351,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/ssce-result/export?year='+payload.year+'&registration_number='+payload.registration_number+'&from_dt='+payload.from_dt+'&to_dt='+payload.to_dt+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&exam_type='+payload.exam_type+'&export='+payload.export,
-            headers: {'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
@@ -475,7 +475,7 @@ export const actions = {
     async exportUploadedJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records?session_id='+payload.session_id+'&registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -489,7 +489,7 @@ export const actions = {
     async exportUploadedDeJambCandidates(context, payload) {
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records/de?session_id='+payload.session_id+'&registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date + '&export=' + payload.export+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' },
             responseType: "arraybuffer"
         })
@@ -516,7 +516,7 @@ export const actions = {
     async getUploadedJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records?session_id='+payload.session_id+'&registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {
@@ -529,7 +529,7 @@ export const actions = {
   async getUploadedDEJambCandidates(context, payload){
         return await this.$axios({
             method: 'get',
-            url: 'api/jamb-results/records/de?registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
+            url: 'api/jamb-results/records/de?session_id='+payload.session_id+'&registration_number='+payload.registration_number+'&year='+payload.year+'&from='+payload.from_date+'&to='+payload.to_date+'&page='+payload.page+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&from='+payload.from_date+'&to='+payload.to_date,
             headers: {'Content-Type': 'application/json' }
         })
         .then(function (response) {

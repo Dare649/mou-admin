@@ -21,15 +21,22 @@
         <div class="card-body">
           <form style="width: 100%">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <label>Acadmic Session</label>
+                <select class="form-control" v-model="model.session_id">
+                  <option value="" selected>Select</option>
+                  <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
+                </select>
+              </div>
+              <div class="col-md-3">
                 <label>Reg Num:</label>
                 <input type="text" class="form-control" v-model="model.registration_number" placeholder="Reg Number (Optional)" />
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label>From Date:</label>
                 <input type="date" class="form-control" v-model="model.from_date" />
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label>To Date:</label>
                 <input type="date" class="form-control" v-model="model.to_date" />
               </div>
@@ -59,23 +66,15 @@
               </div>
               <div class="col-md-3">
                 <label>Year:</label>
-                <select class="form-control" v-model="model.year">
-                  <option value="" selected>All</option>
-                  <option value="2019">2019</option>
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-                </select>
+                <input type="text" class="form-control" placeholder="e.g 2021" v-model="model.year" />
               </div>
             </div>
             <div class="row m-t-15">
-              <div class="col-md-2">
-                <button type="submit" @click="searchRecord()" v-if="!sLoading" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
-                <button type="submit" disabled v-if="sLoading" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Searching...</button>
+              <div class="col-md-6">
+                <button type="button" id="exportBtn" @click="exportUploadedJambCandidates()"  class="btn btn-danger"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
               </div>
-              <div class="col-md-2">
-                <button type="button" disabled v-if="exLoading" class="btn btn-danger btn-block">Exporting</button>
-                <button type="button" v-if="!exLoading" @click="exportUploadedJambCandidates()"  class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
+              <div class="col-md-6 text-right">
+                <button type="submit" id="searchBtn" @click="searchRecord(1)" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
               </div>
             </div>
           </form>
@@ -106,7 +105,7 @@
                   <td colspan="5">Loading....please wait</td>
                 </tr>
                 <tr v-if="!Loading && candidates.length < 1">
-                  <td colspan="5">No records at the moment</td>
+                  <td colspan="5">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                 </tr>
                 <tr v-for="can in candidates" :key="can.jamb_number">
                   <td>{{ can.candidate_name }}</td>
@@ -125,7 +124,7 @@
             </table>
             <Pagination
               v-bind:pagination="pagination"
-              v-on:click.native="getUploadedJambCandidates(pagination.current_page)"
+              v-on:click.native="searchRecord(pagination.current_page)"
               :offset="4">
             </Pagination>
           </div>
@@ -145,6 +144,7 @@ export default {
   },
   data: () => ({
     faculties: [],
+    sessions: [],
     departments: [],
     exLoading: false,
     sLoading: false,
@@ -152,6 +152,7 @@ export default {
     candidates: [],
     model: {
       faculty_id: "",
+      session_id: "",
       department_id: "",
       registration_number: "",
       year: "",
@@ -170,7 +171,7 @@ export default {
   }),
   mounted: function() {
       this.getFaculties()
-      this.getUploadedJambCandidates(1)
+      this.getSessions()
 
     },
   methods: {
@@ -221,56 +222,54 @@ export default {
         this.model.entry_mode = ""
         this.model.from_date = ""
         this.model.to_date = ""
-        this.getUploadedJambCandidates(1)
+        this.searchRecord(1)
       },
-    searchRecord(){
-      this.sLoading = true
+    searchRecord(page){
       this.Loading = true
-      this.candidates = []
+      this.model.page = page;
+      this.model.export = 'false'
+      this.candidates = [];
+      $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
+
       this.$store
           .dispatch('get-started/getUploadedDEJambCandidates', this.model)
               .then(res => {
-              if(res != undefined){
-                this.sLoading = false
-                this.Loading = false
-                this.candidates = res.data.data
-                this.pagination = res.data
-              }else{
-                this.sLoading = false
-                alert("File Downloaded Unsuccessful")
-              }
-          }).catch(err => {
-          this.sLoading = false
-          this.Loading = false
-        })
-    },
-    getUploadedJambCandidates(page){
-      this.Loading = true
-      this.model.page = page
-      this.candidates = []
-      this.$store
-          .dispatch('get-started/getUploadedDEJambCandidates', this.model)
-              .then(res => {
+                $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
+
               if(res != undefined){
                 this.candidates = res.data.data
                 this.pagination = res.data
               }
                 this.Loading = false
           }).catch(err => {
+            $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
+
             this.Loading = false
         })
     },
+    getSessions() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+          this.model.session_id = this.sessions[0].id;
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
+    },
     exportUploadedJambCandidates(){
       this.exLoading = true
-      this.model.export = 'true'
+      this.model.export = 'true';
+      $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.$store
           .dispatch('get-started/exportUploadedDeJambCandidates', this.model)
               .then(res => {
+                $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export Record');
+
               if(res != undefined){
                   var fileURL = window.URL.createObjectURL(new Blob([res], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
                   var fileLink = document.createElement('a');
                   fileLink.href = fileURL;
-                  fileLink.setAttribute('download', 'uploaded_jamb_students_reports.xlsx');
+                  fileLink.setAttribute('download', 'uploaded_de_jamb_students_reports.xlsx');
                   document.body.appendChild(fileLink);
                   fileLink.click();
                   this.exLoading = false
@@ -280,6 +279,7 @@ export default {
                   alert("File Downloaded Unsuccessful")
               }
           }).catch(err => {
+            $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export Record');
             this.$toast.error(err)
             this.exLoading = false
         })
