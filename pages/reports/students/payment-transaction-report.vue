@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="row">
               <div class="col-md-3">
-                <label>Report Group:</label>
+                <label>Payment Type:</label>
                 <select class="form-control" v-model="formData.model_type">
                   <option value="" selected>All</option>
                   <option value="0">PUTME</option>
@@ -33,12 +33,12 @@
                 </select>
               </div>
               <div class="col-md-2">
-              <label>Acadmic Session</label>
-              <select class="form-control" v-model="formData.session_id">
-                <option value="" selected>Select</option>
-                <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
-              </select>
-            </div>
+                <label>Acadmic Session</label>
+                <select class="form-control" v-model="formData.session_id">
+                  <option value="" selected>Select</option>
+                  <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.session_name}}</option>
+                </select>
+              </div>
               <div class="col-md-3">
                 <label>Registration/ Matriculation Number:</label>
                 <input type="text" v-model="formData.jamb_no" class="form-control" placeholder="Reg/ Matric Number" required />
@@ -101,7 +101,7 @@
                 <button type="submit" @click="exportRecord" id="exportBtn" class="btn btn-danger"><i class="fa fa-file-excel-o" />&nbsp;Export to Excel</button>
               </div>
               <div class="col-md-6 text-right">
-                <button type="button" @click="searchRecord" id="submitBtn" class="btn btn-primary"><i class="fa fa-search" />&nbsp;Search Record</button>
+                <button type="button" @click="searchRecord(1)" id="submitBtn" class="btn btn-primary"><i class="fa fa-search" />&nbsp;Search Record</button>
               </div>
             </div>
         </div>

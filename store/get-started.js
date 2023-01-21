@@ -351,7 +351,7 @@ export const actions = {
         return await this.$axios({
             method: 'get',
             url: 'api/ssce-result/export?year='+payload.year+'&registration_number='+payload.registration_number+'&from_dt='+payload.from_dt+'&to_dt='+payload.to_dt+'&faculty_id='+payload.faculty_id+'&department_id='+payload.department_id+'&exam_type='+payload.exam_type+'&export='+payload.export,
-            headers: {'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
             responseType: "arraybuffer"
         })
         .then(function (response) {
