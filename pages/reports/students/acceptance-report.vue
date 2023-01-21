@@ -58,11 +58,12 @@
             </div>
           </div>
           <div class="row m-t-15">
-            <div class="col-md-2">
-              <button type="button" @click="getAcceptanceLetter(1)" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+
+            <div class="col-md-6">
+              <button type="button" id="exportBtn" @click="exportData" class="btn btn-danger"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel </button>
             </div>
-            <div class="col-md-2">
-              <button type="button" id="exportBtn" @click="exportData" class="btn btn-danger btn-block"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel </button>
+            <div class="col-md-6 text-right">
+              <button type="button" @click="getAcceptanceLetter(1)" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
           </div>
         </div>
@@ -93,7 +94,7 @@
                   <td colspan="5">Loading......Please wait</td>
                 </tr>
                 <tr v-if="!loading && Object.keys(students).length < 1">
-                  <td colspan="5">No records at the moment</td>
+                  <td colspan="5">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                 </tr>
                 <tr v-if="!loading && Object.keys(students).length > 0" v-for="student in students">
                   <td>{{ student.reg_number }}</td>
@@ -132,7 +133,7 @@ export default {
     Pagination
   },
   data: () =>({
-    loading: true,
+    loading: false,
     searchData: {
       registration_number: '',
       faculty_id: '',

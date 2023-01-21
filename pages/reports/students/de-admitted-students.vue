@@ -69,7 +69,7 @@
               <button type="button" id="exportBtn" @click="exportRecord" class="btn btn-danger"><i class="fa fa-file-excel-o"></i>&nbsp; Export to Excel</button>
             </div>
             <div class="col-md-6 text-right">
-              <button type="button" id="searchBtn" @click="searchRecord()" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
+              <button type="button" id="searchBtn" @click="searchRecord(1)" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp; Search Record</button>
             </div>
           </div>
         </div>
@@ -324,7 +324,7 @@ export default {
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'admission-list-report.xlsx');
+          fileLink.setAttribute('download', `de-admission-list-report.xlsx`);
           document.body.appendChild(fileLink);
           fileLink.click();
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});

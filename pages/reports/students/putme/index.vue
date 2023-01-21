@@ -26,18 +26,18 @@
                         <input type="text" v-model="searchData.registration_number" class="form-control" placeholder="Reg Number (Optional)"  />
                       </div>
                       <div class="col-md-4">
-                        <label>PUTME Reg. No:</label>
-                        <input type="text" class="form-control" v-model="searchData.screening_id" placeholder="PUTME registration no.">
-                      </div>
-                      <div class="col-md-4">
                         <label>From Date:</label>
                         <input type="date" class="form-control" v-model="searchData.from" required />
+                      </div>
+                      <div class="col-md-4">
+                        <label>To Date:</label>
+                        <input type="date" v-model="searchData.to" class="form-control" required />
                       </div>
                     </div>
                     <div class="row m-t-5">
                       <div class="col-md-4">
-                        <label>To Date:</label>
-                        <input type="date" v-model="searchData.to" class="form-control" required />
+                        <label>PUTME Reg. No:</label>
+                        <input type="text" class="form-control" v-model="searchData.screening_id" placeholder="PUTME registration no.">
                       </div>
                       <div class="col-md-4">
                         <label>College:</label>
@@ -757,16 +757,16 @@ export default {
         this.$store
             .dispatch('get-started/exportOLevel', user)
             .then(res => {
-        if(res != undefined){
-            this.exportLoading = false
-            this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
-        }else{
-            this.exportLoading = false
-            alert("File Downloaded Unsuccessful")
-        }
-            }).catch(err => {
-                this.exportLoading = false
-                this.$toast.error('An error occurred please contact the administrator' + err)
+          if(res != undefined){
+              this.exportLoading = false
+              this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
+          }else{
+              this.exportLoading = false
+              alert("File Downloaded Unsuccessful")
+          }
+        }).catch(err => {
+          this.exportLoading = false
+          this.$toast.error('An error occurred please contact the administrator' + err)
         })
     },
     exportRegisteredPutmeStudents() {

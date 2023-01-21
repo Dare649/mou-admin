@@ -142,6 +142,14 @@ export const actions = {
         return err
       })
   },
+  async getCecSession() {
+    return await this.$axios.get('/api/get-all-sessions')
+      .then(res =>{
+        return res.data
+      }).catch(err =>{
+        return err
+      })
+  },
   async getCourseByProgram(context, data) {
     return await this.$axios.get('/api/utilities/get-courses?level=' + data.level + '&program=' + data.program)
       .then(res =>{
