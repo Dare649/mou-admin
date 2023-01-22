@@ -89,9 +89,9 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th style="width: 15%;"> Session</th>
+                <th style="width: 12%;"> Session</th>
                 <th style="width: 20%;">PUTME No.</th>
-                <th style="width: 12%;">Reg No.</th>
+                <th style="width: 15%;">Reg No.</th>
                 <th style="width: 25%;">Name</th>
                 <th>Gender</th>
                 <th>Total Score</th>
@@ -106,10 +106,10 @@
                   <td colspan="6">No record at the moment. Change the search criteria above and click "Search Record" button </td>
                 </tr>
                 <tr v-if="!loading" v-for="student in students" :key="student.id">
-                  <td>{{student.session.session_name}}</td>
-                  <td>{{student.putme.screening_id}}</td>
+                  <td>{{student.session_name}}</td>
+                  <td>{{student.putme_reg_no}}</td>
                   <td>{{student.jamb_reg_no}}</td>
-                  <td>{{ student.name }}</td>
+                  <td>{{ student.student_name }}</td>
                   <td>{{ (student.sex === 'F') ? 'Female' : 'Male'}}</td>
                   <td>{{student.totalscore}}</td>
                   <td>
@@ -210,22 +210,23 @@ export default {
     searchRecord(page) {
       this.loading = true
       this.students = [];
-      this.formData.page = page
+      this.formData.page = page;
+      this.formData.export = false;
       if(this.formData.from != '' && this.formData.to == '') this.formData.to = this.formData.from;
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
       this.$store.dispatch('reports/getAdmissionList', this.formData)
         .then(res =>{
           $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
-          this.loading = false
+          this.loading = false;
           if(res.data.status) {
-            this.students = res.data.data.data
-            this.pagination = res.data.data
+            this.students = res.data.data.data;
+            this.pagination = res.data.data;
           }
         }).catch(err =>{
-        $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
-        this.loading = false
-        this.$toast.error(err)
-      })
+          $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
+          this.loading = false;
+          this.$toast.error(err)
+        })
     },
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');

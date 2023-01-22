@@ -88,6 +88,7 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
+                <th style="width: 12%;"> Session</th>
                 <th style="width: 25%;">PUTME No.</th>
                 <th>Reg No.</th>
                 <th>Name</th>
@@ -105,12 +106,13 @@
                 <td colspan="7">No record at the moment. Change the search criteria above and click "Search Record" button </td>
               </tr>
               <tr v-if="!loading" v-for="student in students" :key="student.id">
-                <td>{{student.putme.screening_id}}</td>
-                <td>{{student.jamb_reg_no}}</td>
-                <td>{{ student.name }}</td>
+                <td>{{ student.session_name }}</td>
+                <td>{{ student.putme_reg_number }}</td>
+                <td>{{ student.jamb_reg_no }}</td>
+                <td>{{ student.student_name }}</td>
                 <td>{{ (student.sex === 'F') ? 'Female' : 'Male'}}</td>
-                <td>{{student.totalscore}}</td>
-                <td>{{student.placement_level}}</td>
+                <td>{{ student.totalscore }}</td>
+                <td>{{ student.placement_level }}</td>
                 <td>
                   <div class="btn-group">
                     <button type="button" @click="markForApproval(student.jamb_reg_no)" v-if="student.marked_for_department == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
@@ -318,7 +320,7 @@ export default {
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.formData.export = true
-      this.$store.dispatch('reports/exportAdmissionList', this.formData)
+      this.$store.dispatch('reports/exportDeAdmissionList', this.formData)
         .then(res =>{
           $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export');
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
