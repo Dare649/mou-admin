@@ -97,11 +97,11 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-condensed" id="basicTable">
                               <thead>
-                                <th>Image</th>
-                                <th>REG Number</th>
-                                <th>Screening ID</th>
-                                <th style="width:20%">Name</th>
-                                <th>Entry Mode</th>
+                                <th style="width:7%">Image</th>
+                                <th style="width:15%">REG Number</th>
+                                <th style="width:15%">Screening ID</th>
+                                <th style="width:23%">Name</th>
+                                <th style="width:10%">Entry Mode</th>
                                 <th>Status</th>
                                 <th style="width:20%">Action</th>
                               </thead>

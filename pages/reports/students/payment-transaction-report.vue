@@ -137,7 +137,7 @@
                 </tr>
                 <tr v-if="!loading && Object.keys(payments).length > 0" v-for="payment in payments">
                   <td>{{ payment.name }}</td>
-                  <td>{{ (payment.session) ? payment.session.session_name : 'N/A' }}</td>
+                  <td>{{ (payment.session_name) ? payment.session_name : 'CEC Session' }}</td>
                   <td>{{ payment.description }}</td>
                   <td>{{ payment.amount }}</td>
                   <td>{{ $moment(payment.created_at).format('DD-MM-YYYY') }}</td>
@@ -273,7 +273,7 @@ export default {
         status: '',
         entry_mode: '',
         faculty_id: '',
-        session_id: '',
+        session_id: this.sessions[0].id,
         export: false
       }
       this.searchRecord(1)
