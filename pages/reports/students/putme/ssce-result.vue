@@ -110,9 +110,10 @@
                             <td colspan="7">No record at the moment</td>
                           </tr>
                           <tr v-for="can in candidates" :key="can.id">
-                            <td>{{ (can.jamb_result.name) ? can.jamb_result.name : can.jamb_result.candidate_name }}</td>
+                            <td>{{ (can.name) ? can.name : can.candidate_name }}</td>
                             <td>{{ can.jamb_registration_number }}</td>
-                            <td>{{ can.jamb_result.sex == 'F' ? 'Female' : 'Male' }}</td>
+                            <td v-if="can.sex">{{ can.sex == 'F' ? 'Female' : 'Male' }}</td>
+                            <td v-if="can.gender">{{ can.gender == 'F' ? 'Female' : 'Male' }}</td>
                             <td>{{ can.status == 1 ? 'Verified' : 'Not Verified' }}</td>
                             <td>{{ $moment(can.updated_at).format('DD-MM-YYYY') }}</td>
                             <td v-if="can.exam_type != null">{{ can.type.toUpperCase() }}</td>
