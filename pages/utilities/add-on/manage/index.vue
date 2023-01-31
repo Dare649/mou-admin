@@ -381,7 +381,7 @@ export default {
     getAllSession() {
       this.$store.dispatch('utility/getAllSession')
         .then((res) =>{
-          this.sessions = res.data.data
+          this.sessions = res.data
         }).catch((err) =>{
 
       })
