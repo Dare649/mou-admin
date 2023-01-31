@@ -109,13 +109,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="searchRecord">
+                <tr v-if="searchLoading">
+                  <td colspan="7"> Searching...please wait</td>
+                </tr>
+                <tr v-if="searchRecord && !searchLoading">
                   <td colspan="7"> No records matching the search criteria</td>
                 </tr>
-                <tr v-if="courses.length < 1 && !searchRecord">
+                <tr v-if="courses.length < 1 && !searchRecord && !searchLoading">
                   <td colspan="7"> No records matching the search criteria</td>
                 </tr>
-                <tr v-if="courses.length > 0 && !searchRecord" v-for="(hasCourse, index) in courses" :key="index" :id="index">
+                <tr v-if="courses.length > 0 && !searchRecord && !searchLoading" v-for="(hasCourse, index) in courses" :key="index" :id="index">
                   <td>{{ hasCourse.course.code }}</td>
                   <td>{{ hasCourse.course.name }}</td>
                   <td>{{ hasCourse.course.weightage }}</td>
@@ -327,7 +330,8 @@ export default {
     departments: [],
     programs: [],
     dataView: [],
-    dataSave: []
+    dataSave: [],
+    searchLoading: false
   }),
   methods: {
     deleteCourse(e, id) {
@@ -351,14 +355,21 @@ export default {
     },
     searchCourse () {
       $('#submitBtn').attr('disabled', true).html('Searching..')
+      this.searchLoading = true
       this.searchRecord = true
       this.searching = true
       this.$store.dispatch('add-delete/searchStudent', this.searchData)
         .then((res) =>{
           $('#submitBtn').attr('disabled', false).html('Search Record')
-          this.courses = res.data.data
-          this.searchRecord = false
+          if(res.data.status) {
+            this.courses = res.data.data
+            this.searchRecord = false
+            this.searchLoading = false
+          }
+
+          this.$toast.error(res.data.message)
         }).catch((err) =>{
+          this.searchLoading = false
           $('#submitBtn').attr('disabled', false).html('Search Record')
         })
     },
