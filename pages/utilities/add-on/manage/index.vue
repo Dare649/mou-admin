@@ -361,13 +361,9 @@ export default {
       this.$store.dispatch('add-delete/searchStudent', this.searchData)
         .then((res) =>{
           $('#submitBtn').attr('disabled', false).html('Search Record')
-          if(res.data.status) {
             this.courses = res.data.data
             this.searchRecord = false
             this.searchLoading = false
-          }
-
-          this.$toast.error(res.data.message)
         }).catch((err) =>{
           this.searchLoading = false
           $('#submitBtn').attr('disabled', false).html('Search Record')
