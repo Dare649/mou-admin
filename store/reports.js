@@ -30,6 +30,26 @@ export const actions = {
       return err
     })
   },
+  async getPgAdmissionList(context, data) {
+    return await this.$axios.get('api/reports/pg-admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export+'&page='+data.page)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async exportPgAdmissionList(context, data) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/reports/pg-admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
+  },
   async getAdmissionList(context, data) {
     return await this.$axios.get('api/reports/admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export+'&page='+data.page)
       .then(res =>{
@@ -37,6 +57,18 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async exportAdmissionList(context, data) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/reports/admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export,
+      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+      responseType: "arraybuffer"
+    }).then(res =>{
+      return res
+    }).catch(err =>{
+      return err
+    })
   },
   async getCecAdmissionList(context, data) {
     return await this.$axios.get('api/reports/cec-admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export+'&page='+data.page)
@@ -65,18 +97,6 @@ export const actions = {
       }).catch(err =>{
         return err
       })
-  },
-  async exportAdmissionList(context, data) {
-    return await this.$axios({
-      method: 'get',
-      url: 'api/reports/admitted-candidates?session_id='+data.session_id +'&registration_number='+data.registration_number+'&department_id='+data.department_id+'&year='+data.year+'&from='+data.from+'&entry_mode='+data.entry_mode+'&to='+data.to+'&export='+data.export,
-      headers: {'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
-      responseType: "arraybuffer"
-    }).then(res =>{
-      return res
-    }).catch(err =>{
-      return err
-    })
   },
   async exportDeAdmissionList(context, data) {
     return await this.$axios({

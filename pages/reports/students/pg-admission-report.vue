@@ -6,7 +6,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Reports</a></li>
-          <li class="breadcrumb-item active">CEC Admissions Report</li>
+          <li class="breadcrumb-item active">PG Admissions Report</li>
         </ol>
       </div>
     </div>
@@ -24,12 +24,12 @@
               <label>Academic Session</label>
               <select class="form-control" v-model="formData.session_id">
                 <option value="" selected>Select</option>
-                <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.cec_session_name}}</option>
+                <option v-for="session in sessions" :value="session.id" :key="session.id">{{session.pg_session_name}}</option>
               </select>
             </div>
             <div class="col-md-4">
-              <label>CAN:</label>
-              <input type="text" v-model="formData.registration_number" class="form-control" placeholder="CAN" />
+              <label>PAN:</label>
+              <input type="text" v-model="formData.registration_number" class="form-control" placeholder="Pg Application Number" />
             </div>
             <div class="col-md-2">
               <label>From Date:</label>
@@ -86,7 +86,7 @@
             <table class="table table-striped table-condensed" id="basicTable">
               <thead>
               <tr>
-                <th style="width: 25%;">CAN</th>
+                <th style="width: 25%;">PAN</th>
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Program</th>
@@ -94,24 +94,24 @@
               </tr>
               </thead>
               <tbody>
-                <tr v-if="loading">
-                  <td colspan="5">Loading...Please wait</td>
-                </tr>
-                <tr v-if="!loading && students.length < 1">
-                  <td colspan="5">No record at the moment. Change the search criteria above and click "Search Record" button </td>
-                </tr>
-                <tr v-if="!loading" v-for="student in students" :key="student.id">
-                  <td>{{ student.cec_application_number }}</td>
-                  <td>{{ student.cec_application.applicant_name }}</td>
-                  <td>{{ student.cec_application.gender }}</td>
-                  <td>{{ student.cec_application.program.name }}</td>
-                  <td>
-                    <div class="btn-group">
-                      <button type="button" @click="markForApproval(student.cec_application_number)" v-if="student.marked_for_dept_clearance == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                      <button type="button" disabled v-if="student.marked_for_dept_clearance == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
-                    </div>
-                  </td>
-                </tr>
+              <tr v-if="loading">
+                <td colspan="5">Loading...Please wait</td>
+              </tr>
+              <tr v-if="!loading && students.length < 1">
+                <td colspan="5">No record at the moment. Change the search criteria above and click "Search Record" button </td>
+              </tr>
+              <tr v-if="!loading" v-for="student in students" :key="student.id">
+                <td>{{ student.pg_application_number }}</td>
+                <td>{{ student.details.first_name }} {{ student.details.last_name }}</td>
+                <td>{{ student.details.gender }}</td>
+                <td>{{ student.program.name }}</td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" @click="markForApproval(student.pg_application_number)" v-if="student.marked_for_dept_clearance == 0" title="Mark for departmental approval" class="btn btn-default btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                    <button type="button" disabled v-if="student.marked_for_dept_clearance == 1" title="Marked" class="btn btn-success btn-sm" role="button"><i class="fa fa-map-marker"></i></button>
+                  </div>
+                </td>
+              </tr>
               </tbody>
             </table>
             <Pagination
@@ -180,9 +180,9 @@ export default {
       this.formData.export = false
       this.searchRecord(this.pagination.current_page)
     },
-    markForApproval(can) {
+    markForApproval(pan) {
       if(confirm('Do you want to mark this student okay for departmental approval?')){
-        this.approveData.registration_number = can
+        this.approveData.registration_number = pan
         this.$toast.info('Processing...please wait', {duration: 6100})
         this.$store.dispatch('academic-session/markForDepartmentalApproval', this.approveData)
           .then(res =>{
@@ -204,11 +204,12 @@ export default {
       this.formData.export = false;
       this.students = []
       $('#searchBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Searching...');
-      this.$store.dispatch('reports/getCecAdmissionList', this.formData)
+      this.$store.dispatch('reports/getPgAdmissionList', this.formData)
         .then(res =>{
           $('#searchBtn').attr('disabled', false).html('<i class="fa fa-search"></i>&nbsp; Search Record');
           this.loading = false
           if(res.data.status) {
+            console.log(res.data)
             this.students = res.data.data.data
             this.pagination = res.data.data
           }
@@ -221,20 +222,20 @@ export default {
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
       this.formData.export = true
-      this.$store.dispatch('reports/exportCecAdmissionList', this.formData)
+      this.$store.dispatch('reports/exportPgAdmissionList', this.formData)
         .then(res =>{
           $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export Record');
           let fileURL = window.URL.createObjectURL(new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
           let fileLink = document.createElement('a');
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'cec-admission-list-report.xlsx');
+          fileLink.setAttribute('download', 'pg-admission-list-report.xlsx');
           document.body.appendChild(fileLink);
           fileLink.click();
           this.$toast.success('Record Exported to Excel Successfully!', {icon: "fingerprints", hideAfter: 3000, showHideTransition: 'fade', allowToastClose: true});
         }).catch(err =>{
-          $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export Record');
-          this.$toast.error(err)
-        })
+        $('#exportBtn').attr('disabled', false).html('<i class="fa fa-file-excel-o"></i>&nbsp; Export Record');
+        this.$toast.error(err)
+      })
     },
     refreshData() {
       this.formData = {
@@ -258,10 +259,9 @@ export default {
       })
     },
     getSessions() {
-      this.$store.dispatch('cec/CecAcademicSession')
+      this.$store.dispatch('pg/PgAcademicSession')
         .then(res =>{
           this.sessions = res.data.data;
-          this.formData.session_id = this.sessions[0].id;
         }).catch(err =>{
         this.$toast.error(err)
       })

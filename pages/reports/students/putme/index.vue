@@ -796,7 +796,6 @@ export default {
         screening_id: '',
         from: '',
         to: '',
-        session_id: '',
         faculty_id: '',
         department_id: '',
         entry_mode: '',
