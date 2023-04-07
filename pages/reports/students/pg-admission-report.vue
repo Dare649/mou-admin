@@ -74,7 +74,7 @@
       </div>
       <div class="card card-default">
         <div class="card-header separator">
-          <h3 class="text-primary no-margin pull-left sm-pull-reset">CEC Admissions List Report</h3>
+          <h3 class="text-primary no-margin pull-left sm-pull-reset">PG Admissions List Report</h3>
           <div class="pull-right sm-pull-reset">
             <button type="button" @click="cancelSearch" class="btn btn-default btn-sm"><i class="fa fa-stop"></i>&nbsp; Cancel Search </button>
             <button type="button" @click="refreshData" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
