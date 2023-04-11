@@ -120,6 +120,7 @@
                           <li class="" v-permission="'View Import Old Level'"><nuxt-link to="/utilities/import-old-olevel">Import O'Level</nuxt-link></li>
                           <li class="" v-permission="'View Change Student Levels'"><nuxt-link to="/utilities/change-student-levels">Change Student Levels</nuxt-link></li>
                           <li class="" v-permission="'View Student Email Requests'"><nuxt-link to="/utilities/student-email-request">Student Email Request</nuxt-link></li>
+                          <li class="" v-permission="'View Student ID Card Requests'"><nuxt-link to="/utilities/student-id-card-request">Student ID Card Request</nuxt-link></li>
                         </ul>
                       </li>
                       <li>
