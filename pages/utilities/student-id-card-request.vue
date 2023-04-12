@@ -240,6 +240,10 @@
                   <td>{{ display.date_collected }}</td>
                 </tr>
               </table>
+
+              <div class="col-md-12 m-t-10" v-if="display.is_doc === 1">
+                <button type="button" @click.prevent="downloadDocument" class="btn btn-primary btn-lg btn-large fs-16 semi-bold">Download Replacement Approval</button>
+              </div>
             </div>
           </div>
         </div>
@@ -283,7 +287,9 @@ export default {
       is_collected: '',
       date_collected: '',
       to_pay: '',
-      is_paid: ''
+      is_paid: '',
+      is_doc: '',
+      doc_url: ''
     },
     formData: {
       file: ''
@@ -300,6 +306,9 @@ export default {
     loading: true
   }),
   methods: {
+    downloadDocument() {
+      window.open(this.display.doc_url, '_blank')
+    },
     async importRecord() {
       let formData = new FormData();
       formData.append('file', this.$refs.myFiles.files[0]);
@@ -397,7 +406,9 @@ export default {
         is_collected: request.is_collected,
         date_collected: request.date_collected,
         is_paid: request.is_paid,
-        to_pay: request.to_pay
+        to_pay: request.to_pay,
+        is_doc: request.doc_uploaded,
+        doc_url: request.document_url
       }
       $('#view_request').modal()
     },
