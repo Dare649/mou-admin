@@ -208,6 +208,14 @@
                   <td>{{ display.date_requested }}</td>
                 </tr>
                 <tr>
+                  <th>To Pay:</th>
+                  <td>{{ (display.to_pay === 1) ? 'YES' : 'NO' }}</td>
+                </tr>
+                <tr>
+                  <th>Has Paid:</th>
+                  <td>{{ (display.is_paid === 1) ? 'YES' : 'NO' }}</td>
+                </tr>
+                <tr>
                   <th>Is Captured:</th>
                   <td>{{ (display.is_captured == 0 ) ? 'NO' : 'YES' }}</td>
                 </tr>
@@ -273,7 +281,9 @@ export default {
       is_printed: '',
       date_printed: '',
       is_collected: '',
-      date_collected: ''
+      date_collected: '',
+      to_pay: '',
+      is_paid: ''
     },
     formData: {
       file: ''
@@ -371,22 +381,23 @@ export default {
         })
     },
     viewModal(request) {
-      console.log(request)
       this.display = {
-          name: request.student.firstname + ' ' + request.student.middlename + ' ' + request.student.lastname,
-          matriculation_number: request.student.matriculation_number,
-          genotype: request.genotype,
-          blood_group: request.blood_group,
-          gender: request.student.gender,
-          title: request.title,
-          preferred_email: request.preferred_email,
-          date_requested: request.date_requested,
-          is_captured: request.is_treated,
-          date_captured: request.date_treated,
-          is_printed: request.is_printed,
-          date_printed: request.date_printed,
-          is_collected: request.is_collected,
-          date_collected: request.date_collected
+        name: request.student.firstname + ' ' + request.student.middlename + ' ' + request.student.lastname,
+        matriculation_number: request.student.matriculation_number,
+        genotype: request.genotype,
+        blood_group: request.blood_group,
+        gender: request.student.gender,
+        title: request.title,
+        preferred_email: request.preferred_email,
+        date_requested: request.date_requested,
+        is_captured: request.is_treated,
+        date_captured: request.date_treated,
+        is_printed: request.is_printed,
+        date_printed: request.date_printed,
+        is_collected: request.is_collected,
+        date_collected: request.date_collected,
+        is_paid: request.is_paid,
+        to_pay: request.to_pay
       }
       $('#view_request').modal()
     },
