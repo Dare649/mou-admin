@@ -8,7 +8,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="text-left p-b-5"><span class="semi-bold">Upload Student Emails</span></h5>
+            <h5 class="text-left p-b-5"><span class="semi-bold">Upload Student Request Status</span></h5>
           </div>
           <div class="modal-body">
             <div class="row">
