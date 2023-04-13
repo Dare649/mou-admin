@@ -65,7 +65,29 @@ export const actions = {
       }).catch((err) => {
         return err
       })
-  }
+  },
+  async importTransferStudents(context, data) {
+    return await this.$axios.post('/api/transfer-student/import', data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
+  async downloadSampleFile(context) {
+    return await this.$axios({
+      method: 'get',
+      url: 'api/transfer-student/download-sample',
+      headers: {'Content-Type': 'application/json' }
+    })
+      .then(function (response) {
+        //handle success
+        return response.data
+      })
+      .catch(err => {
+        return err
+      });
+  },
 }
 
 export const getters = {

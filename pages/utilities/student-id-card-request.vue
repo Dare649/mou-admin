@@ -376,7 +376,7 @@ export default {
       $('#import_student_emails').modal()
     },
     downloadSampleFile() {
-      $('#downloadBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i>Downloding..please wait')
+      $('#downloadBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i>Downloading..please wait')
         this.$store.dispatch('id-card-request/downloadSample')
           .then(res =>{
             $('#downloadBtn').attr('disabled', false).html('<i class="fa fa-arrow-down"></i> &nbsp; Download')
