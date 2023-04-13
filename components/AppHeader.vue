@@ -116,7 +116,7 @@
                           <li class="" v-permission="'View Import Admission List'"><nuxt-link to="/utilities/import-admission-list">Import Admissions List</nuxt-link></li>
                           <li class="" v-permission="'View Import De Admission List'"><nuxt-link to="/utilities/import-de-admission-list">Import DE Admissions List</nuxt-link></li>
                           <li class="" v-permission="'View Import Putme Images'"><nuxt-link to="/utilities/import-putme-images">Import PUTME Images</nuxt-link></li>
-                          <li class="" v-permission="'View Import Putme Images'"><nuxt-link to="/utilities/import-transfer-student">Import Transfer Student</nuxt-link></li>
+                          <li class="" v-permission="'View Import Transfer Students'"><nuxt-link to="/utilities/import-transfer-student">Import Transfer Student</nuxt-link></li>
                           <li class="" v-permission="'View Import Previous Transactions'"><nuxt-link to="/utilities/import-old-transactions">Import Previous Transactions</nuxt-link></li>
                           <li class="" v-permission="'View Import Old Level'"><nuxt-link to="/utilities/import-old-olevel">Import O'Level</nuxt-link></li>
                           <li class="" v-permission="'View Change Student Levels'"><nuxt-link to="/utilities/change-student-levels">Change Student Levels</nuxt-link></li>
