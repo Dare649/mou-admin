@@ -329,6 +329,11 @@
                       <option value="2011">2011</option>
                       <option value="2012">2012</option>
                       <option value="2013">2013</option>
+                      <option value="2013">2014</option>
+                      <option value="2013">2015</option>
+                      <option value="2013">2016</option>
+                      <option value="2013">2017</option>
+                      <option value="2013">2018</option>
                       <option value="2019">2019</option>
                       <option value="2020">2020</option>
                       <option value="2021">2021</option>
@@ -371,7 +376,7 @@
                   <tr class="col-lg-12 m-b-10">
                     <td><label>Name:</label></td>
                     <td>
-                      <input type="text" v-model="formData.name" class="form-control" />
+                      <input type="text" readonly v-model="formData.name" class="form-control" />
                     </td>
                   </tr>
                   <tr class="col-lg-12 m-b-10">
@@ -528,7 +533,6 @@ export default {
           screening_id: '',
           from: '',
           to: '',
-          session_id: '',
           faculty_id: '',
           department_id: '',
           entry_mode: '',
@@ -592,6 +596,7 @@ export default {
   },
   methods: {
     populateFields(jamb){
+      console.log(jamb)
       this.getDepartmentsByFacultyId(jamb.faculty_id)
       this.getStatesByCountryID(jamb.country_id)
       this.getLGAsByStateID(jamb.state_id)
@@ -605,7 +610,7 @@ export default {
       this.formData.lga_id = jamb.lga_id
       this.formData.dob = jamb.dob
       this.formData.address = jamb.address
-      this.formData.gender = jamb.sex
+      this.formData.gender = jamb.gender
       this.formData.registration_number = jamb.registration_number
       this.formData.email = jamb.email
       this.formData.name = jamb.jamb_name
