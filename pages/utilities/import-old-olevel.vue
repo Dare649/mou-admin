@@ -43,7 +43,14 @@
             <div class="card-body">
               <form class="p-4" @submit.prevent="submit">
                 <div class="row">
-                  <div class="form-group col-md-12">
+                  <div class="form-group col-md-6">
+                    <label>Session</label>
+                    <select class="form-control" required v-model="formData.session_id">
+                      <option value="">Select a session</option>
+                      <option v-for="session in academic_sessions" :value="session.id">{{ session.session_name }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
                     <label>Select Excel file to upload</label>
                     <div class="custom-file">
                       <input type="file" ref="file" class="custom-file-input" id="customFileLang" lang="es" required>
@@ -80,6 +87,10 @@ export default {
   layout: "main",
   data: () => ({
     loading: false,
+    academic_sessions: [],
+    formData: {
+      session_id: ''
+    },
     response: {},
   }),
   methods: {
@@ -87,6 +98,7 @@ export default {
       $('#submitBtn').attr('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Uploading');
       this.loading = true;
       const data = new FormData();
+      data.append('session_id', this.formData.session_id)
       data.append('file', this.$refs.file.files[0]);
       this.$store.dispatch('old-transactions/uploadOLevelResults', data)
         .then((res) => {
@@ -119,7 +131,15 @@ export default {
           $('#downloadSample').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Download Sample')
           this.$toast.error('An error occurred please contact the administrator' + err)
         })
+    },
+    getAllSession() {
+      this.$store.dispatch('student-acad-session/getAllSession').then((res) => {
+        this.academic_sessions = res.data.data
+      })
     }
+  },
+  mounted() {
+    this.getAllSession()
   }
 }
 </script>
