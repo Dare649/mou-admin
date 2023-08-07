@@ -62,8 +62,13 @@
                         </select>
                       </div>
                       <div class="col-md-4">
-                        <label>Enter Year</label>
-                        <input type="text" id="year" class="form-control" placeholder="E.g 2021" v-model="model.year" />
+                        <!-- <label>Enter Year</label>
+                        <input type="text" id="year" class="form-control" placeholder="E.g 2021" v-model="model.year" /> -->
+                        <label>Session:</label>
+                        <select class="form-control" v-model="model.year">
+                          <option value="">Select a session</option>
+                          <option v-for="session in academic_sessions" :value="session.id">{{ session.session_name }}</option>
+                        </select>
                       </div>
                       <div class="col-md-2 m-t-30">
                         <button type="button" @click="searchRecord()" v-if="!sLoading" class="btn btn-primary btn-block">
@@ -239,13 +244,7 @@ export default {
       searchRecord(){
 
         if(this.model.year === '') {
-          // this.$swal({
-          //   position: 'top-center',
-          //   icon: 'error',
-          //   title: 'You have not entered a result year',
-          //   showConfirmButton: true,
-          // })
-          this.$toast.error('You have not entered a result year');
+          this.$toast.error('Kindly select a session');
           this.error = true;
           $('#year').focus();
         } else {
@@ -330,6 +329,11 @@ export default {
         this.results = [];
         $('#studentName').html('');
         $('#display_result').modal('hide');
+      },
+      getAllSession() {
+        this.$store.dispatch('student-acad-session/getAllSession').then((res) => {
+          this.academic_sessions = res.data.data
+        })
       }
     },
     mounted: function() {
@@ -341,6 +345,7 @@ export default {
         document.head.appendChild(script1)
       }
       this.getSsceResult(1)
+      this.getAllSession()
     }
 }
 </script>
