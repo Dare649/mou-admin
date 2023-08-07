@@ -2,9 +2,9 @@ import axios from 'axios'
 
 export const dynamicRoutes = async () => {
 
-  const resForDepartments = await axios.get('https://portal.olsslekki.org/api/faculties/getAllFaculties', {params: {size: 100}});
-  const resForProgrammes = await axios.get('https://portal.olsslekki.org/api/departments/getAllDepartments');
-  const resForLgas = await axios.get('https://portal.olsslekki.org/api/states/getAllStates', {params: {size: 100}});
+  const resForDepartments = await axios.get('https://apis.backend.mouau.edu.ng/api/faculties/getAllFaculties', {params: {size: 100}});
+  const resForProgrammes = await axios.get('https://apis.backend.mouau.edu.ng/api/departments/getAllDepartments');
+  const resForLgas = await axios.get('https://apis.backend.mouau.edu.ng/api/states/getAllStates', {params: {size: 100}});
 
   const routesForDepartments = resForDepartments.data.data.map((faculty) => {
     return {

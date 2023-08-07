@@ -102,16 +102,16 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // baseURL: process.env.BASE_URL || 'https://portal.olsslekki.org/',
+    //baseURL: process.env.BASE_URL || 'https://apis.backend.mouau.edu.ng/',
     baseURL: process.env.BASE_URL || 'http://127.0.0.1:8000/',
 		proxy: false
   },
   proxy: {
-		// '/api/': 'https://portal.olsslekki.org/',
+		//'/api/': 'https://apis.backend.mouau.edu.ng/',
     '/api/': 'http://127.0.0.1:8000/'
   },
   env: {
-		// BASE_URL: 'https://portal.olsslekki.org/',
+		//BASE_URL: 'https://apis.backend.mouau.edu.ng/',
     BASE_URL: 'http://127.0.0.1:8000/'
   },
 
