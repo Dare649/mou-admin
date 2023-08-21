@@ -122,24 +122,17 @@
                           <li class="" v-permission="'View Change Student Levels'"><nuxt-link to="/utilities/change-student-levels">Change Student Levels</nuxt-link></li>
                           <li class="" v-permission="'View Student Email Requests'"><nuxt-link to="/utilities/student-email-request">Student Email Request</nuxt-link></li>
                           <li class="" v-permission="'View Student ID Card Requests'"><nuxt-link to="/utilities/student-id-card-request">Student ID Card Request</nuxt-link></li>
+                          <li class=""><nuxt-link to="/cms/news">News</nuxt-link></li>
                         </ul>
                       </li>
                       <li>
                         <a href="javascript:;">
-                          <span class="title">CEC</span>
+                          <span class="title">Applications</span>
                           <span class=" arrow"></span>
                         </a>
                         <ul class="">
                           <li class="" v-permission="'View Cec Applications'"><nuxt-link to="/application/cec">CEC Applications</nuxt-link></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="javascript:;">
-                          <span class="title">CMS</span>
-                          <span class=" arrow"></span>
-                        </a>
-                        <ul class="">
-                          <li class=""><nuxt-link to="/cms/news">News</nuxt-link></li>
+                          <li class="" v-permission="'View Cercord Applications'"><nuxt-link to="/application/cercord">Cercord Applications</nuxt-link></li>
                         </ul>
                       </li>
                       <li><a href="#"><span class="title">Transaction Logs</span></a></li>
