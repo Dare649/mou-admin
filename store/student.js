@@ -88,6 +88,14 @@ export const actions = {
         return err
       });
   },
+  async submitWaiver(context, data) {
+    return await this.$axios.post('/api/utilities/student-waiver', data)
+      .then(res => {
+        return res
+      }).catch(err => {
+        return err
+      })
+  }
 }
 
 export const getters = {
