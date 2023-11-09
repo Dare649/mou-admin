@@ -364,7 +364,7 @@ export default {
           edit_department_id: "",
           edit_name: "",
           edit_faculty_id: ""
-        },
+        }
       }
     },
     mounted: function() {

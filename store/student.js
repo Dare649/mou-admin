@@ -95,6 +95,14 @@ export const actions = {
       }).catch(err => {
         return err
       })
+  },
+  async submitSUG(context, data) {
+    return await this.$axios.post('/api/utilities/submit-sug-dues', data)
+      .then(res => {
+        return res
+      }).catch(err => {
+        return err
+      })
   }
 }
 
