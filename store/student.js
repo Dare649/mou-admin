@@ -96,6 +96,14 @@ export const actions = {
         return err
       })
   },
+  async validateStudentRRR(context, data) {
+    return await this.$axios.post('/api/utilities/validate-student-rrr', data)
+      .then(res => {
+        return res
+      }).catch(err => {
+        return err
+      })
+  },
   async submitSUG(context, data) {
     return await this.$axios.post('/api/utilities/submit-sug-dues', data)
       .then(res => {
