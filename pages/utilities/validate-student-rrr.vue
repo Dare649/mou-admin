@@ -25,15 +25,15 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>Matriculation No</label>
-                    <input type="text" class="form-control" placeholder="Matriculation No" v-model="formData.matriculation_number" required>
+                    <input type="text" class="form-control" placeholder="Matriculation No/ CAN/ PAN" v-model="formData.matriculation_number" required>
                   </div>
                   <div class="form-group col-md-6">
                     <label>RRR:</label>
-                    <input type="text" class="form-control" placeholder="Matriculation No" v-model="formData.rrr" required>
+                    <input type="text" class="form-control" placeholder="RRR No" v-model="formData.rrr" required>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-4">
                     <label>Program</label>
                     <select required class="form-control" v-model="formData.program">
                       <option value="" disabled selected>Select a type</option>
@@ -42,12 +42,22 @@
                       <option value="PG">PG</option>
                     </select>
                   </div>
-                  <div class="form-group col-md-6">
-                    <label>Type</label>
+                  <div class="form-group col-md-4">
+                    <label>Payment</label>
                     <select required class="form-control" v-model="formData.type">
                       <option value="" disabled selected>Select a type</option>
                       <option value="SCHOOL_FEE">SCHOOL CHARGES</option>
                       <option value="SUG_FEE">SUG DUES</option>
+                      <option value="ACCOMMODATION_FEE">ACCOMMODATION FEE</option>
+                      <option value="DEVELOPMENT_LEVY">DEVELOPMENT LEVY</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Student Type</label>
+                    <select required class="form-control" v-model="formData.student_type">
+                      <option value="" disabled selected>Select a type</option>
+                      <option value="NEW">NEW</option>
+                      <option value="RETURNING">RETURNING</option>
                     </select>
                   </div>
                 </div>
@@ -109,7 +119,8 @@ export default {
       session_id: '',
       semester: '0',
       level: '',
-      type: ''
+      type: '',
+      student_type: ''
     }
   }),
   methods: {
