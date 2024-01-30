@@ -98,6 +98,7 @@
                               <li v-permission="'View De Admission'"><nuxt-link to="/exams/de-admission-list">DE Admission List</nuxt-link></li>
                               <li v-permission="'View Cec Admission'"><nuxt-link to="/exams/cec-admission-list">CEC Admission List</nuxt-link></li>
                               <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/pg-admission-list">PG Admission List</nuxt-link></li>
+                              <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/cercord-admission-list">CERCORD Admission List</nuxt-link></li>
                           </ul>
                         </li>
                       <li>
