@@ -98,6 +98,14 @@ export const actions = {
         return err
       })
   },
+  async getModeOfStudy(context, data) {
+    return await this.$axios.get('/api/utilities/get-mode-of-study/' + data)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
   async importPutmeImages(context, data) {
     return await this.$axios.post('/api/utilities/upload-putme-images', data, {
       headers: {

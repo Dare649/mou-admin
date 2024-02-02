@@ -7,7 +7,7 @@
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item"><nuxt-link to="/dashboard">Dashboard</nuxt-link></li>
           <li class="breadcrumb-item"><a href="#">Exams</a></li>
-          <li class="breadcrumb-item active">PG Admission List</li>
+          <li class="breadcrumb-item active">CERCORD Admission List</li>
         </ol>
       </div>
     </div>
@@ -28,7 +28,7 @@
                 <div class="card-body">
                   <h6 class="semi-bold">1. Admin will get the sample excel file by clicking the "Download Sample Excel" button.</h6>
                   <h6 class="semi-bold">2. Fill the excel sheet appropriately, select the necessary options and upload by clicking on the "IMPORT RECORD" button in the "Upload CERCORD Admission List" section.</h6>
-                  <h6 class="semi-bold">3. Download admission list using the "Download CERCORD Admission List" section.</h6>
+                  <!-- <h6 class="semi-bold">3. Download admission list using the "Download CERCORD Admission List" section.</h6> -->
                 </div>
               </div>
               <!-- END card -->
@@ -115,21 +115,13 @@
                       </option>
                    </select>
                   </div>
-                  <!-- <div class="form-group col-md-6">
-                    <label>Select Specialization</label>
-                    <select class="form-control" id="specialization" v-model="formData.specialization_id">
-                      <option value="" disabled selected>Select your option</option>
-                      <option v-for="specialization in specializations" :value="specialization.id" :key="specialization.id">
-                        {{ specialization.name }}
-                      </option>
-                    </select>
-                  </div> -->
                   <div class="form-group col-md-6">
-                    <label>Overwrite existing lists</label>
-                    <select class="form-control" required>
+                    <label>Admission Mode</label>
+                    <select class="form-control" v-model="formData.mode_id" required>
                       <option value="" disabled selected>Select your option</option>
-                      <option value="1">YES</option>
-                      <option value="0">NO</option>
+                      <option v-for="mode in modes" :key="mode.id" :value="mode.id">
+                        {{ mode.name }}
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -145,7 +137,7 @@
           </div>
         </div>
 
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
           <div class="card card-default">
             <div class="card-header  separator">
               <h3 class="text-primary no-margin p-b-10">Download PG Admission List</h3>
@@ -187,7 +179,7 @@
               </form>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- END CONTAINER FLUID -->
@@ -204,12 +196,13 @@ export default {
     departments: [],
     programs: [],
     specializations: [],
+    modes: [],
     formData: {
       session_id: '',
       college_id: '',
       department_id: '',
       program_id: '',
-      specialization_id: ''
+      mode_id: ''
     }
   }),
   methods: {
@@ -257,7 +250,6 @@ export default {
         .then(res =>{
           $('#session').attr('disabled', false)
           this.sessions = res.data.data
-          console.log(this.sessions)
         }).catch(err =>{
           $('#session').attr('disabled', false)
           this.$toast.error('An error occurred')
@@ -306,11 +298,20 @@ export default {
         $('#specialization').attr('disabled', false)
         this.$toast.error(err)
       })
+    },
+    getModeOfStudy() {
+      this.$store.dispatch('utility/getModeOfStudy', 'CERCORD')
+        .then(res => {
+          this.modes = res.data.data
+        }).catch(err => {
+        this.$toast.error(err)
+      })
     }
   },
   mounted() {
     this.getAcademicSession()
     this.getColleges()
+    this.getModeOfStudy();
   }
 }
 </script>
