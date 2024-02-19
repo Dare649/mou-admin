@@ -215,6 +215,7 @@ export default {
       data.append('program_id', this.formData.program_id)
       data.append('faculty_id', this.formData.college_id)
       data.append('specialization_id', this.formData.specialization_id)
+      data.append('mode_id', this.formData.mode_id)
       this.$store.dispatch('cercord-admission/importCercordAdmissionList', data)
         .then(res =>{
           $('#submitBtn').attr('disabled', false).html('<i class="fa fa-upload"></i> &nbsp; Import')
