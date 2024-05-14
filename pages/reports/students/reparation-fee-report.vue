@@ -30,13 +30,22 @@
             </div>
           </div>
           <div class="row m-t-5">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label>From Date:</label>
               <input type="date" v-model="formData.from_date" class="form-control" />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label>To Date:</label>
               <input type="date" v-model="formData.to_date" class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label>Status:</label>
+              <select class="form-control" v-model="formData.status">
+                <option value="" selected>All</option>
+                <option value="0">Pending</option>
+                <option value="1">Successful</option>
+                <option value="2">Failed</option>
+              </select>
             </div>
           </div>
           <div class="row m-t-15">
@@ -128,6 +137,7 @@ export default {
       transaction_reference_no: '',
       from_date: '',
       to_date: '',
+      status: '',
       export: false
     },
     students: [],
@@ -168,6 +178,7 @@ export default {
         transaction_reference_no: '',
         from_date: '',
         to_date: '',
+        status: '',
         export: false
       }
       await this.getReparationFee(this.pagination.current_page)
