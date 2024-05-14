@@ -97,7 +97,8 @@
                   <td>{{ $moment(student.updated_at).format('MMMM Do YYYY') }}</td>
                   <td>
                     <div class="btn-group">
-                      <button v-if="student.status == 1"  @click="printReceipt(student.transaction_reference)" type="button" title="Print Receipt" class="btn btn-success btn-sm" role="button"><i class="fa fa-paypal"></i></button>
+                      <button v-if="student.status == 1"  @click="printReceipt(student.transaction_reference)" type="button" title="Print Receipt" class="btn btn-success btn-sm" role="button"><i class="fa fa-print"></i></button>
+                      <button v-if="student.upload_url != null" @click="printUndertaking(student.upload_url)" type="button" title="View Undertaking Form" class="btn byn-default btn-sm" role="button"><i class="fa  fa-money"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -186,6 +187,9 @@ export default {
     },
     printReceipt(transaction_reference_no) {
       const url = config.backend + 'reparation/print-receipt?transaction_ref=' + transaction_reference_no
+      window.open(url, '_blank');
+    },
+    printUndertaking(url) {
       window.open(url, '_blank');
     },
     exportRecord() {
