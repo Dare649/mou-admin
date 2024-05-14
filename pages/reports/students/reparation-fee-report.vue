@@ -184,7 +184,7 @@ export default {
       await this.getReparationFee(this.pagination.current_page)
     },
     printReceipt(transaction_reference_no) {
-      const url = config.testBackend + 'reparation/print-receipt?transaction_ref=' + transaction_reference_no
+      const url = config.backend + 'reparation/print-receipt?transaction_ref=' + transaction_reference_no
       window.open(url, '_blank');
     },
     exportRecord() {
