@@ -75,12 +75,13 @@
                                 <li v-permission="'View DE Admission'"><nuxt-link to="/reports/students/de-admitted-students">DE Admissions Report</nuxt-link></li>
                                 <li v-permission="'View CEC Admission'"><nuxt-link to="/reports/students/cec-admission-report">CEC Admissions Report</nuxt-link></li>
                                 <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/pg-admission-report">PG Admissions Report</nuxt-link></li>
-                              <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/cercord-admission-report">CERCORD Admissions Report</nuxt-link></li>
+                                <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/cercord-admission-report">CERCORD Admissions Report</nuxt-link></li>
                                 <li v-permission="'View Acceptance Letter'"><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
                                 <li v-permission="'View Payment Transaction'"><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
                                 <li v-permission="'View Jamb Candidate'"><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
                                 <li v-permission="'View De Jamb Candidate'"><nuxt-link to="/reports/students/uploaded-de-candidates">DE Jamb candidate</nuxt-link></li>
                                 <li v-permission="'View Course Download'"><nuxt-link to="/reports/students/course-download-report">Course Download Report</nuxt-link></li>
+                              <li v-permission="'View Course Download'"><nuxt-link to="/reports/students/reparation-fee-report">Reparation Fee Report</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="">
