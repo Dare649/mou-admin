@@ -34,6 +34,14 @@ export const actions = {
       return err
     })
   },
+  async GetForm(context, data) {
+    return await this.$axios.get('api/reparation/reports/get-form?matriculation_number=' + data.matriculation_number)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
+  },
 }
 
 export const getters = {

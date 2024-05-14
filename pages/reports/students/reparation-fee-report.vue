@@ -98,7 +98,7 @@
                   <td>
                     <div class="btn-group">
                       <button v-if="student.status == 1"  @click="printReceipt(student.transaction_reference)" type="button" title="Print Receipt" class="btn btn-success btn-sm" role="button"><i class="fa fa-print"></i></button>
-                      <button v-if="student.upload_url != null" @click="printUndertaking(student.upload_url)" type="button" title="View Undertaking Form" class="btn byn-default btn-sm" role="button"><i class="fa  fa-money"></i></button>
+                      <button @click="printUndertaking(student.matriculation_number)" type="button" title="View Undertaking Form" class="btn byn-default btn-sm" role="button"><i class="fa  fa-money"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -189,8 +189,22 @@ export default {
       const url = config.backend + 'reparation/print-receipt?transaction_ref=' + transaction_reference_no
       window.open(url, '_blank');
     },
-    printUndertaking(url) {
-      window.open(url, '_blank');
+    async printUndertaking(matriculation_number) {
+      if(confirm('Are you sure you want to view the undertaking form?')) {
+        const data = {matriculation_number}
+
+        await this.$store.dispatch('reparation-fee/GetForm', data)
+          .then(res => {
+            if (res.data.status) {
+              window.open(res.data.data, '_blank');
+              return
+            }
+
+            this.$toast.error(res.data.message)
+          }).catch(err => {
+            this.$toast.error(err)
+          })
+      }
     },
     exportRecord() {
       $('#exportBtn').attr('disabled', true).html('<i class="fa fa-spin fa-spinner"></i> Exporting...');
