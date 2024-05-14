@@ -144,7 +144,8 @@ export default {
     loading: true,
   }),
   methods: {
-    async getReparationFee() {
+    async getReparationFee(page) {
+      this.formData.page = page
       await this.$store.dispatch('reparation-fee/GetReparationStudents', this.formData)
         .then(res =>{
           this.students = res.data.data.data
