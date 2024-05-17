@@ -83,10 +83,10 @@
               </thead>
               <tbody>
                 <tr v-if="loading">
-                  <td colspan="6">Loading......Please wait</td>
+                  <td colspan="7">Loading......Please wait</td>
                 </tr>
                 <tr v-if="!loading && students.length < 1">
-                  <td colspan="6">No record at the moment. Change the search criteria above and click "Search Record" button or click refresh to cancel </td>
+                  <td colspan="7">No record at the moment. Change the search criteria above and click "Search Record" button or click refresh to cancel </td>
                 </tr>
                 <tr v-if="!loading && students.length > 0" v-for="student in students">
                   <td>{{ student.matriculation_number }}</td>
@@ -98,6 +98,7 @@
                   <td>
                     <div class="btn-group">
                       <button v-if="student.status == 1"  @click="printReceipt(student.transaction_reference)" type="button" title="Print Receipt" class="btn btn-success btn-sm" role="button"><i class="fa fa-print"></i></button>
+                      <button v-if="student.status == 0"  @click="deleteReparation(student.transaction_reference)" type="button" title="Delete Reparation" class="btn btn-warning btn-sm" role="button"><i class="fa fa-trash"></i></button>
                       <button @click="printUndertaking(student.matriculation_number)" type="button" title="View Undertaking Form" class="btn byn-default btn-sm" role="button"><i class="fa  fa-money"></i></button>
                     </div>
                   </td>
@@ -155,6 +156,28 @@ export default {
         }).catch(err =>{
           this.$toast.error(err)
         })
+    },
+    async deleteReparation(transaction_reference_no) {
+      if(confirm('Are you sure you want to delete this reparation data?')) {
+        this.formData.transaction_reference_no = transaction_reference_no
+        console.log(this.formData)
+        await this.$store.dispatch('reparation-fee/DeleteReparation', this.formData)
+          .then(res => {
+            if (res.data.status) {
+              this.$toast.success(res.data.message)
+
+              setTimeout(() => {
+                window.location.reload()
+              }, 5000)
+
+              return;
+            }
+
+            this.$toast.error(res.data.message)
+          }).catch(err => {
+            this.$toast.error(err)
+          })
+      }
     },
     async searchReparationFee(page) {
       this.formData.page = page
