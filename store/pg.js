@@ -33,6 +33,14 @@ export const actions = {
       }).catch(err =>{
         return err
       })
+  },
+  async getAllPgApplications(context, data) {
+    return await this.$axios.get('api/pg-sessions/admin/get-applications?session='+data.session+'&entry_mode='+data.entry_mode+'&faculty='+data.faculty+'&department='+data.department+'&program='+data.program+'&pan='+data.pan+'&from='+data.from_date+'&to='+data.to_date+'&export='+data.export+'&page='+data.page)
+      .then(res =>{
+        return res
+      }).catch(err =>{
+        return err
+      })
   }
 }
 
