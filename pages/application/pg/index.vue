@@ -231,7 +231,7 @@ export default {
   }),
   methods: {
     printReference(referee) {
-      let url = config.testBackend+'pg/print-referee?sorted_code='+referee.referee_code+'&connect_id='+referee.id
+      let url = config.backend+'pg/print-referee?sorted_code='+referee.referee_code+'&connect_id='+referee.id
       window.open(url, '_blank')
     },
     viewReferees(app) {
