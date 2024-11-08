@@ -8,7 +8,7 @@ export const mutations = {
 
 export const actions = {
   async getStudents(context, data) {
-    return await this.$axios.get('api/loans?page=' + data.page)
+    return await this.$axios.get('api/loans?page=' + data.page + '&matriculation_no=' + data.matriculation_no + '&session=' + data.session + '&semester=' + data.semester + '&level=' + data.level)
       .then(res =>{
         return res
       }).catch(err =>{

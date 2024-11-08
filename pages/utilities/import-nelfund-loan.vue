@@ -36,7 +36,7 @@
     <div class="container sm-padding-10 p-t-20 p-l-0 p-r-0">
       <div class="card card-default">
         <div class="card-header">
-          <div class="card-title text-primary">Import Nelfund Student Loan</div>
+          <div class="card-title text-primary">UPLOAD NELFUND LOAN STUDENTS</div>
         </div>
         <div class="card-body">
           <form style="width: 100%" @submit.prevent="upload">
@@ -44,7 +44,7 @@
               <div class="col-md-6">
                 <label>Select Mode</label>
                 <select required class="form-control" v-model="formData.entry_mode">
-                  <option value="" disabled selected>Select your option</option>
+                  <option value="" selected>Select your option</option>
                   <option value="PUTME/DE">PUTME/ DE</option>
                   <option value="PG">PG</option>
                   <option value="CEC">CEC</option>
@@ -69,9 +69,57 @@
           </form>
         </div>
       </div>
+
       <div class="card card-default">
+        <div class="card-header">
+          <div class="card-title text-primary">SEARCH NELFUND LOAN STUDENTS</div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <label>Matriculation No.</label>
+              <input type="text" v-model="formData.matriculation_no" class="form-control"/>
+            </div>
+            <div class="col-md-3">
+              <label>Session</label>
+              <select class="form-control" v-model="formData.session">
+                <option value="" selected>Select your option</option>
+                <option v-for="session in sessions" :value="session.id">{{ session.session_name }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label>Semester</label>
+              <select class="form-control" v-model="formData.semester">
+                <option value="" selected>Select your option</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label>Level</label>
+              <select class="form-control" v-model="formData.level">
+                <option value="" selected>Select your option</option>
+                <option value="1">100</option>
+                <option value="2">200</option>
+                <option value="3">300</option>
+                <option value="4">400</option>
+                <option value="5">500</option>
+                <option value="6">600</option>
+              </select>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-12 mt-2">
+              <div class="pull-left">
+                <button type="button" id="searchBtn" @click="getAllStudents(1)" class="btn btn-primary btn-block"><i class="fa fa-search"></i> Search Record</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="card-header separator">
-          <h3 class="text-primary no-margin pull-left sm-pull-reset">Imported Students</h3>
+          <h3 class="text-primary no-margin pull-left sm-pull-reset">Imported Students Record</h3>
           <div class="pull-right sm-pull-reset">
             <button type="button" @click="refreshStudents" class="btn btn-success btn-sm"><i class="fa fa-refresh"></i>&nbsp; Refresh </button>
           </div>
@@ -91,15 +139,15 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-if="loading"><td colspan="7">Loading...Please wait</td></tr>
-              <tr v-if="!loading && students.length < 1"><td colspan="7">No records at the moment</td></tr>
+              <tr v-if="loading"><td colspan="6">Loading...Please wait</td></tr>
+              <tr v-if="!loading && students.length < 1"><td colspan="6">No records at the moment</td></tr>
               <tr v-if="!loading && students.length > 0" v-for="student in students">
                 <td>{{ student.matriculation_number }}</td>
                 <td>{{ student.student.firstname }} {{ student.student.lastname }}</td>
                 <td>{{ student.session.session_name }}</td>
                 <td>{{ student.semester }}</td>
                 <td>{{ student.level }}</td>
-                <td>{{ student.amount }}</td>
+                <td>₦{{ numberFormat(student.amount) }}</td>
                 <!-- <td>
                   <div class="btn-group">
                     <span data-placement="top" data-toggle="tooltip" title="View Request">
@@ -141,9 +189,10 @@ export default {
     loading: true,
     students: [],
     formData: {
-      jamb_number: '',
-      matric_number: '',
-      entry_mode: '',
+      matriculation_no: '',
+      session: '',
+      semester: '',
+      level: '',
       page: ''
     },
     pagination: {
@@ -153,6 +202,7 @@ export default {
       to: 0,
       current_page: 1
     },
+    sessions: [],
     response: {},
   }),
   methods: {
@@ -207,11 +257,28 @@ export default {
       })
     },
     refreshStudents () {
+      this.formData = {
+        matriculation_no: '',
+        session: '',
+        semester: '',
+        level: '',
+        page: 1
+      }
 
+      this.getAllStudents(1)
+    },
+    getSession() {
+      this.$store.dispatch('utility/getAllSession')
+        .then(res =>{
+          this.sessions = res.data;
+        }).catch(err =>{
+        this.$toast.error(err)
+      })
     }
   },
   mounted () {
     this.getAllStudents(this.pagination.current_page)
+    this.getSession()
   }
 }
 </script>
