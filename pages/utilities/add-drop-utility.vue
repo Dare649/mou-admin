@@ -129,7 +129,6 @@ export default {
       this.formData.page = page
       this.$store.dispatch('student/getAllStudents', this.formData)
         .then(res =>{
-          console.log(res.data)
           this.students = res.data.data.data
           this.pagination = res.data.data
           this.loading = false
