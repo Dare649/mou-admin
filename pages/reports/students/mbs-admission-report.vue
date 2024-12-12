@@ -258,7 +258,7 @@ export default {
       })
     },
     getSessions() {
-      this.$store.dispatch('student-acad-session/getAllSession')
+      this.$store.dispatch('mbs-admission/mbsAcademicSession')
         .then(res =>{
           this.sessions = res.data.data;
           console.log(this.sessions)
