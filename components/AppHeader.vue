@@ -76,6 +76,7 @@
                                 <li v-permission="'View CEC Admission'"><nuxt-link to="/reports/students/cec-admission-report">CEC Admissions Report</nuxt-link></li>
                                 <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/pg-admission-report">PG Admissions Report</nuxt-link></li>
                                 <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/cercord-admission-report">CERCORD Admissions Report</nuxt-link></li>
+                                <li v-permission="'View PG Admission'"><nuxt-link to="/reports/students/mbs-admission-report">MBS Admissions Report</nuxt-link></li>
                                 <li v-permission="'View Acceptance Letter'"><nuxt-link to="/reports/students/acceptance-report">Acceptance Letter Report</nuxt-link></li>
                                 <li v-permission="'View Payment Transaction'"><nuxt-link to="/reports/students/payment-transaction-report">Payment Transaction Report</nuxt-link></li>
                                 <li v-permission="'View Jamb Candidate'"><nuxt-link to="/reports/students/uploaded-jamb-candidates">Jamb candidate</nuxt-link></li>
@@ -101,6 +102,7 @@
                               <li v-permission="'View Cec Admission'"><nuxt-link to="/exams/cec-admission-list">CEC Admission List</nuxt-link></li>
                               <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/pg-admission-list">PG Admission List</nuxt-link></li>
                               <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/cercord-admission-list">CERCORD Admission List</nuxt-link></li>
+                              <li v-permission="'View Pg Admission'"><nuxt-link to="/exams/mbs-admission-list">MBS Admission List</nuxt-link></li>
                           </ul>
                         </li>
                       <li>
