@@ -26,13 +26,18 @@
     "laravel-permissions": "^1.5.3",
     "moment": "^2.26.0",
     "nuxt": "^2.4.0",
+    "postcss": "^8.4.49",
+    "postcss-import": "^16.1.0",
     "qs": "^6.9.4",
     "v-select2-component": "^0.4.3",
     "vee-validate": "^3.3.0",
     "vue-content-loading": "^1.6.0",
+    "vue-loader": "^15.11.1",
     "vue-sweetalert2": "^3.0.5",
     "vue2-datepicker": "^3.5.0",
-    "vueditor": "^0.3.1"
+    "vueditor": "^0.3.1",
+    "webpack": "^4.47.0",
+    "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
     "@nuxt/types": "^0.7.9",

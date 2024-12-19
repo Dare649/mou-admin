@@ -143,6 +143,7 @@
                           <li class="" v-permission="'View Cec Applications'"><nuxt-link to="/application/cec">CEC Applications</nuxt-link></li>
                           <li class="" v-permission="'View Cercord Applications'"><nuxt-link to="/application/cercord">Cercord Applications</nuxt-link></li>
                           <li class="" v-permission="'View Pg Applications'"><nuxt-link to="/application/pg">PG Applications</nuxt-link></li>
+                          <li class="" v-permission="'View Pg Applications'"><nuxt-link to="/application/mbs">MBS Applications</nuxt-link></li>
                         </ul>
                       </li>
                       <li><a href="#"><span class="title">Transaction Logs</span></a></li>
