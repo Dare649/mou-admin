@@ -4,7 +4,8 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
-
+  target: 'static',
+  buildDir: 'dist', 
   /*
   ** Headers of the page
   */
