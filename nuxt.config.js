@@ -4,8 +4,11 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
-  target: "server",
-  buildDir: 'dist', 
+  target: 'static',
+  ssr: false,
+  generate: {
+    fallback: true
+  },
   /*
   ** Headers of the page
   */
