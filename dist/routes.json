@@ -1,0 +1,751 @@
+[
+  {
+    "name": "dashboard",
+    "path": "/dashboard",
+    "component": "/Users/mac/projects/frontend/pages/dashboard/index.vue",
+    "chunkName": "pages/dashboard/index",
+    "_name": "_03467cc8"
+  },
+  {
+    "name": "academic-session-accommodation-fee-setup",
+    "path": "/academic-session/accommodation-fee-setup",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/accommodation-fee-setup.vue",
+    "chunkName": "pages/academic-session/accommodation-fee-setup",
+    "_name": "_6b9028c7"
+  },
+  {
+    "name": "academic-session-cec",
+    "path": "/academic-session/cec",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/cec/index.vue",
+    "chunkName": "pages/academic-session/cec/index",
+    "_name": "_4aa50f10"
+  },
+  {
+    "name": "academic-session-direct-entry",
+    "path": "/academic-session/direct-entry",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/index.vue",
+    "chunkName": "pages/academic-session/direct-entry/index",
+    "_name": "_59f17e96"
+  },
+  {
+    "name": "academic-session-pg",
+    "path": "/academic-session/pg",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/index.vue",
+    "chunkName": "pages/academic-session/pg/index",
+    "_name": "_78350e44"
+  },
+  {
+    "name": "academic-session-student-acad-session",
+    "path": "/academic-session/student-acad-session",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/student-acad-session/index.vue",
+    "chunkName": "pages/academic-session/student-acad-session/index",
+    "_name": "_03ad5387"
+  },
+  {
+    "name": "academic-session-utme",
+    "path": "/academic-session/utme",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/index.vue",
+    "chunkName": "pages/academic-session/utme/index",
+    "_name": "_19e2485e"
+  },
+  {
+    "name": "application-cec",
+    "path": "/application/cec",
+    "component": "/Users/mac/projects/frontend/pages/application/cec/index.vue",
+    "chunkName": "pages/application/cec/index",
+    "_name": "_231d3aca"
+  },
+  {
+    "name": "application-cercord",
+    "path": "/application/cercord",
+    "component": "/Users/mac/projects/frontend/pages/application/cercord/index.vue",
+    "chunkName": "pages/application/cercord/index",
+    "_name": "_523f4737"
+  },
+  {
+    "name": "application-mbs",
+    "path": "/application/mbs",
+    "component": "/Users/mac/projects/frontend/pages/application/mbs/index.vue",
+    "chunkName": "pages/application/mbs/index",
+    "_name": "_a91c9072"
+  },
+  {
+    "name": "application-pg",
+    "path": "/application/pg",
+    "component": "/Users/mac/projects/frontend/pages/application/pg/index.vue",
+    "chunkName": "pages/application/pg/index",
+    "_name": "_363bede4"
+  },
+  {
+    "name": "cms-news",
+    "path": "/cms/news",
+    "component": "/Users/mac/projects/frontend/pages/cms/news/index.vue",
+    "chunkName": "pages/cms/news/index",
+    "_name": "_b96dfdb2"
+  },
+  {
+    "name": "exams-cec-admission-list",
+    "path": "/exams/cec-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/cec-admission-list.vue",
+    "chunkName": "pages/exams/cec-admission-list",
+    "_name": "_44ac6474"
+  },
+  {
+    "name": "exams-cercord-admission-list",
+    "path": "/exams/cercord-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/cercord-admission-list.vue",
+    "chunkName": "pages/exams/cercord-admission-list",
+    "_name": "_2c2434a7"
+  },
+  {
+    "name": "exams-de-admission-list",
+    "path": "/exams/de-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/de-admission-list.vue",
+    "chunkName": "pages/exams/de-admission-list",
+    "_name": "_bf4502d0"
+  },
+  {
+    "name": "exams-de-result-upload",
+    "path": "/exams/de-result-upload",
+    "component": "/Users/mac/projects/frontend/pages/exams/de-result-upload.vue",
+    "chunkName": "pages/exams/de-result-upload",
+    "_name": "_b948322a"
+  },
+  {
+    "name": "exams-mbs-admission-list",
+    "path": "/exams/mbs-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/mbs-admission-list.vue",
+    "chunkName": "pages/exams/mbs-admission-list",
+    "_name": "_4b8f97d2"
+  },
+  {
+    "name": "exams-pg-admission-list",
+    "path": "/exams/pg-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/pg-admission-list.vue",
+    "chunkName": "pages/exams/pg-admission-list",
+    "_name": "_06ccad62"
+  },
+  {
+    "name": "exams-putme-admission-list",
+    "path": "/exams/putme-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/exams/putme-admission-list.vue",
+    "chunkName": "pages/exams/putme-admission-list",
+    "_name": "_726aea8e"
+  },
+  {
+    "name": "exams-putme-result-upload",
+    "path": "/exams/putme-result-upload",
+    "component": "/Users/mac/projects/frontend/pages/exams/putme-result-upload.vue",
+    "chunkName": "pages/exams/putme-result-upload",
+    "_name": "_78962435"
+  },
+  {
+    "name": "get-started-countries",
+    "path": "/get-started/countries",
+    "component": "/Users/mac/projects/frontend/pages/get-started/countries.vue",
+    "chunkName": "pages/get-started/countries",
+    "_name": "_4923a398"
+  },
+  {
+    "name": "get-started-faculties",
+    "path": "/get-started/faculties",
+    "component": "/Users/mac/projects/frontend/pages/get-started/faculties.vue",
+    "chunkName": "pages/get-started/faculties",
+    "_name": "_c266c2fc"
+  },
+  {
+    "name": "get-started-religion-management",
+    "path": "/get-started/religion-management",
+    "component": "/Users/mac/projects/frontend/pages/get-started/religion-management.vue",
+    "chunkName": "pages/get-started/religion-management",
+    "_name": "_65d1e25f"
+  },
+  {
+    "name": "get-started-roles",
+    "path": "/get-started/roles",
+    "component": "/Users/mac/projects/frontend/pages/get-started/roles.vue",
+    "chunkName": "pages/get-started/roles",
+    "_name": "_701fa9bd"
+  },
+  {
+    "name": "get-started-subjects",
+    "path": "/get-started/subjects",
+    "component": "/Users/mac/projects/frontend/pages/get-started/subjects.vue",
+    "chunkName": "pages/get-started/subjects",
+    "_name": "_15ebeff7"
+  },
+  {
+    "name": "jamb-jamb-de",
+    "path": "/jamb/jamb-de",
+    "component": "/Users/mac/projects/frontend/pages/jamb/jamb-de.vue",
+    "chunkName": "pages/jamb/jamb-de",
+    "_name": "_450307ac"
+  },
+  {
+    "name": "jamb-jamb-results",
+    "path": "/jamb/jamb-results",
+    "component": "/Users/mac/projects/frontend/pages/jamb/jamb-results.vue",
+    "chunkName": "pages/jamb/jamb-results",
+    "_name": "_8e4e1ec6"
+  },
+  {
+    "name": "personnel-admin",
+    "path": "/personnel/admin",
+    "component": "/Users/mac/projects/frontend/pages/personnel/admin/index.vue",
+    "chunkName": "pages/personnel/admin/index",
+    "_name": "_129594e8"
+  },
+  {
+    "name": "personnel-lecturers",
+    "path": "/personnel/lecturers",
+    "component": "/Users/mac/projects/frontend/pages/personnel/lecturers/index.vue",
+    "chunkName": "pages/personnel/lecturers/index",
+    "_name": "_92d9ea50"
+  },
+  {
+    "name": "utilities-add-drop-utility",
+    "path": "/utilities/add-drop-utility",
+    "component": "/Users/mac/projects/frontend/pages/utilities/add-drop-utility.vue",
+    "chunkName": "pages/utilities/add-drop-utility",
+    "_name": "_3656caaa"
+  },
+  {
+    "name": "utilities-by-pass",
+    "path": "/utilities/by-pass",
+    "component": "/Users/mac/projects/frontend/pages/utilities/by-pass.vue",
+    "chunkName": "pages/utilities/by-pass",
+    "_name": "_d53315f2"
+  },
+  {
+    "name": "utilities-change-student-levels",
+    "path": "/utilities/change-student-levels",
+    "component": "/Users/mac/projects/frontend/pages/utilities/change-student-levels.vue",
+    "chunkName": "pages/utilities/change-student-levels",
+    "_name": "_67ad1cbe"
+  },
+  {
+    "name": "utilities-import-admission-list",
+    "path": "/utilities/import-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-admission-list.vue",
+    "chunkName": "pages/utilities/import-admission-list",
+    "_name": "_c6ce5e6c"
+  },
+  {
+    "name": "utilities-import-de-admission-list",
+    "path": "/utilities/import-de-admission-list",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-de-admission-list.vue",
+    "chunkName": "pages/utilities/import-de-admission-list",
+    "_name": "_8bed2e14"
+  },
+  {
+    "name": "utilities-import-de-results",
+    "path": "/utilities/import-de-results",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-de-results.vue",
+    "chunkName": "pages/utilities/import-de-results",
+    "_name": "_232d1792"
+  },
+  {
+    "name": "utilities-import-nelfund-loan",
+    "path": "/utilities/import-nelfund-loan",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-nelfund-loan.vue",
+    "chunkName": "pages/utilities/import-nelfund-loan",
+    "_name": "_6427996b"
+  },
+  {
+    "name": "utilities-import-old-olevel",
+    "path": "/utilities/import-old-olevel",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-old-olevel.vue",
+    "chunkName": "pages/utilities/import-old-olevel",
+    "_name": "_4e80517a"
+  },
+  {
+    "name": "utilities-import-old-transactions",
+    "path": "/utilities/import-old-transactions",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-old-transactions.vue",
+    "chunkName": "pages/utilities/import-old-transactions",
+    "_name": "_2e1207a3"
+  },
+  {
+    "name": "utilities-import-putme",
+    "path": "/utilities/import-putme",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-putme.vue",
+    "chunkName": "pages/utilities/import-putme",
+    "_name": "_a761c2a2"
+  },
+  {
+    "name": "utilities-import-putme-images",
+    "path": "/utilities/import-putme-images",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-putme-images.vue",
+    "chunkName": "pages/utilities/import-putme-images",
+    "_name": "_5fc07df4"
+  },
+  {
+    "name": "utilities-import-putme-results",
+    "path": "/utilities/import-putme-results",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-putme-results.vue",
+    "chunkName": "pages/utilities/import-putme-results",
+    "_name": "_60637a58"
+  },
+  {
+    "name": "utilities-import-returning",
+    "path": "/utilities/import-returning",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-returning.vue",
+    "chunkName": "pages/utilities/import-returning",
+    "_name": "_65be3cfa"
+  },
+  {
+    "name": "utilities-import-transfer-student",
+    "path": "/utilities/import-transfer-student",
+    "component": "/Users/mac/projects/frontend/pages/utilities/import-transfer-student.vue",
+    "chunkName": "pages/utilities/import-transfer-student",
+    "_name": "_20c4587e"
+  },
+  {
+    "name": "utilities-manage-sug-fee",
+    "path": "/utilities/manage-sug-fee",
+    "component": "/Users/mac/projects/frontend/pages/utilities/manage-sug-fee.vue",
+    "chunkName": "pages/utilities/manage-sug-fee",
+    "_name": "_d6d597f4"
+  },
+  {
+    "name": "utilities-search-rrr",
+    "path": "/utilities/search-rrr",
+    "component": "/Users/mac/projects/frontend/pages/utilities/search-rrr.vue",
+    "chunkName": "pages/utilities/search-rrr",
+    "_name": "_1d8c2d7d"
+  },
+  {
+    "name": "utilities-student-email-request",
+    "path": "/utilities/student-email-request",
+    "component": "/Users/mac/projects/frontend/pages/utilities/student-email-request.vue",
+    "chunkName": "pages/utilities/student-email-request",
+    "_name": "_1a54620c"
+  },
+  {
+    "name": "utilities-student-id-card-request",
+    "path": "/utilities/student-id-card-request",
+    "component": "/Users/mac/projects/frontend/pages/utilities/student-id-card-request.vue",
+    "chunkName": "pages/utilities/student-id-card-request",
+    "_name": "_31fd8872"
+  },
+  {
+    "name": "utilities-student-login-details",
+    "path": "/utilities/student-login-details",
+    "component": "/Users/mac/projects/frontend/pages/utilities/student-login-details.vue",
+    "chunkName": "pages/utilities/student-login-details",
+    "_name": "_4c94a88c"
+  },
+  {
+    "name": "utilities-student-waiver",
+    "path": "/utilities/student-waiver",
+    "component": "/Users/mac/projects/frontend/pages/utilities/student-waiver.vue",
+    "chunkName": "pages/utilities/student-waiver",
+    "_name": "_f2bebeb4"
+  },
+  {
+    "name": "utilities-validate-student-rrr",
+    "path": "/utilities/validate-student-rrr",
+    "component": "/Users/mac/projects/frontend/pages/utilities/validate-student-rrr.vue",
+    "chunkName": "pages/utilities/validate-student-rrr",
+    "_name": "_0afdf34e"
+  },
+  {
+    "name": "academic-session-direct-entry-add-new",
+    "path": "/academic-session/direct-entry/add-new",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/add-new.vue",
+    "chunkName": "pages/academic-session/direct-entry/add-new",
+    "_name": "_e08322d2"
+  },
+  {
+    "name": "academic-session-utme-add-new",
+    "path": "/academic-session/utme/add-new",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/add-new.vue",
+    "chunkName": "pages/academic-session/utme/add-new",
+    "_name": "_e813a000"
+  },
+  {
+    "name": "reports-students-acceptance-report",
+    "path": "/reports/students/acceptance-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/acceptance-report.vue",
+    "chunkName": "pages/reports/students/acceptance-report",
+    "_name": "_568b9a0e"
+  },
+  {
+    "name": "reports-students-admissions-report",
+    "path": "/reports/students/admissions-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/admissions-report.vue",
+    "chunkName": "pages/reports/students/admissions-report",
+    "_name": "_74cc160a"
+  },
+  {
+    "name": "reports-students-cec-admission-report",
+    "path": "/reports/students/cec-admission-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/cec-admission-report.vue",
+    "chunkName": "pages/reports/students/cec-admission-report",
+    "_name": "_19821ce0"
+  },
+  {
+    "name": "reports-students-cercord-admission-report",
+    "path": "/reports/students/cercord-admission-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/cercord-admission-report.vue",
+    "chunkName": "pages/reports/students/cercord-admission-report",
+    "_name": "_107ae3fa"
+  },
+  {
+    "name": "reports-students-course-download-report",
+    "path": "/reports/students/course-download-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/course-download-report.vue",
+    "chunkName": "pages/reports/students/course-download-report",
+    "_name": "_30b327f3"
+  },
+  {
+    "name": "reports-students-de-admitted-students",
+    "path": "/reports/students/de-admitted-students",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/de-admitted-students.vue",
+    "chunkName": "pages/reports/students/de-admitted-students",
+    "_name": "_d07eebb2"
+  },
+  {
+    "name": "reports-students-mbs-admission-report",
+    "path": "/reports/students/mbs-admission-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/mbs-admission-report.vue",
+    "chunkName": "pages/reports/students/mbs-admission-report",
+    "_name": "_55156473"
+  },
+  {
+    "name": "reports-students-payment-transaction-report",
+    "path": "/reports/students/payment-transaction-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/payment-transaction-report.vue",
+    "chunkName": "pages/reports/students/payment-transaction-report",
+    "_name": "_bab71394"
+  },
+  {
+    "name": "reports-students-pg-admission-report",
+    "path": "/reports/students/pg-admission-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/pg-admission-report.vue",
+    "chunkName": "pages/reports/students/pg-admission-report",
+    "_name": "_b9ec6f9c"
+  },
+  {
+    "name": "reports-students-putme",
+    "path": "/reports/students/putme",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/putme/index.vue",
+    "chunkName": "pages/reports/students/putme/index",
+    "_name": "_cce97964"
+  },
+  {
+    "name": "reports-students-reparation-fee-report",
+    "path": "/reports/students/reparation-fee-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/reparation-fee-report.vue",
+    "chunkName": "pages/reports/students/reparation-fee-report",
+    "_name": "_5c395fe5"
+  },
+  {
+    "name": "reports-students-school-fees-report",
+    "path": "/reports/students/school-fees-report",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/school-fees-report.vue",
+    "chunkName": "pages/reports/students/school-fees-report",
+    "_name": "_23b5ac07"
+  },
+  {
+    "name": "reports-students-uploaded-de-candidates",
+    "path": "/reports/students/uploaded-de-candidates",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/uploaded-de-candidates.vue",
+    "chunkName": "pages/reports/students/uploaded-de-candidates",
+    "_name": "_1707fa0a"
+  },
+  {
+    "name": "reports-students-uploaded-jamb-candidates",
+    "path": "/reports/students/uploaded-jamb-candidates",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/uploaded-jamb-candidates.vue",
+    "chunkName": "pages/reports/students/uploaded-jamb-candidates",
+    "_name": "_f6202d60"
+  },
+  {
+    "name": "utilities-add-on-manage",
+    "path": "/utilities/add-on/manage",
+    "component": "/Users/mac/projects/frontend/pages/utilities/add-on/manage/index.vue",
+    "chunkName": "pages/utilities/add-on/manage/index",
+    "_name": "_e329e128"
+  },
+  {
+    "name": "reports-students-putme-register-putme",
+    "path": "/reports/students/putme/register-putme",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/putme/register-putme.vue",
+    "chunkName": "pages/reports/students/putme/register-putme",
+    "_name": "_3439be1e"
+  },
+  {
+    "name": "reports-students-putme-ssce-result",
+    "path": "/reports/students/putme/ssce-result",
+    "component": "/Users/mac/projects/frontend/pages/reports/students/putme/ssce-result.vue",
+    "chunkName": "pages/reports/students/putme/ssce-result",
+    "_name": "_0bb38604"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/mac/projects/frontend/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_0fe7e0d2"
+  },
+  {
+    "name": "academic-session-cec-form-id",
+    "path": "/academic-session/cec/form/:id",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/cec/form/_id.vue",
+    "chunkName": "pages/academic-session/cec/form/_id",
+    "_name": "_63b106a1"
+  },
+  {
+    "name": "academic-session-direct-entry-form-id",
+    "path": "/academic-session/direct-entry/form/:id?",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/form/_id.vue",
+    "chunkName": "pages/academic-session/direct-entry/form/_id",
+    "_name": "_7ea036dc"
+  },
+  {
+    "name": "academic-session-pg-form-id",
+    "path": "/academic-session/pg/form/:id",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/form/_id.vue",
+    "chunkName": "pages/academic-session/pg/form/_id",
+    "_name": "_daecbbda"
+  },
+  {
+    "name": "academic-session-utme-form-id",
+    "path": "/academic-session/utme/form/:id",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/form/_id.vue",
+    "chunkName": "pages/academic-session/utme/form/_id",
+    "_name": "_0960a293"
+  },
+  {
+    "name": "cms-news-form-id",
+    "path": "/cms/news/form/:id?",
+    "component": "/Users/mac/projects/frontend/pages/cms/news/form/_id.vue",
+    "chunkName": "pages/cms/news/form/_id",
+    "_name": "_db8b6dac"
+  },
+  {
+    "name": "get-started-courses-edit-id",
+    "path": "/get-started/courses/edit/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/courses/edit/_id.vue",
+    "chunkName": "pages/get-started/courses/edit/_id",
+    "_name": "_61d3a15c"
+  },
+  {
+    "name": "get-started-courses-manage-id",
+    "path": "/get-started/courses/manage/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/courses/manage/_id.vue",
+    "chunkName": "pages/get-started/courses/manage/_id",
+    "_name": "_540d3df7"
+  },
+  {
+    "name": "get-started-school-fees-setup-manage-id",
+    "path": "/get-started/school-fees-setup/manage/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/school-fees-setup/manage/_id.vue",
+    "chunkName": "pages/get-started/school-fees-setup/manage/_id",
+    "_name": "_b3a094ce"
+  },
+  {
+    "name": "personnel-lecturers-form-id",
+    "path": "/personnel/lecturers/form/:id?",
+    "component": "/Users/mac/projects/frontend/pages/personnel/lecturers/form/_id.vue",
+    "chunkName": "pages/personnel/lecturers/form/_id",
+    "_name": "_471815d9"
+  },
+  {
+    "name": "academic-session-cec-cecId",
+    "path": "/academic-session/cec/:cecId",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/cec/_cecId/index.vue",
+    "chunkName": "pages/academic-session/cec/_cecId/index",
+    "_name": "_8dcfe89c"
+  },
+  {
+    "name": "academic-session-direct-entry-deId",
+    "path": "/academic-session/direct-entry/:deId",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/index.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/index",
+    "_name": "_5b269dc1"
+  },
+  {
+    "name": "academic-session-pg-pgId",
+    "path": "/academic-session/pg/:pgId",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/_pgId/index.vue",
+    "chunkName": "pages/academic-session/pg/_pgId/index",
+    "_name": "_127458c0"
+  },
+  {
+    "name": "academic-session-utme-putmeId",
+    "path": "/academic-session/utme/:putmeId",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/index.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/index",
+    "_name": "_05d62f0a"
+  },
+  {
+    "name": "get-started-courses-id",
+    "path": "/get-started/courses/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/courses/_id.vue",
+    "chunkName": "pages/get-started/courses/_id",
+    "_name": "_04f9be3a"
+  },
+  {
+    "name": "get-started-departments-id",
+    "path": "/get-started/departments/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/departments/_id.vue",
+    "chunkName": "pages/get-started/departments/_id",
+    "_name": "_4b43b78c"
+  },
+  {
+    "name": "get-started-lgas-id",
+    "path": "/get-started/lgas/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/lgas/_id.vue",
+    "chunkName": "pages/get-started/lgas/_id",
+    "_name": "_2cfc0648"
+  },
+  {
+    "name": "get-started-programs-id",
+    "path": "/get-started/programs/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/programs/_id.vue",
+    "chunkName": "pages/get-started/programs/_id",
+    "_name": "_7761a3ca"
+  },
+  {
+    "name": "get-started-school-fees-setup-id",
+    "path": "/get-started/school-fees-setup/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/school-fees-setup/_id.vue",
+    "chunkName": "pages/get-started/school-fees-setup/_id",
+    "_name": "_320d1b81"
+  },
+  {
+    "name": "get-started-specializations-id",
+    "path": "/get-started/specializations/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/specializations/_id.vue",
+    "chunkName": "pages/get-started/specializations/_id",
+    "_name": "_4b7c4573"
+  },
+  {
+    "name": "get-started-states-id",
+    "path": "/get-started/states/:id?",
+    "component": "/Users/mac/projects/frontend/pages/get-started/states/_id.vue",
+    "chunkName": "pages/get-started/states/_id",
+    "_name": "_a8d8bb46"
+  },
+  {
+    "name": "academic-session-cec-cecId-manage-college-department",
+    "path": "/academic-session/cec/:cecId?/manage/college-department",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/cec/_cecId/manage/college-department.vue",
+    "chunkName": "pages/academic-session/cec/_cecId/manage/college-department",
+    "_name": "_3cd3c112"
+  },
+  {
+    "name": "academic-session-cec-cecId-manage-student-union-dues",
+    "path": "/academic-session/cec/:cecId?/manage/student-union-dues",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/cec/_cecId/manage/student-union-dues.vue",
+    "chunkName": "pages/academic-session/cec/_cecId/manage/student-union-dues",
+    "_name": "_00a58059"
+  },
+  {
+    "name": "academic-session-direct-entry-deId-manage-acceptance-fee",
+    "path": "/academic-session/direct-entry/:deId?/manage/acceptance-fee",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/manage/acceptance-fee.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/manage/acceptance-fee",
+    "_name": "_899de02e"
+  },
+  {
+    "name": "academic-session-direct-entry-deId-manage-add-seat",
+    "path": "/academic-session/direct-entry/:deId?/manage/add-seat",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/manage/add-seat.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/manage/add-seat",
+    "_name": "_6cf8e0ca"
+  },
+  {
+    "name": "academic-session-direct-entry-deId-manage-add-student-result",
+    "path": "/academic-session/direct-entry/:deId?/manage/add-student-result",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/manage/add-student-result.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/manage/add-student-result",
+    "_name": "_42272174"
+  },
+  {
+    "name": "academic-session-direct-entry-deId-manage-late-fee-slip",
+    "path": "/academic-session/direct-entry/:deId?/manage/late-fee-slip",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/manage/late-fee-slip.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/manage/late-fee-slip",
+    "_name": "_d561d0b6"
+  },
+  {
+    "name": "academic-session-direct-entry-deId-manage-student-union-dues",
+    "path": "/academic-session/direct-entry/:deId?/manage/student-union-dues",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/direct-entry/_deId/manage/student-union-dues.vue",
+    "chunkName": "pages/academic-session/direct-entry/_deId/manage/student-union-dues",
+    "_name": "_08ad74e8"
+  },
+  {
+    "name": "academic-session-pg-pgId-manage-add-student-result",
+    "path": "/academic-session/pg/:pgId?/manage/add-student-result",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/_pgId/manage/add-student-result.vue",
+    "chunkName": "pages/academic-session/pg/_pgId/manage/add-student-result",
+    "_name": "_7c57b1d3"
+  },
+  {
+    "name": "academic-session-pg-pgId-manage-late-fee-slip",
+    "path": "/academic-session/pg/:pgId?/manage/late-fee-slip",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/_pgId/manage/late-fee-slip.vue",
+    "chunkName": "pages/academic-session/pg/_pgId/manage/late-fee-slip",
+    "_name": "_18cf87e6"
+  },
+  {
+    "name": "academic-session-pg-pgId-manage-student-union-dues",
+    "path": "/academic-session/pg/:pgId?/manage/student-union-dues",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/_pgId/manage/student-union-dues.vue",
+    "chunkName": "pages/academic-session/pg/_pgId/manage/student-union-dues",
+    "_name": "_42de0547"
+  },
+  {
+    "name": "academic-session-pg-pgId-manage-view-registered-students",
+    "path": "/academic-session/pg/:pgId?/manage/view-registered-students",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/pg/_pgId/manage/view-registered-students.vue",
+    "chunkName": "pages/academic-session/pg/_pgId/manage/view-registered-students",
+    "_name": "_6af33493"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-acceptance-fee",
+    "path": "/academic-session/utme/:putmeId?/manage/acceptance-fee",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/acceptance-fee.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/acceptance-fee",
+    "_name": "_5f0eef32"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-add-seat",
+    "path": "/academic-session/utme/:putmeId?/manage/add-seat",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/add-seat.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/add-seat",
+    "_name": "_7143aa5a"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-add-student-result",
+    "path": "/academic-session/utme/:putmeId?/manage/add-student-result",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/add-student-result.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/add-student-result",
+    "_name": "_0bfb9786"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-late-fee-slip",
+    "path": "/academic-session/utme/:putmeId?/manage/late-fee-slip",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/late-fee-slip.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/late-fee-slip",
+    "_name": "_4803ab3c"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-student-union-dues",
+    "path": "/academic-session/utme/:putmeId?/manage/student-union-dues",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/student-union-dues.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/student-union-dues",
+    "_name": "_7eeef09e"
+  },
+  {
+    "name": "academic-session-utme-putmeId-manage-view-registered-students",
+    "path": "/academic-session/utme/:putmeId?/manage/view-registered-students",
+    "component": "/Users/mac/projects/frontend/pages/academic-session/utme/_putmeId/manage/view-registered-students.vue",
+    "chunkName": "pages/academic-session/utme/_putmeId/manage/view-registered-students",
+    "_name": "_5288bf7d"
+  }
+]
