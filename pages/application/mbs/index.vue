@@ -185,11 +185,11 @@
                         <td>{{ referee.referee_name }}</td>
                         <td v-if="referee.status === 1"><span style="color: green;">Completed</span></td>
                         <td v-if="referee.status === 0"><span style="color: red;">Not completed</span></td>
-                        <td>
+                        <!-- <td>
                           <span v-if="referee.status === 1" data-placement="top" data-toggle="tooltip" title="Print reference">
                             <a href="javascript:;" @click="printReference(referee)" class="btn btn-default btn-sm" role="button"><i class="fa fa-print"></i></a>
                           </span>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
               </table>
